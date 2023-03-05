@@ -182,13 +182,9 @@ export function Hero() {
 							</p>
 						</div>
 						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
-							<Link
-								href="#"
-								aria-label="Start Now"
-								className="flex rounded-lg transition-colors font-nunito bg-nano text-white hover:bg-slate-700 font-semibold items-center px-4 text-xl"
-							>
-								Start now
-							</Link>
+							<Button href="/signup" variant="solid" color="nano">
+								<h1 className="text-lg">Start now</h1>
+							</Button>
 							<Button
 								href="/demo"
 								variant="outline"

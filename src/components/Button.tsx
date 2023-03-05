@@ -23,14 +23,14 @@ const baseStyles = {
 
 const variantStyles = {
 	solid: {
-		nano: 'relative overflow-hidden bg-nano-500 text-white before:absolute before:inset-0 active:before:bg-transparent hover:before:bg-white/10 active:bg-nano-600 active:text-white/80 before:transition-colors',
+		nano: 'relative overflow-hidden bg-nano text-white before:absolute before:inset-0 active:before:bg-transparent hover:before:bg-white/10 active:bg-nano active:text-white/80 before:transition-colors',
 		white:
-			'bg-white text-nano-900 hover:bg-white/90 active:bg-white/90 active:text-nano-900/70',
+			'bg-white text-nano hover:bg-white/90 active:bg-white/90 active:text-nano/70',
 		slate:
 			'bg-slate-800 text-white hover:bg-slate-700 active:bg-slate-800 active:text-white/80',
 	},
 	outline: {
-		nano: 'border-nano-500 text-nano-500 hover:border-nano-600 active:bg-nano-100 active:text-nano-600/80',
+		nano: 'border-nano text-nano hover:border-nano active:bg-nano active:text-nano/80',
 		slate:
 			'border-slate-300 text-slate-700 hover:border-slate-400 active:bg-slate-100 active:text-slate-700/80',
 		white:
