@@ -58,13 +58,13 @@ export const Button = forwardRef(function Button(
 		<Link
 			ref={ref as any}
 			href={href}
-			className={clsx('font-nunito', className)}
+			className={className}
 			{...(props as ButtonLinkProps)}
 		/>
 	) : (
 		<button
 			ref={ref as any}
-			className={clsx('font-nunito', className)}
+			className={className}
 			{...(props as ButtonProps)}
 		/>
 	)

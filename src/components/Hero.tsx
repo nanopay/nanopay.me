@@ -183,7 +183,7 @@ export function Hero() {
 						</div>
 						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
 							<Button href="/signup" variant="solid" color="nano">
-								<h1 className="text-lg">Start now</h1>
+								<h1 className="text-lg font-nunito">Start now</h1>
 							</Button>
 							<Button
 								href="/demo"
@@ -192,7 +192,7 @@ export function Hero() {
 								className="text-xl items-center border-nano/70"
 							>
 								<PlayIcon className="h-6 w-6 flex-none text-nano" />
-								<span className="ml-2.5 text-nano">Demo</span>
+								<span className="ml-2.5 text-nano font-nunito">Demo</span>
 							</Button>
 						</div>
 					</div>
