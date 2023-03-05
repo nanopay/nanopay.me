@@ -6,7 +6,7 @@ import { Logomark } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import xnoHeart from '@/images/xno-heart.svg'
 
-function QrCodeBorder(props) {
+function QrCodeBorder(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg viewBox="0 0 96 96" fill="none" aria-hidden="true" {...props}>
 			<path

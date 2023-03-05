@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Popover } from '@headlessui/react'
+import { Popover, PopoverButtonProps } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { Button } from '@/components/Button'
@@ -7,7 +7,7 @@ import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 
-function MenuIcon(props) {
+function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
 			<path
@@ -20,7 +20,7 @@ function MenuIcon(props) {
 	)
 }
 
-function ChevronUpIcon(props) {
+function ChevronUpIcon(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
 			<path
@@ -33,7 +33,7 @@ function ChevronUpIcon(props) {
 	)
 }
 
-function MobileNavLink({ children, ...props }) {
+function MobileNavLink({ children, ...props }: PopoverButtonProps<'a'>) {
 	return (
 		<Popover.Button
 			as={Link}

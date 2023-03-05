@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 import frame from '@/images/phone-frame.svg'
 
-function PlaceholderFrame(props) {
+function PlaceholderFrame(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg viewBox="0 0 366 729" aria-hidden="true" {...props}>
 			<path
@@ -17,12 +17,16 @@ function PlaceholderFrame(props) {
 	)
 }
 
+interface PhoneFrameProps extends React.ComponentProps<'div'> {
+	priority?: boolean
+}
+
 export function PhoneFrame({
 	className,
 	children,
 	priority = false,
 	...props
-}) {
+}: PhoneFrameProps) {
 	return (
 		<div className={clsx('relative aspect-[366/729]', className)} {...props}>
 			<div className="absolute inset-y-[calc(1/729*100%)] right-[calc(5/729*100%)] left-[calc(7/729*100%)] rounded-[calc(58/366*100%)/calc(58/729*100%)] shadow-2xl" />

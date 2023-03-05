@@ -1,4 +1,4 @@
-export function Logomark(props) {
+export function Logomark(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg
 			width="40"
@@ -52,7 +52,7 @@ export function Logomark(props) {
 	)
 }
 
-export function Logo(props) {
+export function Logo(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg
 			width="303"

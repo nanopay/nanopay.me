@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import clsx from 'clsx'
 
-function MenuIcon(props) {
+function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
 			<path
@@ -15,7 +15,7 @@ function MenuIcon(props) {
 	)
 }
 
-function UserIcon(props) {
+function UserIcon(props: React.ComponentProps<'svg'>) {
 	return (
 		<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
 			<path
@@ -29,7 +29,11 @@ function UserIcon(props) {
 	)
 }
 
-export function AppScreen({ children, className, ...props }) {
+export function AppScreen({
+	children,
+	className,
+	...props
+}: React.ComponentProps<'div'>) {
 	return (
 		<div className={clsx('flex flex-col', className)} {...props}>
 			<div className="flex justify-between px-4 pt-4">
@@ -42,7 +46,10 @@ export function AppScreen({ children, className, ...props }) {
 	)
 }
 
-AppScreen.Header = forwardRef(function AppScreenHeader({ children }, ref) {
+AppScreen.Header = forwardRef(function AppScreenHeader(
+	{ children }: React.ComponentProps<'div'>,
+	ref: React.Ref<HTMLDivElement>,
+) {
 	return (
 		<div ref={ref} className="mt-6 px-4 text-white">
 			{children}
@@ -50,7 +57,10 @@ AppScreen.Header = forwardRef(function AppScreenHeader({ children }, ref) {
 	)
 })
 
-AppScreen.Title = forwardRef(function AppScreenTitle({ children }, ref) {
+AppScreen.Title = forwardRef(function AppScreenTitle(
+	{ children }: React.ComponentProps<'div'>,
+	ref: React.Ref<HTMLDivElement>,
+) {
 	return (
 		<div ref={ref} className="text-2xl text-white">
 			{children}
@@ -58,7 +68,10 @@ AppScreen.Title = forwardRef(function AppScreenTitle({ children }, ref) {
 	)
 })
 
-AppScreen.Subtitle = forwardRef(function AppScreenSubtitle({ children }, ref) {
+AppScreen.Subtitle = forwardRef(function AppScreenSubtitle(
+	{ children }: React.ComponentProps<'div'>,
+	ref: React.Ref<HTMLDivElement>,
+) {
 	return (
 		<div ref={ref} className="text-sm text-gray-500">
 			{children}
@@ -67,8 +80,8 @@ AppScreen.Subtitle = forwardRef(function AppScreenSubtitle({ children }, ref) {
 })
 
 AppScreen.Body = forwardRef(function AppScreenBody(
-	{ children, className },
-	ref,
+	{ children, className }: React.ComponentProps<'div'>,
+	ref: React.Ref<HTMLDivElement>,
 ) {
 	return (
 		<div

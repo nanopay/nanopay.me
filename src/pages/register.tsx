@@ -60,7 +60,7 @@ export default function Register() {
 							required
 						/>
 					</div>
-					<Button type="submit" color="cyan" className="mt-8 w-full">
+					<Button type="submit" color="nano" className="mt-8 w-full">
 						Get started today
 					</Button>
 				</form>
