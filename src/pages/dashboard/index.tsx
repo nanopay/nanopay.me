@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/Button'
+import { useSession } from 'next-auth/react'
 
 const projects = [
 	{
@@ -18,6 +19,12 @@ const projects = [
 ]
 
 export default function Dashboard() {
+	const { data: session } = useSession()
+
+	if (!session?.user) {
+		return null
+	}
+
 	return (
 		<>
 			<Head>
@@ -39,19 +46,21 @@ export default function Dashboard() {
 											<div className="flex-shrink-0">
 												<Image
 													className="mx-auto h-20 w-20 rounded-full"
-													src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80"
+													src={session.user.image as string}
 													alt=""
+													width={80}
+													height={80}
 												/>
 											</div>
 											<div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-												<p className="text-sm font-medium text-gray-600">
+												<p className="text-xs font-medium text-gray-600">
 													Welcome back,
 												</p>
 												<p className="text-xl font-bold text-gray-900 sm:text-2xl">
-													Chelsea Hagon
+													{session.user.name}
 												</p>
 												<p className="text-sm font-medium text-gray-600">
-													Human Resources Manager
+													{session.user.email}
 												</p>
 											</div>
 										</div>
