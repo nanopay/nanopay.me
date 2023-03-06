@@ -61,7 +61,7 @@ const statusStyles = {
 	failed: 'bg-slate-100 text-slate-800',
 }
 
-export default function Home() {
+export default function ProjectDashboard() {
 	return (
 		<>
 			<Head>

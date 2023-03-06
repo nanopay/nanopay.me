@@ -1,11 +1,11 @@
 import Head from 'next/head'
+import Image from 'next/image'
+import { PlusIcon } from '@heroicons/react/24/solid'
 
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/Button'
-import { PlusIcon } from '@heroicons/react/24/solid'
-import Image from 'next/image'
 
 const projects = [
 	{
@@ -17,7 +17,7 @@ const projects = [
 	},
 ]
 
-export default function Home() {
+export default function Dashboard() {
 	return (
 		<>
 			<Head>
