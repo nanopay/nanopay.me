@@ -46,7 +46,7 @@ export function AuthLayout({ title, subtitle, children }: AuthLayoutProps) {
 						<p className="mt-3 text-center text-lg text-gray-600">{subtitle}</p>
 					)}
 				</div>
-				<div className="-mx-4 mt-10 flex-auto bg-white py-10 px-4 shadow-2xl shadow-gray-900/10 sm:mx-0 sm:flex-none sm:rounded-5xl sm:p-24">
+				<div className="-mx-4 mt-10 flex-auto bg-white py-10 px-4 shadow-2xl shadow-gray-900/10 sm:mx-0 sm:flex-none sm:rounded-3xl sm:p-12">
 					{children}
 				</div>
 			</div>

@@ -1,11 +1,37 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { getProviders, useSession, signIn } from 'next-auth/react'
 
 import { AuthLayout } from '@/components/AuthLayout'
 import { Button } from '@/components/Button'
-import { TextField } from '@/components/Fields'
+import Image from 'next/image'
 
 export default function Login() {
+	const { push, query } = useRouter()
+
+	const [providers, setProviders] = useState<any>(null)
+
+	const { status } = useSession()
+
+	if (status === 'authenticated') {
+		push(
+			typeof query.callbackUrl === 'string' ? query.callbackUrl : '/dashboard',
+		)
+	}
+
+	const configureProviders = async (status: string) => {
+		if (status !== 'loading') {
+			if ((await providers) === null) {
+				setProviders(await getProviders())
+			}
+		}
+	}
+
+	useEffect(() => {
+		configureProviders(status)
+	}, [status])
+
 	return (
 		<>
 			<Head>
@@ -13,39 +39,35 @@ export default function Login() {
 			</Head>
 			<AuthLayout
 				title="Sign in to account"
-				subtitle={
-					<>
-						Don’t have an account?{' '}
-						<Link href="/register" className="text-blue-600">
-							Sign up
-						</Link>{' '}
-						for a free trial.
-					</>
-				}
+				subtitle={<>Authenticate directly with one of the providers:</>}
 			>
-				<form>
-					<div className="space-y-6">
-						<TextField
-							label="Email address"
-							id="email"
-							name="email"
-							type="email"
-							autoComplete="email"
-							required
-						/>
-						<TextField
-							label="Password"
-							id="password"
-							name="password"
-							type="password"
-							autoComplete="current-password"
-							required
-						/>
-					</div>
-					<Button type="submit" color="nano" className="mt-8 w-full">
-						Sign in to account
-					</Button>
-				</form>
+				<ul className="w-full flex flex-col items-center">
+					{providers &&
+						Object.keys(providers).map((providerKey, i) => (
+							<li key={i}>
+								{providers[providerKey].type !== 'credentials' && (
+									<Button
+										variant="outline"
+										type="submit"
+										className="w-100 mb-3 space-x-2"
+										onClick={() =>
+											signIn(providers[providerKey].id, {
+												callbackUrl: query.callbackUrl as string,
+											})
+										}
+									>
+										<Image
+											src={require(`@/images/logos/${providerKey}.svg`)}
+											width={20}
+											height={20}
+											alt={providers[providerKey].name}
+										/>
+										<span>Sign in with {providers[providerKey].name}</span>
+									</Button>
+								)}
+							</li>
+						))}
+				</ul>
 			</AuthLayout>
 		</>
 	)

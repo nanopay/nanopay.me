@@ -112,7 +112,12 @@ export function Header() {
 								</>
 							)}
 						</Popover>
-						<Button href="/login" variant="outline" className="hidden lg:block">
+						<Button
+							href="/login"
+							variant="solid"
+							className="hidden lg:block"
+							color="slate"
+						>
 							Log in
 						</Button>
 					</div>
