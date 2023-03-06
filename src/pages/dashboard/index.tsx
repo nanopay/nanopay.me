@@ -7,12 +7,14 @@ import { Header } from '@/components/Header'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/Button'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 const projects = [
 	{
 		logo: require('@/images/logos/nano-xno.svg'),
 		name: 'Workcation',
 		href: '#',
+		slug: 'workcation',
 		description:
 			'Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.',
 	},
@@ -130,14 +132,17 @@ export default function Dashboard() {
 										</div>
 										<div className="mt-8">
 											<h3 className="text-lg font-medium">
-												<a href="#" className="focus:outline-none">
+												<Link
+													href={`dashboard/${project.slug}`}
+													className="focus:outline-none"
+												>
 													{/* Extend touch target to entire panel */}
 													<span
 														className="absolute inset-0"
 														aria-hidden="true"
 													></span>
 													{project.name}
-												</a>
+												</Link>
 											</h3>
 											<p className="mt-2 text-sm text-gray-500">
 												{project.description}
