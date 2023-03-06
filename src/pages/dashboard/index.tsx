@@ -37,7 +37,7 @@ export default function Dashboard() {
 									<div className="sm:flex sm:items-center sm:justify-between">
 										<div className="sm:flex sm:space-x-5">
 											<div className="flex-shrink-0">
-												<img
+												<Image
 													className="mx-auto h-20 w-20 rounded-full"
 													src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80"
 													alt=""
@@ -102,8 +102,11 @@ export default function Dashboard() {
 								</Button>
 							</div>
 							<div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
-								{projects.map(project => (
-									<div className="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500">
+								{projects.map((project, index) => (
+									<div
+										key={index}
+										className="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500"
+									>
 										<div>
 											<span className="inline-flex rounded-lg p-3 bg-sky-50 text-sky-700 ring-4 ring-white">
 												{
