@@ -12,7 +12,7 @@ export default function Logout() {
 			signOut().then(() => {
 				router.push('/login')
 			})
-		} else {
+		} else if (status === 'unauthenticated') {
 			router.push('/login')
 		}
 	}, [status])
