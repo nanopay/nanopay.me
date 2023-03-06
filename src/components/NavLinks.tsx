@@ -7,7 +7,7 @@ export function NavLinks() {
 
 	return (
 		<>
-			{[['FAQs', '#faqs']].map(([label, href], index) => (
+			{[['FAQs', '/#faqs']].map(([label, href], index) => (
 				<Link
 					key={label}
 					href={href}
