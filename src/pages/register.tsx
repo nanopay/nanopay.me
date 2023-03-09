@@ -10,13 +10,13 @@ import { useState } from 'react'
 import { createServerSupabaseClient, User } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import { Logomark } from '@/components/Logo'
-import { UserRegisterProps } from '@/services/api/users'
 import api from '@/services/api'
 import { JSONSchemaType } from 'ajv'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
+import { UserProfile } from '@/types/users'
 
-const schema: JSONSchemaType<UserRegisterProps> = {
+const schema: JSONSchemaType<UserProfile> = {
 	type: 'object',
 	properties: {
 		email: { type: 'string', format: 'email', maxLength: 128 },
@@ -42,7 +42,7 @@ export default function Register({ user }: { user: User }) {
 		handleSubmit,
 		getValues,
 		formState: { errors, isSubmitting },
-	} = useForm<UserRegisterProps>({
+	} = useForm<UserProfile>({
 		defaultValues: {
 			name: user.user_metadata?.name,
 			email: user.user_metadata?.email,
@@ -53,7 +53,7 @@ export default function Register({ user }: { user: User }) {
 		}),
 	})
 
-	const onSubmit = async ({ name, email, avatar_url }: UserRegisterProps) => {
+	const onSubmit = async ({ name, email, avatar_url }: UserProfile) => {
 		try {
 			await api.users.register({
 				name,

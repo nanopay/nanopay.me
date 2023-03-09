@@ -3,11 +3,11 @@ import { Database } from '@/types/supabase'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Ajv, { JSONSchemaType } from 'ajv'
-import { UserRegisterProps } from '@/services/api/users'
+import { UserProfile } from '@/types/users'
 
 const ajv = new Ajv()
 
-const schema: JSONSchemaType<UserRegisterProps> = {
+const schema: JSONSchemaType<UserProfile> = {
 	type: 'object',
 	properties: {
 		email: { type: 'string', format: 'email', maxLength: 128 },
