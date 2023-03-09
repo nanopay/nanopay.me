@@ -8,6 +8,9 @@ import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/Button'
+import { createServerSupabaseClient, User } from '@supabase/auth-helpers-nextjs'
+import { GetServerSidePropsContext } from 'next'
+import { UserProfile } from '@/types/users'
 
 const projects = [
 	{
@@ -20,15 +23,7 @@ const projects = [
 	},
 ]
 
-export default function Dashboard() {
-	const user = useUser()
-
-	if (!user) {
-		return null
-	}
-
-	console.log(user)
-
+export default function Dashboard({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
@@ -50,10 +45,7 @@ export default function Dashboard() {
 											<div className="flex-shrink-0">
 												<Image
 													className="mx-auto h-20 w-20 rounded-full"
-													src={
-														user.user_metadata.internal_profile
-															.avatar_url as string
-													}
+													src={user.avatar_url}
 													alt=""
 													width={80}
 													height={80}
@@ -64,10 +56,10 @@ export default function Dashboard() {
 													Welcome back,
 												</p>
 												<p className="text-xl font-bold text-gray-900 sm:text-2xl">
-													{user.user_metadata.internal_profile.name}
+													{user.name}
 												</p>
 												<p className="text-sm font-medium text-gray-600">
-													{user.user_metadata.internal_profile.email}
+													{user.email}
 												</p>
 											</div>
 										</div>
@@ -175,4 +167,21 @@ export default function Dashboard() {
 			<Footer />
 		</>
 	)
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+	const supabase = createServerSupabaseClient(ctx)
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
+
+	return {
+		props: {
+			user: session?.user?.user_metadata?.internal_profile || {
+				name: 'error',
+				email: 'error',
+				avatar_url: 'error',
+			},
+		},
+	}
 }
