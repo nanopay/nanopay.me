@@ -26,29 +26,18 @@ interface AuthLayoutProps {
 	children: React.ReactNode
 }
 
-export function AuthLayout({ title, subtitle, children }: AuthLayoutProps) {
+export function AuthLayout({ children }: AuthLayoutProps) {
 	return (
-		<main className="flex min-h-full overflow-hidden pt-16 sm:py-28">
-			<div className="mx-auto flex w-full max-w-2xl flex-col px-4 sm:px-6">
-				<Link href="/" aria-label="Home">
-					<Logo className="mx-auto h-10 w-auto" />
-				</Link>
-				<div className="relative mt-12 sm:mt-16">
+		<main className="flex min-h-full overflow-hidden sm:pt-16 sm:py-28 bg-zinc-900">
+			<div className="mx-auto flex w-full max-w-2xl flex-col sm:px-6">
+				<div className="relative mt-16 hidden sm:block">
 					<BackgroundIllustration
 						width="1090"
 						height="1090"
-						className="absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300/30 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:-top-9 sm:h-auto"
+						className="absolute -top-7 left-1/2 h-[788px] -translate-x-1/2 stroke-nano/20 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:-top-9 sm:h-auto"
 					/>
-					<h1 className="text-center text-2xl font-medium tracking-tight text-gray-900">
-						{title}
-					</h1>
-					{subtitle && (
-						<p className="mt-3 text-center text-lg text-gray-600">{subtitle}</p>
-					)}
 				</div>
-				<div className="-mx-4 mt-10 flex-auto bg-white py-10 px-4 shadow-2xl shadow-gray-900/10 sm:mx-0 sm:flex-none sm:rounded-3xl sm:p-12">
-					{children}
-				</div>
+				<div className="sm:mt-10 z-10">{children}</div>
 			</div>
 		</main>
 	)
