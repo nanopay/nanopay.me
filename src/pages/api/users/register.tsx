@@ -10,9 +10,9 @@ const ajv = new Ajv()
 const schema: JSONSchemaType<UserRegisterProps> = {
 	type: 'object',
 	properties: {
-		email: { type: 'string', format: 'email' },
-		name: { type: 'string', minLength: 2 },
-		avatar_url: { type: 'string', format: 'url' },
+		email: { type: 'string', format: 'email', maxLength: 128 },
+		name: { type: 'string', minLength: 2, maxLength: 40 },
+		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
 	},
 	required: ['email', 'name', 'avatar_url'],
 }
