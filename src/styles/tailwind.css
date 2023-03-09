@@ -8,3 +8,7 @@
 #__next {
 	min-height: 100%;
 }
+
+.Button {
+	@apply text-white bg-nano hover:bg-nano/90;
+}
