@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import { PlusIcon } from '@heroicons/react/24/solid'
+import { useUser } from '@supabase/auth-helpers-react'
 
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/Button'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 
 const projects = [
 	{
@@ -21,11 +21,13 @@ const projects = [
 ]
 
 export default function Dashboard() {
-	const { data: session } = useSession()
+	const user = useUser()
 
-	if (!session?.user) {
+	if (!user) {
 		return null
 	}
+
+	console.log(user)
 
 	return (
 		<>
@@ -48,7 +50,10 @@ export default function Dashboard() {
 											<div className="flex-shrink-0">
 												<Image
 													className="mx-auto h-20 w-20 rounded-full"
-													src={session.user.image as string}
+													src={
+														user.user_metadata.internal_profile
+															.avatar_url as string
+													}
 													alt=""
 													width={80}
 													height={80}
@@ -59,24 +64,24 @@ export default function Dashboard() {
 													Welcome back,
 												</p>
 												<p className="text-xl font-bold text-gray-900 sm:text-2xl">
-													{session.user.name}
+													{user.user_metadata.internal_profile.name}
 												</p>
 												<p className="text-sm font-medium text-gray-600">
-													{session.user.email}
+													{user.user_metadata.internal_profile.email}
 												</p>
 											</div>
 										</div>
 										<div className="mt-5 flex justify-center sm:mt-0">
 											<a
 												href="#"
-												className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+												className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-slate-50"
 											>
 												View profile
 											</a>
 										</div>
 									</div>
 								</div>
-								<div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
+								<div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-slate-200 bg-slate-50 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
 									<div className="px-6 py-5 text-center text-sm font-medium">
 										<span className="text-gray-900">0</span>{' '}
 										<span className="text-gray-600">...</span>
@@ -112,7 +117,7 @@ export default function Dashboard() {
 									</div>
 								</Button>
 							</div>
-							<div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
+							<div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-slate-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
 								{projects.map((project, index) => (
 									<div
 										key={index}
