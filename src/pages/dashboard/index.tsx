@@ -102,7 +102,7 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 								>
 									Your Projects
 								</h2>
-								<Button color="nano">
+								<Button color="nano" href="/dashboard/projects/new">
 									<div className="flex space-x-2 items-center">
 										<PlusIcon className="h-5 w-5" />
 										<span>New Project</span>
@@ -130,7 +130,7 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 										<div className="mt-8">
 											<h3 className="text-lg font-medium">
 												<Link
-													href={`dashboard/${project.slug}`}
+													href={`dashboard/project/${project.slug}`}
 													className="focus:outline-none"
 												>
 													{/* Extend touch target to entire panel */}

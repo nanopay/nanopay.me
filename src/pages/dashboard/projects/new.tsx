@@ -39,29 +39,11 @@ export default function NewProject() {
 		formState: { errors },
 	} = useForm<ProjectProfile>({
 		defaultValues: {
-			avatar_url: 'https://static.nanopay.me/images/placeholder.png',
+			avatar_url: `https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/images/placeholder.png`,
 		},
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
-	})
-
-	const onErrorSubmiting = () => {
-		showError('Error creating project', 'Check the data and try again later.')
-	}
-
-	const {
-		mutate: onSubmit,
-		isLoading: isSubmitting,
-		isSuccess,
-	} = useMutation({
-		mutationFn: async (data: ProjectProfile) => api.projects.create(data),
-		onSuccess: () => {
-			showSuccess('Success')
-		},
-		onError: (err: any) => {
-			showError('Error creating project', err.message)
-		},
 	})
 
 	const {
@@ -73,12 +55,30 @@ export default function NewProject() {
 			api.users.upload.avatar(file, setUploadProgress),
 		onSuccess: (url: string) => {
 			setValue('avatar_url', url)
-			router.push('/dashboard/projects')
 		},
 		onError: (err: any) => {
 			showError('Error uploading image', err.message)
 		},
 	})
+
+	const {
+		mutate: onSubmit,
+		isLoading: isSubmitting,
+		isSuccess,
+	} = useMutation({
+		mutationFn: async (data: ProjectProfile) => api.projects.create(data),
+		onSuccess: () => {
+			showSuccess('Project created')
+			router.push('/dashboard')
+		},
+		onError: (err: any) => {
+			showError('Error creating project', err.message)
+		},
+	})
+
+	const onErrorSubmiting = () => {
+		showError('Error creating project', 'Check the fields entered')
+	}
 
 	return (
 		<>
