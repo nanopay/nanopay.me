@@ -2,7 +2,6 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PlusIcon } from '@heroicons/react/24/solid'
-import { useUser } from '@supabase/auth-helpers-react'
 
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
