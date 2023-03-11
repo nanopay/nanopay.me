@@ -17,11 +17,37 @@ const schema = {
 	required: ['name', 'avatar_url'],
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-	if (req.method !== 'POST') {
-		return res.status(405).json({ message: 'Method not allowed' })
+const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
+	const supabaseServerClient = createServerSupabaseClient<Database>({
+		req,
+		res,
+	})
+
+	const {
+		data: { user },
+		error: userError,
+	} = await supabaseServerClient.auth.getUser()
+
+	if (userError) {
+		return res.status(500).json({ message: userError.message })
 	}
 
+	if (!user) {
+		return res.status(401).json({ message: 'Unauthorized' })
+	}
+
+	const { data, error } = await supabaseServerClient
+		.from('projects')
+		.select('id, name, avatar_url, description')
+
+	if (error) {
+		return res.status(500).json({ message: error.message })
+	}
+
+	res.status(200).json(data)
+}
+
+const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (!ajv.validate(schema, req.body)) {
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
@@ -44,16 +70,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(401).json({ message: 'Unauthorized' })
 	}
 
-	const { error, data } = await supabase.from('projects').insert({
-		...req.body,
-		id: user.id,
-	})
+	const { error, data } = await supabase
+		.from('projects')
+		.insert({
+			...req.body,
+			user_id: user.id,
+		})
+		.select('id')
 
 	if (error) {
 		return res.status(500).json({ message: error.message })
 	}
 
-	console.log('data', data)
+	res.status(200).json({ id: data[0].id })
+}
 
-	res.status(200).json({ name: 'John Doe' })
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+	if (req.method === 'POST') {
+		await postProject(req, res)
+	} else if (req.method === 'GET') {
+		await getProjects(req, res)
+	} else {
+		return res.status(405).json({ message: 'Method not allowed' })
+	}
 }
