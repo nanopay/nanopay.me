@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { projects } from './projects'
 import { users } from './users'
 
 export const axiosInstance = axios.create({
@@ -14,6 +15,7 @@ const getErrorMessage = (error: any): string => {
 const api = {
 	client: axiosInstance,
 	users: users(axiosInstance),
+	projects: projects(axiosInstance),
 	getErrorMessage,
 }
 
