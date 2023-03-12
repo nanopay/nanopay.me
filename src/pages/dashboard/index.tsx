@@ -10,19 +10,15 @@ import { Button } from '@/components/Button'
 import { createServerSupabaseClient, User } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import { UserProfile } from '@/types/users'
-
-const projects = [
-	{
-		logo: require('@/images/logos/nano-xno.svg'),
-		name: 'Workcation',
-		href: '#',
-		slug: 'workcation',
-		description:
-			'Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.',
-	},
-]
+import { useQuery } from 'react-query'
+import api from '@/services/api'
 
 export default function Dashboard({ user }: { user: UserProfile }) {
+	const { data: projects, error } = useQuery(
+		'projects',
+		async () => await api.projects.getAll().then(res => res.data),
+	)
+
 	return (
 		<>
 			<Head>
@@ -109,16 +105,17 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 								</Button>
 							</div>
 							<div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-slate-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
-								{projects.map((project, index) => (
+								{projects?.map((project, index) => (
 									<div
 										key={index}
 										className="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500"
 									>
 										<div>
-											<span className="inline-flex rounded-lg p-3 bg-sky-50 text-sky-700 ring-4 ring-white">
+											<span className="inline-flex rounded-full p-3 bg-sky-50 text-sky-700 ring-4 ring-white">
 												{
 													<Image
-														src={project.logo}
+														className="rounded-full"
+														src={project.avatar_url}
 														alt={project.name}
 														width={40}
 														height={40}
@@ -129,7 +126,7 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 										<div className="mt-8">
 											<h3 className="text-lg font-medium">
 												<Link
-													href={`dashboard/project/${project.slug}`}
+													href={`dashboard/projects/${project.name}`}
 													className="focus:outline-none"
 												>
 													{/* Extend touch target to entire panel */}
