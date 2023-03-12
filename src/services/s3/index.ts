@@ -1,6 +1,10 @@
 import axios, { AxiosResponse } from 'axios'
 import { S3Fields } from '../api/s3'
-import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import {
+	S3Client,
+	DeleteObjectCommand,
+	CopyObjectCommand,
+} from '@aws-sdk/client-s3'
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { Conditions as ConditionsType } from '@aws-sdk/s3-presigned-post/dist-types/types'
 
@@ -13,6 +17,11 @@ const client = new S3Client({
 		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
 	},
 })
+
+const sanitizeKey = (key: string): string => {
+	// remove prefix /
+	return key.replace(/^\//, '')
+}
 
 export const uploadObject = async (
 	file: File,
@@ -53,10 +62,12 @@ export const createPresigned = async ({
 	maxLength = 1024 * 1024 * 1024, // 1GB
 	expires = 900, // 15 minutes
 }: CreatePresignedProps): Promise<{ url: string; fields: S3Fields }> => {
+	const Key = sanitizeKey(key)
+
 	const Conditions: ConditionsType[] = [
 		{ acl: 'public-read' },
 		{ bucket: Bucket },
-		['starts-with', '$key', key],
+		['starts-with', '$key', Key],
 		['content-length-range', minLength, maxLength],
 	]
 
@@ -66,7 +77,7 @@ export const createPresigned = async ({
 
 	const { url, fields } = await createPresignedPost(client, {
 		Bucket,
-		Key: key,
+		Key,
 		Conditions,
 		Fields,
 		Expires: expires,
@@ -74,7 +85,8 @@ export const createPresigned = async ({
 	return { url, fields }
 }
 
-export const deleteObject = async (Key: string): Promise<void> => {
+export const deleteObject = async (key: string): Promise<void> => {
+	const Key = sanitizeKey(key)
 	const command = new DeleteObjectCommand({
 		Bucket,
 		Key,
@@ -82,10 +94,31 @@ export const deleteObject = async (Key: string): Promise<void> => {
 	await client.send(command)
 }
 
+export const moveObject = async (
+	key: string,
+	newKey: string,
+): Promise<void> => {
+	const Key = sanitizeKey(key)
+	const command = new CopyObjectCommand({
+		Bucket,
+		Key: newKey,
+		CopySource: `${Bucket}/${Key}`,
+	})
+	await client.send(command)
+
+	// Failed deletions should be fixed by a cron job or lifecycle policy
+	try {
+		await deleteObject(Key)
+	} catch (e) {
+		console.error(e)
+	}
+}
+
 const s3 = {
 	uploadObject,
 	createPresigned,
 	deleteObject,
+	moveObject,
 }
 
 export default s3
