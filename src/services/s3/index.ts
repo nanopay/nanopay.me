@@ -8,10 +8,11 @@ import {
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { Conditions as ConditionsType } from '@aws-sdk/s3-presigned-post/dist-types/types'
 
-const Bucket = 'static.nanopay.me'
+const Bucket = process.env.S3_BUCKET as string
+const Region = process.env.S3_REGION as string
 
 const client = new S3Client({
-	region: 'us-east-1',
+	region: Region,
 	credentials: {
 		accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
 		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
