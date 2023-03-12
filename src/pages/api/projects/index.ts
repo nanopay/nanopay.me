@@ -107,8 +107,6 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 			'https://' + process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST,
 			avatarNewPath,
 		)
-	} else {
-		avatarUrl = 'https://static.nanopay.me/projects/placeholder.png'
 	}
 
 	const { error } = await supabase.from('projects').insert({

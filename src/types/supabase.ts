@@ -136,7 +136,7 @@ export interface Database {
       }
       projects: {
         Row: {
-          avatar_url: string
+          avatar_url: string | null
           contact_email: string | null
           description: string | null
           display_name: string | null
@@ -146,7 +146,7 @@ export interface Database {
           website: string | null
         }
         Insert: {
-          avatar_url: string
+          avatar_url?: string | null
           contact_email?: string | null
           description?: string | null
           display_name?: string | null
@@ -156,7 +156,7 @@ export interface Database {
           website?: string | null
         }
         Update: {
-          avatar_url?: string
+          avatar_url?: string | null
           contact_email?: string | null
           description?: string | null
           display_name?: string | null
