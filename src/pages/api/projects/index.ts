@@ -81,8 +81,6 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 		const avatarHost = new URL(avatarUrl).host
 		const avatarPath = new URL(avatarUrl).pathname
 
-		await new Promise(resolve => setTimeout(resolve, 10000))
-
 		if (avatarHost !== process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST) {
 			return res.status(400).json({ message: 'avatar_url host not allowed' })
 		}
