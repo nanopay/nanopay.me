@@ -24,7 +24,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 	}
 
 	const { url, fields } = await createPresigned({
-		key: `/tmp/${randomUUID()}.png`,
+		key: `tmp/${randomUUID()}.png`,
 		minLength: 1024, // 1KB
 		maxLength: 1024 * 1024 * 5, // 5MB
 	})
