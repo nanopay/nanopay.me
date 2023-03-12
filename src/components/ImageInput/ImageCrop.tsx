@@ -110,7 +110,7 @@ export const ImageCrop = ({ source, onConfirm, onCancel }: ImageCropProps) => {
 			// As a blob
 			canvas.toBlob(file => {
 				resolve(file as File)
-			}, 'image/jpeg')
+			}, 'image/png')
 		})
 	}
 
