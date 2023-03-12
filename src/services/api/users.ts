@@ -19,7 +19,7 @@ export const users = (axiosInstance: AxiosInstance) => {
 					.post('/users/upload/avatar')
 					.then(res => res.data)
 				await s3.uploadObject(file, fields, url, progressCallback)
-				return `${url}/${fields.key}}`
+				return `https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/${fields.key}`
 			},
 		},
 	}

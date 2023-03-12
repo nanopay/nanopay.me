@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
 	const { url, fields } = await createPresigned({
-		key: `users/${req.body.id}/tmp/avatar.png`,
+		key: `projects/${req.body.id}/tmp/avatar.png`,
 		minLength: 1024, // 1KB
 		maxLength: 1024 * 1024 * 5, // 5MB
 	})

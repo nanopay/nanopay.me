@@ -13,12 +13,18 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import ImageInput from '@/components/ImageInput'
-import { ProjectProfile } from '@/types/projects'
+import { ProjectCreate } from '@/types/projects'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 
 const schema = {
 	type: 'object',
 	properties: {
-		name: { type: 'string', minLength: 2, maxLength: 40 },
+		name: {
+			type: 'string',
+			minLength: 2,
+			maxLength: 40,
+			pattern: '^[a-zA-Z0-9-.]+$',
+		},
 		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
 		description: { type: 'string', maxLength: 512 },
 	},
@@ -37,7 +43,7 @@ export default function NewProject() {
 		watch,
 		setValue,
 		formState: { errors },
-	} = useForm<ProjectProfile>({
+	} = useForm<ProjectCreate>({
 		defaultValues: {
 			avatar_url: `https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/images/placeholder.png`,
 		},
@@ -51,9 +57,10 @@ export default function NewProject() {
 		isLoading: uploading,
 		isError: uploadError,
 	} = useMutation({
-		mutationFn: async (file: File) =>
+		mutationFn: (file: File) =>
 			api.users.upload.avatar(file, setUploadProgress),
 		onSuccess: (url: string) => {
+			console.log('Url: ', url)
 			setValue('avatar_url', url)
 		},
 		onError: (err: any) => {
@@ -66,7 +73,7 @@ export default function NewProject() {
 		isLoading: isSubmitting,
 		isSuccess,
 	} = useMutation({
-		mutationFn: async (data: ProjectProfile) => api.projects.create(data),
+		mutationFn: async (data: ProjectCreate) => api.projects.create(data),
 		onSuccess: () => {
 			showSuccess('Project created')
 			router.push('/dashboard')
@@ -80,13 +87,18 @@ export default function NewProject() {
 		showError('Error creating project', 'Check the fields entered')
 	}
 
+	const sanitizeProjectName = (name: string) => {
+		// only allows lowercase letters, numbers, dashes, underscores and dots
+		return name.slice(0, 40).replace(/[^a-z0-9-_\.]/g, '')
+	}
+
 	return (
 		<>
 			<Head>
 				<title>Dashboard - NanoPay.me</title>
 			</Head>
 			<main>
-				<Container className="mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 rounded-lg">
+				<Container className="sm:mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 rounded-lg">
 					<div className="w-full flex space-x-2 justify-between items-center py-3 mb-8 border-b border-slate-200">
 						<Logomark className="w-6" />
 						<h3 className="text-slate-700">Create a new project</h3>
@@ -102,24 +114,37 @@ export default function NewProject() {
 						progress={uploadProgress}
 					/>
 
-					<div className="w-full flex flex-col space-y-6 px-8">
-						<Controller
-							name="name"
-							control={control}
-							render={({ field }) => (
-								<Input
-									label="Name"
-									{...field}
-									onChange={e => field.onChange(e.target.value.slice(0, 40))}
-									errorMessage={errors.name?.message}
-									className="w-full"
-									autoCapitalize="words"
-									style={{
-										textTransform: 'capitalize',
-									}}
-								/>
-							)}
-						/>
+					<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-6">
+						<div>
+							<div className="flex mb-2 items-center text-xs text-gray-600">
+								<InformationCircleIcon className="w-4 mr-1" />
+								<div>
+									Use a name like:{' '}
+									<span className="font-semibold">my-project</span>
+									{' or '}
+									<span className="font-semibold">myproject2.com</span>
+								</div>
+							</div>
+							<Controller
+								name="name"
+								control={control}
+								render={({ field }) => (
+									<Input
+										label="Name"
+										{...field}
+										onChange={e =>
+											field.onChange(sanitizeProjectName(e.target.value))
+										}
+										errorMessage={errors.name?.message}
+										className="w-full"
+										autoCapitalize="words"
+										style={{
+											textTransform: 'capitalize',
+										}}
+									/>
+								)}
+							/>
+						</div>
 
 						<Controller
 							name="description"
@@ -140,9 +165,17 @@ export default function NewProject() {
 					<MButton
 						onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
 						loading={isSubmitting}
-						disabled={isSuccess || !watch('name') || !watch('avatar_url')}
+						disabled={
+							isSuccess || uploading || !watch('name') || !watch('avatar_url')
+						}
 					>
-						Create
+						{uploading
+							? 'Uploading image...'
+							: isSubmitting
+							? 'Creating project...'
+							: isSuccess
+							? 'Project Created'
+							: 'Create project'}
 					</MButton>
 				</Container>
 			</main>
