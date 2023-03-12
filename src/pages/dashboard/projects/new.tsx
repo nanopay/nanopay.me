@@ -28,7 +28,7 @@ const schema = {
 		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
 		description: { type: 'string', maxLength: 512 },
 	},
-	required: ['name', 'avatar_url'],
+	required: ['name'],
 }
 
 export default function NewProject() {
