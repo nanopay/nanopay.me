@@ -14,7 +14,7 @@ const schema = {
 		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
 		description: { type: 'string', maxLength: 512 },
 	},
-	required: ['name', 'avatar_url'],
+	required: ['name'],
 }
 
 const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -75,6 +75,9 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 		.insert({
 			...req.body,
 			user_id: user.id,
+			avatar_url:
+				req.body.avatar_url ||
+				'https://static.nanopay.me/projects/placeholder.png',
 		})
 		.select('id')
 
