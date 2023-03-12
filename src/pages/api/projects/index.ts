@@ -75,6 +75,7 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 		.insert({
 			...req.body,
 			user_id: user.id,
+			display_name: req.body.name,
 			avatar_url:
 				req.body.avatar_url ||
 				'https://static.nanopay.me/projects/placeholder.png',
