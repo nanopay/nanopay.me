@@ -24,7 +24,7 @@ export const projects = (axiosInstance: AxiosInstance) => {
 					throw new Error('File size must be less than 5MB')
 				}
 				const { url, fields } = await axiosInstance
-					.post('/projects/upload/avatar')
+					.post('/upload/image')
 					.then(res => res.data)
 				await s3.uploadObject(file, fields, url, progressCallback)
 				return `https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/${fields.key}`

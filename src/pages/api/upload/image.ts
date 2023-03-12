@@ -1,6 +1,7 @@
 import { createPresigned } from '@/services/s3'
 import { Database } from '@/types/supabase'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { randomUUID } from 'crypto'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
@@ -23,7 +24,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 	}
 
 	const { url, fields } = await createPresigned({
-		key: `users/${user.id}/tmp/avatar.png`,
+		key: `/tmp/${randomUUID()}.png`,
 		minLength: 1024, // 1KB
 		maxLength: 1024 * 1024 * 5, // 5MB
 	})
