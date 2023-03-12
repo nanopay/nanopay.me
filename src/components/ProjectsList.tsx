@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export default function ProjectsList({ projects }: { projects: Project[] }) {
 	return (
-		<div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-slate-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
+		<div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-slate-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0 animate-fade-in">
 			{projects?.map((project, index) => (
 				<div
 					key={index}

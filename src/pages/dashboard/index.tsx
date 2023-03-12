@@ -52,8 +52,11 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 								</Button>
 							</div>
 							{isLoading ? (
-								<div className="flex justify-center items-center">
+								<div className="flex flex-col space-y-6 justify-center items-center py-16">
 									<Loading />
+									<div className="text-slate-600 animate-pulse">
+										Loading your projects...
+									</div>
 								</div>
 							) : projects?.length ? (
 								<ProjectsList projects={projects} />

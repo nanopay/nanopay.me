@@ -17,6 +17,7 @@ export default function ProfileDashboard({ user }: { user: UserProfile }) {
 								alt=""
 								width={80}
 								height={80}
+								priority
 							/>
 						</div>
 						<div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
