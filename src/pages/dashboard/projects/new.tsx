@@ -55,7 +55,7 @@ export default function NewProject() {
 		isError: uploadError,
 	} = useMutation({
 		mutationFn: (file: File) =>
-			api.users.upload.avatar(file, setUploadProgress),
+			api.projects.upload.avatar(file, setUploadProgress),
 		onSuccess: (url: string) => {
 			console.log('Url: ', url)
 			setValue('avatar_url', url)
@@ -165,9 +165,7 @@ export default function NewProject() {
 					<MButton
 						onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
 						loading={isSubmitting}
-						disabled={
-							isSuccess || uploading || !watch('name') || !watch('avatar_url')
-						}
+						disabled={isSuccess || uploading || !watch('name')}
 					>
 						{uploading
 							? 'Uploading image...'
