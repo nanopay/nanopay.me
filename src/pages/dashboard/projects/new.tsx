@@ -44,9 +44,6 @@ export default function NewProject() {
 		setValue,
 		formState: { errors },
 	} = useForm<ProjectCreate>({
-		defaultValues: {
-			avatar_url: `https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/images/placeholder.png`,
-		},
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
@@ -64,7 +61,7 @@ export default function NewProject() {
 			setValue('avatar_url', url)
 		},
 		onError: (err: any) => {
-			showError('Error uploading image', err.message)
+			showError('Error uploading image', api.getErrorMessage(err))
 		},
 	})
 
@@ -79,7 +76,7 @@ export default function NewProject() {
 			router.push('/dashboard')
 		},
 		onError: (err: any) => {
-			showError('Error creating project', err.message)
+			showError('Error creating project', api.getErrorMessage(err))
 		},
 	})
 
@@ -106,7 +103,10 @@ export default function NewProject() {
 					</div>
 
 					<ImageInput
-						source={watch('avatar_url')}
+						source={
+							watch('avatar_url') ||
+							`https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/images/placeholder.png`
+						}
 						crop={true}
 						onChange={uploadImage}
 						isLoading={uploading}
