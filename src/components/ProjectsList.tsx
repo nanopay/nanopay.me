@@ -1,3 +1,4 @@
+import { PROJECT_AVATAR_PLACEHOLDER } from '@/constants'
 import { Project } from '@/types/projects'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,7 +16,7 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
 							{
 								<Image
 									className="rounded-full"
-									src={project.avatar_url}
+									src={project.avatar_url || PROJECT_AVATAR_PLACEHOLDER}
 									alt={project.name}
 									width={40}
 									height={40}

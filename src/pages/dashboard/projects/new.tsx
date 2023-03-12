@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/useToast'
 import ImageInput from '@/components/ImageInput'
 import { ProjectCreate } from '@/types/projects'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { PROJECT_AVATAR_PLACEHOLDER } from '@/constants'
 
 const schema = {
 	type: 'object',
@@ -103,10 +104,7 @@ export default function NewProject() {
 					</div>
 
 					<ImageInput
-						source={
-							watch('avatar_url') ||
-							`https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/images/placeholder.png`
-						}
+						source={watch('avatar_url') || PROJECT_AVATAR_PLACEHOLDER}
 						crop={true}
 						onChange={uploadImage}
 						isLoading={uploading}

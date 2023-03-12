@@ -1,7 +1,7 @@
 export interface ProjectCreate {
 	name: string
 	description: string
-	avatar_url: string
+	avatar_url?: string
 }
 
 export interface Project extends ProjectCreate {
