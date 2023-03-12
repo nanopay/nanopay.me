@@ -1,4 +1,5 @@
 import { UserProfile } from '@/types/users'
+import { concatURL } from '@/utils/helpers'
 import { AxiosInstance } from 'axios'
 import s3 from '../s3'
 
@@ -19,7 +20,10 @@ export const users = (axiosInstance: AxiosInstance) => {
 					.post('/upload/image')
 					.then(res => res.data)
 				await s3.uploadObject(file, fields, url, progressCallback)
-				return `https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}/${fields.key}`
+				return concatURL(
+					`https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}`,
+					fields.key,
+				)
 			},
 		},
 	}
