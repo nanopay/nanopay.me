@@ -1,16 +1,16 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import clsx from 'clsx'
 import { Popover, PopoverButtonProps } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import { UserProfile } from '@/types/users'
-import Image from 'next/image'
-import clsx from 'clsx'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
 
 function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
@@ -73,13 +73,13 @@ const getSize = (size: HeaderProps['size']) => {
 			return {
 				py: 'py-6',
 				logo: 'w-auto h-12',
-				avatar: 48,
+				avatar: 40,
 			}
 		default:
 			return {
 				py: 'py-4',
 				logo: 'w-auto h-12',
-				avatar: 44,
+				avatar: 40,
 			}
 	}
 }
@@ -94,6 +94,8 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 		await supabaseClient.auth.signOut()
 		await router.push('/login')
 	}
+
+	const isDashboard = router.pathname.startsWith('/dashboard')
 
 	return (
 		<header {...props}>
@@ -190,13 +192,23 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 
 						<div className="hidden lg:block">
 							{user ? (
-								<Image
-									src={user.avatar_url}
-									alt="user avatar"
-									className="rounded-full"
-									width={sizes.avatar}
-									height={sizes.avatar}
-								/>
+								<div className="flex items-center space-x-4">
+									<Image
+										src={user.avatar_url}
+										alt="user avatar"
+										className="rounded-full"
+										width={sizes.avatar}
+										height={sizes.avatar}
+									/>
+									{!isDashboard && (
+										<>
+											<div className="h-8 border-l border-slate-200" />
+											<Button href="/dashboard" variant="outline">
+												Dashboard
+											</Button>
+										</>
+									)}
+								</div>
 							) : (
 								<Button href="/login" variant="solid" color="slate">
 									Log in
