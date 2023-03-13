@@ -2,7 +2,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import clsx from 'clsx'
-import { Popover, PopoverButtonProps } from '@headlessui/react'
+import {
+	Menu,
+	Popover,
+	PopoverButtonProps,
+	Transition,
+} from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
@@ -11,6 +16,7 @@ import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import { UserProfile } from '@/types/users'
+import { Fragment } from 'react'
 
 function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
@@ -193,13 +199,46 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 						<div className="hidden lg:block">
 							{user ? (
 								<div className="flex items-center space-x-4">
-									<Image
-										src={user.avatar_url}
-										alt="user avatar"
-										className="rounded-full"
-										width={sizes.avatar}
-										height={sizes.avatar}
-									/>
+									<Menu as="div" className="relative ml-5 flex-shrink-0">
+										<div>
+											<Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-nano focus:ring-offset-2">
+												<span className="sr-only">Open user menu</span>
+												<Image
+													src={user.avatar_url}
+													alt="user avatar"
+													className="rounded-full"
+													width={sizes.avatar}
+													height={sizes.avatar}
+												/>
+											</Menu.Button>
+										</div>
+										<Transition
+											as={Fragment}
+											enter="transition ease-out duration-100"
+											enterFrom="transform opacity-0 scale-95"
+											enterTo="transform opacity-100 scale-100"
+											leave="transition ease-in duration-75"
+											leaveFrom="transform opacity-100 scale-100"
+											leaveTo="transform opacity-0 scale-95"
+										>
+											<Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+												<Menu.Item>
+													{({ active }) => (
+														<div
+															className={clsx(
+																active ? 'bg-gray-100' : '',
+																'w-full text-left block py-2 px-4 text-sm text-gray-700 cursor-pointer',
+															)}
+															onClick={logout}
+														>
+															Log out
+														</div>
+													)}
+												</Menu.Item>
+											</Menu.Items>
+										</Transition>
+									</Menu>
+
 									{!isDashboard && (
 										<>
 											<div className="h-8 border-l border-slate-200" />
