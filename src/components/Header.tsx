@@ -6,6 +6,11 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
+import { UserProfile } from '@/types/users'
+import Image from 'next/image'
+import clsx from 'clsx'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 
 function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
@@ -45,14 +50,60 @@ function MobileNavLink({ children, ...props }: PopoverButtonProps<'a'>) {
 	)
 }
 
-export function Header() {
+interface HeaderProps extends React.ComponentProps<'header'> {
+	user?: UserProfile
+	size?: 'sm' | 'md' | 'lg'
+}
+
+const getSize = (size: HeaderProps['size']) => {
+	switch (size) {
+		case 'sm':
+			return {
+				py: 'py-2',
+				logo: 'w-auto h-8',
+				avatar: 36,
+			}
+		case 'md':
+			return {
+				py: 'py-2',
+				logo: 'w-auto h-10',
+				avatar: 40,
+			}
+		case 'lg':
+			return {
+				py: 'py-6',
+				logo: 'w-auto h-12',
+				avatar: 48,
+			}
+		default:
+			return {
+				py: 'py-4',
+				logo: 'w-auto h-12',
+				avatar: 44,
+			}
+	}
+}
+
+export function Header({ user, size = 'md', ...props }: HeaderProps) {
+	const supabaseClient = useSupabaseClient()
+	const router = useRouter()
+
+	const sizes = getSize(size)
+
+	const logout = async () => {
+		await supabaseClient.auth.signOut()
+		await router.push('/login')
+	}
+
 	return (
-		<header>
+		<header {...props}>
 			<nav>
-				<Container className="relative z-50 flex justify-between py-8">
-					<div className="relative z-10 flex items-center gap-16">
+				<Container
+					className={clsx('relative z-50 flex justify-between', sizes.py)}
+				>
+					<div className={'relative z-10 flex items-center gap-16'}>
 						<Link href="/" aria-label="Home">
-							<Logo className="h-14 w-auto" />
+							<Logo className={sizes.logo} />
 						</Link>
 						<div className="hidden lg:flex lg:gap-10">
 							<NavLinks />
@@ -95,15 +146,39 @@ export function Header() {
 														y: -32,
 														transition: { duration: 0.2 },
 													}}
-													className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-gray-50 px-6 pb-6 pt-32 shadow-2xl shadow-gray-900/20"
+													className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-gray-50 px-6 pb-6 pt-20 shadow-2xl shadow-gray-900/20"
 												>
 													<div className="space-y-4">
 														<MobileNavLink href="/#faqs">FAQs</MobileNavLink>
 													</div>
 													<div className="mt-8 flex flex-col gap-4">
-														<Button href="/login" variant="outline">
-															Log in
-														</Button>
+														{user ? (
+															<div className="w-full border-y border-slate-200">
+																<div className="w-full py-4 flex items-center space-x-2">
+																	<Image
+																		src={user.avatar_url}
+																		alt="user avatar"
+																		className="rounded-full"
+																		width={sizes.avatar}
+																		height={sizes.avatar}
+																	/>
+																	<div className="font-semibold">
+																		{user.name}
+																	</div>
+																</div>
+																<Button
+																	onClick={() => logout()}
+																	variant="outline"
+																	className="w-full"
+																>
+																	<div className="flex w-full">Log out</div>
+																</Button>
+															</div>
+														) : (
+															<Button href="/login" variant="outline">
+																Log in
+															</Button>
+														)}
 													</div>
 												</Popover.Panel>
 											</>
@@ -112,14 +187,22 @@ export function Header() {
 								</>
 							)}
 						</Popover>
-						<Button
-							href="/login"
-							variant="solid"
-							className="hidden lg:block"
-							color="slate"
-						>
-							Log in
-						</Button>
+
+						<div className="hidden lg:block">
+							{user ? (
+								<Image
+									src={user.avatar_url}
+									alt="user avatar"
+									className="rounded-full"
+									width={sizes.avatar}
+									height={sizes.avatar}
+								/>
+							) : (
+								<Button href="/login" variant="solid" color="slate">
+									Log in
+								</Button>
+							)}
+						</div>
 					</div>
 				</Container>
 			</nav>

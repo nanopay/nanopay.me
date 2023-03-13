@@ -25,7 +25,11 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 			<Head>
 				<title>Dashboard - NanoPay.me</title>
 			</Head>
-			<Header />
+			<Header
+				className="bg-white border-b border-slate-100"
+				user={user}
+				size="md"
+			/>
 			<main>
 				<Container>
 					<div className="grid grid-cols-1 gap-4 lg:col-span-2 py-8">
