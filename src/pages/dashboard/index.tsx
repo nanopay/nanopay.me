@@ -67,7 +67,7 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 							) : (
 								<div className="flex justify-center items-center py-16 rounded-lg bg-slate-200 shadow0">
 									<p className="text-gray-700 text-center">
-										You don't have any projects yet.{' '}
+										You don&apos;t have any projects yet.
 									</p>
 								</div>
 							)}
