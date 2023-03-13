@@ -16,6 +16,10 @@ import ImageInput from '@/components/ImageInput'
 import { ProjectCreate } from '@/types/projects'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { PROJECT_AVATAR_PLACEHOLDER } from '@/constants'
+import { Header } from '@/components/Header'
+import { UserProfile } from '@/types/users'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { GetServerSidePropsContext } from 'next'
 
 const schema = {
 	type: 'object',
@@ -32,7 +36,7 @@ const schema = {
 	required: ['name'],
 }
 
-export default function NewProject() {
+export default function NewProject({ user }: { user: UserProfile }) {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
@@ -95,10 +99,10 @@ export default function NewProject() {
 			<Head>
 				<title>Dashboard - NanoPay.me</title>
 			</Head>
+			<Header user={user} className="bg-white border-b border-slate-100" />
 			<main>
-				<Container className="sm:mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 rounded-lg">
-					<div className="w-full flex space-x-2 justify-between items-center py-3 mb-8 border-b border-slate-200">
-						<Logomark className="w-6" />
+				<Container className="sm:mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
+					<div className="w-full flex justify-center items-center py-3 mb-8 border-b border-slate-200">
 						<h3 className="text-slate-700">Create a new project</h3>
 						<div />
 					</div>
@@ -177,4 +181,21 @@ export default function NewProject() {
 			</main>
 		</>
 	)
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+	const supabase = createServerSupabaseClient(ctx)
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
+
+	return {
+		props: {
+			user: session?.user?.user_metadata?.internal_profile || {
+				name: 'error',
+				email: 'error',
+				avatar_url: 'error',
+			},
+		},
+	}
 }
