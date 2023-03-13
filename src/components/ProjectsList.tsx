@@ -9,7 +9,7 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
 			{projects?.map((project, index) => (
 				<div
 					key={index}
-					className="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500"
+					className="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-nano/60"
 				>
 					<div>
 						<span className="inline-flex rounded-full p-3 bg-sky-50 text-sky-700 ring-4 ring-white">
