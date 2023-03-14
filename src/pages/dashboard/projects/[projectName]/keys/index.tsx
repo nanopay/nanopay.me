@@ -1,15 +1,14 @@
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Header } from '@/components/Header'
-import MButton from '@/components/MButton'
 import { UserProfile } from '@/types/users'
 import {
 	ChevronRightIcon,
 	ExclamationTriangleIcon,
 	PlusIcon,
-	StarIcon,
 } from '@heroicons/react/24/solid'
-import clsx from 'clsx'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 
 const keyss = [
@@ -25,6 +24,8 @@ const keyss = [
 ]
 
 export default function ApiKeys({ user }: { user: UserProfile }) {
+	const projectName = 'my-workcation'
+
 	return (
 		<>
 			<Head>
@@ -36,7 +37,11 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 					<div className="border-b border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
 						<div className="flex items-center">
 							<h1 className="flex-1 text-lg font-medium">API Keys</h1>
-							<Button color="nano" className="items-center text-xs py-1">
+							<Button
+								color="nano"
+								href={`/dashboard/projects/${projectName}/keys/new`}
+								className="items-center text-xs py-1"
+							>
 								<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
 								Create Key
 							</Button>
@@ -98,4 +103,21 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 			</main>
 		</>
 	)
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+	const supabase = createServerSupabaseClient(ctx)
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
+
+	return {
+		props: {
+			user: session?.user?.user_metadata?.internal_profile || {
+				name: 'error',
+				email: 'error',
+				avatar_url: 'error',
+			},
+		},
+	}
 }
