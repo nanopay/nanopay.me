@@ -10,6 +10,7 @@ import {
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 const keyss = [
 	{
@@ -24,7 +25,13 @@ const keyss = [
 ]
 
 export default function ApiKeys({ user }: { user: UserProfile }) {
-	const projectName = 'my-workcation'
+	const router = useRouter()
+
+	const projectName = router.query.projectName
+
+	if (!projectName) {
+		return null
+	}
 
 	return (
 		<>

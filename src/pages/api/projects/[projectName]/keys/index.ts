@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '@/lib/supabase'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
+import crypto from 'crypto'
 import Ajv, { Schema } from 'ajv'
 
 const ajv = new Ajv()
@@ -12,8 +13,10 @@ const schema: Schema = {
 	type: 'object',
 	properties: {
 		project: { type: 'string' },
+		name: { type: 'string', minLength: 1, maxLength: 40 },
+		description: { type: 'string', maxLength: 512 },
 	},
-	required: ['project'],
+	required: ['project', 'name'],
 	additionalProperties: false,
 }
 
@@ -131,6 +134,7 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 	const write = await supabase.from('api_keys').insert({
 		project_id: projects[0].id,
 		checksum,
+		user_id: user.id,
 		scopes: ['*'],
 	})
 

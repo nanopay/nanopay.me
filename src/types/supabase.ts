@@ -16,6 +16,7 @@ export interface Database {
           id: number
           project_id: string
           scopes: string[]
+          user_id: string
         }
         Insert: {
           checksum: string
@@ -23,6 +24,7 @@ export interface Database {
           id?: number
           project_id: string
           scopes: string[]
+          user_id: string
         }
         Update: {
           checksum?: string
@@ -30,6 +32,7 @@ export interface Database {
           id?: number
           project_id?: string
           scopes?: string[]
+          user_id?: string
         }
       }
       hook_deliveries: {

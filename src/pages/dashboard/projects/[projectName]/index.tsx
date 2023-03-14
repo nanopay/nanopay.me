@@ -20,30 +20,8 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import { UserProfile } from '@/types/users'
 import { Receipt, Webhook } from '@mui/icons-material'
+import { useRouter } from 'next/router'
 
-const cards = [
-	{
-		name: 'Invoices',
-		href: '#',
-		icon: Receipt,
-		amount: 984,
-		action: 'View All',
-	},
-	{
-		name: 'API Keys',
-		href: `/dashboard/projects/dsd/keys`,
-		icon: KeyIcon,
-		amount: 43,
-		action: 'Manage Keys',
-	},
-	{
-		name: 'Webhooks',
-		href: '#',
-		icon: Webhook,
-		amount: '435',
-		action: 'View All',
-	},
-]
 const transactions = [
 	{
 		id: 1,
@@ -86,6 +64,38 @@ const statusStyles = {
 }
 
 export default function ProjectDashboard({ user }: { user: UserProfile }) {
+	const router = useRouter()
+
+	const projectName = router.query.projectName as string
+
+	if (!projectName) {
+		return null
+	}
+
+	const cards = [
+		{
+			name: 'Invoices',
+			href: '#',
+			icon: Receipt,
+			amount: 984,
+			action: 'View All',
+		},
+		{
+			name: 'API Keys',
+			href: `/dashboard/projects/${projectName}/keys`,
+			icon: KeyIcon,
+			amount: 43,
+			action: 'Manage Keys',
+		},
+		{
+			name: 'Webhooks',
+			href: '#',
+			icon: Webhook,
+			amount: '435',
+			action: 'View All',
+		},
+	]
+
 	return (
 		<>
 			<Head>
