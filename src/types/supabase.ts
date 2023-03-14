@@ -14,21 +14,21 @@ export interface Database {
           checksum: string
           created_at: string | null
           id: number
-          project_id: number
+          project_id: string
           scopes: string[]
         }
         Insert: {
           checksum: string
           created_at?: string | null
           id?: number
-          project_id: number
+          project_id: string
           scopes: string[]
         }
         Update: {
           checksum?: string
           created_at?: string | null
           id?: number
-          project_id?: number
+          project_id?: string
           scopes?: string[]
         }
       }
@@ -136,6 +136,7 @@ export interface Database {
       }
       projects: {
         Row: {
+          api_keys_count: number
           avatar_url: string | null
           contact_email: string | null
           description: string | null
@@ -146,6 +147,7 @@ export interface Database {
           website: string | null
         }
         Insert: {
+          api_keys_count?: number
           avatar_url?: string | null
           contact_email?: string | null
           description?: string | null
@@ -156,6 +158,7 @@ export interface Database {
           website?: string | null
         }
         Update: {
+          api_keys_count?: number
           avatar_url?: string | null
           contact_email?: string | null
           description?: string | null
