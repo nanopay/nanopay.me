@@ -1,4 +1,4 @@
-import { ApiKeyCreate, Project, ProjectCreate } from '@/types/projects'
+import { ApiKey, ApiKeyCreate, Project, ProjectCreate } from '@/types/projects'
 import { concatURL } from '@/utils/helpers'
 import { AxiosInstance, AxiosResponse } from 'axios'
 import s3 from '../s3'
@@ -36,16 +36,19 @@ export const projects = (axiosInstance: AxiosInstance) => {
 		},
 		apiKeys: {
 			create: async (
-				projectId: string,
+				projectName: string,
 				data: ApiKeyCreate,
 			): Promise<AxiosResponse<{ id: string }>> => {
-				return axiosInstance.post(`/projects/${projectId}/keys`, data)
+				return axiosInstance.post(`/projects/${projectName}/keys`, data)
 			},
 			get: async (
-				projectId: string,
+				projectName: string,
 				id: string,
 			): Promise<AxiosResponse<{ id: string; key: string }>> => {
-				return axiosInstance.get(`/projects/${projectId}/api-keys/${id}`)
+				return axiosInstance.get(`/projects/${projectName}/keys/${id}`)
+			},
+			getAll: async (projectName: string): Promise<AxiosResponse<ApiKey[]>> => {
+				return axiosInstance.get(`/projects/${projectName}/keys`)
 			},
 		},
 	}

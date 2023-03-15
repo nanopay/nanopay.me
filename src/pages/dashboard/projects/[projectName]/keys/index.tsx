@@ -1,36 +1,37 @@
-import { Button } from '@/components/Button'
-import { Container } from '@/components/Container'
-import { Header } from '@/components/Header'
-import { UserProfile } from '@/types/users'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { GetServerSidePropsContext } from 'next'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useQuery } from 'react-query'
 import {
 	ChevronRightIcon,
 	ExclamationTriangleIcon,
 	PlusIcon,
 } from '@heroicons/react/24/solid'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
 
-const keyss = [
-	{
-		id: 1,
-		name: 'my-workcation',
-		description:
-			'A vacation rental website for remote workers. Built with Next.js, Tailwind CSS, and Supabase.',
-		href: '#',
-		createdAt: '2022/03/02',
-	},
-	// More keyss...
-]
+import { Container } from '@/components/Container'
+import { Button } from '@/components/Button'
+import { Header } from '@/components/Header'
+import { UserProfile } from '@/types/users'
+import api from '@/services/api'
 
 export default function ApiKeys({ user }: { user: UserProfile }) {
 	const router = useRouter()
 
-	const projectName = router.query.projectName
+	const projectName = router.query.projectName as string
 
 	if (!projectName) {
 		return null
+	}
+
+	const { data: apiKeys, isLoading } = useQuery({
+		queryKey: ['apiKeys', projectName],
+		queryFn: () =>
+			api.projects.apiKeys.getAll(projectName).then(res => res.data),
+	})
+
+	if (isLoading) {
+		return 'Loading...'
 	}
 
 	return (
@@ -58,28 +59,23 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 						role="list"
 						className="divide-y divide-gray-200 border-b border-gray-200"
 					>
-						{keyss.map(keys => (
+						{apiKeys?.map(apiKey => (
 							<li
-								key={keys.id}
+								key={apiKey.id}
 								className="relative py-5 pl-4 pr-6 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
 							>
 								<div className="flex items-center justify-between space-x-4">
-									{/* Repo name and link */}
+									{/* Project name and description */}
 									<div className="min-w-0 space-y-3">
 										<div className="flex items-center space-x-3">
 											<h2 className="text-sm font-medium">
-												<a href={keys.href}>
-													<span
-														className="absolute inset-0"
-														aria-hidden="true"
-													/>
-													{keys.name}{' '}
-												</a>
+												<span className="absolute inset-0" aria-hidden="true" />
+												{apiKey.name}
 											</h2>
 										</div>
 										<p className="group relative flex items-center space-x-2.5">
 											<span className="text-xs font-medium text-gray-500 group-hover:text-gray-900">
-												{keys.description}
+												{apiKey.description}
 											</span>
 										</p>
 									</div>
@@ -89,11 +85,21 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 											aria-hidden="true"
 										/>
 									</div>
-									{/* Repo meta info */}
+									{/* Project meta info */}
 									<div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
 										<p className="flex space-x-2 text-xs text-gray-500">
 											<span aria-hidden="true">&middot;</span>
-											<span>Created at {keys.createdAt}</span>
+											<span>
+												Created at{' '}
+												{new Date(apiKey.created_at).toLocaleDateString(
+													undefined,
+													{
+														month: 'short',
+														day: 'numeric',
+														year: 'numeric',
+													},
+												)}
+											</span>
 										</p>
 										<p className="group relative flex items-center space-x-1">
 											<ExclamationTriangleIcon className="h-4 w-4 text-yellow-400" />
