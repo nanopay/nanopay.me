@@ -8,7 +8,6 @@ import { fullFormats } from 'ajv-formats/dist/formats'
 import { Container } from '@/components/Container'
 import MButton from '@/components/MButton'
 import Input from '@/components/Input'
-import { Logomark } from '@/components/Logo'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
@@ -20,8 +19,9 @@ import { Header } from '@/components/Header'
 import { UserProfile } from '@/types/users'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
+import { JSONSchemaType } from 'ajv'
 
-const schema = {
+const schema: JSONSchemaType<ProjectCreate> = {
 	type: 'object',
 	properties: {
 		name: {
@@ -30,10 +30,16 @@ const schema = {
 			maxLength: 40,
 			pattern: '^[a-zA-Z0-9-.]+$',
 		},
-		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
-		description: { type: 'string', maxLength: 512 },
+		avatar_url: {
+			type: 'string',
+			format: 'url',
+			minLength: 12,
+			maxLength: 256,
+		},
+		description: { type: 'string', minLength: 1, maxLength: 512 },
 	},
 	required: ['name'],
+	additionalProperties: false,
 }
 
 export default function NewProject({ user }: { user: UserProfile }) {
@@ -104,7 +110,6 @@ export default function NewProject({ user }: { user: UserProfile }) {
 				<Container className="sm:mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
 					<div className="w-full flex justify-center items-center py-3 mb-8 border-b border-slate-200">
 						<h3 className="text-slate-700">Create a new project</h3>
-						<div />
 					</div>
 
 					<ImageInput

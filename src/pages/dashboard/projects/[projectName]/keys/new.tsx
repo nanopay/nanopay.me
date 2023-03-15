@@ -20,7 +20,7 @@ import { JSONSchemaType } from 'ajv'
 import Image from 'next/image'
 import { ChevronRightIcon } from '@heroicons/react/24/solid'
 
-const schema: JSONSchemaType<ApiKeyCreate> = {
+const schema: JSONSchemaType<Omit<ApiKeyCreate, 'project'>> = {
 	type: 'object',
 	properties: {
 		name: {
@@ -73,7 +73,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 			}),
 		onSuccess: () => {
 			showSuccess('Project created')
-			router.push(`/dashboard/projects/${projectName}`)
+			router.push(`/dashboard/projects/${projectName}/keys`)
 		},
 		onError: (err: any) => {
 			showError('Error creating project', api.getErrorMessage(err))
