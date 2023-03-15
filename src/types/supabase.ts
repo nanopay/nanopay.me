@@ -13,7 +13,9 @@ export interface Database {
         Row: {
           checksum: string
           created_at: string | null
+          description: string | null
           id: number
+          name: string
           project_id: string
           scopes: string[]
           user_id: string
@@ -21,7 +23,9 @@ export interface Database {
         Insert: {
           checksum: string
           created_at?: string | null
+          description?: string | null
           id?: number
+          name: string
           project_id: string
           scopes: string[]
           user_id: string
@@ -29,7 +33,9 @@ export interface Database {
         Update: {
           checksum?: string
           created_at?: string | null
+          description?: string | null
           id?: number
+          name?: string
           project_id?: string
           scopes?: string[]
           user_id?: string

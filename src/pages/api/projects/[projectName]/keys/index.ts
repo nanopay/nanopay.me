@@ -94,24 +94,25 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 		})
 	}
 
-	const { data: projects, error: projectsError } = await supabase
+	const { data: project, error: projectError } = await supabase
 		.from('projects')
 		.select('id, user_id, api_keys_count')
 		.eq('name', projectName)
+		.single()
 
-	if (projectsError) {
-		return res.status(500).json({ message: projectsError.message })
+	if (projectError) {
+		return res.status(500).json({ message: projectError.message })
 	}
 
-	if (!projects || projects.length === 0) {
+	if (!project) {
 		return res.status(404).json({ message: 'Project not found' })
 	}
 
-	if (projects[0].user_id !== user.id) {
+	if (project.user_id !== user.id) {
 		return res.status(403).json({ message: 'Forbidden' })
 	}
 
-	if (projects[0].api_keys_count >= LIMIT_API_KEYS) {
+	if (project.api_keys_count >= LIMIT_API_KEYS) {
 		return res.status(403).json({
 			message: `Limit of ${LIMIT_API_KEYS} API keys reached`,
 		})
@@ -132,7 +133,9 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 	const apiKey = hexlify(randomBytes) + checksum
 
 	const write = await supabase.from('api_keys').insert({
-		project_id: projects[0].id,
+		project_id: project.id,
+		name: req.body.name,
+		description: req.body.description,
 		checksum,
 		user_id: user.id,
 		scopes: ['*'],

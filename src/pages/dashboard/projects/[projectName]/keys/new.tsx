@@ -72,7 +72,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 				project: projectName,
 			}),
 		onSuccess: () => {
-			showSuccess('Project created')
+			showSuccess('API Key created')
 			router.push(`/dashboard/projects/${projectName}/keys`)
 		},
 		onError: (err: any) => {
