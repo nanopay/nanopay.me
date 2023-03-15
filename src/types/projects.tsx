@@ -8,6 +8,7 @@ export interface Project extends ProjectCreate {
 	display_name: string
 	website: string | null
 	contact_email: string | null
+	api_keys_count: number
 }
 
 export interface ApiKeyCreate {

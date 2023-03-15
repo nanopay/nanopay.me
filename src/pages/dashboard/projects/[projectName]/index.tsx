@@ -21,6 +21,8 @@ import { GetServerSidePropsContext } from 'next'
 import { UserProfile } from '@/types/users'
 import { Receipt, Webhook } from '@mui/icons-material'
 import { useRouter } from 'next/router'
+import { useQuery } from 'react-query'
+import api from '@/services/api'
 
 const transactions = [
 	{
@@ -72,6 +74,15 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 		return null
 	}
 
+	const { data: project, isLoading } = useQuery({
+		queryKey: ['apiKeys', projectName],
+		queryFn: () => api.projects.get(projectName).then(res => res.data),
+	})
+
+	if (isLoading || !project) {
+		return 'Loading...'
+	}
+
 	const cards = [
 		{
 			name: 'Invoices',
@@ -84,7 +95,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 			name: 'API Keys',
 			href: `/dashboard/projects/${projectName}/keys`,
 			icon: KeyIcon,
-			amount: 43,
+			amount: project.api_keys_count,
 			action: 'Manage Keys',
 		},
 		{
@@ -95,6 +106,8 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 			action: 'View All',
 		},
 	]
+
+	project.website = project.website || 'https://nanopay.me'
 
 	return (
 		<>
@@ -123,18 +136,31 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 													alt=""
 												/>
 												<h1 className="ml-3 text-2xl font-bold leading-7 text-slate-900 sm:truncate sm:leading-9">
-													My Merchant Project
+													{project.name}
 												</h1>
 											</div>
 											<dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
 												<dt className="sr-only">Website</dt>
-												<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
-													<GlobeAltIcon
-														className="mr-1.5 h-5 w-5 flex-shrink-0 text-slate-400"
-														aria-hidden="true"
-													/>
-													www.example.com
-												</dd>
+												{project.website && (
+													<dd className="sm:mr-6">
+														<a
+															href={project.website}
+															className="truncate flex items-center text-sm font-medium text-slate-500 hover:text-nano"
+														>
+															<GlobeAltIcon
+																className="mr-1 h-5 w-5 flex-shrink-0"
+																aria-hidden="true"
+															/>
+															{project.website}
+														</a>
+													</dd>
+												)}
+												{project.description && (
+													<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
+														{project.description.slice(0, 60)}
+														{project.description.length > 60 && '...'}
+													</dd>
+												)}
 											</dl>
 										</div>
 									</div>
