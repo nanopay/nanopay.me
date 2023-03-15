@@ -58,7 +58,7 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 							{isLoading ? (
 								<div className="flex flex-col space-y-6 justify-center items-center py-16">
 									<Loading />
-									<div className="text-slate-600 animate-pulse">
+									<div className="text-slate-600 animate-pulse text-sm">
 										Loading your projects...
 									</div>
 								</div>

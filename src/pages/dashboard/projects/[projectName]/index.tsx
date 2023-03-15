@@ -23,6 +23,7 @@ import { Receipt, Webhook } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import api from '@/services/api'
+import Loading from '@/components/Loading'
 
 const transactions = [
 	{
@@ -80,7 +81,17 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 	})
 
 	if (isLoading || !project) {
-		return 'Loading...'
+		return (
+			<>
+				<Head>
+					<title>Dashboard - NanoPay.me</title>
+				</Head>
+				<Header className="bg-white border-b border-slate-100" user={user} />
+				<div className="py-8 flex items-center justify-center h-full -mt-16">
+					<Loading />
+				</div>
+			</>
+		)
 	}
 
 	const cards = [
@@ -106,8 +117,6 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 			action: 'View All',
 		},
 	]
-
-	project.website = project.website || 'https://nanopay.me'
 
 	return (
 		<>
