@@ -18,7 +18,17 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import { JSONSchemaType } from 'ajv'
 import Image from 'next/image'
-import { ChevronRightIcon } from '@heroicons/react/24/solid'
+import {
+	ChevronRightIcon,
+	DocumentDuplicateIcon,
+} from '@heroicons/react/24/solid'
+import { Roboto } from '@next/font/google'
+import clsx from 'clsx'
+
+const roboto = Roboto({
+	weight: '400',
+	subsets: ['latin'],
+})
 
 const schema: JSONSchemaType<Omit<ApiKeyCreate, 'project'>> = {
 	type: 'object',
@@ -65,15 +75,17 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		mutate: onSubmit,
 		isLoading: isSubmitting,
 		isSuccess,
+		data: createdApiKey,
 	} = useMutation({
 		mutationFn: async (data: ApiKeyCreate) =>
-			api.projects.apiKeys.create(projectName, {
-				...data,
-				project: projectName,
-			}),
+			api.projects.apiKeys
+				.create(projectName, {
+					...data,
+					project: projectName,
+				})
+				.then(res => res.data),
 		onSuccess: () => {
 			showSuccess('API Key created')
-			router.push(`/dashboard/projects/${projectName}/keys`)
 		},
 		onError: (err: any) => {
 			showError('Error creating project', api.getErrorMessage(err))
@@ -101,6 +113,15 @@ export default function NewProject({ user }: { user: UserProfile }) {
 				</Container>
 			</>
 		)
+	}
+
+	const copy = (text: string) => {
+		if (createdApiKey) {
+			navigator.clipboard.writeText(text)
+			showSuccess('Copied to clipboard', undefined, {
+				autoClose: 1000,
+			})
+		}
 	}
 
 	return (
@@ -131,15 +152,15 @@ export default function NewProject({ user }: { user: UserProfile }) {
 						<h3 className="text-slate-700">Create a new key</h3>
 					</div>
 
-					<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-6">
+					<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-4">
 						<div>
 							<div className="flex mb-2 items-center text-xs text-gray-600">
 								<InformationCircleIcon className="w-4 mr-1" />
 								<div>
 									Use a name like:{' '}
-									<span className="font-semibold">my-project</span>
+									<span className="font-semibold">my-token</span>
 									{' or '}
-									<span className="font-semibold">myproject2.com</span>
+									<span className="font-semibold">mywebsite.com</span>
 								</div>
 							</div>
 							<Controller
@@ -158,6 +179,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 										style={{
 											textTransform: 'capitalize',
 										}}
+										disabled={isSubmitting || isSuccess}
 									/>
 								)}
 							/>
@@ -174,22 +196,62 @@ export default function NewProject({ user }: { user: UserProfile }) {
 									errorMessage={errors.description?.message}
 									className="w-full"
 									multiline={true}
+									disabled={isSubmitting || isSuccess}
 								/>
 							)}
 						/>
 					</div>
-					<div />
-					<MButton
-						onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
-						loading={isSubmitting}
-						disabled={isSuccess || !watch('name')}
-					>
-						{isSubmitting
-							? 'Creating key...'
-							: isSuccess
-							? 'Key Created'
-							: 'Create Key'}
-					</MButton>
+					<div>
+						{isSuccess ? (
+							<div className="flex flex-col items-center space-y-6">
+								<div className="border-2 border-dashed border-slate-200 break-all rounded w-full p-8">
+									<div className="text-sm leading-3 text-gray-600">
+										Your API Key:{' '}
+										<div>
+											<span
+												className={clsx(
+													roboto.className,
+													'text-base text-gray-800',
+												)}
+											>
+												{createdApiKey?.apiKey}
+											</span>
+											<button
+												className=" text-gray-600 focus:text-nano"
+												onClick={() => copy(createdApiKey?.apiKey)}
+											>
+												<DocumentDuplicateIcon className="w-4 h-4 ml-2" />
+											</button>
+										</div>
+									</div>
+									<ul className="text-sm my-4 text-gray-700 list-disc">
+										<li>Safely save your key.</li>
+										<li>You will not be able to view this key again</li>
+										<li>This key has no expiration date.</li>
+										<li>Delete it or generate a new one at any time.</li>
+									</ul>
+								</div>
+								<MButton
+									onClick={() =>
+										router.push(`/dashboard/projects/${projectName}/keys`)
+									}
+								>
+									Done
+								</MButton>
+							</div>
+						) : (
+							<MButton
+								onClick={handleSubmit(
+									fields => onSubmit(fields),
+									onErrorSubmiting,
+								)}
+								loading={isSubmitting}
+								disabled={isSuccess || !watch('name')}
+							>
+								{isSubmitting ? 'Creating key...' : 'Create Key'}
+							</MButton>
+						)}
+					</div>
 				</Container>
 			</main>
 		</>

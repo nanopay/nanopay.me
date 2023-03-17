@@ -38,7 +38,7 @@ export const projects = (axiosInstance: AxiosInstance) => {
 			create: async (
 				projectName: string,
 				data: ApiKeyCreate,
-			): Promise<AxiosResponse<{ id: string }>> => {
+			): Promise<AxiosResponse<{ apiKey: string }>> => {
 				return axiosInstance.post(`/projects/${projectName}/keys`, data)
 			},
 			get: async (
