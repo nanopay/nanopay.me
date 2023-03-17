@@ -1,11 +1,9 @@
-import { getBytes, hexlify, isHexString } from '@/utils/helpers'
-import { blake2bHex } from 'blakejs'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '@/lib/supabase'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
-import crypto from 'crypto'
 import Ajv, { Schema } from 'ajv'
+import { createApiKey } from '@/utils/apiKey'
 
 const ajv = new Ajv()
 
@@ -20,9 +18,6 @@ const schema: Schema = {
 	additionalProperties: false,
 }
 
-const API_KEY_BYTES_LENGTH = 16
-const API_KEY_CHECKSUM_BYTES_LENGTH = 4
-const API_KEYS_SECRET = process.env.API_KEYS_SECRET
 const LIMIT_API_KEYS = 5
 
 const getKeys = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -84,16 +79,6 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(401).json({ message: 'Unauthorized' })
 	}
 
-	if (
-		!API_KEYS_SECRET ||
-		!isHexString(API_KEYS_SECRET) ||
-		API_KEYS_SECRET.length != 64
-	) {
-		return res.status(500).json({
-			message: 'API_KEYS_SECRET is not set or is not a valid hex string',
-		})
-	}
-
 	const { data: project, error: projectError } = await supabase
 		.from('projects')
 		.select('id, user_id, api_keys_count')
@@ -118,19 +103,7 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 		})
 	}
 
-	const randomBytes = crypto.getRandomValues(
-		new Uint8Array(API_KEY_BYTES_LENGTH),
-	)
-
-	const secretKeyBytes = getBytes(API_KEYS_SECRET)
-
-	const checksum = blake2bHex(
-		randomBytes,
-		secretKeyBytes,
-		API_KEY_CHECKSUM_BYTES_LENGTH,
-	)
-
-	const apiKey = hexlify(randomBytes) + checksum
+	const { apiKey, checksum } = createApiKey()
 
 	const write = await supabase.from('api_keys').insert({
 		project_id: project.id,
