@@ -15,8 +15,8 @@ export const isHexString = (value: string): boolean => {
 }
 
 /**
- *  Get a typed Uint8Array for %%value%%. If already a Uint8Array
- *  the original %%value%% is returned;
+ *  Get a typed Uint8Array for value. If already a Uint8Array
+ *  the original value is returned;
  */
 export const getBytes = (value: BytesLike): Uint8Array => {
 	if (value instanceof Uint8Array) {
@@ -24,8 +24,8 @@ export const getBytes = (value: BytesLike): Uint8Array => {
 	}
 
 	if (isHexString(value)) {
-		const result = new Uint8Array((value.length - 2) / 2)
-		let offset = 2
+		const result = new Uint8Array(value.length / 2)
+		let offset = 0
 		for (let i = 0; i < result.length; i++) {
 			result[i] = parseInt(value.substring(offset, offset + 2), 16)
 			offset += 2
