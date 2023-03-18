@@ -89,12 +89,12 @@ function AppDemo() {
 	return (
 		<AppScreen>
 			<AppScreen.Body>
-				<div className="px-4 py-2">
+				<div className="w-full px-4 py-2 h-full flex flex-col">
 					<div className="flex gap-2 justify-between items-center">
 						<Logo className="w-28 h-auto" />
 						<XCircleIcon className="w-6 h-6 text-slate-400" />
 					</div>
-					<div className="mt-2 border-t border-gray-200 pt-4">
+					<div className="mt-2 border-t border-gray-200 pt-4 flex flex-col flex-1">
 						<div className="flex justify-between items-center mb-1">
 							<div className="flex gap-2 items-center">
 								<QrCodeIcon className="w-5 h-5 text-slate-400" />
@@ -104,7 +104,7 @@ function AppDemo() {
 							</div>
 							<EllipsisHorizontalIcon className="w-5 h-5 text-slate-400" />
 						</div>
-						<div className="flex flex-col items-center gap-1 text-gray-800 py-2 sm:py-4">
+						<div className="flex flex-col items-center justify-center gap-1 text-gray-800 py-2 sm:py-4 flex-1">
 							<Image
 								src={logoXno}
 								alt="nano-xno"
@@ -117,29 +117,31 @@ function AppDemo() {
 							<div className="text-xs text-gray-500">~ US$10.23</div>
 						</div>
 
-						<div className="flex gap-2 justify-between items-center mt-4 py-2 border-t border-gray-100 text-xs text-gray-500">
-							<div>Send to:</div>
-							<div>nano_1payme...jigiof9o</div>
-							<DocumentDuplicateIcon className="w-4 h-4 text-nano" />
-						</div>
-
-						<div className="flex gap-2 justify-center items-center py-4 mb-4 border-y border-gray-100 text-xs text-gray-500">
-							<div className="w-4 h-4 rounded-full border border-t-4 border-b-2 border-nano"></div>
-							Waiting for Payment
-						</div>
-
-						<div className="mt-3 divide-y divide-gray-100 text-sm">
-							<div className="flex justify-between py-1">
-								<div className="text-gray-500">Expires in</div>
-								<div className="font-medium text-gray-900">14:45</div>
+						<div className="py-4">
+							<div className="flex gap-2 justify-between items-center mt-4 py-2 border-t border-gray-100 text-xs text-gray-500">
+								<div>Send to:</div>
+								<div>nano_1payme...jigiof9o</div>
+								<DocumentDuplicateIcon className="w-4 h-4 text-nano" />
 							</div>
-							<div className="flex justify-between py-1">
-								<div className="text-gray-500">Invoice</div>
-								<div className="font-medium text-gray-900">#4342</div>
+
+							<div className="flex gap-2 justify-center items-center py-4 mb-4 border-y border-gray-100 text-xs text-gray-500">
+								<div className="w-4 h-4 rounded-full border border-t-4 border-b-2 border-nano"></div>
+								Waiting for Payment
 							</div>
-						</div>
-						<div className="mt-4 rounded-lg bg-nano py-2 px-4 text-center text-sm font-semibold text-white">
-							Pay me
+
+							<div className="mt-3 divide-y divide-gray-100 text-sm">
+								<div className="flex justify-between py-1">
+									<div className="text-gray-500">Expires in</div>
+									<div className="font-medium text-gray-900">14:45</div>
+								</div>
+								<div className="flex justify-between py-1">
+									<div className="text-gray-500">Invoice</div>
+									<div className="font-medium text-gray-900">#4342</div>
+								</div>
+							</div>
+							<div className="mt-4 rounded-lg bg-nano py-2 px-4 text-center text-sm font-semibold text-white">
+								Pay me
+							</div>
 						</div>
 					</div>
 					<div className="flex mt-4 sm:mt-6 gap-2 text-3xs border-t border-gray-100 p-2 text-gray-500 justify-between items-center">
@@ -151,8 +153,8 @@ function AppDemo() {
 							Privacy Policy
 						</Link>
 						<div className="mx-2 text-gray-100">|</div>
-						<Link href="/privacy" className="flex-1">
-							hello@nanopay.me
+						<Link href="mailto:support@nanopay.me" className="flex-1">
+							support@nanopay.me
 						</Link>
 					</div>
 				</div>
