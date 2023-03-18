@@ -18,6 +18,7 @@ import {
 	truncateAddress,
 } from '@/utils/others'
 import Countdown from 'react-countdown'
+import { convert, Unit } from 'nanocurrency'
 
 interface CheckoutProps {
 	invoiceId: string | number
@@ -36,6 +37,12 @@ export default function Checkout({
 	paid,
 	expiresAt,
 }: CheckoutProps) {
+	amount
+	const payURI = `nano:${address}?amount=${convert(amount.toString(), {
+		from: Unit.Nano,
+		to: Unit.raw,
+	})}`
+
 	return (
 		<div className="w-full px-4 py-2 flex flex-col bg-white rounded-lg shadow">
 			<div className="flex gap-2 justify-between items-center">
@@ -68,11 +75,7 @@ export default function Checkout({
 				<div className="hidden sm:flex flex-1 justify-center items-center border-r border-slate-100">
 					<div className="relative flex w-full flex-none items-center justify-center">
 						<QrCodeBorder className="absolute inset-0 h-full w-full stroke-slate-300" />
-						<QRCode
-							value={`nano:${address}`}
-							fgColor="#1e293b"
-							className="w-7/12"
-						/>
+						<QRCode value={payURI} fgColor="#1e293b" className="w-7/12" />
 					</div>
 				</div>
 				<div className="flex flex-col flex-1 sm:px-8">
@@ -147,6 +150,7 @@ export default function Checkout({
 								endIcon={
 									<ArrowTopRightOnSquareIcon className="w-4 h-4 -mt-1" />
 								}
+								href={payURI}
 							>
 								Open in Wallet
 							</MButton>
