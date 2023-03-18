@@ -5,18 +5,7 @@ import { Container } from '@/components/Container'
 import { Logomark } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import xnoHeart from '@/images/xno-heart.svg'
-
-function QrCodeBorder(props: React.ComponentProps<'svg'>) {
-	return (
-		<svg viewBox="0 0 96 96" fill="none" aria-hidden="true" {...props}>
-			<path
-				d="M1 17V9a8 8 0 0 1 8-8h8M95 17V9a8 8 0 0 0-8-8h-8M1 79v8a8 8 0 0 0 8 8h8M95 79v8a8 8 0 0 1-8 8h-8"
-				strokeWidth="2"
-				strokeLinecap="round"
-			/>
-		</svg>
-	)
-}
+import QrCodeBorder from './QrCodeBorder'
 
 export function Footer() {
 	return (
