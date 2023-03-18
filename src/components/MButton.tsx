@@ -2,6 +2,7 @@ import {
 	Button as MaterialButton,
 	ButtonProps as MaterialButtonProps,
 } from '@mui/material'
+import clsx from 'clsx'
 
 interface ButtonProps extends MaterialButtonProps {
 	loading?: boolean
@@ -12,7 +13,6 @@ export default function MButton({ loading, ...props }: ButtonProps) {
 		<MaterialButton
 			variant="contained"
 			color="primary"
-			className="Button"
 			startIcon={
 				loading ? (
 					<svg
@@ -38,6 +38,7 @@ export default function MButton({ loading, ...props }: ButtonProps) {
 			style={{ minWidth: '180px' }}
 			{...props}
 			disabled={loading || props.disabled}
+			className={clsx('Button', props.className)}
 		/>
 	)
 }
