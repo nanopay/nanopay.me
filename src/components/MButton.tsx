@@ -35,7 +35,6 @@ export default function MButton({ loading, ...props }: ButtonProps) {
 					props.startIcon
 				)
 			}
-			style={{ minWidth: '180px' }}
 			{...props}
 			disabled={loading || props.disabled}
 			className={clsx('Button', props.className)}
