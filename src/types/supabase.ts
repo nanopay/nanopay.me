@@ -113,10 +113,12 @@ export interface Database {
           id: number
           pay_address: string | null
           price: number
+          project_id: string | null
           received_amount: number | null
           recipient_address: string
           refunded_amount: number | null
           status: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string | null
@@ -125,10 +127,12 @@ export interface Database {
           id?: number
           pay_address?: string | null
           price: number
+          project_id?: string | null
           received_amount?: number | null
           recipient_address: string
           refunded_amount?: number | null
           status?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string | null
@@ -137,10 +141,12 @@ export interface Database {
           id?: number
           pay_address?: string | null
           price?: number
+          project_id?: string | null
           received_amount?: number | null
           recipient_address?: string
           refunded_amount?: number | null
           status?: string | null
+          user_id?: string
         }
       }
       projects: {
@@ -185,6 +191,7 @@ export interface Database {
           from: string
           hash: string
           id: number
+          timestamp: number
           to: string
         }
         Insert: {
@@ -193,6 +200,7 @@ export interface Database {
           from: string
           hash: string
           id?: number
+          timestamp: number
           to: string
         }
         Update: {
@@ -201,6 +209,7 @@ export interface Database {
           from?: string
           hash?: string
           id?: number
+          timestamp?: number
           to?: string
         }
       }
