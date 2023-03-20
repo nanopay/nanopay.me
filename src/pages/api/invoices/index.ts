@@ -85,6 +85,7 @@ export default catchMiddleware(async function (
 			currency,
 			price,
 			recipient_address,
+			project_id: apiKeyData.project_id,
 			user_id: apiKeyData.user_id,
 		})
 		.select('id')
