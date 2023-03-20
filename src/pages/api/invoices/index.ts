@@ -58,7 +58,7 @@ export default catchMiddleware(async function (
 	const { data: apiKeyData, error: apiKeyError } = await supabase
 		.from('api_keys')
 		.select('*')
-		.eq('checksum', checksum + '1')
+		.eq('checksum', checksum)
 		.single()
 
 	if (apiKeyError) {
@@ -85,6 +85,7 @@ export default catchMiddleware(async function (
 			currency,
 			price,
 			recipient_address,
+			user_id: apiKeyData.user_id,
 		})
 		.select('id')
 		.single()
