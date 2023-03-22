@@ -84,7 +84,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		mutationFn: async (data: ProjectCreate) => api.projects.create(data),
 		onSuccess: () => {
 			showSuccess('Project created')
-			router.push('/dashboard')
+			router.push('/dashboard/projects/' + watch('name') + '#new')
 		},
 		onError: (err: any) => {
 			showError('Error creating project', api.getErrorMessage(err))

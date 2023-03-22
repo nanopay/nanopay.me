@@ -11,7 +11,6 @@ import {
 	GlobeAltIcon,
 	KeyIcon,
 	PlusIcon,
-	ScaleIcon,
 } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import clsx from 'clsx'
@@ -24,6 +23,8 @@ import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import api from '@/services/api'
 import Loading from '@/components/Loading'
+import Fireworks from '@/components/Fireworks'
+import { useEffect, useState } from 'react'
 
 const transactions = [
 	{
@@ -69,6 +70,8 @@ const statusStyles = {
 export default function ProjectDashboard({ user }: { user: UserProfile }) {
 	const router = useRouter()
 
+	const [isNew, setIsNew] = useState(false)
+
 	const projectName = router.query.projectName as string
 
 	if (!projectName) {
@@ -78,7 +81,19 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 	const { data: project, isLoading } = useQuery({
 		queryKey: ['apiKeys', projectName],
 		queryFn: () => api.projects.get(projectName).then(res => res.data),
+		onSuccess: data => {
+			// reward()
+		},
 	})
+
+	useEffect(() => {
+		// check if #new is in the url
+		if (router.asPath.includes('#new')) {
+			// set new and remove #new from url
+			setIsNew(true)
+			router.replace(router.asPath.replace('#new', ''))
+		}
+	}, [])
 
 	if (isLoading || !project) {
 		return (
@@ -426,6 +441,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 				</Container>
 			</main>
 			<Footer />
+			{isNew && <Fireworks count={3} />}
 		</>
 	)
 }
