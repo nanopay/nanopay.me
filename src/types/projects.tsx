@@ -5,6 +5,7 @@ export interface ProjectCreate {
 }
 
 export interface Project extends ProjectCreate {
+	id: string
 	display_name: string
 	website: string | null
 	contact_email: string | null

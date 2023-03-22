@@ -109,8 +109,10 @@ export interface Database {
         Row: {
           created_at: string | null
           currency: string | null
+          description: string | null
           expires_at: string
           id: number
+          metadata: Json | null
           pay_address: string | null
           price: number
           project_id: string | null
@@ -118,13 +120,16 @@ export interface Database {
           recipient_address: string
           refunded_amount: number | null
           status: string | null
+          title: string
           user_id: string
         }
         Insert: {
           created_at?: string | null
           currency?: string | null
+          description?: string | null
           expires_at: string
           id?: number
+          metadata?: Json | null
           pay_address?: string | null
           price: number
           project_id?: string | null
@@ -132,13 +137,16 @@ export interface Database {
           recipient_address: string
           refunded_amount?: number | null
           status?: string | null
+          title: string
           user_id: string
         }
         Update: {
           created_at?: string | null
           currency?: string | null
+          description?: string | null
           expires_at?: string
           id?: number
+          metadata?: Json | null
           pay_address?: string | null
           price?: number
           project_id?: string | null
@@ -146,6 +154,7 @@ export interface Database {
           recipient_address?: string
           refunded_amount?: number | null
           status?: string | null
+          title?: string
           user_id?: string
         }
       }
