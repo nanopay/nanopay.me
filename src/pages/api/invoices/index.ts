@@ -1,24 +1,35 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import * as nanocurrency from 'nanocurrency'
-import Ajv from 'ajv'
+import Ajv, { JSONSchemaType } from 'ajv'
 import { supabase } from '@/lib/supabase'
 import { API_KEY_CHECKSUM_BYTES_LENGTH, verifyApiKey } from '@/utils/apiKey'
 import { catchMiddleware } from '@/utils/catchMiddleware'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { Database } from '@/types/supabase'
+import { InvoiceCreate } from '@/types/invoice'
+import { INVOICE_EXPIRATION, INVOICE_MINIMUM_PRICE } from '@/constants'
 
-const INVOICE_EXPIRATION = 1000 * 60 * 15 // 15 minutes
 const HOT_WALLET_SEED = process.env.HOT_WALLET_SEED || ''
-const INVOICE_MINIMUM_PRICE = 0.0001
 
 const ajv = new Ajv()
 
-const schema = {
+const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
 	properties: {
-		currency: { type: 'string', enum: ['XNO'] },
+		title: {
+			type: 'string',
+			minLength: 2,
+			maxLength: 40,
+		},
+		description: { type: 'string', maxLength: 512, nullable: true },
 		price: { type: 'number', minimum: INVOICE_MINIMUM_PRICE },
-		recipient_address: { type: 'string' },
+		recipient_address: {
+			type: 'string',
+			pattern: '^nano_[13456789abcdefghijkmnopqrstuwxyz]{60}$',
+		},
+		metadata: { type: 'object', nullable: true },
 	},
-	required: ['price', 'recipient_address'],
+	required: ['title', 'price', 'recipient_address'],
 	additionalProperties: false,
 }
 
@@ -37,36 +48,70 @@ export default catchMiddleware(async function (
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
 
-	const authorization = req.headers.authorization || ''
+	const supabaseServerClient = createServerSupabaseClient<Database>({
+		req,
+		res,
+	})
 
-	if (!authorization) {
-		return res.status(400).json({ message: 'Missing authorization header' })
-	}
+	let projectId: string
+	let userId: string
 
-	const apiKey = authorization.split('Bearer ')[1]
+	if (supabaseServerClient) {
+		const {
+			data: { user },
+			error: userError,
+		} = await supabaseServerClient.auth.getUser()
 
-	if (!apiKey) {
-		return res.status(400).json({ message: 'Missing bearer apiKey' })
-	}
+		if (userError) {
+			return res.status(500).json({ message: userError.message })
+		}
 
-	if (!verifyApiKey(apiKey)) {
-		return res.status(401).json({ message: 'Invalid apiKey' })
-	}
+		if (!user) {
+			return res.status(401).json({ message: 'Unauthorized' })
+		}
 
-	const checksum = apiKey.slice(-API_KEY_CHECKSUM_BYTES_LENGTH * 2)
+		userId = user.id
 
-	const { data: apiKeyData, error: apiKeyError } = await supabase
-		.from('api_keys')
-		.select('*')
-		.eq('checksum', checksum)
-		.single()
+		projectId = req.query.project_id as string
 
-	if (apiKeyError) {
-		return res.status(500).json({ message: apiKeyError.message })
-	}
+		if (!projectId) {
+			return res.status(400).json({ message: 'Missing project id' })
+		}
+	} else {
+		const authorization = req.headers.authorization || ''
 
-	if (!apiKeyData) {
-		return res.status(401).json({ message: 'Unauthorized' })
+		if (!authorization) {
+			return res.status(400).json({ message: 'Missing authorization header' })
+		}
+
+		const apiKey = authorization.split('Bearer ')[1]
+
+		if (!apiKey) {
+			return res.status(400).json({ message: 'Missing bearer apiKey' })
+		}
+
+		if (!verifyApiKey(apiKey)) {
+			return res.status(401).json({ message: 'Invalid apiKey' })
+		}
+
+		const checksum = apiKey.slice(-API_KEY_CHECKSUM_BYTES_LENGTH * 2)
+
+		const { data: apiKeyData, error: apiKeyError } = await supabase
+			.from('api_keys')
+			.select('*')
+			.eq('checksum', checksum)
+			.single()
+
+		if (apiKeyError) {
+			return res.status(500).json({ message: apiKeyError.message })
+		}
+
+		if (!apiKeyData) {
+			return res.status(401).json({ message: 'Unauthorized' })
+		}
+
+		userId = apiKeyData.user_id
+		projectId = apiKeyData.project_id
 	}
 
 	if (nanocurrency.checkSeed(HOT_WALLET_SEED) === false) {
@@ -74,6 +119,9 @@ export default catchMiddleware(async function (
 	}
 
 	const expires_at = new Date(Date.now() + INVOICE_EXPIRATION).toISOString()
+	const title = req.body.title
+	const description = req.body.description
+	const metadata = req.body.metadata
 	const price = req.body.price
 	const currency = req.body.currency || 'XNO'
 	const recipient_address = req.body.recipient_address
@@ -81,12 +129,15 @@ export default catchMiddleware(async function (
 	const { data: invoice, error } = await supabase
 		.from('invoices')
 		.insert({
+			title,
+			description,
+			metadata,
 			expires_at,
 			currency,
 			price,
 			recipient_address,
-			project_id: apiKeyData.project_id,
-			user_id: apiKeyData.user_id,
+			project_id: projectId,
+			user_id: userId,
 		})
 		.select('id')
 		.single()
@@ -115,8 +166,9 @@ export default catchMiddleware(async function (
 	}
 
 	res.status(200).json({
-		invoice_id: invoice.id,
+		id: invoice.id,
 		expires_at,
+		title,
 		pay_currency: 'XNO',
 		pay_address,
 		pay_amount: price,

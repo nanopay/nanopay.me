@@ -47,9 +47,12 @@ export default async function getInvoice(
 	}
 
 	res.status(200).json({
-		invoice_id: invoice.id,
+		id: invoice.id,
 		created_at: invoice.created_at,
 		expires_at: invoice.expires_at,
+		title: invoice.title,
+		description: invoice.description,
+		metadata: invoice.metadata,
 		currency: 'XNO',
 		pay_address: invoice.pay_address,
 		price: invoice.price,
