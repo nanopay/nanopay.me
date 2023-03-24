@@ -26,8 +26,7 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 
 	const { data: apiKeys, isLoading } = useQuery({
 		queryKey: ['apiKeys', projectName],
-		queryFn: () =>
-			api.projects.apiKeys.getAll(projectName).then(res => res.data),
+		queryFn: () => api.projects.apiKeys.list(projectName).then(res => res.data),
 	})
 
 	if (isLoading) {

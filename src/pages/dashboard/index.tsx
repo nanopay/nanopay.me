@@ -17,7 +17,7 @@ import ProfileDashboard from '@/components/ProfileDashboard'
 export default function Dashboard({ user }: { user: UserProfile }) {
 	const { data: projects, isLoading } = useQuery(
 		'projects',
-		async () => await api.projects.getAll().then(res => res.data),
+		async () => await api.projects.list().then(res => res.data),
 	)
 
 	return (

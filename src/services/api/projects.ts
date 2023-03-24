@@ -13,7 +13,7 @@ export const projects = (axiosInstance: AxiosInstance) => {
 		get: async (projectName: string): Promise<AxiosResponse<Project>> => {
 			return axiosInstance.get(`/projects/${projectName}`)
 		},
-		getAll: async (): Promise<AxiosResponse<Project[]>> => {
+		list: async (): Promise<AxiosResponse<Project[]>> => {
 			return axiosInstance.get('/projects')
 		},
 		upload: {
@@ -47,7 +47,7 @@ export const projects = (axiosInstance: AxiosInstance) => {
 			): Promise<AxiosResponse<{ id: string; key: string }>> => {
 				return axiosInstance.get(`/projects/${projectName}/keys/${id}`)
 			},
-			getAll: async (projectName: string): Promise<AxiosResponse<ApiKey[]>> => {
+			list: async (projectName: string): Promise<AxiosResponse<ApiKey[]>> => {
 				return axiosInstance.get(`/projects/${projectName}/keys`)
 			},
 		},
