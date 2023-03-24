@@ -33,9 +33,13 @@ export default async function getInvoice(
 
 	const { data: invoice, error } = await supabaseServerClient
 		.from('invoices')
-		.select('*')
+		.select(
+			'*, projects(name, display_name, avatar_url, description, id, website, contact_email)',
+		)
 		.eq('id', invoiceId)
 		.single()
+
+	console.log('invoice', invoice)
 
 	if (error) {
 		console.log('error', error)
@@ -60,5 +64,6 @@ export default async function getInvoice(
 		received_amount: invoice.received_amount,
 		refunded_amount: invoice.refunded_amount,
 		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`,
+		project: invoice.projects,
 	})
 }

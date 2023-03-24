@@ -1,3 +1,5 @@
+import { Project } from './projects'
+
 export interface InvoiceCreate {
 	title: string
 	description?: string
@@ -15,5 +17,5 @@ export interface Invoice extends InvoiceCreate {
 	pay_address: string
 	received_amount: number
 	refunded_amount: number
-	project_id: string
+	project: Omit<Project, 'api_keys_count'>
 }
