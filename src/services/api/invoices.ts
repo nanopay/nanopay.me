@@ -12,8 +12,8 @@ export const invoices = (axiosInstance: AxiosInstance) => {
 		get: async (invoiceId: string): Promise<AxiosResponse<Invoice>> => {
 			return axiosInstance.get(`/invoices/${invoiceId}`)
 		},
-		getAll: async (projectId: string): Promise<AxiosResponse<Invoice[]>> => {
-			return axiosInstance.get('/invoices')
+		list: async (projectId: string): Promise<AxiosResponse<Invoice[]>> => {
+			return axiosInstance.get(`/invoices?project_id=${projectId}`)
 		},
 	}
 }

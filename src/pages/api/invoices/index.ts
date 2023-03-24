@@ -33,15 +33,7 @@ const schema: JSONSchemaType<InvoiceCreate> = {
 	additionalProperties: false,
 }
 
-export default catchMiddleware(async function (
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
-	if (req.method !== 'POST') {
-		res.setHeader('Allow', 'POST')
-		return res.status(405).json({ message: 'Method Not Allowed' })
-	}
-
+const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	const valid = ajv.validate(schema, req.body)
 
 	if (!valid) {
@@ -177,4 +169,98 @@ export default catchMiddleware(async function (
 		invoices_remaining: 99,
 		invoices_limit_reset_at: expires_at,
 	})
+}
+
+const listInvoices = async (req: NextApiRequest, res: NextApiResponse) => {
+	const supabaseServerClient = createServerSupabaseClient<Database>({
+		req,
+		res,
+	})
+
+	let projectId: string
+	let userId: string
+
+	if (supabaseServerClient) {
+		const {
+			data: { user },
+			error: userError,
+		} = await supabaseServerClient.auth.getUser()
+
+		if (userError) {
+			return res.status(500).json({ message: userError.message })
+		}
+
+		if (!user) {
+			return res.status(401).json({ message: 'Unauthorized' })
+		}
+
+		userId = user.id
+
+		projectId = req.query.project_id as string
+
+		if (!projectId) {
+			return res.status(400).json({ message: 'Missing project id' })
+		}
+	} else {
+		const authorization = req.headers.authorization || ''
+
+		if (!authorization) {
+			return res.status(400).json({ message: 'Missing authorization header' })
+		}
+
+		const apiKey = authorization.split('Bearer ')[1]
+
+		if (!apiKey) {
+			return res.status(400).json({ message: 'Missing bearer apiKey' })
+		}
+
+		if (!verifyApiKey(apiKey)) {
+			return res.status(401).json({ message: 'Invalid apiKey' })
+		}
+
+		const checksum = apiKey.slice(-API_KEY_CHECKSUM_BYTES_LENGTH * 2)
+
+		const { data: apiKeyData, error: apiKeyError } = await supabase
+			.from('api_keys')
+			.select('*')
+			.eq('checksum', checksum)
+			.single()
+
+		if (apiKeyError) {
+			return res.status(500).json({ message: apiKeyError.message })
+		}
+
+		if (!apiKeyData) {
+			return res.status(401).json({ message: 'Unauthorized' })
+		}
+
+		userId = apiKeyData.user_id
+		projectId = apiKeyData.project_id
+	}
+
+	const { data: invoices, error: invoicesError } = await supabase
+		.from('invoices')
+		.select('*')
+		.eq('project_id', projectId)
+		.eq('user_id', userId)
+
+	if (invoicesError) {
+		return res.status(500).json({ message: invoicesError.message })
+	}
+
+	res.status(200).json(invoices)
+}
+
+export default catchMiddleware(async function (
+	req: NextApiRequest,
+	res: NextApiResponse,
+) {
+	if (req.method === 'POST') {
+		createInvoice(req, res)
+	} else if (req.method === 'GET') {
+		listInvoices(req, res)
+	} else {
+		res.setHeader('Allow', 'POST, GET')
+		return res.status(405).json({ message: 'Method Not Allowed' })
+	}
 })
