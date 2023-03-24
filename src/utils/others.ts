@@ -20,3 +20,15 @@ export const toFiatCurrency = (amount: number, decimals = 2) => {
 export const copyToClipboard = (text: string) => {
 	navigator.clipboard.writeText(text)
 }
+
+export const formatDateTime = (date: string | number) => {
+	const d = new Date(date)
+	return new Date(date).toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		hour: 'numeric',
+		minute: 'numeric',
+		hour12: true,
+	})
+}

@@ -1,4 +1,5 @@
 import { Invoice as IInvoice } from '@/types/invoice'
+import { formatDateTime } from '@/utils/others'
 import {
 	ArrowTopRightOnSquareIcon,
 	CalendarIcon,
@@ -19,18 +20,6 @@ interface InvoiceProps {
 
 export default function Invoice({ className, invoice }: InvoiceProps) {
 	const invoiceUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`
-
-	const formatDateTime = (date: string | number) => {
-		const d = new Date(date)
-		return new Date(date).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: 'numeric',
-			hour12: true,
-		})
-	}
 
 	return (
 		<div
@@ -89,8 +78,8 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 						<h3 className="text-xs text-gray-500 mb-1 font-semibold">
 							Status:
 						</h3>
-						<p className="text-xl font-semibold text-sky-600">
-							{invoice.status || 'Pending'}
+						<p className="text-xl font-semibold text-sky-600 capitalize">
+							{invoice.status}
 						</p>
 					</div>
 				</div>
