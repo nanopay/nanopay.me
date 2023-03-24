@@ -1,5 +1,16 @@
 import { Project } from './projects'
 
+export type InvoiceStatus =
+	| 'pending'
+	| 'processing'
+	| 'paid'
+	| 'expired'
+	| 'refunded'
+	| 'canceled'
+	| 'error'
+	| 'paid_partial'
+	| 'refunded_partial'
+
 export interface InvoiceCreate {
 	title: string
 	description?: string
@@ -11,7 +22,7 @@ export interface InvoiceCreate {
 export interface Invoice extends InvoiceCreate {
 	id: string
 	currency: string
-	status: string
+	status: InvoiceStatus
 	expires_at: string
 	created_at: string
 	pay_address: string
