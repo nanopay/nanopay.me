@@ -25,46 +25,19 @@ import api from '@/services/api'
 import Loading from '@/components/Loading'
 import Fireworks from '@/components/Fireworks'
 import { useEffect, useState } from 'react'
+import { InvoiceStatus } from '@/types/invoice'
+import { formatDateTime } from '@/utils/others'
 
-const transactions = [
-	{
-		id: 1,
-		name: 'Payment from Molly Sanders',
-		href: '#',
-		amount: '$20,000',
-		currency: 'XNO',
-		status: 'success',
-		date: 'July 11, 2020',
-		datetime: '2020-07-11',
-	},
-	{
-		id: 2,
-		name: 'Payment from Doug Man',
-		href: '#',
-		amount: '$20,000',
-		currency: 'XNO',
-		status: 'processing',
-		date: 'July 11, 2020',
-		datetime: '2020-07-11',
-	},
-	{
-		id: 3,
-		name: 'Payment from Erica Frost',
-		href: '#',
-		amount: '$20,000',
-		currency: 'XNO',
-		status: 'failed',
-		date: 'July 11, 2020',
-		datetime: '2020-07-11',
-	},
-]
-
-type Status = 'success' | 'processing' | 'failed'
-
-const statusStyles = {
-	success: 'bg-green-100 text-green-800',
+const statusStyles: Record<InvoiceStatus, string> = {
+	paid: 'bg-green-100 text-green-800',
+	pending: 'bg-yellow-100 text-yellow-800',
 	processing: 'bg-yellow-100 text-yellow-800',
-	failed: 'bg-slate-100 text-slate-800',
+	paid_partial: 'bg-yellow-100 text-yellow-800',
+	expired: 'bg-slate-100 text-slate-800',
+	canceled: 'bg-slate-100 text-slate-800',
+	refunded: 'bg-slate-100 text-slate-800',
+	refunded_partial: 'bg-slate-100 text-slate-800',
+	error: 'bg-red-100 text-red-800',
 }
 
 export default function ProjectDashboard({ user }: { user: UserProfile }) {
@@ -81,15 +54,19 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 	const { data: project, isLoading } = useQuery({
 		queryKey: ['apiKeys', projectName],
 		queryFn: () => api.projects.get(projectName).then(res => res.data),
-		onSuccess: data => {
-			// reward()
-		},
+	})
+
+	const { data: invoices, isLoading: isLoadingInvoices } = useQuery({
+		queryKey: ['invoices', project?.id],
+		queryFn: () =>
+			api.invoices.list(project?.id as string).then(res => res.data),
+		enabled: !!project,
 	})
 
 	useEffect(() => {
 		// check if #new is in the url
 		if (router.asPath.includes('#new')) {
-			// set new and remove #new from url
+			// set state new and remove #new from url
 			setIsNew(true)
 			router.replace(router.asPath.replace('#new', ''))
 		}
@@ -272,10 +249,10 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 								role="list"
 								className="mt-2 divide-y divide-slate-200 overflow-hidden shadow sm:hidden"
 							>
-								{transactions.map(transaction => (
-									<li key={transaction.id}>
+								{invoices?.map(invoice => (
+									<li key={invoice.id}>
 										<a
-											href={transaction.href}
+											href={`/invoices/${invoice.id}`}
 											className="block bg-white px-4 py-4 hover:bg-slate-100"
 										>
 											<span className="flex items-center space-x-4">
@@ -285,15 +262,15 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 														aria-hidden="true"
 													/>
 													<span className="flex flex-col truncate text-sm text-slate-500">
-														<span className="truncate">{transaction.name}</span>
+														<span className="truncate">{invoice.title}</span>
 														<span>
 															<span className="font-medium text-slate-900">
-																{transaction.amount}
+																{invoice.price}
 															</span>{' '}
-															{transaction.currency}
+															{invoice.currency}
 														</span>
-														<time dateTime={transaction.datetime}>
-															{transaction.date}
+														<time dateTime={invoice.created_at}>
+															{formatDateTime(invoice.created_at)}
 														</time>
 													</span>
 												</span>
@@ -363,12 +340,12 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 												</tr>
 											</thead>
 											<tbody className="divide-y divide-slate-200 bg-white">
-												{transactions.map(transaction => (
-													<tr key={transaction.id} className="bg-white">
+												{invoices?.map(invoice => (
+													<tr key={invoice.id} className="bg-white">
 														<td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-slate-900">
 															<div className="flex">
 																<a
-																	href={transaction.href}
+																	href={`/invoices/${invoice.id}`}
 																	className="group inline-flex space-x-2 truncate text-sm"
 																>
 																	<BanknotesIcon
@@ -376,30 +353,30 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 																		aria-hidden="true"
 																	/>
 																	<p className="truncate text-slate-500 group-hover:text-slate-900">
-																		{transaction.name}
+																		{invoice.title}
 																	</p>
 																</a>
 															</div>
 														</td>
 														<td className="whitespace-nowrap px-6 py-4 text-right text-sm text-slate-500">
 															<span className="font-medium text-slate-900">
-																{transaction.amount}
+																{invoice.price}
 															</span>{' '}
-															{transaction.currency}
+															{invoice.currency}
 														</td>
 														<td className="hidden whitespace-nowrap px-6 py-4 text-sm text-slate-500 md:block">
 															<span
 																className={clsx(
-																	statusStyles[transaction.status as Status],
+																	statusStyles[invoice.status],
 																	'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize',
 																)}
 															>
-																{transaction.status}
+																{invoice.status}
 															</span>
 														</td>
 														<td className="whitespace-nowrap px-6 py-4 text-right text-sm text-slate-500">
-															<time dateTime={transaction.datetime}>
-																{transaction.date}
+															<time dateTime={invoice.created_at}>
+																{formatDateTime(invoice.created_at)}
 															</time>
 														</td>
 													</tr>
