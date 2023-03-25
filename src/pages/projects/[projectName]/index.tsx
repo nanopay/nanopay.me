@@ -27,6 +27,7 @@ import { useEffect, useState } from 'react'
 import { InvoiceStatus } from '@/types/invoice'
 import { formatDateTime } from '@/utils/others'
 import Layout from '@/components/Layout'
+import Link from 'next/link'
 
 const statusStyles: Record<InvoiceStatus, string> = {
 	paid: 'bg-green-100 text-green-800',
@@ -172,7 +173,11 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 									/>
 									Settings
 								</Button>
-								<Button color="nano" className="items-center">
+								<Button
+									color="nano"
+									className="items-center"
+									href={`/projects/${projectName}/invoices/new`}
+								>
 									<PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
 									Create Invoice
 								</Button>
@@ -335,8 +340,8 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 												<tr key={invoice.id} className="bg-white">
 													<td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-slate-900">
 														<div className="flex">
-															<a
-																href={`/invoices/${invoice.id}`}
+															<Link
+																href={`/projects/${projectName}/invoices/${invoice.id}`}
 																className="group inline-flex space-x-2 truncate text-sm"
 															>
 																<BanknotesIcon
@@ -346,7 +351,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 																<p className="truncate text-slate-500 group-hover:text-slate-900">
 																	{invoice.title}
 																</p>
-															</a>
+															</Link>
 														</div>
 													</td>
 													<td className="whitespace-nowrap px-6 py-4 text-right text-sm text-slate-500">

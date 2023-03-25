@@ -18,6 +18,7 @@ import { Header } from '@/components/Header'
 import { UserProfile } from '@/types/users'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
+import Layout from '@/components/Layout'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
@@ -105,27 +106,8 @@ export default function NewProject({ user }: { user: UserProfile }) {
 			<Head>
 				<title>Invoice - NanoPay.me</title>
 			</Head>
-			<Header user={user} className="bg-white border-b border-slate-100" />
-			<main>
-				<Container className="sm:mt-4 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 shadow sm:rounded-lg">
-					<div className="w-full flex justify-center items-center space-x-2 py-3 mb-2 border-b border-slate-200">
-						<div className="flex space-x-2 items-center">
-							{isLoading ? (
-								<div className="animate-pulse w-8 h-8 bg-slate-200 rounded-full" />
-							) : (
-								<>
-									<Image
-										src={project.avatar_url}
-										width={32}
-										height={32}
-										alt="project logo"
-									/>
-									<h3 className="text-slate-700">{project.name}</h3>
-								</>
-							)}
-						</div>
-					</div>
-
+			<Layout user={user}>
+				<Container className="sm:mt-4 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white py-8 px-16 pb-16 shadow sm:rounded-lg">
 					<div className="w-full max-w-xl flex flex-col space-y-6 px-4 sm:px-8 pb-4">
 						<div className="w-full flex items-center justify-between space-x-8">
 							<h1 className="text-lg font-semibold text-slate-600">
@@ -222,7 +204,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 						{isSubmitting ? 'Creating Invoice...' : 'Create Invoice'}
 					</MButton>
 				</Container>
-			</main>
+			</Layout>
 		</>
 	)
 }
