@@ -22,7 +22,7 @@ export default function Layout({ user, children }: SidebarProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 
 	return (
-		<div className="w-full">
+		<div className="w-full min-h-screen flex flex-col">
 			<Transition.Root show={sidebarOpen} as={Fragment}>
 				<Dialog
 					as="div"
@@ -86,8 +86,8 @@ export default function Layout({ user, children }: SidebarProps) {
 				<Sidebar />
 			</div>
 
-			<div className="lg:pl-72">
-				<div className="sticky top-0 z-40 lg:mx-auto">
+			<div className="lg:pl-72 flex flex-col flex-1">
+				<div className="w-full sticky top-0 z-40 lg:mx-auto">
 					<div className="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 lg:shadow-none">
 						<button
 							type="button"
@@ -180,10 +180,8 @@ export default function Layout({ user, children }: SidebarProps) {
 					</div>
 				</div>
 
-				<main className="py-8">
-					<div className="px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
-						{children}
-					</div>
+				<main className="flex flex-col w-full flex-1 py-8 px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
+					{children}
 				</main>
 			</div>
 		</div>
