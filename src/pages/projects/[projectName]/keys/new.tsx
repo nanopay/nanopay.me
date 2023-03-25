@@ -24,6 +24,7 @@ import {
 } from '@heroicons/react/24/solid'
 import { Roboto } from '@next/font/google'
 import clsx from 'clsx'
+import Layout from '@/components/Layout'
 
 const roboto = Roboto({
 	weight: '400',
@@ -45,16 +46,11 @@ const schema: JSONSchemaType<Omit<ApiKeyCreate, 'project'>> = {
 	additionalProperties: false,
 }
 
-export default function NewProject({ user }: { user: UserProfile }) {
+export default function NewApiKey({ user }: { user: UserProfile }) {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
 	const projectName = router.query.projectName as string
-
-	const { data: project, isLoading } = useQuery({
-		queryKey: ['project', projectName],
-		queryFn: () => api.projects.get(projectName).then(res => res.data),
-	})
 
 	const {
 		control,
@@ -96,23 +92,9 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		showError('Error creating project', 'Check the fields entered')
 	}
 
-	const sanitizeProjectName = (name: string) => {
+	const sanitizeName = (name: string) => {
 		// only allows lowercase letters, numbers, dashes, underscores and dots
 		return name.slice(0, 40).replace(/[^a-z0-9-_\.]/g, '')
-	}
-
-	if (!isLoading && !project) {
-		return (
-			<>
-				<Head>
-					<title>API Keys - NanoPay.me</title>
-				</Head>
-				<Header user={user} className="bg-white border-b border-slate-100" />
-				<Container>
-					<div>Something went wrong!</div>
-				</Container>
-			</>
-		)
 	}
 
 	const copy = (text: string) => {
@@ -127,29 +109,14 @@ export default function NewProject({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>API Keys - NanoPay.me</title>
+				<title>New API Key - NanoPay.me</title>
 			</Head>
-			<Header user={user} className="bg-white border-b border-slate-100" />
-			<main>
-				<Container className="sm:mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
+			<Layout user={user}>
+				<div className="w-full bg-white flex flex-col flex-1 items-center px-8 pb-8 rounded-lg max-w-2xl shadow">
 					<div className="w-full flex justify-center items-center space-x-2 py-3 mb-8 border-b border-slate-200">
-						<div className="flex space-x-2 items-center">
-							{isLoading ? (
-								<div className="animate-pulse w-8 h-8 bg-slate-200 rounded-full" />
-							) : (
-								<>
-									<Image
-										src={project.avatar_url}
-										width={32}
-										height={32}
-										alt="project logo"
-									/>
-									<h3 className="text-slate-700">{project.name}</h3>
-								</>
-							)}
-						</div>
-						<ChevronRightIcon className="w-4 h-4 text-slate-400" />
-						<h3 className="text-slate-700">Create a new key</h3>
+						<h3 className="text-slate-700 text-lg font-semibold">
+							Create a new key
+						</h3>
 					</div>
 
 					<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-4">
@@ -170,9 +137,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 									<Input
 										label="Name"
 										{...field}
-										onChange={e =>
-											field.onChange(sanitizeProjectName(e.target.value))
-										}
+										onChange={e => field.onChange(sanitizeName(e.target.value))}
 										errorMessage={errors.name?.message}
 										className="w-full"
 										autoCapitalize="words"
@@ -250,8 +215,8 @@ export default function NewProject({ user }: { user: UserProfile }) {
 							</MButton>
 						)}
 					</div>
-				</Container>
-			</main>
+				</div>
+			</Layout>
 		</>
 	)
 }

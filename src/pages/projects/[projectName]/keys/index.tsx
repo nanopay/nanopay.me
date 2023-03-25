@@ -9,11 +9,11 @@ import {
 	PlusIcon,
 } from '@heroicons/react/24/solid'
 
-import { Container } from '@/components/Container'
 import { Button } from '@/components/Button'
 import { Header } from '@/components/Header'
 import { UserProfile } from '@/types/users'
 import api from '@/services/api'
+import Layout from '@/components/Layout'
 
 export default function ApiKeys({ user }: { user: UserProfile }) {
 	const router = useRouter()
@@ -38,9 +38,8 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 			<Head>
 				<title>Api Keys - NanoPay.me</title>
 			</Head>
-			<Header className="bg-white border-b border-slate-100" user={user} />
-			<main>
-				<Container className="py-8 bg-white max-w-3xl sm:mt-16">
+			<Layout user={user}>
+				<>
 					<div className="border-b border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
 						<div className="flex items-center">
 							<h1 className="flex-1 text-lg font-medium">API Keys</h1>
@@ -111,8 +110,8 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 							</li>
 						))}
 					</ul>
-				</Container>
-			</main>
+				</>
+			</Layout>
 		</>
 	)
 }
