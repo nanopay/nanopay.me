@@ -84,7 +84,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		mutationFn: async (data: ProjectCreate) => api.projects.create(data),
 		onSuccess: () => {
 			showSuccess('Project created')
-			router.push('/dashboard/projects/' + watch('name') + '#new')
+			router.push('/projects/' + watch('name') + '#new')
 		},
 		onError: (err: any) => {
 			showError('Error creating project', api.getErrorMessage(err))
@@ -103,7 +103,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>Dashboard - NanoPay.me</title>
+				<title>New Project - NanoPay.me</title>
 			</Head>
 			<Header user={user} className="bg-white border-b border-slate-100" />
 			<main>

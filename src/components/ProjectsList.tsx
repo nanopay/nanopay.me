@@ -27,7 +27,7 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
 					<div className="mt-8">
 						<h3 className="text-lg font-medium">
 							<Link
-								href={`dashboard/projects/${project.name}`}
+								href={`/projects/${project.name}`}
 								className="focus:outline-none"
 							>
 								{/* Extend touch target to entire panel */}

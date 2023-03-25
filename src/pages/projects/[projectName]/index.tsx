@@ -96,7 +96,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 		},
 		{
 			name: 'API Keys',
-			href: `/dashboard/projects/${projectName}/keys`,
+			href: `/projects/${projectName}/keys`,
 			icon: KeyIcon,
 			amount: project.api_keys_count,
 			action: 'Manage Keys',
@@ -113,7 +113,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>Dashboard - NanoPay.me</title>
+				<title>{project.name} - NanoPay.me</title>
 			</Head>
 			<Layout user={user}>
 				<div className="bg-white shadow rounded-lg">

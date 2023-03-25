@@ -101,7 +101,7 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 		await router.push('/login')
 	}
 
-	const isDashboard = router.pathname.startsWith('/dashboard')
+	const isHome = router.pathname.startsWith('/home')
 
 	return (
 		<header {...props}>
@@ -239,11 +239,11 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 										</Transition>
 									</Menu>
 
-									{!isDashboard && (
+									{!isHome && (
 										<>
 											<div className="h-8 border-l border-slate-200" />
-											<Button href="/dashboard" variant="outline">
-												Dashboard
+											<Button href="/home" variant="outline">
+												Home
 											</Button>
 										</>
 									)}

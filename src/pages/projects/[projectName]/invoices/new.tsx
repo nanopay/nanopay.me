@@ -71,7 +71,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 			api.invoices.create(project?.id as string, data).then(res => res.data),
 		onSuccess: res => {
 			showSuccess('Invoice created')
-			router.push(`/dashboard/projects/${project?.name}/invoices/${res.id}`)
+			router.push(`/projects/${project?.name}/invoices/${res.id}`)
 		},
 		onError: (err: any) => {
 			showError('Error creating project', api.getErrorMessage(err))
@@ -90,7 +90,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		return (
 			<>
 				<Head>
-					<title>Dashboard - NanoPay.me</title>
+					<title>Invoice - NanoPay.me</title>
 				</Head>
 				<Header user={user} className="bg-white border-b border-slate-100" />
 				<Container>
@@ -103,7 +103,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>Dashboard - NanoPay.me</title>
+				<title>Invoice - NanoPay.me</title>
 			</Head>
 			<Header user={user} className="bg-white border-b border-slate-100" />
 			<main>

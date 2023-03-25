@@ -35,7 +35,7 @@ export default function Register({ user }: { user: User }) {
 	const redirectTo =
 		typeof router.query.redirectedFrom === 'string'
 			? router.query.redirectedFrom
-			: '/dashboard'
+			: '/home'
 
 	const {
 		control,
@@ -170,7 +170,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	if (session.user.user_metadata?.internal_profile)
 		return {
 			redirect: {
-				destination: '/dashboard',
+				destination: '/home',
 				permanent: false,
 			},
 		}

@@ -15,7 +15,7 @@ export default function LoginPage() {
 	const router = useRouter()
 
 	const redirectTo = `${getURL()}/auth/${
-		router.query.redirectedFrom || '/dashboard'
+		router.query.redirectedFrom || '/home'
 	}`
 
 	useEffect(() => {

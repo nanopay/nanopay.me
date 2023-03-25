@@ -36,7 +36,7 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>Dashboard - NanoPay.me</title>
+				<title>Api Keys - NanoPay.me</title>
 			</Head>
 			<Header className="bg-white border-b border-slate-100" user={user} />
 			<main>
@@ -46,7 +46,7 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 							<h1 className="flex-1 text-lg font-medium">API Keys</h1>
 							<Button
 								color="nano"
-								href={`/dashboard/projects/${projectName}/keys/new`}
+								href={`/projects/${projectName}/keys/new`}
 								className="items-center text-xs py-1"
 							>
 								<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />

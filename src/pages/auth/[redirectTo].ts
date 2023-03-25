@@ -21,7 +21,7 @@ export default function AuthRedirect() {
 				shallow: false,
 			})
 		} else {
-			router.push('/dashboard')
+			router.push('/home')
 		}
 	}, [redirectTo])
 

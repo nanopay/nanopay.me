@@ -46,7 +46,7 @@ export default function InvoicePage({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>Dashboard - NanoPay.me</title>
+				<title>Invoice - NanoPay.me</title>
 			</Head>
 			<Layout user={user}>
 				<div className="sm:mt-4 w-full max-w-5xl sm:mx-auto">

@@ -1,7 +1,7 @@
 import { UserProfile } from '@/types/users'
 import Image from 'next/image'
 
-export default function ProfileDashboard({ user }: { user: UserProfile }) {
+export default function ProfileBoard({ user }: { user: UserProfile }) {
 	return (
 		<div className="overflow-hidden rounded-lg bg-white shadow">
 			<h2 className="sr-only" id="profile-overview-title">

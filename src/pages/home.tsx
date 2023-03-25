@@ -10,10 +10,10 @@ import { useQuery } from 'react-query'
 import api from '@/services/api'
 import ProjectsList from '@/components/ProjectsList'
 import Loading from '@/components/Loading'
-import ProfileDashboard from '@/components/ProfileDashboard'
+import ProfileBoard from '@/components/ProfileBoard'
 import Layout from '@/components/Layout'
 
-export default function Dashboard({ user }: { user: UserProfile }) {
+export default function Home({ user }: { user: UserProfile }) {
 	const { data: projects, isLoading } = useQuery(
 		'projects',
 		async () => await api.projects.list().then(res => res.data),
@@ -22,13 +22,13 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>Dashboard - NanoPay.me</title>
+				<title>Home - NanoPay.me</title>
 			</Head>
 			<Layout user={user}>
 				<div className="grid grid-cols-1 gap-4 lg:col-span-2">
 					{/* Welcome panel */}
 					<section aria-labelledby="profile-overview-title">
-						<ProfileDashboard user={user} />
+						<ProfileBoard user={user} />
 					</section>
 
 					{/* Actions panel */}
@@ -41,7 +41,7 @@ export default function Dashboard({ user }: { user: UserProfile }) {
 							>
 								{projects?.length} Projects
 							</h2>
-							<Button color="nano" href="/dashboard/projects/new">
+							<Button color="nano" href="/projects/new">
 								<div className="flex space-x-2 items-center">
 									<PlusIcon className="h-5 w-5" />
 									<span>New Project</span>

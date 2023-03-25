@@ -105,7 +105,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		return (
 			<>
 				<Head>
-					<title>Dashboard - NanoPay.me</title>
+					<title>API Keys - NanoPay.me</title>
 				</Head>
 				<Header user={user} className="bg-white border-b border-slate-100" />
 				<Container>
@@ -127,7 +127,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>Dashboard - NanoPay.me</title>
+				<title>API Keys - NanoPay.me</title>
 			</Head>
 			<Header user={user} className="bg-white border-b border-slate-100" />
 			<main>
@@ -232,9 +232,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 									</ul>
 								</div>
 								<MButton
-									onClick={() =>
-										router.push(`/dashboard/projects/${projectName}/keys`)
-									}
+									onClick={() => router.push(`/projects/${projectName}/keys`)}
 								>
 									Done
 								</MButton>
