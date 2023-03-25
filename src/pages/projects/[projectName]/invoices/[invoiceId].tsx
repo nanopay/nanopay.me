@@ -1,4 +1,3 @@
-import { Header } from '@/components/Header'
 import Invoice from '@/components/Invoice'
 import Loading from '@/components/Loading'
 import Layout from '@/components/Layout'

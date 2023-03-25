@@ -37,7 +37,6 @@ export default function Checkout({
 	paid,
 	expiresAt,
 }: CheckoutProps) {
-	amount
 	const payURI = `nano:${address}?amount=${convert(amount.toString(), {
 		from: Unit.Nano,
 		to: Unit.raw,

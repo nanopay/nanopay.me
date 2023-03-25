@@ -1,5 +1,5 @@
 // Remove decimals without rounding
-export const toFixedSafe = (num: number | string, fixed: number) => {
+export const toFixedSafe = (num: number | string, fixed: number): string => {
 	const re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
 	const match = num.toString().match(re)
 	if (!match) throw new Error('toFixedSafe: invalid number')
@@ -13,7 +13,7 @@ export const truncateAddress = (address: string) => {
 export const toFiatCurrency = (amount: number, decimals = 2) => {
 	const fixed = toFixedSafe(amount, decimals)
 	const unity = fixed.split('.')[0]
-	const decimal = fixed.split('.')[1]
+	const decimal = fixed.split('.')[1] || ''
 	return `${unity},${decimal.padEnd(2, '0')}`
 }
 
