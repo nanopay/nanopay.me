@@ -202,7 +202,7 @@ export default function Sidebar() {
 								</>
 							)}
 						</li>
-						<li>
+						<li className="relative">
 							<ul role="list" className="-mx-2 space-y-1">
 								{projectNavigation.map(item => (
 									<li key={item.name}>
@@ -229,6 +229,9 @@ export default function Sidebar() {
 									</li>
 								))}
 							</ul>
+							{(projectsLoading || !projects) && (
+								<div className="-mx-2 absolute inset-0 flex items-center justify-center bg-white opacity-50" />
+							)}
 						</li>
 						<li className="mt-auto">
 							<ul role="list" className="-mx-2 space-y-1">
