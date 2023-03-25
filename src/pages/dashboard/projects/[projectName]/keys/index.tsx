@@ -20,14 +20,14 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 
 	const projectName = router.query.projectName as string
 
-	if (!projectName) {
-		return null
-	}
-
 	const { data: apiKeys, isLoading } = useQuery({
 		queryKey: ['apiKeys', projectName],
 		queryFn: () => api.projects.apiKeys.list(projectName).then(res => res.data),
 	})
+
+	if (!projectName) {
+		return null
+	}
 
 	if (isLoading) {
 		return 'Loading...'

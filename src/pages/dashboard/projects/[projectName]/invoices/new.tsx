@@ -45,10 +45,6 @@ export default function NewProject({ user }: { user: UserProfile }) {
 
 	const projectName = router.query.projectName as string
 
-	if (!projectName) {
-		return null
-	}
-
 	const { data: project, isLoading } = useQuery({
 		queryKey: ['project', projectName],
 		queryFn: () => api.projects.get(projectName).then(res => res.data),
@@ -84,6 +80,10 @@ export default function NewProject({ user }: { user: UserProfile }) {
 
 	const onErrorSubmiting = () => {
 		showError('Error creating project', 'Check the fields entered')
+	}
+
+	if (!projectName) {
+		return null
 	}
 
 	if (!isLoading && !project) {

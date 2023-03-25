@@ -47,10 +47,6 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 
 	const projectName = router.query.projectName as string
 
-	if (!projectName) {
-		return null
-	}
-
 	const { data: project, isLoading } = useQuery({
 		queryKey: ['apiKeys', projectName],
 		queryFn: () => api.projects.get(projectName).then(res => res.data),
@@ -71,6 +67,10 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 			router.replace(router.asPath.replace('#new', ''))
 		}
 	}, [])
+
+	if (!projectName) {
+		return null
+	}
 
 	if (isLoading || !project) {
 		return (

@@ -86,6 +86,7 @@ export default function Sidebar() {
 										project =>
 											project.id !== currentProject?.id && (
 												<ListItemButton
+													key={project.id}
 													onClick={() => setCurrentProject(project)}
 												>
 													<ListItemIcon>

@@ -1,6 +1,6 @@
 import Checkout from '@/components/Checkout'
 
-export default function () {
+export default function Invoice() {
 	return (
 		<div className="w-full max-w-3xl mx-auto h-screen flex sm:items-center justify-center">
 			<Checkout
