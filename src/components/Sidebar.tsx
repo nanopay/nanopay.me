@@ -22,6 +22,8 @@ import {
 } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import MButton from './MButton'
+import Loading from './Loading'
 
 export default function Sidebar() {
 	const router = useRouter()
@@ -29,8 +31,9 @@ export default function Sidebar() {
 	const [currentProject, setCurrentProject] = useState<null | Project>(null)
 	const [openProjects, setOpenProjects] = useState<boolean>(false)
 
-	const { data: projects } = useQuery('projects', () =>
-		api.projects.list().then(res => res.data),
+	const { data: projects, isLoading: projectsLoading } = useQuery(
+		'projects',
+		() => api.projects.list().then(res => res.data),
 	)
 
 	const defaultNavigation = [
@@ -104,76 +107,100 @@ export default function Sidebar() {
 				<nav className="flex flex-1 flex-col">
 					<ul role="list" className="flex flex-1 flex-col gap-y-7">
 						<li className="border-b border-gray-100 pb-4">
-							<div className="text-xs font-semibold leading-6 text-gray-400">
-								Current Project
-							</div>
-							<ListItemButton
-								onClick={() => setOpenProjects(!openProjects)}
-								className="bg-slate-100 rounded-lg"
-							>
-								{currentProject ? (
-									<>
-										<ListItemIcon>
-											{currentProject.avatar_url ? (
-												<Image
-													src={currentProject.avatar_url}
-													alt={currentProject.name}
-													width={24}
-													height={24}
-													className="rounded-full"
-												/>
-											) : (
-												<span className="text-nano border-nano flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white">
-													{currentProject.name[0]}
-												</span>
-											)}
-										</ListItemIcon>
-										<ListItemText primary={currentProject.name} />
-									</>
-								) : (
-									<>
-										<ListItemText primary={'Select a project'} />
-									</>
-								)}
-								{openProjects ? <ExpandLess /> : <ExpandMore />}
-							</ListItemButton>
-							<Collapse in={openProjects} timeout="auto" unmountOnExit>
-								<List component="div" disablePadding>
-									{projects?.map(
-										project =>
-											project.id !== currentProject?.id && (
-												<ListItemButton
-													key={project.id}
-													onClick={() => selectProject(project.name)}
-												>
-													<ListItemIcon>
-														{project.avatar_url ? (
-															<Image
-																src={project.avatar_url}
-																alt={project.name}
-																width={24}
-																height={24}
-																className="rounded-full"
-															/>
-														) : (
-															<span
-																className={clsx(
-																	project.id === project.id
-																		? 'text-nano border-nano'
-																		: 'text-gray-400 border-gray-200 group-hover:border-nano group-hover:text-nano',
-																	'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white',
+							{projectsLoading || !projects ? (
+								<div>
+									<div className="text-xs font-semibold leading-6 text-gray-400">
+										Current Project
+									</div>
+									<Loading className="h-12 mx-auto mt-2" />
+								</div>
+							) : projects.length > 0 ? (
+								<>
+									<div className="text-xs font-semibold leading-6 text-gray-400">
+										Current Project
+									</div>
+									<ListItemButton
+										onClick={() => setOpenProjects(!openProjects)}
+										className="bg-slate-100 rounded-lg"
+									>
+										{currentProject ? (
+											<>
+												<ListItemIcon>
+													{currentProject.avatar_url ? (
+														<Image
+															src={currentProject.avatar_url}
+															alt={currentProject.name}
+															width={24}
+															height={24}
+															className="rounded-full"
+														/>
+													) : (
+														<span className="text-nano border-nano flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white">
+															{currentProject.name[0]}
+														</span>
+													)}
+												</ListItemIcon>
+												<ListItemText primary={currentProject.name} />
+											</>
+										) : (
+											<>
+												<ListItemText primary={'Select a project'} />
+											</>
+										)}
+										{openProjects ? <ExpandLess /> : <ExpandMore />}
+									</ListItemButton>
+									<Collapse in={openProjects} timeout="auto" unmountOnExit>
+										<List component="div" disablePadding>
+											{projects?.map(
+												project =>
+													project.id !== currentProject?.id && (
+														<ListItemButton
+															key={project.id}
+															onClick={() => selectProject(project.name)}
+														>
+															<ListItemIcon>
+																{project.avatar_url ? (
+																	<Image
+																		src={project.avatar_url}
+																		alt={project.name}
+																		width={24}
+																		height={24}
+																		className="rounded-full"
+																	/>
+																) : (
+																	<span
+																		className={clsx(
+																			project.id === project.id
+																				? 'text-nano border-nano'
+																				: 'text-gray-400 border-gray-200 group-hover:border-nano group-hover:text-nano',
+																			'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white',
+																		)}
+																	>
+																		{project.name[0]}
+																	</span>
 																)}
-															>
-																{project.name[0]}
-															</span>
-														)}
-													</ListItemIcon>
-													<ListItemText primary={project.name} />
-												</ListItemButton>
-											),
-									)}
-								</List>
-							</Collapse>
+															</ListItemIcon>
+															<ListItemText primary={project.name} />
+														</ListItemButton>
+													),
+											)}
+										</List>
+									</Collapse>
+								</>
+							) : (
+								<>
+									<div className="text-xs font-semibold leading-6 text-gray-400 mb-2">
+										No projects found
+									</div>
+									<MButton
+										variant="outlined"
+										color="primary"
+										onClick={() => router.push('/projects/create')}
+									>
+										Create a project
+									</MButton>
+								</>
+							)}
 						</li>
 						<li>
 							<ul role="list" className="-mx-2 space-y-1">
