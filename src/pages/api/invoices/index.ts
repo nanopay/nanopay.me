@@ -181,6 +181,8 @@ const listInvoices = async (req: NextApiRequest, res: NextApiResponse) => {
 	let userId: string
 
 	if (supabaseServerClient) {
+		// If the request is authenticated with a Supabase session cookie, then we can
+		// use `supabase.auth.getUser()` to retrieve the user's details.
 		const {
 			data: { user },
 			error: userError,
@@ -202,6 +204,8 @@ const listInvoices = async (req: NextApiRequest, res: NextApiResponse) => {
 			return res.status(400).json({ message: 'Missing project id' })
 		}
 	} else {
+		// If the request is not authenticated with a Supabase session cookie, then
+		// we'll need to use an API key to authenticate the request.
 		const authorization = req.headers.authorization || ''
 
 		if (!authorization) {
