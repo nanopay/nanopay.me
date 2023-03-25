@@ -1,5 +1,4 @@
-import { Database } from '@/types/supabase'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { supabase } from '@/lib/supabase'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function getInvoice(
@@ -13,25 +12,7 @@ export default async function getInvoice(
 
 	const { invoiceId } = req.query
 
-	const supabaseServerClient = createServerSupabaseClient<Database>({
-		req,
-		res,
-	})
-
-	const {
-		data: { user },
-		error: userError,
-	} = await supabaseServerClient.auth.getUser()
-
-	if (userError) {
-		return res.status(500).json({ message: userError.message })
-	}
-
-	if (!user) {
-		return res.status(401).json({ message: 'Unauthorized' })
-	}
-
-	const { data: invoice, error } = await supabaseServerClient
+	const { data: invoice, error } = await supabase
 		.from('invoices')
 		.select(
 			'*, projects(name, display_name, avatar_url, description, id, website, contact_email)',
