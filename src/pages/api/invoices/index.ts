@@ -8,6 +8,7 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_EXPIRATION, INVOICE_MINIMUM_PRICE } from '@/constants'
+import paymentWorker from '@/services/paymentWorker'
 
 const HOT_WALLET_SEED = process.env.HOT_WALLET_SEED || ''
 
@@ -156,6 +157,19 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (updateError) {
 		return res.status(500).json({ message: updateError.message })
 	}
+	try {
+		// Ask Payment Worker to watch for payments
+		await paymentWorker.queue.add({
+			invoiceId: invoice.id.toString(),
+			to: pay_address,
+			expiresAt: expires_at,
+		})
+	} catch (error: any) {
+		console.log('error', error.response)
+		throw new Error(
+			'Failed to queue payment worker: ' + paymentWorker.getErrorMessage(error),
+		)
+	}
 
 	res.status(200).json({
 		id: invoice.id,
@@ -260,9 +274,9 @@ export default catchMiddleware(async function (
 	res: NextApiResponse,
 ) {
 	if (req.method === 'POST') {
-		createInvoice(req, res)
+		await createInvoice(req, res)
 	} else if (req.method === 'GET') {
-		listInvoices(req, res)
+		await listInvoices(req, res)
 	} else {
 		res.setHeader('Allow', 'POST, GET')
 		return res.status(405).json({ message: 'Method Not Allowed' })
