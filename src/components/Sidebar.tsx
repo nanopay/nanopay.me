@@ -15,12 +15,13 @@ import {
 } from '@mui/material'
 import {
 	BanknotesIcon,
-	ChartPieIcon,
 	Cog6ToothIcon,
 	HomeIcon,
 	KeyIcon,
+	UserIcon,
 } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export default function Sidebar() {
 	const router = useRouter()
@@ -32,30 +33,51 @@ export default function Sidebar() {
 		api.projects.list().then(res => res.data),
 	)
 
+	const defaultNavigation = [
+		{
+			name: 'Home',
+			href: '/',
+			icon: HomeIcon,
+			current: router.pathname === '/home',
+		},
+		{
+			name: 'Profile',
+			href: '/profile',
+			icon: UserIcon,
+			current: router.pathname === '/profile',
+		},
+	]
+
 	const projectNavigation = [
 		{
 			name: 'Dashboard',
-			href: '#',
+			href: `/projects/${currentProject?.name}`,
 			icon: HomeIcon,
 			current: router.pathname === '/projects/[projectName]',
 		},
 		{
 			name: 'Invoices',
-			href: '#',
+			href: `/projects/${currentProject?.name}/invoices`,
 			icon: BanknotesIcon,
 			current: router.pathname === '/projects/[projectName]/invoices',
 		},
 		{
 			name: 'Webhooks',
-			href: '#',
+			href: `/projects/${currentProject?.name}/webhooks`,
 			icon: Webhook,
 			current: router.pathname === '/projects/[projectName]/webhooks',
 		},
 		{
 			name: 'Api Keys',
-			href: '#',
+			href: `/projects/${currentProject?.name}/keys`,
 			icon: KeyIcon,
 			current: router.pathname === '/projects/[projectName]/keys',
+		},
+		{
+			name: 'Settings',
+			href: `/projects/${currentProject?.name}/settings`,
+			icon: Cog6ToothIcon,
+			current: router.pathname === '/projects/[projectName]/settings',
 		},
 	]
 
@@ -151,7 +173,7 @@ export default function Sidebar() {
 							<ul role="list" className="-mx-2 space-y-1">
 								{projectNavigation.map(item => (
 									<li key={item.name}>
-										<a
+										<Link
 											href={item.href}
 											className={clsx(
 												item.current
@@ -170,32 +192,38 @@ export default function Sidebar() {
 												aria-hidden="true"
 											/>
 											{item.name}
-										</a>
+										</Link>
 									</li>
 								))}
 							</ul>
 						</li>
 						<li className="mt-auto">
-							<a
-								href="#"
-								className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-nano"
-							>
-								<HomeIcon
-									className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-nano"
-									aria-hidden="true"
-								/>
-								Home
-							</a>
-							<a
-								href="#"
-								className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-nano"
-							>
-								<Cog6ToothIcon
-									className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-nano"
-									aria-hidden="true"
-								/>
-								Settings
-							</a>
+							<ul role="list" className="-mx-2 space-y-1">
+								{defaultNavigation.map(item => (
+									<li key={item.name}>
+										<Link
+											href={item.href}
+											className={clsx(
+												item.current
+													? 'bg-slate-50 border border-slatel-100 text-nano'
+													: 'text-gray-700 hover:text-nano hover:bg-gray-50',
+												'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+											)}
+										>
+											<item.icon
+												className={clsx(
+													item.current
+														? 'text-nano'
+														: 'text-gray-400 group-hover:text-nano',
+													'h-6 w-6 shrink-0',
+												)}
+												aria-hidden="true"
+											/>
+											{item.name}
+										</Link>
+									</li>
+								))}
+							</ul>
 						</li>
 					</ul>
 				</nav>
