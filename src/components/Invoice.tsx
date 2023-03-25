@@ -98,14 +98,15 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 							<QrCodeBorder className="absolute inset-0 h-full w-full stroke-slate-300" />
 							<QRCode value={invoiceUrl} fgColor="#1e293b" className="w-4/5" />
 						</div>
-						<a
-							href={invoiceUrl}
-							target="_blank"
-							className="flex items-center text-xs space-x-1 text-sky-600 mt-4"
-						>
-							<span>{invoiceUrl}</span>
-							<ArrowTopRightOnSquareIcon className="w-3 h-3" />
-						</a>
+						{/* Use z-index to make sure the link is clickable. Otherwise QRCode svg can conver it */}
+						<div className="z-10">
+							<a href={invoiceUrl} target="_blank">
+								<div className="flex items-center text-xs space-x-1 text-sky-600 mt-4">
+									<span>{invoiceUrl}</span>
+									<ArrowTopRightOnSquareIcon className="w-3 h-3" />
+								</div>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
