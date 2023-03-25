@@ -20,6 +20,7 @@ import {
 	HomeIcon,
 	KeyIcon,
 } from '@heroicons/react/24/outline'
+import { useRouter } from 'next/router'
 
 const projectNavigation = [
 	{ name: 'Dashboard', href: '#', icon: HomeIcon, current: false },
@@ -30,6 +31,8 @@ const projectNavigation = [
 ]
 
 export default function Sidebar() {
+	const router = useRouter()
+
 	const [currentProject, setCurrentProject] = useState<null | Project>(null)
 	const [openProjects, setOpenProjects] = useState<boolean>(false)
 
@@ -38,10 +41,19 @@ export default function Sidebar() {
 	)
 
 	useEffect(() => {
-		if (projects) {
-			setCurrentProject(projects[0])
+		if (router.query.projectName) {
+			setCurrentProject(
+				projects?.find(project => project.name === router.query.projectName) ||
+					null,
+			)
 		}
 	}, [projects])
+
+	useEffect(() => {
+		if (currentProject) {
+			router.push(`/projects/${currentProject.name}`)
+		}
+	}, [currentProject])
 
 	return (
 		<div className="fixed inset-y-0 z-50 flex lg:w-72 flex-col">
