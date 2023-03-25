@@ -107,30 +107,36 @@ export default function Sidebar() {
 							<div className="text-xs font-semibold leading-6 text-gray-400">
 								Current Project
 							</div>
-							{currentProject && (
-								<ListItemButton
-									onClick={() => setOpenProjects(!openProjects)}
-									className="bg-slate-100 rounded-lg"
-								>
-									<ListItemIcon>
-										{currentProject.avatar_url ? (
-											<Image
-												src={currentProject.avatar_url}
-												alt={currentProject.name}
-												width={24}
-												height={24}
-												className="rounded-full"
-											/>
-										) : (
-											<span className="text-nano border-nano flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white">
-												{currentProject.name[0]}
-											</span>
-										)}
-									</ListItemIcon>
-									<ListItemText primary={currentProject.name} />
-									{openProjects ? <ExpandLess /> : <ExpandMore />}
-								</ListItemButton>
-							)}
+							<ListItemButton
+								onClick={() => setOpenProjects(!openProjects)}
+								className="bg-slate-100 rounded-lg"
+							>
+								{currentProject ? (
+									<>
+										<ListItemIcon>
+											{currentProject.avatar_url ? (
+												<Image
+													src={currentProject.avatar_url}
+													alt={currentProject.name}
+													width={24}
+													height={24}
+													className="rounded-full"
+												/>
+											) : (
+												<span className="text-nano border-nano flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white">
+													{currentProject.name[0]}
+												</span>
+											)}
+										</ListItemIcon>
+										<ListItemText primary={currentProject.name} />
+									</>
+								) : (
+									<>
+										<ListItemText primary={'Select a project'} />
+									</>
+								)}
+								{openProjects ? <ExpandLess /> : <ExpandMore />}
+							</ListItemButton>
 							<Collapse in={openProjects} timeout="auto" unmountOnExit>
 								<List component="div" disablePadding>
 									{projects?.map(
