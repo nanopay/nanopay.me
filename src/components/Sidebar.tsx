@@ -68,11 +68,9 @@ export default function Sidebar() {
 		}
 	}, [projects])
 
-	useEffect(() => {
-		if (currentProject) {
-			router.push(`/projects/${currentProject.name}`)
-		}
-	}, [currentProject])
+	const selectProject = (projectName: string) => {
+		router.push(`/projects/${projectName}`)
+	}
 
 	return (
 		<div className="fixed inset-y-0 z-50 flex lg:w-72 flex-col">
@@ -118,7 +116,7 @@ export default function Sidebar() {
 											project.id !== currentProject?.id && (
 												<ListItemButton
 													key={project.id}
-													onClick={() => setCurrentProject(project)}
+													onClick={() => selectProject(project.name)}
 												>
 													<ListItemIcon>
 														{project.avatar_url ? (
