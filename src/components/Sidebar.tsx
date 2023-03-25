@@ -36,7 +36,7 @@ export default function Sidebar() {
 	const defaultNavigation = [
 		{
 			name: 'Home',
-			href: '/',
+			href: '/home',
 			icon: HomeIcon,
 			current: router.pathname === '/home',
 		},
