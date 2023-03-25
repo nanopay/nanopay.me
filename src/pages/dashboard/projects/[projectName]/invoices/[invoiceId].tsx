@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header'
 import Invoice from '@/components/Invoice'
 import Loading from '@/components/Loading'
+import Layout from '@/components/Layout'
 import api from '@/services/api'
 import { UserProfile } from '@/types/users'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
@@ -47,10 +48,11 @@ export default function InvoicePage({ user }: { user: UserProfile }) {
 			<Head>
 				<title>Dashboard - NanoPay.me</title>
 			</Head>
-			<Header user={user} className="bg-white border-b border-slate-100" />
-			<div className="sm:mt-4 w-full max-w-5xl mx-auto">
-				<Invoice invoice={invoice} />
-			</div>
+			<Layout user={user}>
+				<div className="sm:mt-4 w-full max-w-5xl sm:mx-auto">
+					<Invoice invoice={invoice} />
+				</div>
+			</Layout>
 		</>
 	)
 }

@@ -83,7 +83,7 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 						</p>
 					</div>
 				</div>
-				<div className="w-full flex-1 py-8 px-4 flex space-x-4 justify-between divide-x divide-slate-200">
+				<div className="w-full flex-1 py-8 px-4 flex flex-col sm:flex-row space-x-4 justify-between divide-x divide-slate-200">
 					<div>
 						<h1 className="text-md font-semibold text-gray-600">
 							{invoice.title}
