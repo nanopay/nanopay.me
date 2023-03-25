@@ -22,14 +22,6 @@ import {
 } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
 
-const projectNavigation = [
-	{ name: 'Dashboard', href: '#', icon: HomeIcon, current: false },
-	{ name: 'Invoices', href: '#', icon: BanknotesIcon, current: false },
-	{ name: 'Webhooks', href: '#', icon: Webhook, current: false },
-	{ name: 'Api Keys', href: '#', icon: KeyIcon, current: false },
-	{ name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-]
-
 export default function Sidebar() {
 	const router = useRouter()
 
@@ -39,6 +31,33 @@ export default function Sidebar() {
 	const { data: projects } = useQuery('projects', () =>
 		api.projects.list().then(res => res.data),
 	)
+
+	const projectNavigation = [
+		{
+			name: 'Dashboard',
+			href: '#',
+			icon: HomeIcon,
+			current: router.pathname === '/projects/[projectName]',
+		},
+		{
+			name: 'Invoices',
+			href: '#',
+			icon: BanknotesIcon,
+			current: router.pathname === '/projects/[projectName]/invoices',
+		},
+		{
+			name: 'Webhooks',
+			href: '#',
+			icon: Webhook,
+			current: router.pathname === '/projects/[projectName]/webhooks',
+		},
+		{
+			name: 'Api Keys',
+			href: '#',
+			icon: KeyIcon,
+			current: router.pathname === '/projects/[projectName]/keys',
+		},
+	]
 
 	useEffect(() => {
 		if (router.query.projectName) {
@@ -138,7 +157,7 @@ export default function Sidebar() {
 											href={item.href}
 											className={clsx(
 												item.current
-													? 'bg-gray-50 text-nano'
+													? 'bg-slate-50 border border-slatel-100 text-nano'
 													: 'text-gray-700 hover:text-nano hover:bg-gray-50',
 												'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 											)}
