@@ -19,6 +19,7 @@ import {
 } from '@/utils/others'
 import Countdown from 'react-countdown'
 import { convert, Unit } from 'nanocurrency'
+import { useEffect, useState } from 'react'
 
 interface CheckoutProps {
 	invoiceId: string | number
@@ -37,6 +38,12 @@ export default function Checkout({
 	paid,
 	expiresAt,
 }: CheckoutProps) {
+	const [rendered, setRendered] = useState(false)
+
+	useEffect(() => {
+		setRendered(true)
+	}, [])
+
 	const payURI = `nano:${address}?amount=${convert(amount.toString(), {
 		from: Unit.Nano,
 		to: Unit.raw,
@@ -126,14 +133,18 @@ export default function Checkout({
 							<div className="text-sm">
 								<div className="flex justify-between py-2 border-b border-slate-200 border-dashed">
 									<div className="text-gray-500">Expires in</div>
-									<Countdown
-										date={expiresAt}
-										renderer={props => (
-											<div className="font-medium text-gray-900">
-												{props.minutes}:{props.seconds}
-											</div>
-										)}
-									/>
+
+									{/* Avoid hydration error by not rendering the countdown until the component is mounted */}
+									{rendered && (
+										<Countdown
+											date={expiresAt}
+											renderer={props => (
+												<div className="font-medium text-gray-900">
+													{props.minutes}:{props.seconds}
+												</div>
+											)}
+										/>
+									)}
 								</div>
 								<div className="flex justify-between py-2 border-b border-slate-200 border-dashed">
 									<div className="text-gray-500">Invoice</div>

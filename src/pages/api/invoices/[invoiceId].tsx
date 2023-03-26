@@ -20,8 +20,6 @@ export default async function getInvoice(
 		.eq('id', invoiceId)
 		.single()
 
-	console.log('invoice', invoice)
-
 	if (error) {
 		console.log('error', error)
 		return res.status(500).json({ message: error.message })
