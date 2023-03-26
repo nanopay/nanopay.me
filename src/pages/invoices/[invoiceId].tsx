@@ -12,11 +12,10 @@ interface PaymentEvent {
 }
 
 export default function PayInvoice({ invoice }: { invoice: Invoice }) {
-	if (!invoice) return <div>Invoice not found</div>
-
-	const [paid, setPaid] = useState(invoice.status === 'paid')
+	const [paid, setPaid] = useState(invoice?.status === 'paid')
 
 	useEffect(() => {
+		if (!invoice) return
 		Pusher.logToConsole = true
 		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
 			cluster: 'us2',
@@ -30,7 +29,9 @@ export default function PayInvoice({ invoice }: { invoice: Invoice }) {
 			channel.unbind_all()
 			channel.unsubscribe()
 		}
-	}, [])
+	}, [invoice])
+
+	if (!invoice) return <div>Invoice not found</div>
 
 	return (
 		<div className="w-full max-w-3xl mx-auto h-screen flex sm:items-center justify-center">
@@ -57,7 +58,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
 	return {
 		props: {
-			invoice,
+			invoice: res.statusText === 'OK' ? invoice : null,
 		},
 	}
 }
