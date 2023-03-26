@@ -9,6 +9,7 @@ import { Database } from '@/types/supabase'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_EXPIRATION, INVOICE_MINIMUM_PRICE } from '@/constants'
 import paymentWorker from '@/services/paymentWorker'
+import { generateInvoiceId } from '@/utils/invoice'
 
 const HOT_WALLET_SEED = process.env.HOT_WALLET_SEED || ''
 
@@ -119,9 +120,12 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	const currency = req.body.currency || 'XNO'
 	const recipient_address = req.body.recipient_address
 
+	const invoiceId = generateInvoiceId()
+
 	const { data: invoice, error } = await supabase
 		.from('invoices')
 		.insert({
+			id: invoiceId,
 			title,
 			description,
 			metadata,
@@ -132,7 +136,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 			project_id: projectId,
 			user_id: userId,
 		})
-		.select('id')
+		.select('index')
 		.single()
 
 	if (error || !invoice) {
@@ -140,7 +144,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	// Use invoice ID as index to derive a unique deposit address
-	const index = invoice.id
+	const index = invoice.index
 	const secretKey = nanocurrency.deriveSecretKey(HOT_WALLET_SEED, index)
 	const publicKey = nanocurrency.derivePublicKey(secretKey)
 	const pay_address = nanocurrency.deriveAddress(publicKey, {
@@ -152,7 +156,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 		.update({
 			pay_address,
 		})
-		.eq('id', invoice.id)
+		.eq('id', invoiceId)
 
 	if (updateError) {
 		return res.status(500).json({ message: updateError.message })
@@ -160,7 +164,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		// Ask Payment Worker to watch for payments
 		await paymentWorker.queue.add({
-			invoiceId: invoice.id.toString(),
+			invoiceId: invoiceId,
 			to: pay_address,
 			expiresAt: expires_at,
 		})
@@ -172,13 +176,13 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	res.status(200).json({
-		id: invoice.id,
+		id: invoiceId,
 		expires_at,
 		title,
 		pay_currency: 'XNO',
 		pay_address,
 		pay_amount: price,
-		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/invoices/${invoice.id}`,
+		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/invoices/${invoiceId}`,
 		invoices_limit: 100,
 		invoices_remaining: 99,
 		invoices_limit_reset_at: expires_at,

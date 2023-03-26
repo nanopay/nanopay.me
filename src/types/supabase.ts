@@ -111,7 +111,8 @@ export interface Database {
           currency: string | null
           description: string | null
           expires_at: string
-          id: number
+          id: string
+          index: number
           metadata: Json | null
           pay_address: string | null
           price: number
@@ -128,7 +129,8 @@ export interface Database {
           currency?: string | null
           description?: string | null
           expires_at: string
-          id?: number
+          id: string
+          index?: number
           metadata?: Json | null
           pay_address?: string | null
           price: number
@@ -145,7 +147,8 @@ export interface Database {
           currency?: string | null
           description?: string | null
           expires_at?: string
-          id?: number
+          id?: string
+          index?: number
           metadata?: Json | null
           pay_address?: string | null
           price?: number
