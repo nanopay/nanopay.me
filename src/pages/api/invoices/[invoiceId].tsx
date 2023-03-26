@@ -1,4 +1,6 @@
 import { supabase } from '@/lib/supabase'
+import { Database } from '@/types/supabase'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function getInvoice(
@@ -8,6 +10,21 @@ export default async function getInvoice(
 	if (req.method !== 'GET') {
 		res.setHeader('Allow', 'GET')
 		return res.status(405).json({ message: 'Method not allowed' })
+	}
+
+	const supabaseServerClient = createServerSupabaseClient<Database>({
+		req,
+		res,
+	})
+
+	const {
+		data: { user },
+		error: userError,
+	} = await supabaseServerClient.auth.getUser()
+
+	if (userError && userError.status !== 401) {
+		console.log('userError', userError)
+		return res.status(500).json({ message: userError.message })
 	}
 
 	const { invoiceId } = req.query
@@ -29,13 +46,14 @@ export default async function getInvoice(
 		return res.status(404).json({ message: 'Invoice not found' })
 	}
 
+	const isOwner = invoice.user_id === user?.id
+
 	res.status(200).json({
 		id: invoice.id,
 		created_at: invoice.created_at,
 		expires_at: invoice.expires_at,
 		title: invoice.title,
 		description: invoice.description,
-		metadata: invoice.metadata,
 		currency: 'XNO',
 		pay_address: invoice.pay_address,
 		price: invoice.price,
@@ -44,5 +62,9 @@ export default async function getInvoice(
 		refunded_amount: invoice.refunded_amount,
 		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`,
 		project: invoice.projects,
+		...(isOwner && {
+			metadata: invoice.metadata,
+			recipient_address: invoice.recipient_address,
+		}),
 	})
 }
