@@ -1,7 +1,7 @@
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Container } from '@/components/Container'
 import { useRouter } from 'next/router'
 import { getURL } from '@/utils/helpers'
