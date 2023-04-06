@@ -1,12 +1,12 @@
 import { PROJECT_AVATAR_PLACEHOLDER } from '@/constants'
-import { Project } from '@/types/projects'
+import { Service } from '@/types/services'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function ProjectsList({ projects }: { projects: Project[] }) {
+export default function ServicesList({ services }: { services: Service[] }) {
 	return (
 		<div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-slate-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0 animate-fade-in">
-			{projects?.map((project, index) => (
+			{services?.map((service, index) => (
 				<div
 					key={index}
 					className="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-nano/60"
@@ -16,8 +16,8 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
 							{
 								<Image
 									className="rounded-full"
-									src={project.avatar_url || PROJECT_AVATAR_PLACEHOLDER}
-									alt={project.name}
+									src={service.avatar_url || PROJECT_AVATAR_PLACEHOLDER}
+									alt={service.name}
 									width={40}
 									height={40}
 								/>
@@ -27,15 +27,15 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
 					<div className="mt-8">
 						<h3 className="text-lg font-medium">
 							<Link
-								href={`/projects/${project.name}`}
+								href={`/services/${service.name}`}
 								className="focus:outline-none"
 							>
 								{/* Extend touch target to entire panel */}
 								<span className="absolute inset-0" aria-hidden="true"></span>
-								{project.name}
+								{service.name}
 							</Link>
 						</h3>
-						<p className="mt-2 text-sm text-gray-500">{project.description}</p>
+						<p className="mt-2 text-sm text-gray-500">{service.description}</p>
 					</div>
 					<span
 						className="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"

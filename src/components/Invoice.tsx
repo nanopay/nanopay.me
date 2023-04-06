@@ -65,13 +65,13 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 						</h3>
 						<div className="flex space-x-2">
 							<Image
-								src={invoice.project.avatar_url || ''}
+								src={invoice.service.avatar_url || ''}
 								width={28}
 								height={28}
 								className="rounded-full"
-								alt="project logo"
+								alt="service logo"
 							/>
-							<p className="text-xl font-semibold">{invoice.project.name}</p>
+							<p className="text-xl font-semibold">{invoice.service.name}</p>
 						</div>
 					</div>
 					<div>

@@ -42,7 +42,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
 
-	let projectId: string
+	let serviceId: string
 	let userId: string
 
 	const supabaseCookies = req.cookies['supabase-auth-token']
@@ -68,10 +68,10 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		userId = user.id
 
-		projectId = req.query.project_id as string
+		serviceId = req.query.service_id as string
 
-		if (!projectId) {
-			return res.status(400).json({ message: 'Missing project id' })
+		if (!serviceId) {
+			return res.status(400).json({ message: 'Missing service id' })
 		}
 	} else {
 		const authorization = req.headers.authorization || ''
@@ -107,7 +107,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 
 		userId = apiKeyData.user_id
-		projectId = apiKeyData.project_id
+		serviceId = apiKeyData.service_id
 	}
 
 	if (nanocurrency.checkSeed(HOT_WALLET_SEED) === false) {
@@ -135,7 +135,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 			currency,
 			price,
 			recipient_address,
-			project_id: projectId,
+			service_id: serviceId,
 			user_id: userId,
 		})
 		.select('index')
@@ -195,7 +195,7 @@ const listInvoices = async (req: NextApiRequest, res: NextApiResponse) => {
 		res,
 	})
 
-	let projectId: string
+	let serviceId: string
 	let userId: string
 
 	if (supabaseServerClient) {
@@ -216,10 +216,10 @@ const listInvoices = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		userId = user.id
 
-		projectId = req.query.project_id as string
+		serviceId = req.query.service_id as string
 
-		if (!projectId) {
-			return res.status(400).json({ message: 'Missing project id' })
+		if (!serviceId) {
+			return res.status(400).json({ message: 'Missing service id' })
 		}
 	} else {
 		// If the request is not authenticated with a Supabase session cookie, then
@@ -257,13 +257,13 @@ const listInvoices = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 
 		userId = apiKeyData.user_id
-		projectId = apiKeyData.project_id
+		serviceId = apiKeyData.service_id
 	}
 
 	const { data: invoices, error: invoicesError } = await supabase
 		.from('invoices')
 		.select('*')
-		.eq('project_id', projectId)
+		.eq('service_id', serviceId)
 		.eq('user_id', userId)
 
 	if (invoicesError) {

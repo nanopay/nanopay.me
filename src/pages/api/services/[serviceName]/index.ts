@@ -2,11 +2,11 @@ import { Database } from '@/types/supabase'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
-	const projectName = req.query.projectName as string
+const getServices = async (req: NextApiRequest, res: NextApiResponse) => {
+	const serviceName = req.query.serviceName as string
 
-	if (!projectName) {
-		return res.status(400).json({ message: 'Missing project name' })
+	if (!serviceName) {
+		return res.status(400).json({ message: 'Missing service name' })
 	}
 
 	const supabaseServerClient = createServerSupabaseClient<Database>({
@@ -28,9 +28,9 @@ const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	const { data, error } = await supabaseServerClient
-		.from('projects')
+		.from('services')
 		.select('*')
-		.eq('name', projectName)
+		.eq('name', serviceName)
 		.single()
 
 	if (error) {
@@ -43,7 +43,7 @@ const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	switch (req.method) {
 		case 'GET':
-			return getProjects(req, res)
+			return getServices(req, res)
 		default:
 			return res.status(405).json({ message: 'Method not allowed' })
 	}

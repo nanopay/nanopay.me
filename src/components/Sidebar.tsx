@@ -2,7 +2,7 @@ import api from '@/services/api'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Logo } from './Logo'
-import { Project } from '@/types/projects'
+import { Service } from '@/types/services'
 import Image from 'next/image'
 import { ExpandLess, ExpandMore, Webhook } from '@mui/icons-material'
 import clsx from 'clsx'
@@ -28,12 +28,12 @@ import Loading from './Loading'
 export default function Sidebar() {
 	const router = useRouter()
 
-	const [currentProject, setCurrentProject] = useState<null | Project>(null)
-	const [openProjects, setOpenProjects] = useState<boolean>(false)
+	const [currentService, setCurrentService] = useState<null | Service>(null)
+	const [openServices, setOpenServices] = useState<boolean>(false)
 
-	const { data: projects, isLoading: projectsLoading } = useQuery(
-		'projects',
-		() => api.projects.list().then(res => res.data),
+	const { data: services, isLoading: servicesLoading } = useQuery(
+		'services',
+		() => api.services.list().then(res => res.data),
 	)
 
 	const defaultNavigation = [
@@ -51,50 +51,50 @@ export default function Sidebar() {
 		},
 	]
 
-	const projectNavigation = [
+	const serviceNavigation = [
 		{
 			name: 'Dashboard',
-			href: `/projects/${currentProject?.name}`,
+			href: `/services/${currentService?.name}`,
 			icon: HomeIcon,
-			current: router.pathname === '/projects/[projectName]',
+			current: router.pathname === '/services/[serviceName]',
 		},
 		{
 			name: 'Invoices',
-			href: `/projects/${currentProject?.name}/invoices`,
+			href: `/services/${currentService?.name}/invoices`,
 			icon: BanknotesIcon,
-			current: router.pathname === '/projects/[projectName]/invoices',
+			current: router.pathname === '/services/[serviceName]/invoices',
 		},
 		{
 			name: 'Webhooks',
-			href: `/projects/${currentProject?.name}/webhooks`,
+			href: `/services/${currentService?.name}/webhooks`,
 			icon: Webhook,
-			current: router.pathname === '/projects/[projectName]/webhooks',
+			current: router.pathname === '/services/[serviceName]/webhooks',
 		},
 		{
 			name: 'Api Keys',
-			href: `/projects/${currentProject?.name}/keys`,
+			href: `/services/${currentService?.name}/keys`,
 			icon: KeyIcon,
-			current: router.pathname === '/projects/[projectName]/keys',
+			current: router.pathname === '/services/[serviceName]/keys',
 		},
 		{
 			name: 'Settings',
-			href: `/projects/${currentProject?.name}/settings`,
+			href: `/services/${currentService?.name}/settings`,
 			icon: Cog6ToothIcon,
-			current: router.pathname === '/projects/[projectName]/settings',
+			current: router.pathname === '/services/[serviceName]/settings',
 		},
 	]
 
 	useEffect(() => {
-		if (router.query.projectName) {
-			setCurrentProject(
-				projects?.find(project => project.name === router.query.projectName) ||
+		if (router.query.serviceName) {
+			setCurrentService(
+				services?.find(service => service.name === router.query.serviceName) ||
 					null,
 			)
 		}
-	}, [projects])
+	}, [services])
 
-	const selectProject = (projectName: string) => {
-		router.push(`/projects/${projectName}`)
+	const selectService = (serviceName: string) => {
+		router.push(`/services/${serviceName}`)
 	}
 
 	return (
@@ -107,62 +107,62 @@ export default function Sidebar() {
 				<nav className="flex flex-1 flex-col">
 					<ul role="list" className="flex flex-1 flex-col gap-y-7">
 						<li className="border-b border-gray-100 pb-4">
-							{projectsLoading || !projects ? (
+							{servicesLoading || !services ? (
 								<div>
 									<div className="text-xs font-semibold leading-6 text-gray-400">
-										Current Project
+										Current Service
 									</div>
 									<Loading className="h-12 mx-auto mt-2" />
 								</div>
-							) : projects.length > 0 ? (
+							) : services.length > 0 ? (
 								<>
 									<div className="text-xs font-semibold leading-6 text-gray-400">
-										Current Project
+										Current Service
 									</div>
 									<ListItemButton
-										onClick={() => setOpenProjects(!openProjects)}
+										onClick={() => setOpenServices(!openServices)}
 										className="bg-slate-100 rounded-lg"
 									>
-										{currentProject ? (
+										{currentService ? (
 											<>
 												<ListItemIcon>
-													{currentProject.avatar_url ? (
+													{currentService.avatar_url ? (
 														<Image
-															src={currentProject.avatar_url}
-															alt={currentProject.name}
+															src={currentService.avatar_url}
+															alt={currentService.name}
 															width={24}
 															height={24}
 															className="rounded-full"
 														/>
 													) : (
 														<span className="text-nano border-nano flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white">
-															{currentProject.name[0]}
+															{currentService.name[0]}
 														</span>
 													)}
 												</ListItemIcon>
-												<ListItemText primary={currentProject.name} />
+												<ListItemText primary={currentService.name} />
 											</>
 										) : (
 											<>
-												<ListItemText primary={'Select a project'} />
+												<ListItemText primary={'Select a service'} />
 											</>
 										)}
-										{openProjects ? <ExpandLess /> : <ExpandMore />}
+										{openServices ? <ExpandLess /> : <ExpandMore />}
 									</ListItemButton>
-									<Collapse in={openProjects} timeout="auto" unmountOnExit>
+									<Collapse in={openServices} timeout="auto" unmountOnExit>
 										<List component="div" disablePadding>
-											{projects?.map(
-												project =>
-													project.id !== currentProject?.id && (
+											{services?.map(
+												service =>
+													service.id !== currentService?.id && (
 														<ListItemButton
-															key={project.id}
-															onClick={() => selectProject(project.name)}
+															key={service.id}
+															onClick={() => selectService(service.name)}
 														>
 															<ListItemIcon>
-																{project.avatar_url ? (
+																{service.avatar_url ? (
 																	<Image
-																		src={project.avatar_url}
-																		alt={project.name}
+																		src={service.avatar_url}
+																		alt={service.name}
 																		width={24}
 																		height={24}
 																		className="rounded-full"
@@ -170,17 +170,17 @@ export default function Sidebar() {
 																) : (
 																	<span
 																		className={clsx(
-																			project.id === project.id
+																			service.id === service.id
 																				? 'text-nano border-nano'
 																				: 'text-gray-400 border-gray-200 group-hover:border-nano group-hover:text-nano',
 																			'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white',
 																		)}
 																	>
-																		{project.name[0]}
+																		{service.name[0]}
 																	</span>
 																)}
 															</ListItemIcon>
-															<ListItemText primary={project.name} />
+															<ListItemText primary={service.name} />
 														</ListItemButton>
 													),
 											)}
@@ -190,21 +190,21 @@ export default function Sidebar() {
 							) : (
 								<>
 									<div className="text-xs font-semibold leading-6 text-gray-400 mb-2">
-										No projects found
+										No services found
 									</div>
 									<MButton
 										variant="outlined"
 										color="primary"
-										onClick={() => router.push('/projects/create')}
+										onClick={() => router.push('/services/create')}
 									>
-										Create a project
+										Create a service
 									</MButton>
 								</>
 							)}
 						</li>
 						<li className="relative">
 							<ul role="list" className="-mx-2 space-y-1">
-								{projectNavigation.map(item => (
+								{serviceNavigation.map(item => (
 									<li key={item.name}>
 										<Link
 											href={item.href}
@@ -229,7 +229,7 @@ export default function Sidebar() {
 									</li>
 								))}
 							</ul>
-							{(projectsLoading || !projects) && (
+							{(servicesLoading || !services) && (
 								<div className="-mx-2 absolute inset-0 flex items-center justify-center bg-white opacity-50" />
 							)}
 						</li>

@@ -41,23 +41,23 @@ const statusStyles: Record<InvoiceStatus, string> = {
 	error: 'bg-red-100 text-red-800',
 }
 
-export default function ProjectDashboard({ user }: { user: UserProfile }) {
+export default function ServiceDashboard({ user }: { user: UserProfile }) {
 	const router = useRouter()
 
 	const [isNew, setIsNew] = useState(false)
 
-	const projectName = router.query.projectName as string
+	const serviceName = router.query.serviceName as string
 
-	const { data: project, isLoading } = useQuery({
-		queryKey: ['apiKeys', projectName],
-		queryFn: () => api.projects.get(projectName).then(res => res.data),
+	const { data: service, isLoading } = useQuery({
+		queryKey: ['apiKeys', serviceName],
+		queryFn: () => api.services.get(serviceName).then(res => res.data),
 	})
 
 	const { data: invoices, isLoading: isLoadingInvoices } = useQuery({
-		queryKey: ['invoices', project?.id],
+		queryKey: ['invoices', service?.id],
 		queryFn: () =>
-			api.invoices.list(project?.id as string).then(res => res.data),
-		enabled: !!project,
+			api.invoices.list(service?.id as string).then(res => res.data),
+		enabled: !!service,
 	})
 
 	useEffect(() => {
@@ -69,11 +69,11 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 		}
 	}, [])
 
-	if (!projectName) {
+	if (!serviceName) {
 		return null
 	}
 
-	if (isLoading || !project) {
+	if (isLoading || !service) {
 		return (
 			<>
 				<Head>
@@ -97,9 +97,9 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 		},
 		{
 			name: 'API Keys',
-			href: `/projects/${projectName}/keys`,
+			href: `/services/${serviceName}/keys`,
 			icon: KeyIcon,
-			amount: project.api_keys_count,
+			amount: service.api_keys_count,
 			action: 'Manage Keys',
 		},
 		{
@@ -114,7 +114,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>{project.name} - NanoPay.me</title>
+				<title>{service.name} - NanoPay.me</title>
 			</Head>
 			<Layout user={user}>
 				<div className="bg-white shadow rounded-lg">
@@ -136,29 +136,29 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 												alt=""
 											/>
 											<h1 className="ml-3 text-2xl font-bold leading-7 text-slate-900 sm:truncate sm:leading-9">
-												{project.name}
+												{service.name}
 											</h1>
 										</div>
 										<dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
 											<dt className="sr-only">Website</dt>
-											{project.website && (
+											{service.website && (
 												<dd className="sm:mr-6">
 													<a
-														href={project.website}
+														href={service.website}
 														className="truncate flex items-center text-sm font-medium text-slate-500 hover:text-nano"
 													>
 														<GlobeAltIcon
 															className="mr-1 h-5 w-5 flex-shrink-0"
 															aria-hidden="true"
 														/>
-														{project.website}
+														{service.website}
 													</a>
 												</dd>
 											)}
-											{project.description && (
+											{service.description && (
 												<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
-													{project.description.slice(0, 60)}
-													{project.description.length > 60 && '...'}
+													{service.description.slice(0, 60)}
+													{service.description.length > 60 && '...'}
 												</dd>
 											)}
 										</dl>
@@ -176,7 +176,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 								<Button
 									color="nano"
 									className="items-center"
-									href={`/projects/${projectName}/invoices/new`}
+									href={`/services/${serviceName}/invoices/new`}
 								>
 									<PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
 									Create Invoice
@@ -341,7 +341,7 @@ export default function ProjectDashboard({ user }: { user: UserProfile }) {
 													<td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-slate-900">
 														<div className="flex">
 															<Link
-																href={`/projects/${projectName}/invoices/${invoice.id}`}
+																href={`/services/${serviceName}/invoices/${invoice.id}`}
 																className="group inline-flex space-x-2 truncate text-sm"
 															>
 																<BanknotesIcon

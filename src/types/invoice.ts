@@ -1,4 +1,4 @@
-import { Project } from './projects'
+import { Service } from './services'
 
 export type InvoiceStatus =
 	| 'pending'
@@ -28,5 +28,5 @@ export interface Invoice extends InvoiceCreate {
 	pay_address: string
 	received_amount: number
 	refunded_amount: number
-	project: Omit<Project, 'api_keys_count'>
+	service: Omit<Service, 'api_keys_count'>
 }

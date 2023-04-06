@@ -4,16 +4,16 @@ import { AxiosInstance, AxiosResponse } from 'axios'
 export const invoices = (axiosInstance: AxiosInstance) => {
 	return {
 		create: async (
-			projectId: string,
+			serviceId: string,
 			data: InvoiceCreate,
 		): Promise<AxiosResponse<{ id: string }>> => {
-			return axiosInstance.post(`/invoices?project_id=${projectId}`, data)
+			return axiosInstance.post(`/invoices?service_id=${serviceId}`, data)
 		},
 		get: async (invoiceId: string): Promise<AxiosResponse<Invoice>> => {
 			return axiosInstance.get(`/invoices/${invoiceId}`)
 		},
-		list: async (projectId: string): Promise<AxiosResponse<Invoice[]>> => {
-			return axiosInstance.get(`/invoices?project_id=${projectId}`)
+		list: async (serviceId: string): Promise<AxiosResponse<Invoice[]>> => {
+			return axiosInstance.get(`/invoices?service_id=${serviceId}`)
 		},
 	}
 }

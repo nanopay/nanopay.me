@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { projects } from './projects'
+import { services } from './services'
 import { users } from './users'
 import { invoices } from './invoices'
 
@@ -16,7 +16,7 @@ const getErrorMessage = (error: any): string => {
 const api = {
 	client: axiosInstance,
 	users: users(axiosInstance),
-	projects: projects(axiosInstance),
+	services: services(axiosInstance),
 	invoices: invoices(axiosInstance),
 	getErrorMessage,
 }

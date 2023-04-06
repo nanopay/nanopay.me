@@ -18,14 +18,14 @@ import Layout from '@/components/Layout'
 export default function ApiKeys({ user }: { user: UserProfile }) {
 	const router = useRouter()
 
-	const projectName = router.query.projectName as string
+	const serviceName = router.query.serviceName as string
 
 	const { data: apiKeys, isLoading } = useQuery({
-		queryKey: ['apiKeys', projectName],
-		queryFn: () => api.projects.apiKeys.list(projectName).then(res => res.data),
+		queryKey: ['apiKeys', serviceName],
+		queryFn: () => api.services.apiKeys.list(serviceName).then(res => res.data),
 	})
 
-	if (!projectName) {
+	if (!serviceName) {
 		return null
 	}
 
@@ -45,7 +45,7 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 							<h1 className="flex-1 text-lg font-medium">API Keys</h1>
 							<Button
 								color="nano"
-								href={`/projects/${projectName}/keys/new`}
+								href={`/services/${serviceName}/keys/new`}
 								className="items-center text-xs py-1"
 							>
 								<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
@@ -63,7 +63,7 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 								className="relative py-5 pl-4 pr-6 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
 							>
 								<div className="flex items-center justify-between space-x-4">
-									{/* Project name and description */}
+									{/* Service name and description */}
 									<div className="min-w-0 space-y-3">
 										<div className="flex items-center space-x-3">
 											<h2 className="text-sm font-medium">
@@ -83,7 +83,7 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 											aria-hidden="true"
 										/>
 									</div>
-									{/* Project meta info */}
+									{/* Service meta info */}
 									<div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
 										<p className="flex space-x-2 text-xs text-gray-500">
 											<span aria-hidden="true">&middot;</span>

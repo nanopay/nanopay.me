@@ -32,7 +32,7 @@ export default async function getInvoice(
 	const { data: invoice, error } = await supabase
 		.from('invoices')
 		.select(
-			'*, projects(name, display_name, avatar_url, description, id, website, contact_email)',
+			'*, services(name, display_name, avatar_url, description, id, website, contact_email)',
 		)
 		.eq('id', invoiceId)
 		.single()
@@ -61,7 +61,7 @@ export default async function getInvoice(
 		received_amount: invoice.received_amount,
 		refunded_amount: invoice.refunded_amount,
 		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`,
-		project: invoice.projects,
+		service: invoice.services,
 		...(isOwner && {
 			metadata: invoice.metadata,
 			recipient_address: invoice.recipient_address,

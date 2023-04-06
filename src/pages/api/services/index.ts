@@ -20,7 +20,7 @@ const schema = {
 	required: ['name'],
 }
 
-const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
+const getServices = async (req: NextApiRequest, res: NextApiResponse) => {
 	const supabaseServerClient = createServerSupabaseClient<Database>({
 		req,
 		res,
@@ -40,7 +40,7 @@ const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	const { data, error } = await supabaseServerClient
-		.from('projects')
+		.from('services')
 		.select('id, name, avatar_url, description')
 
 	if (error) {
@@ -50,7 +50,7 @@ const getProjects = async (req: NextApiRequest, res: NextApiResponse) => {
 	res.status(200).json(data)
 }
 
-const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
+const postService = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (!ajv.validate(schema, req.body)) {
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
@@ -73,7 +73,7 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(401).json({ message: 'Unauthorized' })
 	}
 
-	const projectId = randomUUID()
+	const serviceId = randomUUID()
 
 	let avatarUrl = req.body.avatar_url
 
@@ -95,7 +95,7 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 				.json({ message: 'avatar_url extension not allowed' })
 		}
 
-		const avatarNewPath = `users/${user.id}/projects/${projectId}/avatar.png`
+		const avatarNewPath = `users/${user.id}/services/${serviceId}/avatar.png`
 
 		try {
 			await s3.moveObject(avatarPath, avatarNewPath)
@@ -109,9 +109,9 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 		)
 	}
 
-	const { error } = await supabase.from('projects').insert({
+	const { error } = await supabase.from('services').insert({
 		...req.body,
-		id: projectId,
+		id: serviceId,
 		user_id: user.id,
 		display_name: req.body.name,
 		avatar_url: avatarUrl,
@@ -121,14 +121,14 @@ const postProject = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(500).json({ message: error.message })
 	}
 
-	res.status(200).json({ id: projectId })
+	res.status(200).json({ id: serviceId })
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method === 'POST') {
-		await postProject(req, res)
+		await postService(req, res)
 	} else if (req.method === 'GET') {
-		await getProjects(req, res)
+		await getServices(req, res)
 	} else {
 		return res.status(405).json({ message: 'Method not allowed' })
 	}

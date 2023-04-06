@@ -12,7 +12,7 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import ImageInput from '@/components/ImageInput'
-import { ProjectCreate } from '@/types/projects'
+import { ServiceCreate } from '@/types/services'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { PROJECT_AVATAR_PLACEHOLDER } from '@/constants'
 import { Header } from '@/components/Header'
@@ -21,7 +21,7 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import { JSONSchemaType } from 'ajv'
 
-const schema: JSONSchemaType<ProjectCreate> = {
+const schema: JSONSchemaType<ServiceCreate> = {
 	type: 'object',
 	properties: {
 		name: {
@@ -42,7 +42,7 @@ const schema: JSONSchemaType<ProjectCreate> = {
 	additionalProperties: false,
 }
 
-export default function NewProject({ user }: { user: UserProfile }) {
+export default function NewService({ user }: { user: UserProfile }) {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
@@ -54,7 +54,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		watch,
 		setValue,
 		formState: { errors },
-	} = useForm<ProjectCreate>({
+	} = useForm<ServiceCreate>({
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
@@ -66,7 +66,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		isError: uploadError,
 	} = useMutation({
 		mutationFn: (file: File) =>
-			api.projects.upload.avatar(file, setUploadProgress),
+			api.services.upload.avatar(file, setUploadProgress),
 		onSuccess: (url: string) => {
 			console.log('Url: ', url)
 			setValue('avatar_url', url)
@@ -81,21 +81,21 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		isLoading: isSubmitting,
 		isSuccess,
 	} = useMutation({
-		mutationFn: async (data: ProjectCreate) => api.projects.create(data),
+		mutationFn: async (data: ServiceCreate) => api.services.create(data),
 		onSuccess: () => {
-			showSuccess('Project created')
-			router.push('/projects/' + watch('name') + '#new')
+			showSuccess('Service created')
+			router.push('/services/' + watch('name') + '#new')
 		},
 		onError: (err: any) => {
-			showError('Error creating project', api.getErrorMessage(err))
+			showError('Error creating service', api.getErrorMessage(err))
 		},
 	})
 
 	const onErrorSubmiting = () => {
-		showError('Error creating project', 'Check the fields entered')
+		showError('Error creating service', 'Check the fields entered')
 	}
 
-	const sanitizeProjectName = (name: string) => {
+	const sanitizeServiceName = (name: string) => {
 		// only allows lowercase letters, numbers, dashes, underscores and dots
 		return name.slice(0, 40).replace(/[^a-z0-9-_\.]/g, '')
 	}
@@ -103,13 +103,13 @@ export default function NewProject({ user }: { user: UserProfile }) {
 	return (
 		<>
 			<Head>
-				<title>New Project - NanoPay.me</title>
+				<title>New Service - NanoPay.me</title>
 			</Head>
 			<Header user={user} className="bg-white border-b border-slate-100" />
 			<main>
 				<Container className="sm:mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
 					<div className="w-full flex justify-center items-center py-3 mb-8 border-b border-slate-200">
-						<h3 className="text-slate-700">Create a new project</h3>
+						<h3 className="text-slate-700">Create a new service</h3>
 					</div>
 
 					<ImageInput
@@ -127,9 +127,9 @@ export default function NewProject({ user }: { user: UserProfile }) {
 								<InformationCircleIcon className="w-4 mr-1" />
 								<div>
 									Use a name like:{' '}
-									<span className="font-semibold">my-project</span>
+									<span className="font-semibold">my-service</span>
 									{' or '}
-									<span className="font-semibold">myproject2.com</span>
+									<span className="font-semibold">myservice2.com</span>
 								</div>
 							</div>
 							<Controller
@@ -140,7 +140,7 @@ export default function NewProject({ user }: { user: UserProfile }) {
 										label="Name"
 										{...field}
 										onChange={e =>
-											field.onChange(sanitizeProjectName(e.target.value))
+											field.onChange(sanitizeServiceName(e.target.value))
 										}
 										errorMessage={errors.name?.message}
 										className="w-full"
@@ -177,10 +177,10 @@ export default function NewProject({ user }: { user: UserProfile }) {
 						{uploading
 							? 'Uploading image...'
 							: isSubmitting
-							? 'Creating project...'
+							? 'Creating service...'
 							: isSuccess
-							? 'Project Created'
-							: 'Create project'}
+							? 'Service Created'
+							: 'Create service'}
 					</MButton>
 				</Container>
 			</main>

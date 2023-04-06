@@ -10,7 +10,7 @@ import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
-import { ApiKeyCreate } from '@/types/projects'
+import { ApiKeyCreate } from '@/types/services'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Header } from '@/components/Header'
 import { UserProfile } from '@/types/users'
@@ -31,7 +31,7 @@ const roboto = Roboto({
 	subsets: ['latin'],
 })
 
-const schema: JSONSchemaType<Omit<ApiKeyCreate, 'project'>> = {
+const schema: JSONSchemaType<Omit<ApiKeyCreate, 'service'>> = {
 	type: 'object',
 	properties: {
 		name: {
@@ -50,7 +50,7 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
-	const projectName = router.query.projectName as string
+	const serviceName = router.query.serviceName as string
 
 	const {
 		control,
@@ -70,26 +70,26 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 		data: createdApiKey,
 	} = useMutation({
 		mutationFn: async (data: ApiKeyCreate) =>
-			api.projects.apiKeys
-				.create(projectName, {
+			api.services.apiKeys
+				.create(serviceName, {
 					...data,
-					project: projectName,
+					service: serviceName,
 				})
 				.then(res => res.data),
 		onSuccess: () => {
 			showSuccess('API Key created')
 		},
 		onError: (err: any) => {
-			showError('Error creating project', api.getErrorMessage(err))
+			showError('Error creating service', api.getErrorMessage(err))
 		},
 	})
 
-	if (!projectName) {
+	if (!serviceName) {
 		return null
 	}
 
 	const onErrorSubmiting = () => {
-		showError('Error creating project', 'Check the fields entered')
+		showError('Error creating service', 'Check the fields entered')
 	}
 
 	const sanitizeName = (name: string) => {
@@ -197,7 +197,7 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 									</ul>
 								</div>
 								<MButton
-									onClick={() => router.push(`/projects/${projectName}/keys`)}
+									onClick={() => router.push(`/services/${serviceName}/keys`)}
 								>
 									Done
 								</MButton>

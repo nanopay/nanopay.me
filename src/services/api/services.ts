@@ -1,20 +1,20 @@
-import { ApiKey, ApiKeyCreate, Project, ProjectCreate } from '@/types/projects'
+import { ApiKey, ApiKeyCreate, Service, ServiceCreate } from '@/types/services'
 import { concatURL } from '@/utils/helpers'
 import { AxiosInstance, AxiosResponse } from 'axios'
 import s3 from '../s3'
 
-export const projects = (axiosInstance: AxiosInstance) => {
+export const services = (axiosInstance: AxiosInstance) => {
 	return {
 		create: async (
-			data: ProjectCreate,
+			data: ServiceCreate,
 		): Promise<AxiosResponse<{ id: string }>> => {
-			return axiosInstance.post('/projects', data)
+			return axiosInstance.post('/services', data)
 		},
-		get: async (projectName: string): Promise<AxiosResponse<Project>> => {
-			return axiosInstance.get(`/projects/${projectName}`)
+		get: async (serviceName: string): Promise<AxiosResponse<Service>> => {
+			return axiosInstance.get(`/services/${serviceName}`)
 		},
-		list: async (): Promise<AxiosResponse<Project[]>> => {
-			return axiosInstance.get('/projects')
+		list: async (): Promise<AxiosResponse<Service[]>> => {
+			return axiosInstance.get('/services')
 		},
 		upload: {
 			avatar: async (
@@ -36,19 +36,19 @@ export const projects = (axiosInstance: AxiosInstance) => {
 		},
 		apiKeys: {
 			create: async (
-				projectName: string,
+				serviceName: string,
 				data: ApiKeyCreate,
 			): Promise<AxiosResponse<{ apiKey: string }>> => {
-				return axiosInstance.post(`/projects/${projectName}/keys`, data)
+				return axiosInstance.post(`/services/${serviceName}/keys`, data)
 			},
 			get: async (
-				projectName: string,
+				serviceName: string,
 				id: string,
 			): Promise<AxiosResponse<{ id: string; key: string }>> => {
-				return axiosInstance.get(`/projects/${projectName}/keys/${id}`)
+				return axiosInstance.get(`/services/${serviceName}/keys/${id}`)
 			},
-			list: async (projectName: string): Promise<AxiosResponse<ApiKey[]>> => {
-				return axiosInstance.get(`/projects/${projectName}/keys`)
+			list: async (serviceName: string): Promise<AxiosResponse<ApiKey[]>> => {
+				return axiosInstance.get(`/services/${serviceName}/keys`)
 			},
 		},
 	}

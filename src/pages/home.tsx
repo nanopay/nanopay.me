@@ -8,15 +8,15 @@ import { GetServerSidePropsContext } from 'next'
 import { UserProfile } from '@/types/users'
 import { useQuery } from 'react-query'
 import api from '@/services/api'
-import ProjectsList from '@/components/ProjectsList'
+import ServicesList from '@/components/ServicesList'
 import Loading from '@/components/Loading'
 import ProfileBoard from '@/components/ProfileBoard'
 import Layout from '@/components/Layout'
 
 export default function Home({ user }: { user: UserProfile }) {
-	const { data: projects, isLoading } = useQuery(
-		'projects',
-		async () => await api.projects.list().then(res => res.data),
+	const { data: services, isLoading } = useQuery(
+		'services',
+		async () => await api.services.list().then(res => res.data),
 	)
 
 	return (
@@ -32,19 +32,19 @@ export default function Home({ user }: { user: UserProfile }) {
 					</section>
 
 					{/* Actions panel */}
-					<section aria-labelledby="projects-title">
+					<section aria-labelledby="services-title">
 						<div className="flex justify-between items-center">
 							<h2
-								id="projects-title"
+								id="services-title"
 								className="text-xl px-2 py-4 font-semibold
                                 "
 							>
-								{projects?.length} Projects
+								{services?.length} Services
 							</h2>
-							<Button color="nano" href="/projects/new">
+							<Button color="nano" href="/services/new">
 								<div className="flex space-x-2 items-center">
 									<PlusIcon className="h-5 w-5" />
-									<span>New Project</span>
+									<span>New Service</span>
 								</div>
 							</Button>
 						</div>
@@ -52,15 +52,15 @@ export default function Home({ user }: { user: UserProfile }) {
 							<div className="flex flex-col space-y-6 justify-center items-center py-16">
 								<Loading />
 								<div className="text-slate-600 animate-pulse text-sm">
-									Loading your projects...
+									Loading your services...
 								</div>
 							</div>
-						) : projects?.length ? (
-							<ProjectsList projects={projects} />
+						) : services?.length ? (
+							<ServicesList services={services} />
 						) : (
 							<div className="flex justify-center items-center py-16 rounded-lg bg-slate-200 shadow0">
 								<p className="text-gray-700 text-center">
-									You don&apos;t have any projects yet.
+									You don&apos;t have any services yet.
 								</p>
 							</div>
 						)}

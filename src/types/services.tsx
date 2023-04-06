@@ -1,10 +1,10 @@
-export interface ProjectCreate {
+export interface ServiceCreate {
 	name: string
 	avatar_url: string
 	description: string
 }
 
-export interface Project extends ProjectCreate {
+export interface Service extends ServiceCreate {
 	id: string
 	display_name: string
 	website: string | null
@@ -15,7 +15,7 @@ export interface Project extends ProjectCreate {
 export interface ApiKeyCreate {
 	name: string
 	description: string
-	project: string
+	service: string
 }
 
 export interface ApiKey extends ApiKeyCreate {

@@ -40,15 +40,15 @@ const schema: JSONSchemaType<InvoiceCreate> = {
 	additionalProperties: false,
 }
 
-export default function NewProject({ user }: { user: UserProfile }) {
+export default function NewService({ user }: { user: UserProfile }) {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
-	const projectName = router.query.projectName as string
+	const serviceName = router.query.serviceName as string
 
-	const { data: project, isLoading } = useQuery({
-		queryKey: ['project', projectName],
-		queryFn: () => api.projects.get(projectName).then(res => res.data),
+	const { data: service, isLoading } = useQuery({
+		queryKey: ['service', serviceName],
+		queryFn: () => api.services.get(serviceName).then(res => res.data),
 	})
 
 	const {
@@ -69,25 +69,25 @@ export default function NewProject({ user }: { user: UserProfile }) {
 		data: createdApiKey,
 	} = useMutation({
 		mutationFn: async (data: InvoiceCreate) =>
-			api.invoices.create(project?.id as string, data).then(res => res.data),
+			api.invoices.create(service?.id as string, data).then(res => res.data),
 		onSuccess: res => {
 			showSuccess('Invoice created')
-			router.push(`/projects/${project?.name}/invoices/${res.id}`)
+			router.push(`/services/${service?.name}/invoices/${res.id}`)
 		},
 		onError: (err: any) => {
-			showError('Error creating project', api.getErrorMessage(err))
+			showError('Error creating service', api.getErrorMessage(err))
 		},
 	})
 
 	const onErrorSubmiting = () => {
-		showError('Error creating project', 'Check the fields entered')
+		showError('Error creating service', 'Check the fields entered')
 	}
 
-	if (!projectName) {
+	if (!serviceName) {
 		return null
 	}
 
-	if (!isLoading && !project) {
+	if (!isLoading && !service) {
 		return (
 			<>
 				<Head>

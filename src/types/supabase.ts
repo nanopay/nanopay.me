@@ -16,8 +16,8 @@ export interface Database {
           description: string | null
           id: number
           name: string
-          project_id: string
           scopes: string[]
+          service_id: string
           user_id: string
         }
         Insert: {
@@ -26,8 +26,8 @@ export interface Database {
           description?: string | null
           id?: number
           name: string
-          project_id: string
           scopes: string[]
+          service_id: string
           user_id: string
         }
         Update: {
@@ -36,8 +36,8 @@ export interface Database {
           description?: string | null
           id?: number
           name?: string
-          project_id?: string
           scopes?: string[]
+          service_id?: string
           user_id?: string
         }
       }
@@ -45,8 +45,8 @@ export interface Database {
         Row: {
           completed_at: string
           created_at: string | null
-          hook_id: number
           id: number
+          invoice_id: string
           payload: Json | null
           redelivery: boolean | null
           response_body: string | null
@@ -56,8 +56,8 @@ export interface Database {
         Insert: {
           completed_at: string
           created_at?: string | null
-          hook_id: number
           id?: number
+          invoice_id: string
           payload?: Json | null
           redelivery?: boolean | null
           response_body?: string | null
@@ -67,42 +67,13 @@ export interface Database {
         Update: {
           completed_at?: string
           created_at?: string | null
-          hook_id?: number
           id?: number
+          invoice_id?: string
           payload?: Json | null
           redelivery?: boolean | null
           response_body?: string | null
           started_at?: string
           status_code?: number
-        }
-      }
-      hooks: {
-        Row: {
-          body: Json | null
-          created_at: string | null
-          id: number
-          method: string
-          retry: boolean | null
-          status: string
-          url: string
-        }
-        Insert: {
-          body?: Json | null
-          created_at?: string | null
-          id?: number
-          method: string
-          retry?: boolean | null
-          status: string
-          url: string
-        }
-        Update: {
-          body?: Json | null
-          created_at?: string | null
-          id?: number
-          method?: string
-          retry?: boolean | null
-          status?: string
-          url?: string
         }
       }
       invoices: {
@@ -116,13 +87,14 @@ export interface Database {
           metadata: Json | null
           pay_address: string | null
           price: number
-          project_id: string | null
           received_amount: number | null
           recipient_address: string
           refunded_amount: number | null
+          service_id: string
           status: string | null
           title: string
           user_id: string
+          webhook_url: string | null
         }
         Insert: {
           created_at?: string | null
@@ -134,13 +106,14 @@ export interface Database {
           metadata?: Json | null
           pay_address?: string | null
           price: number
-          project_id?: string | null
           received_amount?: number | null
           recipient_address: string
           refunded_amount?: number | null
+          service_id: string
           status?: string | null
           title: string
           user_id: string
+          webhook_url?: string | null
         }
         Update: {
           created_at?: string | null
@@ -152,16 +125,17 @@ export interface Database {
           metadata?: Json | null
           pay_address?: string | null
           price?: number
-          project_id?: string | null
           received_amount?: number | null
           recipient_address?: string
           refunded_amount?: number | null
+          service_id?: string
           status?: string | null
           title?: string
           user_id?: string
+          webhook_url?: string | null
         }
       }
-      projects: {
+      services: {
         Row: {
           api_keys_count: number
           avatar_url: string | null

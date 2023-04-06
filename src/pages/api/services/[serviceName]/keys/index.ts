@@ -10,11 +10,11 @@ const ajv = new Ajv()
 const schema: Schema = {
 	type: 'object',
 	properties: {
-		project: { type: 'string' },
+		service: { type: 'string' },
 		name: { type: 'string', minLength: 1, maxLength: 40 },
 		description: { type: 'string', maxLength: 512 },
 	},
-	required: ['project', 'name'],
+	required: ['service', 'name'],
 	additionalProperties: false,
 }
 
@@ -55,10 +55,10 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
 
-	const projectName = req.query.projectName as string
+	const serviceName = req.query.serviceName as string
 
-	if (!projectName) {
-		return res.status(400).json({ message: 'Missing project name' })
+	if (!serviceName) {
+		return res.status(400).json({ message: 'Missing service name' })
 	}
 
 	const supabaseServerClient = createServerSupabaseClient<Database>({
@@ -79,25 +79,25 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(401).json({ message: 'Unauthorized' })
 	}
 
-	const { data: project, error: projectError } = await supabase
-		.from('projects')
+	const { data: service, error: serviceError } = await supabase
+		.from('services')
 		.select('id, user_id, api_keys_count')
-		.eq('name', projectName)
+		.eq('name', serviceName)
 		.single()
 
-	if (projectError) {
-		return res.status(500).json({ message: projectError.message })
+	if (serviceError) {
+		return res.status(500).json({ message: serviceError.message })
 	}
 
-	if (!project) {
-		return res.status(404).json({ message: 'Project not found' })
+	if (!service) {
+		return res.status(404).json({ message: 'Service not found' })
 	}
 
-	if (project.user_id !== user.id) {
+	if (service.user_id !== user.id) {
 		return res.status(403).json({ message: 'Forbidden' })
 	}
 
-	if (project.api_keys_count >= LIMIT_API_KEYS) {
+	if (service.api_keys_count >= LIMIT_API_KEYS) {
 		return res.status(403).json({
 			message: `Limit of ${LIMIT_API_KEYS} API keys reached`,
 		})
@@ -106,7 +106,7 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { apiKey, checksum } = createApiKey()
 
 	const write = await supabase.from('api_keys').insert({
-		project_id: project.id,
+		service_id: service.id,
 		name: req.body.name,
 		description: req.body.description,
 		checksum,
