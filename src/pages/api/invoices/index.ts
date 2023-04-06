@@ -42,15 +42,17 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
 
-	const supabaseServerClient = createServerSupabaseClient<Database>({
-		req,
-		res,
-	})
-
 	let projectId: string
 	let userId: string
 
-	if (supabaseServerClient) {
+	const supabaseCookies = req.cookies['supabase-auth-token']
+
+	if (supabaseCookies) {
+		const supabaseServerClient = createServerSupabaseClient<Database>({
+			req,
+			res,
+		})
+
 		const {
 			data: { user },
 			error: userError,
@@ -169,7 +171,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 			expiresAt: expires_at,
 		})
 	} catch (error: any) {
-		console.log('error', error.response)
+		console.error('Payment Worker Error:', paymentWorker.getErrorMessage(error))
 		throw new Error(
 			'Failed to queue payment worker: ' + paymentWorker.getErrorMessage(error),
 		)
