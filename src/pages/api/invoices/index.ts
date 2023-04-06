@@ -167,8 +167,6 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 		// Ask Payment Worker to watch for payments
 		await paymentWorker.queue.add({
 			invoiceId: invoiceId,
-			to: pay_address,
-			expiresAt: expires_at,
 		})
 	} catch (error: any) {
 		console.error('Payment Worker Error:', paymentWorker.getErrorMessage(error))

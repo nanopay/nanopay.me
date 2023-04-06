@@ -6,8 +6,6 @@ export const axiosInstance = axios.create({
 
 interface PaymentAddProps {
 	invoiceId: string
-	to: string
-	expiresAt: string
 }
 
 const paymentWorker = {
