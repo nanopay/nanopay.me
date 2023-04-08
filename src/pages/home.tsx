@@ -12,6 +12,7 @@ import ServicesList from '@/components/ServicesList'
 import Loading from '@/components/Loading'
 import ProfileBoard from '@/components/ProfileBoard'
 import Layout from '@/components/Layout'
+import Invoices from '@/components/Invoices'
 
 export default function Home({ user }: { user: UserProfile }) {
 	const { data: services, isLoading } = useQuery(
@@ -64,6 +65,12 @@ export default function Home({ user }: { user: UserProfile }) {
 								</p>
 							</div>
 						)}
+					</section>
+					<section aria-labelledby="invoices" className="mt-8">
+						<h2 className="mx-auto mb-2 max-w-7xl px-2 text-lg font-medium leading-6 text-slate-900">
+							All Invoices
+						</h2>
+						<Invoices invoices={[]} />
 					</section>
 				</div>
 			</Layout>
