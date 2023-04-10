@@ -195,6 +195,22 @@ export default function NewService({ user }: { user: UserProfile }) {
 								/>
 							)}
 						/>
+
+						<Controller
+							name="redirect_url"
+							control={control}
+							render={({ field }) => (
+								<Input
+									label="Redirect URL (optional)"
+									{...field}
+									onChange={e => field.onChange(e.target.value)}
+									errorMessage={errors.redirect_url?.message}
+									className="w-full"
+									type="url"
+									disabled={isSubmitting || isSuccess}
+								/>
+							)}
+						/>
 					</div>
 
 					<MButton
