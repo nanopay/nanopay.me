@@ -113,7 +113,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 		}
 	} catch (err: any) {
 		console.error(err)
-		// redirect
 		return {
 			props: {
 				user: null,
