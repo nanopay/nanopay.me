@@ -62,6 +62,7 @@ export default async function getInvoice(
 		refunded_amount: invoice.refunded_amount,
 		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`,
 		service: invoice.service,
+		redirect_url: invoice.redirect_url,
 		...(isOwner && {
 			metadata: invoice.metadata,
 			recipient_address: invoice.recipient_address,

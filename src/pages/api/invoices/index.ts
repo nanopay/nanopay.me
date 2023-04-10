@@ -32,6 +32,12 @@ const schema: JSONSchemaType<InvoiceCreate> = {
 			pattern: '^nano_[13456789abcdefghijkmnopqrstuwxyz]{60}$',
 		},
 		metadata: { type: 'object', nullable: true },
+		redirect_url: {
+			type: 'string',
+			format: 'uri',
+			maxLength: 512,
+			nullable: true,
+		},
 	},
 	required: ['title', 'price', 'recipient_address'],
 	additionalProperties: false,
@@ -124,6 +130,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	const price = req.body.price
 	const currency = req.body.currency || 'XNO'
 	const recipient_address = req.body.recipient_address
+	const redirect_url = req.body.redirect_url
 
 	const invoiceId = generateInvoiceId()
 
@@ -140,6 +147,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 			recipient_address,
 			service_id: serviceId,
 			user_id: serviceId ? null : userId,
+			redirect_url,
 		})
 		.select('index')
 		.single()

@@ -17,6 +17,7 @@ export interface InvoiceCreate {
 	price: number
 	recipient_address: string
 	metadata?: Record<string, any>
+	redirect_url?: string
 }
 
 export interface Invoice extends InvoiceCreate {
