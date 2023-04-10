@@ -3,16 +3,19 @@ import { Invoice } from '@/types/invoice'
 import { useEffect, useState } from 'react'
 import Pusher from 'pusher-js'
 import { GetServerSidePropsContext } from 'next'
+import { Payment } from '@/types/payment'
+import api from '@/services/api'
 
-interface PaymentEvent {
-	from: string
-	to: string
-	amount: number
-	timestamp: number
+interface PayInvoiceProps {
+	invoice: Invoice
+	payments: Payment[]
 }
 
-export default function PayInvoice({ invoice }: { invoice: Invoice }) {
-	const [paid, setPaid] = useState(invoice?.status === 'paid')
+export default function PayInvoice({
+	invoice,
+	payments: _payments,
+}: PayInvoiceProps) {
+	const [payments, setPayments] = useState<Payment[]>(_payments)
 
 	useEffect(() => {
 		if (!invoice) return
@@ -21,8 +24,8 @@ export default function PayInvoice({ invoice }: { invoice: Invoice }) {
 			cluster: 'us2',
 		})
 		const channel = pusher.subscribe(invoice.id.toString())
-		channel.bind('payment', function (data: PaymentEvent) {
-			setPaid(true)
+		channel.bind('payment', function (payment: Payment) {
+			setPayments([...payments, payment])
 		})
 
 		return () => {
@@ -40,25 +43,42 @@ export default function PayInvoice({ invoice }: { invoice: Invoice }) {
 				address={invoice.pay_address}
 				amount={invoice.price}
 				usd={1}
-				paid={paid}
+				paid={invoice.status === 'paid' || payments.length > 0}
+				payments={payments}
 				expiresAt={new Date(invoice.expires_at)}
+				service={invoice.service}
+				redirectUrl={invoice.redirect_url}
 			/>
 		</div>
 	)
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-	const { invoiceId } = ctx.query
+	try {
+		const { invoiceId } = ctx.query
 
-	const res = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/invoices/${invoiceId}`,
-	)
+		if (typeof invoiceId !== 'string') {
+			throw new Error('Invalid invoice ID')
+		}
 
-	const invoice = await res.json()
+		const invoice = await api.invoices.get(invoiceId).then(res => res.data)
+		const payments = await api.invoices
+			.payments(invoiceId)
+			.then(res => res.data)
 
-	return {
-		props: {
-			invoice: res.statusText === 'OK' ? invoice : null,
-		},
+		return {
+			props: {
+				invoice,
+				payments,
+			},
+		}
+	} catch (err: any) {
+		console.error(err)
+		return {
+			props: {
+				invoice: null,
+				payments: [],
+			},
+		}
 	}
 }

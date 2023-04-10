@@ -4,7 +4,7 @@ import { users } from './users'
 import { invoices } from './invoices'
 
 export const axiosInstance = axios.create({
-	baseURL: '/api',
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
 
 const getErrorMessage = (error: any): string => {
