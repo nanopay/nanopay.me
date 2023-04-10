@@ -13,12 +13,26 @@ import Loading from '@/components/Loading'
 import ProfileBoard from '@/components/ProfileBoard'
 import Layout from '@/components/Layout'
 import Invoices from '@/components/Invoices'
+import Error500 from '@/components/Errors/500'
 
-export default function Home({ user }: { user: UserProfile }) {
+export default function Home({
+	user,
+	error,
+}: {
+	user: UserProfile
+	error?: string
+}) {
 	const { data: services, isLoading } = useQuery(
 		'services',
 		async () => await api.services.list().then(res => res.data),
+		{
+			enabled: !!user,
+		},
 	)
+
+	if (error) {
+		return <Error500 message={error} />
+	}
 
 	return (
 		<>
@@ -80,18 +94,31 @@ export default function Home({ user }: { user: UserProfile }) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
+	try {
+		const supabase = createServerSupabaseClient(ctx)
+		const {
+			data: { session },
+		} = await supabase.auth.getSession()
 
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
+		const user = session?.user?.user_metadata?.internal_profile
+
+		if (!user) {
+			throw new Error('User metadata not found')
+		}
+
+		return {
+			props: {
+				user,
 			},
-		},
+		}
+	} catch (err: any) {
+		console.error(err)
+		// redirect
+		return {
+			props: {
+				user: null,
+				error: err.message,
+			},
+		}
 	}
 }

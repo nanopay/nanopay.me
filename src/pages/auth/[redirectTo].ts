@@ -6,22 +6,13 @@ export default function AuthRedirect() {
 
 	const { redirectTo } = router.query
 
-	const isValidUrl = (url: string) => {
-		try {
-			new URL(url)
-			return true
-		} catch (e) {
-			return false
-		}
-	}
-
 	useEffect(() => {
-		if (typeof redirectTo === 'string' && isValidUrl(redirectTo)) {
+		if (typeof redirectTo === 'string' && redirectTo) {
 			router.push(redirectTo, undefined, {
 				shallow: false,
 			})
 		} else {
-			router.push('/home')
+			router.push('/500')
 		}
 	}, [redirectTo])
 
