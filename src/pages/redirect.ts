@@ -12,7 +12,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	if (typeof to === 'string' && to) {
 		return {
 			redirect: {
-				destination: `/${to}`,
+				destination: `${to}`,
 				permanent: false,
 			},
 		}
