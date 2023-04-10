@@ -1,17 +1,17 @@
 import { GetServerSidePropsContext } from 'next'
 
-export default function AuthRedirect() {
+export default function Redirect() {
 	return 'redirecting...'
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	// we must force redirect to ensure the cookies will be saved
 
-	const { redirectTo } = ctx.query
+	const { to } = ctx.query
 
-	if (typeof redirectTo === 'string' && redirectTo) {
+	if (typeof to === 'string' && to) {
 		ctx.res.writeHead(302, {
-			Location: `/${redirectTo}`,
+			Location: decodeURI(to),
 		})
 		ctx.res.end()
 	} else {

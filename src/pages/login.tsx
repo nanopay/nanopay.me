@@ -14,9 +14,11 @@ export default function LoginPage() {
 	const user = useUser()
 	const router = useRouter()
 
-	const redirectTo = `${getURL()}/auth/${
-		router.query.redirectedFrom || '/home'
-	}`
+	const redirectTo = `${getURL()}/redirect?to=${encodeURI(
+		typeof router.query.redirectedFrom === 'string'
+			? router.query.redirectedFrom
+			: '/home',
+	)}`
 
 	useEffect(() => {
 		if (user) router.push(redirectTo)
