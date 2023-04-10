@@ -1,20 +1,23 @@
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { GetServerSidePropsContext } from 'next'
 
 export default function AuthRedirect() {
-	const router = useRouter()
+	return 'redirecting...'
+}
 
-	const { redirectTo } = router.query
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+	// we must force redirect to ensure the cookies will be saved
 
-	useEffect(() => {
-		if (typeof redirectTo === 'string' && redirectTo) {
-			router.push(redirectTo, undefined, {
-				shallow: false,
-			})
-		} else {
-			router.push('/500')
-		}
-	}, [redirectTo])
+	const { redirectTo } = ctx.query
 
-	return 'loading...'
+	if (typeof redirectTo === 'string' && redirectTo) {
+		ctx.res.writeHead(302, {
+			Location: `/${redirectTo}`,
+		})
+		ctx.res.end()
+	} else {
+		ctx.res.writeHead(302, {
+			Location: `/home`,
+		})
+		ctx.res.end()
+	}
 }

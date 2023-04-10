@@ -31,7 +31,7 @@ export default function LoginPage() {
 					</Link>
 				</div>
 				<Auth
-					redirectTo={'/home'}
+					redirectTo={redirectTo}
 					magicLink={true}
 					appearance={{
 						theme: ThemeSupa,
