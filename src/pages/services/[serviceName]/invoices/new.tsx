@@ -35,6 +35,12 @@ const schema: JSONSchemaType<InvoiceCreate> = {
 			pattern: '^nano_[13456789abcdefghijkmnopqrstuwxyz]{60}$',
 		},
 		metadata: { type: 'object', nullable: true },
+		redirect_url: {
+			type: 'string',
+			format: 'uri',
+			maxLength: 512,
+			nullable: true,
+		},
 	},
 	required: ['title', 'price', 'recipient_address'],
 	additionalProperties: false,
