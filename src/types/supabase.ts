@@ -18,7 +18,6 @@ export interface Database {
           name: string
           scopes: string[]
           service_id: string
-          user_id: string
         }
         Insert: {
           checksum: string
@@ -28,7 +27,6 @@ export interface Database {
           name: string
           scopes: string[]
           service_id: string
-          user_id: string
         }
         Update: {
           checksum?: string
@@ -38,42 +36,91 @@ export interface Database {
           name?: string
           scopes?: string[]
           service_id?: string
-          user_id?: string
         }
       }
       hook_deliveries: {
         Row: {
           completed_at: string
           created_at: string | null
+          hook_id: string
           id: number
-          invoice_id: string
-          payload: Json | null
-          redelivery: boolean | null
+          redelivery: boolean
+          request_body: Json
+          request_headers: Json
           response_body: string | null
+          response_headers: Json
           started_at: string
           status_code: number
+          success: boolean
+          type: string
+          url: string
         }
         Insert: {
           completed_at: string
           created_at?: string | null
+          hook_id: string
           id?: number
-          invoice_id: string
-          payload?: Json | null
-          redelivery?: boolean | null
+          redelivery?: boolean
+          request_body: Json
+          request_headers: Json
           response_body?: string | null
+          response_headers: Json
           started_at: string
           status_code: number
+          success: boolean
+          type: string
+          url: string
         }
         Update: {
           completed_at?: string
           created_at?: string | null
+          hook_id?: string
           id?: number
-          invoice_id?: string
-          payload?: Json | null
-          redelivery?: boolean | null
+          redelivery?: boolean
+          request_body?: Json
+          request_headers?: Json
           response_body?: string | null
+          response_headers?: Json
           started_at?: string
           status_code?: number
+          success?: boolean
+          type?: string
+          url?: string
+        }
+      }
+      hooks: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          event_types: string[]
+          headers: Json
+          id: string
+          method: string
+          name: string
+          service_id: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          event_types: string[]
+          headers: Json
+          id?: string
+          method?: string
+          name: string
+          service_id: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          event_types?: string[]
+          headers?: Json
+          id?: string
+          method?: string
+          name?: string
+          service_id?: string
+          url?: string
         }
       }
       invoices: {
@@ -89,12 +136,12 @@ export interface Database {
           price: number
           received_amount: number | null
           recipient_address: string
+          redirect_url: string | null
           refunded_amount: number | null
-          service_id: string
+          service_id: string | null
           status: string | null
           title: string
-          user_id: string
-          webhook_url: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
@@ -108,12 +155,12 @@ export interface Database {
           price: number
           received_amount?: number | null
           recipient_address: string
+          redirect_url?: string | null
           refunded_amount?: number | null
-          service_id: string
+          service_id?: string | null
           status?: string | null
           title: string
-          user_id: string
-          webhook_url?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
@@ -127,12 +174,44 @@ export interface Database {
           price?: number
           received_amount?: number | null
           recipient_address?: string
+          redirect_url?: string | null
           refunded_amount?: number | null
-          service_id?: string
+          service_id?: string | null
           status?: string | null
           title?: string
-          user_id?: string
-          webhook_url?: string | null
+          user_id?: string | null
+        }
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          from: string
+          hash: string
+          id: number
+          invoice_id: string
+          timestamp: number
+          to: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          from: string
+          hash: string
+          id?: number
+          invoice_id: string
+          timestamp: number
+          to: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          from?: string
+          hash?: string
+          id?: number
+          invoice_id?: string
+          timestamp?: number
+          to?: string
         }
       }
       services: {
@@ -168,35 +247,6 @@ export interface Database {
           name?: string
           user_id?: string
           website?: string | null
-        }
-      }
-      transactions: {
-        Row: {
-          amount: number
-          created_at: string
-          from: string
-          hash: string
-          id: number
-          timestamp: number
-          to: string
-        }
-        Insert: {
-          amount: number
-          created_at?: string
-          from: string
-          hash: string
-          id?: number
-          timestamp: number
-          to: string
-        }
-        Update: {
-          amount?: number
-          created_at?: string
-          from?: string
-          hash?: string
-          id?: number
-          timestamp?: number
-          to?: string
         }
       }
     }
