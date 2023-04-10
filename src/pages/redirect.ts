@@ -10,18 +10,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	const { to } = ctx.query
 
 	if (typeof to === 'string' && to) {
-		ctx.res.writeHead(302, {
-			Location: decodeURI(to),
-		})
-		ctx.res.end()
+		return {
+			redirect: {
+				destination: `/${to}`,
+				permanent: false,
+			},
+		}
 	} else {
-		ctx.res.writeHead(302, {
-			Location: `/home`,
-		})
-		ctx.res.end()
-	}
-
-	return {
-		props: {},
+		return {
+			redirect: {
+				destination: '/home',
+				permanent: false,
+			},
+		}
 	}
 }
