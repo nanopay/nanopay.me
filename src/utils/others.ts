@@ -32,3 +32,7 @@ export const formatDateTime = (date: string | number) => {
 		hour12: true,
 	})
 }
+
+export const explorerUrl = (hash: string) => {
+	return `https://www.nanolooker.com/block/${hash}`
+}

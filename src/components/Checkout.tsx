@@ -14,6 +14,7 @@ import MButton from './MButton'
 import QRCode from 'react-qr-code'
 import {
 	copyToClipboard,
+	explorerUrl,
 	formatDateTime,
 	toFiatCurrency,
 	truncateAddress,
@@ -78,22 +79,23 @@ export default function Checkout({
 			{paid ? (
 				<main className="flex flex-col flex-1 px-4 py-2">
 					<div className="flex justify-between items-center my-2 pb-2">
-						<div>
-							<MButton
-								variant="text"
-								className="w-full sm:w-auto PayButton"
-								endIcon={<ArrowTopRightOnSquareIcon className="w-4 h-4" />}
-								href={payURI}
-							>
-								Explorer
-							</MButton>
+						<div className="sm:hidden">
+							<a href={explorerUrl(payment.hash)} target="_blank">
+								<MButton
+									variant="text"
+									className="w-full sm:w-auto PayButton"
+									endIcon={<ArrowTopRightOnSquareIcon className="w-4 h-4" />}
+								>
+									Block Explorer
+								</MButton>
+							</a>
 						</div>
-						<div>
+						<div className="sm:hidden">
 							<MButton
 								variant="text"
 								className="w-full sm:w-auto PayButton"
 								endIcon={<ArrowDownTrayIcon className="w-4 h-4" />}
-								href={payURI}
+								href={'#'}
 							>
 								Download Invoice
 							</MButton>
@@ -156,20 +158,21 @@ export default function Checkout({
 											variant="text"
 											className="w-full sm:w-auto PayButton"
 											endIcon={<ArrowDownTrayIcon className="w-4 h-4" />}
-											href={payURI}
+											href={'#'}
 										>
 											Download Invoice
 										</MButton>
-										<MButton
-											variant="text"
-											className="w-full sm:w-auto PayButton"
-											endIcon={
-												<ArrowTopRightOnSquareIcon className="w-4 h-4" />
-											}
-											href={payURI}
-										>
-											See on Explorer
-										</MButton>
+										<a href={explorerUrl(payment.hash)} target="_blank">
+											<MButton
+												variant="text"
+												className="w-full sm:w-auto PayButton"
+												endIcon={
+													<ArrowTopRightOnSquareIcon className="w-4 h-4" />
+												}
+											>
+												Block Explorer
+											</MButton>
+										</a>
 									</div>
 								</div>
 							</div>
