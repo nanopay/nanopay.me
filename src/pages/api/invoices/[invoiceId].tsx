@@ -32,7 +32,7 @@ export default async function getInvoice(
 	const { data: invoice, error } = await supabase
 		.from('invoices')
 		.select(
-			'*, services(name, display_name, avatar_url, description, id, website, contact_email)',
+			'*, service:services(name, display_name, avatar_url, description, id, website, contact_email, user_id)',
 		)
 		.eq('id', invoiceId)
 		.single()
@@ -46,7 +46,7 @@ export default async function getInvoice(
 		return res.status(404).json({ message: 'Invoice not found' })
 	}
 
-	const isOwner = invoice.user_id === user?.id
+	const isOwner = (invoice.service as any)?.user_id === user?.id
 
 	res.status(200).json({
 		id: invoice.id,
@@ -61,7 +61,7 @@ export default async function getInvoice(
 		received_amount: invoice.received_amount,
 		refunded_amount: invoice.refunded_amount,
 		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`,
-		service: invoice.services,
+		service: invoice.service,
 		...(isOwner && {
 			metadata: invoice.metadata,
 			recipient_address: invoice.recipient_address,
