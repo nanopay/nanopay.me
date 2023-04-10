@@ -20,4 +20,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 		})
 		ctx.res.end()
 	}
+
+	return {
+		props: {},
+	}
 }
