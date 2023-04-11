@@ -4,8 +4,10 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Ajv, { JSONSchemaType } from 'ajv'
 import { UserProfile } from '@/types/users'
+import addFormats from 'ajv-formats'
 
 const ajv = new Ajv()
+addFormats(ajv)
 
 const schema: JSONSchemaType<UserProfile> = {
 	type: 'object',
