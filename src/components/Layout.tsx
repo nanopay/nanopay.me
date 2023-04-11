@@ -7,10 +7,11 @@ import { Logo } from './Logo'
 import Image from 'next/image'
 import { UserProfile } from '@/types/users'
 import Sidebar from './Sidebar'
+import Link from 'next/link'
 
 const userNavigation = [
-	{ name: 'Your profile', href: '#' },
-	{ name: 'Sign out', href: '#' },
+	{ name: 'Your profile', href: '/profile' },
+	{ name: 'Logout', href: '/logout' },
 ]
 
 interface SidebarProps {
@@ -160,7 +161,7 @@ export default function Layout({ user, children }: SidebarProps) {
 											{userNavigation.map(item => (
 												<Menu.Item key={item.name}>
 													{({ active }) => (
-														<a
+														<Link
 															href={item.href}
 															className={clsx(
 																active ? 'bg-gray-50' : '',
@@ -168,7 +169,7 @@ export default function Layout({ user, children }: SidebarProps) {
 															)}
 														>
 															{item.name}
-														</a>
+														</Link>
 													)}
 												</Menu.Item>
 											))}
