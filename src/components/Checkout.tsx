@@ -259,15 +259,16 @@ export default function Checkout({
 								</div>
 								{redirectUrl && (
 									<div className="flex justify-center mt-6">
-										<MButton
-											className="w-full sm:w-auto PayButton"
-											endIcon={
-												<ArrowTopRightOnSquareIcon className="w-4 h-4" />
-											}
-											href={redirectUrl}
-										>
-											Continue to {service?.name || 'Merchant Site'}
-										</MButton>
+										<a href={redirectUrl} target="_blank">
+											<MButton
+												className="w-full sm:w-auto PayButton"
+												endIcon={
+													<ArrowTopRightOnSquareIcon className="w-4 h-4" />
+												}
+											>
+												Continue to {service?.name || 'Merchant Site'}
+											</MButton>
+										</a>
 									</div>
 								)}
 							</div>
