@@ -20,6 +20,7 @@ import { UserProfile } from '@/types/users'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import { JSONSchemaType } from 'ajv'
+import { sanitizeSlug } from '@/utils/helpers'
 
 const schema: JSONSchemaType<ServiceCreate> = {
 	type: 'object',
@@ -95,11 +96,6 @@ export default function NewService({ user }: { user: UserProfile }) {
 		showError('Error creating service', 'Check the fields entered')
 	}
 
-	const sanitizeServiceName = (name: string) => {
-		// only allows lowercase letters, numbers, dashes, underscores and dots
-		return name.slice(0, 40).replace(/[^a-z0-9-_\.]/g, '')
-	}
-
 	return (
 		<>
 			<Head>
@@ -139,9 +135,7 @@ export default function NewService({ user }: { user: UserProfile }) {
 									<Input
 										label="Name"
 										{...field}
-										onChange={e =>
-											field.onChange(sanitizeServiceName(e.target.value))
-										}
+										onChange={e => field.onChange(sanitizeSlug(e.target.value))}
 										errorMessage={errors.name?.message}
 										className="w-full"
 										autoCapitalize="words"

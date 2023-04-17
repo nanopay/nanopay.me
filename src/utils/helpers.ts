@@ -69,3 +69,11 @@ export const concatURL = (
 	const pathsArray = Array.isArray(paths) ? paths : [paths]
 	return new URL(path.join(...pathsArray), baseURL).toString()
 }
+
+export const sanitizeSlug = (name: string) => {
+	// only allows lowercase letters, numbers, dashes, underscores and dots
+	return name
+		.slice(0, 40)
+		.replace(/[^a-zA-Z0-9-_\.]/g, '')
+		.toLowerCase()
+}

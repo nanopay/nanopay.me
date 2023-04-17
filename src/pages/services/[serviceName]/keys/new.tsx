@@ -25,6 +25,7 @@ import {
 import { Roboto } from '@next/font/google'
 import clsx from 'clsx'
 import Layout from '@/components/Layout'
+import { sanitizeSlug } from '@/utils/helpers'
 
 const roboto = Roboto({
 	weight: '400',
@@ -92,11 +93,6 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 		showError('Error creating service', 'Check the fields entered')
 	}
 
-	const sanitizeName = (name: string) => {
-		// only allows lowercase letters, numbers, dashes, underscores and dots
-		return name.slice(0, 40).replace(/[^a-z0-9-_\.]/g, '')
-	}
-
 	const copy = (text: string) => {
 		if (createdApiKey) {
 			navigator.clipboard.writeText(text)
@@ -137,7 +133,7 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 									<Input
 										label="Name"
 										{...field}
-										onChange={e => field.onChange(sanitizeName(e.target.value))}
+										onChange={e => field.onChange(sanitizeSlug(e.target.value))}
 										errorMessage={errors.name?.message}
 										className="w-full"
 										autoCapitalize="words"
