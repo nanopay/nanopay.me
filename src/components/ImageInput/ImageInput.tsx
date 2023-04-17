@@ -100,7 +100,7 @@ export function ImageInput({
 			>
 				<img
 					src={imageSource}
-					alt="Imagem Perfil"
+					alt=""
 					className={clsx(
 						'h-full w-full rounded-full',
 						isLoading && 'animate-pulse',

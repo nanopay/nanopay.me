@@ -192,13 +192,11 @@ export default function Sidebar() {
 									<div className="text-xs font-semibold leading-6 text-gray-400 mb-2">
 										No services found
 									</div>
-									<MButton
-										variant="outlined"
-										color="primary"
-										onClick={() => router.push('/services/create')}
-									>
-										Create a service
-									</MButton>
+									<Link href={'/services/new'}>
+										<MButton variant="outlined" color="primary">
+											Create a service
+										</MButton>
+									</Link>
 								</>
 							)}
 						</li>
@@ -229,7 +227,7 @@ export default function Sidebar() {
 									</li>
 								))}
 							</ul>
-							{(servicesLoading || !services) && (
+							{servicesLoading && (
 								<div className="-mx-2 absolute inset-0 flex items-center justify-center bg-white opacity-50" />
 							)}
 						</li>
