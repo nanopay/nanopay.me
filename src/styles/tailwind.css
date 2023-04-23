@@ -13,6 +13,10 @@
 	@apply text-white bg-nano hover:bg-nano/90;
 }
 
+.Button:disabled {
+	@apply bg-gray-200 text-gray-400;
+}
+
 .PayButton {
 	@apply text-xs leading-5;
 }
