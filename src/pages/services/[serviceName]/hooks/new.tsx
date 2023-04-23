@@ -15,11 +15,13 @@ import { JSONSchemaType } from 'ajv'
 import Layout from '@/components/Layout'
 import { sanitizeSlug } from '@/utils/helpers'
 import {
+	Autocomplete,
 	FormControl,
 	FormControlLabel,
 	FormLabel,
 	Radio,
 	RadioGroup,
+	TextField,
 } from '@mui/material'
 import { HookCreate } from '@/types/hooks'
 import MButton from '@/components/MButton'
@@ -238,6 +240,35 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 								</FormControl>
 							)}
 						/>
+
+						<div className="flex justify-between">
+							<Autocomplete
+								options={['POST']}
+								id="method"
+								readOnly
+								defaultValue={'POST'}
+								renderInput={params => (
+									<TextField {...params} label="Method" variant="standard" />
+								)}
+								className="w-32"
+								disabled
+							/>
+							<Autocomplete
+								options={['application/json']}
+								id="method"
+								readOnly
+								defaultValue={'application/json'}
+								renderInput={params => (
+									<TextField
+										{...params}
+										label="Content Type"
+										variant="standard"
+									/>
+								)}
+								className="w-64"
+								disabled
+							/>
+						</div>
 
 						<Controller
 							name="secret"
