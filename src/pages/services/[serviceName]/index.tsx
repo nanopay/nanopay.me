@@ -74,9 +74,9 @@ export default function ServiceDashboard({ user }: { user: UserProfile }) {
 	const cards = [
 		{
 			name: 'Invoices',
-			href: '#',
+			href: `/services/${serviceName}/invoices`,
 			icon: Receipt,
-			amount: 984,
+			amount: service.invoices_count,
 			action: 'View All',
 		},
 		{
@@ -88,9 +88,9 @@ export default function ServiceDashboard({ user }: { user: UserProfile }) {
 		},
 		{
 			name: 'Webhooks',
-			href: '#',
+			href: `/services/${serviceName}/hooks`,
 			icon: Webhook,
-			amount: '435',
+			amount: service.hooks_count,
 			action: 'View All',
 		},
 	]
