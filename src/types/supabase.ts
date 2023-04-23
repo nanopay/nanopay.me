@@ -221,6 +221,7 @@ export interface Database {
           contact_email: string | null
           description: string | null
           display_name: string | null
+          hooks_count: number
           id: string
           name: string
           user_id: string
@@ -232,6 +233,7 @@ export interface Database {
           contact_email?: string | null
           description?: string | null
           display_name?: string | null
+          hooks_count?: number
           id?: string
           name: string
           user_id: string
@@ -243,6 +245,7 @@ export interface Database {
           contact_email?: string | null
           description?: string | null
           display_name?: string | null
+          hooks_count?: number
           id?: string
           name?: string
           user_id?: string
@@ -264,3 +267,4 @@ export interface Database {
     }
   }
 }
+
