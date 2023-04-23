@@ -9,7 +9,10 @@ export interface Service extends ServiceCreate {
 	display_name: string
 	website: string | null
 	contact_email: string | null
+	invoices_count: number
 	api_keys_count: number
+	hooks_count: number
+	created_at: string
 }
 
 export interface ApiKeyCreate {

@@ -219,10 +219,12 @@ export interface Database {
           api_keys_count: number
           avatar_url: string | null
           contact_email: string | null
+          created_at: string
           description: string | null
           display_name: string | null
           hooks_count: number
           id: string
+          invoices_count: number
           name: string
           user_id: string
           website: string | null
@@ -231,10 +233,12 @@ export interface Database {
           api_keys_count?: number
           avatar_url?: string | null
           contact_email?: string | null
+          created_at?: string
           description?: string | null
           display_name?: string | null
           hooks_count?: number
           id?: string
+          invoices_count?: number
           name: string
           user_id: string
           website?: string | null
@@ -243,10 +247,12 @@ export interface Database {
           api_keys_count?: number
           avatar_url?: string | null
           contact_email?: string | null
+          created_at?: string
           description?: string | null
           display_name?: string | null
           hooks_count?: number
           id?: string
+          invoices_count?: number
           name?: string
           user_id?: string
           website?: string | null
