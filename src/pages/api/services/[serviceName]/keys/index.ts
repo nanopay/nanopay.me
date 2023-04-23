@@ -110,7 +110,6 @@ const newKey = async (req: NextApiRequest, res: NextApiResponse) => {
 		name: req.body.name,
 		description: req.body.description,
 		checksum,
-		user_id: user.id,
 		scopes: ['*'],
 	})
 
