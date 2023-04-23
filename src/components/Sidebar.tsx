@@ -66,9 +66,9 @@ export default function Sidebar() {
 		},
 		{
 			name: 'Webhooks',
-			href: `/services/${currentService?.name}/webhooks`,
+			href: `/services/${currentService?.name}/hooks`,
 			icon: Webhook,
-			current: router.pathname === '/services/[serviceName]/webhooks',
+			current: router.pathname === '/services/[serviceName]/hooks',
 		},
 		{
 			name: 'Api Keys',
