@@ -95,6 +95,7 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 			api.services.hooks.create(serviceName, data).then(res => res.data),
 		onSuccess: () => {
 			showSuccess('Webhook created')
+			router.push(`/services/${serviceName}/hooks`)
 		},
 		onError: (err: any) => {
 			showError('Error creating webhook', api.getErrorMessage(err))
