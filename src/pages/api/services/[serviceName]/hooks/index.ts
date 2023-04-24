@@ -93,7 +93,9 @@ const createHook = async (req: NextApiRequest, res: NextApiResponse) => {
 		})
 	}
 
-	const headers = {}
+	const headers = {
+		'Content-Type': 'application/json',
+	}
 
 	const { error: hookError, data: hook } = await supabase
 		.from('hooks')
@@ -114,10 +116,63 @@ const createHook = async (req: NextApiRequest, res: NextApiResponse) => {
 	return res.status(200).json(hook)
 }
 
+const getHooks = async (req: NextApiRequest, res: NextApiResponse) => {
+	const serviceName = req.query.serviceName as string
+
+	if (!serviceName) {
+		return res.status(400).json({ message: 'Missing service name' })
+	}
+
+	const supabaseServerClient = createServerSupabaseClient<Database>({
+		req,
+		res,
+	})
+
+	const {
+		data: { user },
+		error: userError,
+	} = await supabaseServerClient.auth.getUser()
+
+	if (userError) {
+		return res.status(500).json({ message: userError.message })
+	}
+
+	if (!user) {
+		return res.status(401).json({ message: 'Unauthorized' })
+	}
+
+	const { data: service, error: serviceError } = await supabaseServerClient
+		.from('services')
+		.select('id, user_id, hooks_count')
+		.eq('name', serviceName)
+		.single()
+
+	if (serviceError) {
+		return res.status(500).json({ message: serviceError.message })
+	}
+
+	if (!service) {
+		return res.status(404).json({ message: 'Service not found' })
+	}
+
+	const { data: hooks, error: hooksError } = await supabaseServerClient
+		.from('hooks')
+		.select('*')
+		.eq('service_id', service.id)
+
+	if (hooksError) {
+		return res.status(500).json({ message: hooksError.message })
+	}
+
+	return res.status(200).json(hooks)
+}
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	switch (req.method) {
 		case 'POST':
 			return createHook(req, res)
+		case 'GET':
+			return getHooks(req, res)
 		default:
 			return res.status(405).json({ message: 'Method not allowed' })
 	}
