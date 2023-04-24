@@ -60,7 +60,7 @@ export function Faqs() {
 					<p className="mt-2 text-lg text-gray-600">
 						If you have anything else you want to ask reach out to us at:{' '}
 						<Link
-							href="mailto:info@example.com"
+							href="mailto:hello@nanopay.me"
 							className="text-gray-900 underline"
 						>
 							hello@nanopay.me
