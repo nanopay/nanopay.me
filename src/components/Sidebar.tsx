@@ -109,14 +109,14 @@ export default function Sidebar() {
 						<li className="border-b border-gray-100 pb-4">
 							{servicesLoading || !services ? (
 								<div>
-									<div className="text-xs font-semibold leading-6 text-gray-400">
+									<div className="text-sm font-semibold leading-6 text-gray-400">
 										Current Service
 									</div>
 									<Loading className="h-12 mx-auto mt-2" />
 								</div>
 							) : services.length > 0 ? (
 								<>
-									<div className="text-xs font-semibold leading-6 text-gray-400">
+									<div className="text-sm font-semibold leading-6 text-gray-500">
 										Current Service
 									</div>
 									<ListItemButton
@@ -201,7 +201,7 @@ export default function Sidebar() {
 							)}
 						</li>
 						<li className="relative">
-							<ul role="list" className="-mx-2 space-y-1">
+							<ul role="list" className="-mx-2 space-y-2">
 								{serviceNavigation.map(item => (
 									<li key={item.name}>
 										<Link
@@ -209,8 +209,8 @@ export default function Sidebar() {
 											className={clsx(
 												item.current
 													? 'bg-slate-50 border border-slatel-100 text-nano'
-													: 'text-gray-700 hover:text-nano hover:bg-gray-50',
-												'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+													: 'text-gray-600 hover:text-nano hover:bg-gray-50',
+												'group flex gap-x-3 rounded-md p-3 text-base items-center leading-6 font-semibold',
 											)}
 										>
 											<item.icon
@@ -218,7 +218,7 @@ export default function Sidebar() {
 													item.current
 														? 'text-nano'
 														: 'text-gray-400 group-hover:text-nano',
-													'h-6 w-6 shrink-0',
+													'h-8 w-8 shrink-0',
 												)}
 												aria-hidden="true"
 											/>
