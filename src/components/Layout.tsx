@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { UserProfile } from '@/types/users'
 import Sidebar from './Sidebar'
 import Link from 'next/link'
+import { Footer } from './Footer'
 
 const userNavigation = [
 	{ name: 'Your profile', href: '/profile' },
@@ -17,9 +18,14 @@ const userNavigation = [
 interface SidebarProps {
 	user: UserProfile
 	children: React.ReactNode
+	showFooter?: boolean
 }
 
-export default function Layout({ user, children }: SidebarProps) {
+export default function Layout({
+	user,
+	children,
+	showFooter = false,
+}: SidebarProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 
 	return (
@@ -184,6 +190,8 @@ export default function Layout({ user, children }: SidebarProps) {
 				<main className="flex flex-col w-full flex-1 py-8 px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
 					{children}
 				</main>
+
+				{showFooter && <Footer />}
 			</div>
 		</div>
 	)

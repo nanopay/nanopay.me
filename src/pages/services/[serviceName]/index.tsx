@@ -100,7 +100,7 @@ export default function ServiceDashboard({ user }: { user: UserProfile }) {
 			<Head>
 				<title>{service.name} - NanoPay.me</title>
 			</Head>
-			<Layout user={user}>
+			<Layout user={user} showFooter>
 				<div className="bg-white shadow rounded-lg">
 					<div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
 						<div className="py-6 md:flex md:items-center md:justify-between">
@@ -227,7 +227,6 @@ export default function ServiceDashboard({ user }: { user: UserProfile }) {
 					<Invoices invoices={invoices || []} serviceName={serviceName} />
 				</section>
 
-				<Footer />
 				{isNew && <Fireworks count={3} />}
 			</Layout>
 		</>

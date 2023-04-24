@@ -39,7 +39,7 @@ export default function Home({
 			<Head>
 				<title>Home - NanoPay.me</title>
 			</Head>
-			<Layout user={user}>
+			<Layout user={user} showFooter>
 				<div className="grid grid-cols-1 gap-4 lg:col-span-2">
 					{/* Welcome panel */}
 					<section aria-labelledby="profile-overview-title">
@@ -88,7 +88,6 @@ export default function Home({
 					</section>
 				</div>
 			</Layout>
-			<Footer />
 		</>
 	)
 }
