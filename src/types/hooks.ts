@@ -11,5 +11,6 @@ export interface Hook extends HookCreate {
 	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 	service: string
 	headers: Record<string, any>
+	active: boolean
 	created_at: string
 }

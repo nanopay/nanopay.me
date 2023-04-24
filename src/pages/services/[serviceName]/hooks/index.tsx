@@ -4,8 +4,9 @@ import { GetServerSidePropsContext } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useQuery } from 'react-query'
 import {
+	ArrowUpCircleIcon,
+	CheckIcon,
 	ChevronRightIcon,
-	ExclamationTriangleIcon,
 	PlusIcon,
 } from '@heroicons/react/24/solid'
 
@@ -13,6 +14,7 @@ import { Button } from '@/components/Button'
 import { UserProfile } from '@/types/users'
 import api from '@/services/api'
 import Layout from '@/components/Layout'
+import ActivityDot from '@/components/ActivityDot'
 
 export default function Webhooks({ user }: { user: UserProfile }) {
 	const router = useRouter()
@@ -21,7 +23,7 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 
 	const { data: webhooks, isLoading } = useQuery({
 		queryKey: ['hooks', serviceName],
-		queryFn: () => api.services.apiKeys.list(serviceName).then(res => res.data),
+		queryFn: () => api.services.hooks.list(serviceName).then(res => res.data),
 	})
 
 	if (!serviceName) {
@@ -57,26 +59,31 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 							role="list"
 							className="divide-y divide-gray-200 border-b border-gray-200"
 						>
-							{webhooks?.map(webhook => (
+							{webhooks?.map(hook => (
 								<li
-									key={webhook.id}
+									key={hook.id}
 									className="relative py-5 pl-4 pr-6 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
 								>
 									<div className="flex items-center justify-between space-x-4">
 										{/* Service name and description */}
 										<div className="min-w-0 space-y-3">
 											<div className="flex items-center space-x-3">
+												{hook.active ? (
+													<ActivityDot status="active" />
+												) : (
+													<ActivityDot status="inactive" />
+												)}
 												<h2 className="text-sm font-medium">
 													<span
 														className="absolute inset-0"
 														aria-hidden="true"
 													/>
-													{webhook.name}
+													{hook.name}
 												</h2>
 											</div>
 											<p className="group relative flex items-center space-x-2.5">
 												<span className="text-xs font-medium text-gray-500 group-hover:text-gray-900">
-													{webhook.description}
+													{hook.url}
 												</span>
 											</p>
 										</div>
@@ -92,7 +99,7 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 												<span aria-hidden="true">&middot;</span>
 												<span>
 													Created at{' '}
-													{new Date(webhook.created_at).toLocaleDateString(
+													{new Date(hook.created_at).toLocaleDateString(
 														undefined,
 														{
 															month: 'short',
@@ -102,12 +109,14 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 													)}
 												</span>
 											</p>
-											<p className="group relative flex items-center space-x-1">
-												<ExclamationTriangleIcon className="h-4 w-4 text-yellow-400" />
-												<span className="text-xs font-medium text-gray-500 group-hover:text-gray-900">
-													This token has no expiration date.
-												</span>
-											</p>
+											{hook.event_types.map(eventType => (
+												<p className="flex items-center space-x-1">
+													<ArrowUpCircleIcon className="h-4 w-4 text-gray-400" />
+													<span className="text-xs font-semibold text-gray-500">
+														{eventType}
+													</span>
+												</p>
+											))}
 										</div>
 									</div>
 								</li>

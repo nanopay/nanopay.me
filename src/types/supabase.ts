@@ -90,6 +90,7 @@ export interface Database {
       }
       hooks: {
         Row: {
+          active: boolean
           created_at: string | null
           description: string | null
           event_types: string[]
@@ -101,6 +102,7 @@ export interface Database {
           url: string
         }
         Insert: {
+          active?: boolean
           created_at?: string | null
           description?: string | null
           event_types: string[]
@@ -112,6 +114,7 @@ export interface Database {
           url: string
         }
         Update: {
+          active?: boolean
           created_at?: string | null
           description?: string | null
           event_types?: string[]
