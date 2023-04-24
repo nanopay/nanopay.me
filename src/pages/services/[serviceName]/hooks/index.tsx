@@ -20,7 +20,7 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 	const serviceName = router.query.serviceName as string
 
 	const { data: webhooks, isLoading } = useQuery({
-		queryKey: ['apiKeys', serviceName],
+		queryKey: ['hooks', serviceName],
 		queryFn: () => api.services.apiKeys.list(serviceName).then(res => res.data),
 	})
 

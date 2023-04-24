@@ -33,7 +33,7 @@ export default function ServiceDashboard({ user }: { user: UserProfile }) {
 	const serviceName = router.query.serviceName as string
 
 	const { data: service, isLoading } = useQuery({
-		queryKey: ['apiKeys', serviceName],
+		queryKey: ['service', serviceName],
 		queryFn: () => api.services.get(serviceName).then(res => res.data),
 	})
 
