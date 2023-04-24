@@ -116,9 +116,11 @@ export default function Sidebar() {
 								</div>
 							) : services.length > 0 ? (
 								<>
-									<div className="text-sm font-semibold leading-6 text-gray-500">
-										Current Service
-									</div>
+									{currentService && (
+										<div className="text-sm font-semibold leading-6 text-gray-500">
+											Current Service
+										</div>
+									)}
 									<ListItemButton
 										onClick={() => setOpenServices(!openServices)}
 										className="bg-slate-100 rounded-lg"
@@ -201,7 +203,13 @@ export default function Sidebar() {
 							)}
 						</li>
 						<li className="relative">
-							<ul role="list" className="-mx-2 space-y-2">
+							<ul
+								role="list"
+								className={clsx(
+									'-mx-2 space-y-2',
+									(servicesLoading || !currentService) && 'blur-[2px]',
+								)}
+							>
 								{serviceNavigation.map(item => (
 									<li key={item.name}>
 										<Link
@@ -210,7 +218,7 @@ export default function Sidebar() {
 												item.current
 													? 'bg-slate-50 border border-slatel-100 text-nano'
 													: 'text-gray-600 hover:text-nano hover:bg-gray-50',
-												'group flex gap-x-3 rounded-md p-3 text-base items-center leading-6 font-semibold',
+												'group flex gap-x-4 rounded-md p-3 text-base items-center leading-6 font-semibold',
 											)}
 										>
 											<item.icon
@@ -218,7 +226,7 @@ export default function Sidebar() {
 													item.current
 														? 'text-nano'
 														: 'text-gray-400 group-hover:text-nano',
-													'h-8 w-8 shrink-0',
+													'h-6 w-6 shrink-0',
 												)}
 												aria-hidden="true"
 											/>
@@ -227,12 +235,12 @@ export default function Sidebar() {
 									</li>
 								))}
 							</ul>
-							{servicesLoading && (
-								<div className="-mx-2 absolute inset-0 flex items-center justify-center bg-white opacity-50" />
+							{(servicesLoading || !currentService) && (
+								<div className="-mx-2 absolute inset-0 flex items-center justify-center bg-white opacity-20" />
 							)}
 						</li>
 						<li className="mt-auto">
-							<ul role="list" className="-mx-2 space-y-1">
+							<ul role="list" className="-mx-2 space-y-2">
 								{defaultNavigation.map(item => (
 									<li key={item.name}>
 										<Link
@@ -241,7 +249,7 @@ export default function Sidebar() {
 												item.current
 													? 'bg-slate-50 border border-slatel-100 text-nano'
 													: 'text-gray-700 hover:text-nano hover:bg-gray-50',
-												'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+												'group flex gap-x-3 rounded-md p-3 text-base leading-6 font-semibold',
 											)}
 										>
 											<item.icon
