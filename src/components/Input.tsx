@@ -1,6 +1,6 @@
 import React from 'react'
 import { TextField, TextFieldProps } from '@mui/material'
-import { Roboto } from '@next/font/google'
+import { Roboto } from 'next/font/google'
 
 type InputProps = TextFieldProps & {
 	label: string
