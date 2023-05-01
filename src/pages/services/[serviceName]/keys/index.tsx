@@ -1,21 +1,20 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { GetServerSidePropsContext } from 'next'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useQuery } from 'react-query'
 import {
 	ChevronRightIcon,
 	ExclamationTriangleIcon,
 	PlusIcon,
 } from '@heroicons/react/24/solid'
-
 import { Button } from '@/components/Button'
-import { UserProfile } from '@/types/users'
 import api from '@/services/api'
 import Layout from '@/components/Layout'
 import ErrorPage500 from '@/pages/500'
+import { useAuth } from '@/contexts/Auth'
 
-export default function ApiKeys({ user }: { user: UserProfile }) {
+export default function ApiKeys() {
+	const { user } = useAuth()
+
 	const router = useRouter()
 
 	const serviceName = router.query.serviceName as string
@@ -126,21 +125,4 @@ export default function ApiKeys({ user }: { user: UserProfile }) {
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
-			},
-		},
-	}
 }

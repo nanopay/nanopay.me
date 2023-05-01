@@ -1,22 +1,20 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { GetServerSidePropsContext } from 'next'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useQuery } from 'react-query'
 import {
 	ArrowUpCircleIcon,
-	CheckIcon,
 	ChevronRightIcon,
 	PlusIcon,
 } from '@heroicons/react/24/solid'
-
 import { Button } from '@/components/Button'
-import { UserProfile } from '@/types/users'
 import api from '@/services/api'
 import Layout from '@/components/Layout'
 import ActivityDot from '@/components/ActivityDot'
+import { useAuth } from '@/contexts/Auth'
 
-export default function Webhooks({ user }: { user: UserProfile }) {
+export default function Webhooks() {
+	const { user } = useAuth()
+
 	const router = useRouter()
 
 	const serviceName = router.query.serviceName as string
@@ -24,6 +22,7 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 	const { data: webhooks, isLoading } = useQuery({
 		queryKey: ['hooks', serviceName],
 		queryFn: () => api.services.hooks.list(serviceName).then(res => res.data),
+		enabled: !!serviceName,
 	})
 
 	if (!serviceName) {
@@ -110,7 +109,10 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 												</span>
 											</p>
 											{hook.event_types.map(eventType => (
-												<p className="flex items-center space-x-1">
+												<p
+													className="flex items-center space-x-1"
+													key={eventType}
+												>
 													<ArrowUpCircleIcon className="h-4 w-4 text-gray-400" />
 													<span className="text-xs font-semibold text-gray-500">
 														{eventType}
@@ -131,21 +133,4 @@ export default function Webhooks({ user }: { user: UserProfile }) {
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
-			},
-		},
-	}
 }

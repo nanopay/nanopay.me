@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify'
 import { ThemeProvider } from '@mui/material/styles'
 import 'react-toastify/dist/ReactToastify.css'
 import { theme } from '@/styles/mui-theme'
+import { AuthProvider } from '@/contexts/Auth'
 
 const queryClient = new QueryClient()
 
@@ -25,10 +26,12 @@ export default function App({
 				supabaseClient={supabaseClient}
 				initialSession={pageProps.initialSession}
 			>
-				<ThemeProvider theme={theme}>
-					<Component {...pageProps} />
-					<ToastContainer />
-				</ThemeProvider>
+				<AuthProvider>
+					<ThemeProvider theme={theme}>
+						<Component {...pageProps} />
+						<ToastContainer />
+					</ThemeProvider>
+				</AuthProvider>
 			</SessionContextProvider>
 		</QueryClientProvider>
 	)

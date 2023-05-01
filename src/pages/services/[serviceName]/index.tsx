@@ -1,6 +1,4 @@
 import Head from 'next/head'
-
-import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Button } from '@/components/Button'
 import {
@@ -10,11 +8,7 @@ import {
 	PlusIcon,
 } from '@heroicons/react/24/solid'
 import Image from 'next/image'
-import clsx from 'clsx'
 import logoXno from '@/images/logos/nano-xno.svg'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
-import { UserProfile } from '@/types/users'
 import { Receipt, Webhook } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
@@ -24,8 +18,11 @@ import Fireworks from '@/components/Fireworks'
 import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'
 import Invoices from '@/components/Invoices'
+import { useAuth } from '@/contexts/Auth'
 
-export default function ServiceDashboard({ user }: { user: UserProfile }) {
+export default function ServiceDashboard() {
+	const { user } = useAuth()
+
 	const router = useRouter()
 
 	const [isNew, setIsNew] = useState(false)
@@ -231,21 +228,4 @@ export default function ServiceDashboard({ user }: { user: UserProfile }) {
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
-			},
-		},
-	}
 }

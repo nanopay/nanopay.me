@@ -1,14 +1,14 @@
 import Head from 'next/head'
-import { GetServerSidePropsContext } from 'next'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-
 import { Faqs } from '@/components/Faqs'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Hero } from '@/components/Hero'
 import { UserProfile } from '@/types/users'
+import { useAuth } from '@/contexts/Auth'
 
-export default function Home({ user }: { user: UserProfile }) {
+export default function Home() {
+	const { user } = useAuth()
+
 	return (
 		<>
 			<Head>
@@ -26,17 +26,4 @@ export default function Home({ user }: { user: UserProfile }) {
 			<Footer />
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || null,
-		},
-	}
 }

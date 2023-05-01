@@ -1,11 +1,6 @@
 import Head from 'next/head'
 import { PlusIcon } from '@heroicons/react/24/solid'
-
-import { Footer } from '@/components/Footer'
 import { Button } from '@/components/Button'
-import { createServerSupabaseClient, User } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
-import { UserProfile } from '@/types/users'
 import { useQuery } from 'react-query'
 import api from '@/services/api'
 import ServicesList from '@/components/ServicesList'
@@ -13,26 +8,15 @@ import Loading from '@/components/Loading'
 import ProfileBoard from '@/components/ProfileBoard'
 import Layout from '@/components/Layout'
 import Invoices from '@/components/Invoices'
-import Error500 from '@/components/Errors/500'
+import { useAuth } from '@/contexts/Auth'
 
-export default function Home({
-	user,
-	error,
-}: {
-	user: UserProfile
-	error?: string
-}) {
+export default function Home() {
+	const { user } = useAuth()
+
 	const { data: services, isLoading } = useQuery(
 		'services',
 		async () => await api.services.list().then(res => res.data),
-		{
-			enabled: !!user,
-		},
 	)
-
-	if (error) {
-		return <Error500 message={error} />
-	}
 
 	return (
 		<>
@@ -90,33 +74,4 @@ export default function Home({
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	try {
-		const supabase = createServerSupabaseClient(ctx)
-		const {
-			data: { session },
-		} = await supabase.auth.getSession()
-
-		const user = session?.user?.user_metadata?.internal_profile
-
-		if (!user) {
-			throw new Error('User metadata not found')
-		}
-
-		return {
-			props: {
-				user,
-			},
-		}
-	} catch (err: any) {
-		console.error(err)
-		return {
-			props: {
-				user: null,
-				error: err.message,
-			},
-		}
-	}
 }

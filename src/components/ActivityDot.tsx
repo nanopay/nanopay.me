@@ -1,5 +1,3 @@
-import clsx from 'clsx'
-
 const statusColor = {
 	active: 'green',
 	inactive: 'gray',
@@ -12,12 +10,14 @@ export default function ActivityDot({
 }: {
 	status: keyof typeof statusColor
 }) {
+	const color = statusColor[status]
+
 	return (
 		<span
-			className={`bg-${statusColor[status]}-100 h-4 w-4 flex items-center justify-center rounded-full`}
+			className={`bg-${color}-100 h-4 w-4 flex items-center justify-center rounded-full`}
 			aria-hidden="true"
 		>
-			<span className={`bg-${statusColor[status]}-400 h-2 w-2 rounded-full`} />
+			<span className={`bg-${color}-400 h-2 w-2 rounded-full`} />
 		</span>
 	)
 }

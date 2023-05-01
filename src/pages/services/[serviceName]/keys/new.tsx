@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { useMutation } from 'react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
-
 import MButton from '@/components/MButton'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
@@ -11,15 +10,13 @@ import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { ApiKeyCreate } from '@/types/services'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { UserProfile } from '@/types/users'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
 import { JSONSchemaType } from 'ajv'
 import { DocumentDuplicateIcon } from '@heroicons/react/24/solid'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import Layout from '@/components/Layout'
 import { sanitizeSlug } from '@/utils/helpers'
+import { useAuth } from '@/contexts/Auth'
 
 const roboto = Roboto({
 	weight: '400',
@@ -41,7 +38,9 @@ const schema: JSONSchemaType<Omit<ApiKeyCreate, 'service'>> = {
 	additionalProperties: false,
 }
 
-export default function NewApiKey({ user }: { user: UserProfile }) {
+export default function NewApiKey() {
+	const { user } = useAuth()
+
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
@@ -209,21 +208,4 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
-			},
-		},
-	}
 }

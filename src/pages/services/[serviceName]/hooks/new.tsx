@@ -8,9 +8,6 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { UserProfile } from '@/types/users'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
 import { JSONSchemaType } from 'ajv'
 import Layout from '@/components/Layout'
 import { sanitizeSlug } from '@/utils/helpers'
@@ -25,6 +22,7 @@ import {
 } from '@mui/material'
 import { HookCreate } from '@/types/hooks'
 import MButton from '@/components/MButton'
+import { useAuth } from '@/contexts/Auth'
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',
@@ -60,7 +58,9 @@ const schema: JSONSchemaType<HookCreate> = {
 	additionalProperties: false,
 }
 
-export default function NewApiKey({ user }: { user: UserProfile }) {
+export default function NewApiKey() {
+	const { user } = useAuth()
+
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
@@ -303,21 +303,4 @@ export default function NewApiKey({ user }: { user: UserProfile }) {
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
-			},
-		},
-	}
 }
