@@ -3,10 +3,7 @@ import Head from 'next/head'
 import { useMutation, useQuery } from 'react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
 import { JSONSchemaType } from 'ajv'
-import Image from 'next/image'
 
 import { Container } from '@/components/Container'
 import MButton from '@/components/MButton'
@@ -19,6 +16,7 @@ import { UserProfile } from '@/types/users'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
 import Layout from '@/components/Layout'
+import { useAuth } from '@/contexts/Auth'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
@@ -46,9 +44,11 @@ const schema: JSONSchemaType<InvoiceCreate> = {
 	additionalProperties: false,
 }
 
-export default function NewService({ user }: { user: UserProfile }) {
+export default function NewService() {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
+
+	const { user } = useAuth()
 
 	const serviceName = router.query.serviceName as string
 
@@ -229,21 +229,4 @@ export default function NewService({ user }: { user: UserProfile }) {
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
-			},
-		},
-	}
 }

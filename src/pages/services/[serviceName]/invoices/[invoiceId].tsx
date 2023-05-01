@@ -3,15 +3,16 @@ import Loading from '@/components/Loading'
 import Layout from '@/components/Layout'
 import api from '@/services/api'
 import { UserProfile } from '@/types/users'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
+import { useAuth } from '@/contexts/Auth'
 
-export default function InvoicePage({ user }: { user: UserProfile }) {
+export default function InvoicePage() {
 	const router = useRouter()
 	const invoiceId = router.query.invoiceId as string
+
+	const { user } = useAuth()
 
 	const {
 		data: invoice,
@@ -54,21 +55,4 @@ export default function InvoicePage({ user }: { user: UserProfile }) {
 			</Layout>
 		</>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	return {
-		props: {
-			user: session?.user?.user_metadata?.internal_profile || {
-				name: 'error',
-				email: 'error',
-				avatar_url: 'error',
-			},
-		},
-	}
 }
