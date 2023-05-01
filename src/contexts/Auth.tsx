@@ -1,11 +1,6 @@
 import Loading from '@/components/Loading'
-import { Database } from '@/types/supabase'
 import { UserProfile } from '@/types/users'
-import {
-	useSupabaseClient,
-	useUser,
-	useSessionContext,
-} from '@supabase/auth-helpers-react'
+import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { AuthError } from '@supabase/supabase-js'
 import { useRouter } from 'next/router'
 import React, { useContext, useState, useEffect, createContext } from 'react'
@@ -67,7 +62,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				signOut,
 			}}
 		>
-			{loading ? <Loading /> : children}
+			{loading ? (
+				<div className="w-full h-screen flex items-center justify-center">
+					<Loading className="sm:w-32 sm:h-32" />
+				</div>
+			) : (
+				children
+			)}
 		</AuthContext.Provider>
 	)
 }
