@@ -116,7 +116,9 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 				</MButton>
 				<div>
 					<h3 className="text-xs text-gray-600">Amount Payable</h3>
-					<p className="text-2xl font-semibold text-gray-800">Ӿ 1,000.00</p>
+					<p className="text-2xl font-semibold text-gray-800">
+						Ӿ {invoice.price}
+					</p>
 				</div>
 			</div>
 		</div>
