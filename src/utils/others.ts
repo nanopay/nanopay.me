@@ -21,6 +21,24 @@ export const copyToClipboard = (text: string) => {
 	navigator.clipboard.writeText(text)
 }
 
+export const formatDate = (date: string | number) => {
+	const d = new Date(date)
+	return new Date(date).toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+	})
+}
+
+export const formatTime = (date: string | number) => {
+	const d = new Date(date)
+	return new Date(date).toLocaleTimeString('en-US', {
+		hour: 'numeric',
+		minute: 'numeric',
+		hour12: true,
+	})
+}
+
 export const formatDateTime = (date: string | number) => {
 	const d = new Date(date)
 	return new Date(date).toLocaleDateString('en-US', {

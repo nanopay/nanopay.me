@@ -14,8 +14,8 @@ import MButton from './MButton'
 import QRCode from 'react-qr-code'
 import {
 	copyToClipboard,
-	explorerUrl,
-	formatDateTime,
+	formatDate,
+	formatTime,
 	toFiatCurrency,
 	truncateAddress,
 } from '@/utils/others'
@@ -24,6 +24,7 @@ import { convert, Unit } from 'nanocurrency'
 import { useEffect, useState } from 'react'
 import { Payment } from '@/types/payment'
 import { Service } from '@/types/services'
+import Transactions from './Transactions'
 
 interface CheckoutProps {
 	invoiceId: string | number
@@ -59,7 +60,7 @@ export default function Checkout({
 		to: Unit.raw,
 	})}`
 
-	const payment = payments[0]
+	const lastPayment = payments[payments.length - 1]
 
 	return (
 		<div className="w-full flex flex-col bg-white rounded-lg shadow">
@@ -78,18 +79,7 @@ export default function Checkout({
 
 			{paid ? (
 				<main className="flex flex-col flex-1 px-4 py-2">
-					<div className="flex justify-between items-center my-2 pb-2">
-						<div className="sm:hidden">
-							<a href={explorerUrl(payment.hash)} target="_blank">
-								<MButton
-									variant="text"
-									className="w-full sm:w-auto PayButton"
-									endIcon={<ArrowTopRightOnSquareIcon className="w-4 h-4" />}
-								>
-									Block Explorer
-								</MButton>
-							</a>
-						</div>
+					<div className="flex justify-center items-center my-2 pb-2">
 						<div className="sm:hidden">
 							<MButton
 								variant="text"
@@ -97,7 +87,7 @@ export default function Checkout({
 								endIcon={<ArrowDownTrayIcon className="w-4 h-4" />}
 								href={'#'}
 							>
-								Download Invoice
+								Get Receipt
 							</MButton>
 						</div>
 					</div>
@@ -160,19 +150,8 @@ export default function Checkout({
 											endIcon={<ArrowDownTrayIcon className="w-4 h-4" />}
 											href={'#'}
 										>
-											Download Invoice
+											Get Receipt
 										</MButton>
-										<a href={explorerUrl(payment.hash)} target="_blank">
-											<MButton
-												variant="text"
-												className="w-full sm:w-auto PayButton"
-												endIcon={
-													<ArrowTopRightOnSquareIcon className="w-4 h-4" />
-												}
-											>
-												Block Explorer
-											</MButton>
-										</a>
 									</div>
 								</div>
 							</div>
@@ -240,23 +219,14 @@ export default function Checkout({
 									<div className="font-medium text-gray-900">#{invoiceId}</div>
 								</div>
 								<div className="flex justify-between py-2 border-b border-slate-200 border-dashed text-sm">
-									<div className="text-gray-500">Paid at</div>
-									{formatDateTime(payment.timestamp)}
+									<div className="text-gray-500">Paid Date</div>
+									{formatDate(lastPayment.timestamp)}
 								</div>
 								<div className="flex justify-between py-2 border-b border-slate-200 border-dashed text-sm">
-									<div className="text-gray-500">From</div>
-									<div>{truncateAddress(payment.from)}</div>
+									<div className="text-gray-500">Paid Time</div>
+									{formatTime(lastPayment.timestamp)}
 								</div>
-								<div className="flex justify-between py-2 border-b border-slate-200 border-dashed text-sm">
-									<div className="text-gray-500">Hash</div>
-									<div>{truncateAddress(payment.hash)}</div>
-									<button
-										onClick={() => copyToClipboard(payment.hash)}
-										className="text-slate-400 focus:text-nano"
-									>
-										<DocumentDuplicateIcon className="w-4 h-4" />
-									</button>
-								</div>
+
 								{redirectUrl && (
 									<div className="flex justify-center mt-6">
 										<a href={redirectUrl} target="_blank">
@@ -274,6 +244,16 @@ export default function Checkout({
 							</div>
 						</div>
 					</div>
+
+					<Transactions
+						transactions={payments.map(payment => {
+							return {
+								amount: payment.amount,
+								hash: payment.hash,
+								timestamp: payment.timestamp,
+							}
+						})}
+					/>
 				</main>
 			) : (
 				<main className="flex flex-col flex-1 px-4 py-2">
