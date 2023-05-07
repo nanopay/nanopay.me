@@ -11,6 +11,12 @@ interface PayInvoiceProps {
 	payments: Payment[]
 }
 
+interface PaymentNotification {
+	payments: Payment[]
+	total_paid: number
+	missing: number
+}
+
 export default function PayInvoice({
 	invoice,
 	payments: _payments,
@@ -24,8 +30,11 @@ export default function PayInvoice({
 			cluster: 'us2',
 		})
 		const channel = pusher.subscribe(invoice.id.toString())
-		channel.bind('payment', function (payment: Payment) {
-			setPayments([...payments, payment])
+		channel.bind('invoice.paid', (data: PaymentNotification) => {
+			setPayments([...payments, ...data.payments])
+		})
+		channel.bind('invoice.partially_paid', (data: PaymentNotification) => {
+			setPayments([...payments, ...data.payments])
 		})
 
 		return () => {
@@ -43,7 +52,6 @@ export default function PayInvoice({
 				address={invoice.pay_address}
 				amount={invoice.price}
 				usd={1}
-				paid={invoice.status === 'paid' || payments.length > 0}
 				payments={payments}
 				expiresAt={new Date(invoice.expires_at)}
 				service={invoice.service}

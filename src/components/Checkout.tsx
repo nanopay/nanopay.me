@@ -2,6 +2,7 @@ import {
 	ArrowDownTrayIcon,
 	ArrowTopRightOnSquareIcon,
 	DocumentDuplicateIcon,
+	ExclamationCircleIcon,
 	QrCodeIcon,
 	XCircleIcon,
 } from '@heroicons/react/24/solid'
@@ -32,7 +33,6 @@ interface CheckoutProps {
 	amount: number
 	usd: number
 	expiresAt: Date
-	paid: boolean
 	payments: Payment[]
 	service: Omit<Service, 'api_keys_count'>
 	redirectUrl?: string
@@ -43,7 +43,6 @@ export default function Checkout({
 	address,
 	amount,
 	usd,
-	paid,
 	payments,
 	expiresAt,
 	service,
@@ -55,12 +54,21 @@ export default function Checkout({
 		setRendered(true)
 	}, [])
 
-	const payURI = `nano:${address}?amount=${convert(amount.toString(), {
+	const lastPayment = payments[payments.length - 1]
+
+	const amountPaid = payments.reduce((acc, curr) => acc + curr.amount, 0)
+
+	// if transactions amount sum is equal or greater than price, it's paid
+	const paid = amountPaid >= amount
+
+	const partiallyPaid = !paid && amountPaid > 0
+
+	const missingAmount = amount - amountPaid
+
+	const payURI = `nano:${address}?amount=${convert(missingAmount.toString(), {
 		from: Unit.Nano,
 		to: Unit.raw,
 	})}`
-
-	const lastPayment = payments[payments.length - 1]
 
 	return (
 		<div className="w-full flex flex-col bg-white rounded-lg shadow">
@@ -141,7 +149,7 @@ export default function Checkout({
 										</g>
 									</svg>
 									<h3 className="text-xl font-semibold text-gray-600">
-										Paid Ӿ{0.0001}
+										Paid Ӿ{amountPaid}
 									</h3>
 									<div className="mt-4 flex flex-col gap-1">
 										<MButton
@@ -257,6 +265,19 @@ export default function Checkout({
 				</main>
 			) : (
 				<main className="flex flex-col flex-1 px-4 py-2">
+					{partiallyPaid && (
+						<div className="w-full p-4 my-2 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded">
+							<div className="flex gap-2 items-center">
+								<ExclamationCircleIcon className="w-6 h-6" />
+								<h3 className="text-lg font-semibold">Partially Paid</h3>
+							</div>
+
+							<p className="text-sm">
+								You have paid Ӿ{amountPaid} of Ӿ{amount}. Pay the missing amount
+								Ӿ{missingAmount}
+							</p>
+						</div>
+					)}
 					<div className="flex justify-between items-center my-2 pb-2">
 						<div className="flex gap-2 items-center sm:hidden">
 							<QrCodeIcon className="w-5 h-5 text-slate-400" />
@@ -279,7 +300,7 @@ export default function Checkout({
 						</div>
 						<div className="flex flex-col flex-1 sm:px-8">
 							<div className="flex flex-col items-center justify-center gap-1 text-gray-800 py-2 sm:py-4 flex-1">
-								{amount.toString().length > 2 ? (
+								{missingAmount.toString().length > 2 ? (
 									<>
 										<Image
 											src={logoXno}
@@ -289,7 +310,7 @@ export default function Checkout({
 										/>
 										<div className="flex gap-1">
 											<div className="text-3xl sm:text-2xl font-semibold">
-												{amount}
+												{missingAmount}
 											</div>
 										</div>
 									</>
@@ -302,7 +323,7 @@ export default function Checkout({
 											unoptimized
 										/>
 										<div className="text-3xl sm:text-2xl font-semibold">
-											{amount}
+											{missingAmount}
 										</div>
 									</div>
 								)}
@@ -360,6 +381,18 @@ export default function Checkout({
 							</div>
 						</div>
 					</div>
+
+					{payments.length > 0 && (
+						<Transactions
+							transactions={payments.map(payment => {
+								return {
+									amount: payment.amount,
+									hash: payment.hash,
+									timestamp: payment.timestamp,
+								}
+							})}
+						/>
+					)}
 				</main>
 			)}
 
