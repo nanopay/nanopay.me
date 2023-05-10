@@ -46,9 +46,11 @@ export default function PayInvoice({
 	if (!invoice) return <div>Invoice not found</div>
 
 	return (
-		<div className="w-full max-w-3xl mx-auto h-screen flex sm:items-center justify-center">
+		<div className="w-full max-w-4xl mx-auto h-screen flex md:items-center justify-center">
 			<Checkout
 				invoiceId={invoice.id.toString()}
+				title={invoice.title}
+				description={invoice.description}
 				address={invoice.pay_address}
 				amount={invoice.price}
 				usd={1}
