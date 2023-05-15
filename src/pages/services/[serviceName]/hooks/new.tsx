@@ -214,7 +214,7 @@ export default function NewApiKey() {
 										row
 										aria-labelledby="demo-row-radio-buttons-group-label"
 										name="row-radio-buttons-group"
-										className="text-gray-600"
+										className="text-gray-600 flex justify-between"
 									>
 										<FormControlLabel
 											value="invoice.paid"
@@ -285,6 +285,19 @@ export default function NewApiKey() {
 								/>
 							)}
 						/>
+						<div className="my-2 text-sm border border-yellow-300 bg-yellow-100 rounded p-2">
+							<h4 className="font-semibold">Important:</h4>
+							<ul>
+								<li>
+									- Only the events of the next invoices will be delivered for
+									this webhook
+								</li>
+								<li>
+									- If your webhook does not respond with a valid code within 15
+									seconds, we cancel the request. We do not implement retries.
+								</li>
+							</ul>
+						</div>
 					</div>
 					<MButton
 						type="submit"
