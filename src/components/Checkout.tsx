@@ -34,6 +34,7 @@ import {
 	AccordionSummary,
 	Typography,
 } from '@mui/material'
+import DefaultAvatar from './DefaultAvatar'
 
 interface CheckoutProps {
 	invoiceId: string | number
@@ -89,13 +90,17 @@ export default function Checkout({
 			<nav className="hidden md:flex flex-col gap-16 bg-[#1e2c3d] justify-between items-center sm:rounded-l-3xl py-2 px-4 w-72">
 				<div className="hidden md:block">
 					<div className="p-4 mt-4 text-white flex flex-col items-center gap-2">
-						<Image
-							alt={service.name}
-							src={service.avatar_url}
-							width={64}
-							height={64}
-							className="rounded-full border-2 border-slate-400 bg-white"
-						/>
+						{service.avatar_url ? (
+							<Image
+								alt={service.name}
+								src={service.avatar_url}
+								width={64}
+								height={64}
+								className="rounded-full border-2 border-slate-400 bg-white"
+							/>
+						) : (
+							<DefaultAvatar name={service.display_name} />
+						)}
 						<h2 className="text-lg font-semibold">{service.display_name}</h2>
 					</div>
 					<div className="overflow-y-auto h-1/2">
@@ -131,13 +136,17 @@ export default function Checkout({
 					expandIcon={<ChevronDownIcon className="text-slate-700 w-5 h-5" />}
 				>
 					<Typography className="flex items-center gap-2">
-						<Image
-							alt={service.name}
-							src={service.avatar_url}
-							width={40}
-							height={40}
-							className="rounded-full border-2 border-slate-400 bg-white"
-						/>
+						{service.avatar_url ? (
+							<Image
+								alt={service.name}
+								src={service.avatar_url}
+								width={40}
+								height={40}
+								className="rounded-full border-2 border-slate-400 bg-white"
+							/>
+						) : (
+							<Logo className="w-32 h-auto" theme="dark" />
+						)}
 						<div className="ml-2 w-full">
 							<h2 className="text-lg font-semibold leading-5">
 								{service.display_name}
@@ -355,6 +364,7 @@ export default function Checkout({
 											{rendered && (
 												<Countdown
 													date={expiresAt}
+													zeroPadTime={2}
 													renderer={props => (
 														<div className="font-medium text-gray-900">
 															{props.minutes}:{props.seconds}
