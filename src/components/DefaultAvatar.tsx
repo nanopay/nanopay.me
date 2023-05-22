@@ -8,27 +8,29 @@ export interface DefaultAvatarProps
 }
 
 const DefaultAvatar = forwardRef<HTMLDivElement, DefaultAvatarProps>(
-	({ size = 28, name, className, style, ...props }, ref) => {
+	({ size = 40, name, className, style, ...props }, ref) => {
 		return (
 			<div
 				ref={ref}
 				className={clsx(
-					'text-nano border-nano flex shrink-0 items-center justify-center rounded-full border-2 bg-white aspect-square p-1',
+					'text-nano border-nano flex shrink-0 items-center justify-center rounded-full border-2 bg-white p-1',
 					className,
 				)}
+				style={{
+					width: size,
+					height: size,
+					...style,
+				}}
 				{...props}
 			>
 				<span
-					className="font-bold leading-8"
+					className="font-bold"
 					style={{
-						fontSize: size,
+						fontSize: size * 0.7,
+						lineHeight: size,
 					}}
 				>
-					{name
-						.split(' ')
-						.slice(0, 2)
-						.map(word => word[0])
-						.join('')}
+					{name[0].toUpperCase()}
 				</span>
 			</div>
 		)
