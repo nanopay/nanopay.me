@@ -8,7 +8,7 @@ export interface DefaultAvatarProps
 }
 
 const DefaultAvatar = forwardRef<HTMLDivElement, DefaultAvatarProps>(
-	({ size = 40, name, className, style, ...props }, ref) => {
+	function DefaultAvatar({ size = 40, name, className, style, ...props }, ref) {
 		return (
 			<div
 				ref={ref}
