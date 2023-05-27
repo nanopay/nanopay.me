@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import SupabaseProvider from './supabase-provider'
 import { headers, cookies } from 'next/headers'
 import ClientContexts from './clientContexts'
+import NProgressBar from '@/components/NProgressBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,7 +31,10 @@ export default async function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<SupabaseProvider session={session}>
-					<ClientContexts>{children}</ClientContexts>
+					<ClientContexts>
+						{children}
+						<NProgressBar />
+					</ClientContexts>
 				</SupabaseProvider>
 			</body>
 		</html>

@@ -11,6 +11,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import 'react-toastify/dist/ReactToastify.css'
 import { theme } from '@/styles/mui-theme'
 import { AuthProvider } from '@/contexts/Auth'
+import NProgressBar from '@/components/NProgressBar'
 
 const queryClient = new QueryClient()
 
@@ -30,6 +31,7 @@ export default function App({
 					<ThemeProvider theme={theme}>
 						<Component {...pageProps} />
 						<ToastContainer />
+						<NProgressBar />
 					</ThemeProvider>
 				</AuthProvider>
 			</SessionContextProvider>

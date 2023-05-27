@@ -127,3 +127,26 @@
 		transform: scale(1);
 	}
 }
+
+#nprogress .bar {
+	position: fixed;
+	z-index: 99999;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: #209ce9 !important;
+	height: 3px;
+}
+
+#nprogress .peg {
+	box-shadow: 0 0 10px #209ce9, 0 0 5px #209ce9 !important;
+}
+
+#nprogress .spinner-icon {
+	border-top-color: #209ce9 !important;
+	border-left-color: #209ce9 !important;
+}
+
+#nprogress .spinner {
+	display: none !important;
+}

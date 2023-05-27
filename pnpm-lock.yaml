@@ -16,6 +16,7 @@ specifiers:
   '@supabase/auth-ui-shared': ^0.1.3
   '@supabase/supabase-js': ^2.10.0
   '@types/node': 18.14.6
+  '@types/nprogress': ^0.2.0
   '@types/react': 18.0.28
   ajv: ^8.12.0
   ajv-formats: ^2.1.1
@@ -32,6 +33,7 @@ specifiers:
   framer-motion: ^6.5.1
   nanocurrency: ^2.5.0
   next: 13.4.1
+  nprogress: ^0.2.0
   postcss: ^8.4.23
   postcss-focus-visible: ^6.0.4
   prettier: ^2.8.4
@@ -75,6 +77,7 @@ dependencies:
   framer-motion: 6.5.1_biqbaboplfbrettd7655fr4n2y
   nanocurrency: 2.5.0
   next: 13.4.1_biqbaboplfbrettd7655fr4n2y
+  nprogress: 0.2.0
   postcss: 8.4.23
   postcss-focus-visible: 6.0.4_postcss@8.4.23
   pusher-js: 8.0.2
@@ -93,6 +96,7 @@ dependencies:
 
 devDependencies:
   '@types/node': 18.14.6
+  '@types/nprogress': 0.2.0
   '@types/react': 18.0.28
   encoding: 0.1.13
   eslint: 8.26.0
@@ -1881,6 +1885,10 @@ packages:
 
   /@types/node/18.14.6:
     resolution: {integrity: sha512-93+VvleD3mXwlLI/xASjw0FzKcwzl3OdTCzm1LaRfqgS21gfFtK3zDXM5Op9TeeMsJVOaJ2VRDpT9q4Y3d0AvA==}
+
+  /@types/nprogress/0.2.0:
+    resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
+    dev: true
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -3958,6 +3966,10 @@ packages:
     dependencies:
       path-key: 4.0.0
     dev: true
+
+  /nprogress/0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+    dev: false
 
   /object-assign/4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
