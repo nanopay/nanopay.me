@@ -185,7 +185,7 @@ export function Hero() {
 						</div>
 						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
 							<Button href="/login" variant="solid" color="nano">
-								<h1 className="text-lg font-nunito">Start now</h1>
+								<h1 className="text-lg font-nunito">Join the Alfa</h1>
 							</Button>
 							<Button
 								href="/demo"

@@ -9,6 +9,8 @@ import { UserProfile } from '@/types/users'
 import Sidebar from './Sidebar'
 import Link from 'next/link'
 import { Footer } from './Footer'
+import { InformationCircleIcon } from '@heroicons/react/24/solid'
+import { usePreferences } from '@/contexts/Preferences'
 
 const userNavigation = [
 	{ name: 'Your profile', href: '/profile' },
@@ -26,6 +28,8 @@ export default function Layout({
 	children,
 	showFooter = false,
 }: SidebarProps) {
+	const { showPreReleaseAlert, setShowPreReleaseAlert } = usePreferences()
+
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 
 	return (
@@ -187,7 +191,29 @@ export default function Layout({
 					</div>
 				</div>
 
-				<main className="flex flex-col w-full flex-1 py-8 px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
+				{showPreReleaseAlert && (
+					<div className="mt-4 w-full flex justify-center">
+						<div className="w-full max-w-7xl px-4 lg:px-6 xl:px-8">
+							<div className="flex border border-yellow-400 bg-yellow-50 rounded-lg p-2 font-semibold space-x-2 justify-between">
+								<div className="flex space-x-2">
+									<InformationCircleIcon className="w-6 h-6 text-yellow-600" />
+									<p className="ml-1 text-sm text-yellow-600">
+										This is the alpha version. It may have bugs. Do not use in
+										production or for high-value payments.
+									</p>
+								</div>
+								<button
+									className="group hover:bg-yellow-600 rounded-full"
+									onClick={() => setShowPreReleaseAlert(false)}
+								>
+									<XMarkIcon className="w-5 h-4 text-yellow-600 group-hover:text-white" />
+								</button>
+							</div>
+						</div>
+					</div>
+				)}
+
+				<main className="flex flex-col w-full flex-1 py-6 px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
 					{children}
 				</main>
 
