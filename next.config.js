@@ -3,6 +3,9 @@ const nextConfig = {
 	reactStrictMode: true,
 	experimental: {
 		scrollRestoration: true,
+		appDir: true,
+		serverActions: true
+
 	},
 	images: {
 		remotePatterns: [
