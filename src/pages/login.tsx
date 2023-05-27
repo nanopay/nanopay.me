@@ -14,7 +14,7 @@ export default function LoginPage() {
 	const user = useUser()
 	const router = useRouter()
 
-	const redirectTo = `${getURL()}/redirect?to=${encodeURI(
+	const redirectTo = `${getURL()}redirect?to=${encodeURI(
 		typeof router.query.redirectedFrom === 'string'
 			? router.query.redirectedFrom
 			: '/home',
