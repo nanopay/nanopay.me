@@ -1,4 +1,5 @@
-// import '@/styles/globals.css'
+import '@/styles/styles.css'
+import '@/styles/tailwind.css'
 import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Inter } from 'next/font/google'
 import SupabaseProvider from './supabase-provider'
