@@ -48,21 +48,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			.json({ message: 'User already confirmed registration' })
 	}
 
+	const { error: createProfileError } = await supabase.from('profiles').insert({
+		user_id: user.id,
+		name: req.body.name,
+		email: req.body.email,
+		avatar_url: req.body.avatar_url,
+	})
+
+	if (createProfileError) {
+		console.error(error)
+		return res.status(500).json({ message: createProfileError.message })
+	}
+
 	// update user metadata
-	const { error: updateError, data } = await supabase.auth.admin.updateUserById(
+	const { error: updateError } = await supabase.auth.admin.updateUserById(
 		user.id,
 		{
 			user_metadata: {
 				...user.user_metadata,
 				confirmed_registration: true,
-				internal_profile: {
-					email: req.body.email,
-					name: req.body.name,
-					avatar_url: req.body.avatar_url,
-				},
 			},
 		},
 	)
+
 	if (updateError) {
 		console.error(error)
 		return res.status(500).json({ message: updateError.message })
@@ -70,5 +78,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	await supabaseServerClient.auth.refreshSession()
 
-	res.status(200).json({ data })
+	res.status(200).json({ success: true })
 }

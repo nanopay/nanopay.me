@@ -8,9 +8,7 @@ import { useToast } from '../hooks/useToast'
 
 interface AuthContextValues {
 	user: UserProfile
-	signOut: () => Promise<{
-		error: AuthError | null
-	}>
+	signOut: () => Promise<void>
 }
 
 interface AuthProviderProps {
@@ -26,34 +24,72 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	// const supabaseClient = useSupabaseClient<Database>()
 	const supabaseUser = useUser()
 
-	const { isLoading, error, supabaseClient } = useSessionContext()
+	const { isLoading, error, supabaseClient, session } = useSessionContext()
 
 	const { showError } = useToast()
 
 	const router = useRouter()
 
-	const loadUser = () => {
-		const userProfile = supabaseUser?.user_metadata?.internal_profile || null
-		setUser(userProfile)
+	const retrieveUserProfile = async () => {
+		const { data, error } = await supabaseClient.from('profiles').select('*')
+
+		if (error) {
+			await router.push('/500')
+			throw new Error(error.message)
+		}
+
+		if (!data || data.length === 0) {
+			await router.push('/register')
+			throw new Error('Cannot retrieve user profile')
+		}
+
+		setUser({
+			name: data[0].name,
+			email: data[0].email,
+			avatar_url: data[0].avatar_url,
+		})
 	}
 
 	useEffect(() => {
 		if (!isLoading) {
-			if (supabaseUser && router.pathname != '/login') {
-				loadUser()
+			if (
+				supabaseUser &&
+				router.pathname != '/login' &&
+				router.pathname !== '/register'
+			) {
+				retrieveUserProfile()
+					.catch(e => showError(e.message))
+					.finally(() => setLoading(false))
+			} else {
+				router.push('/login').then(() => setLoading(false))
 			}
-			setLoading(false)
 		}
 	}, [supabaseUser, isLoading])
 
 	useEffect(() => {
 		if (error) {
+			console.log('redirecting to login')
 			showError(error.name, error.message)
 			router.push('/login')
 		}
 	}, [error])
 
-	const signOut = () => supabaseClient.auth.signOut()
+	const signOut = async () => {
+		const { error } = await supabaseClient.auth.signOut()
+		if (error) {
+			showError(error.name, error.message)
+			throw error
+		}
+		await router.push('/login')
+	}
+
+	if (loading) {
+		return (
+			<div className="w-full h-screen flex items-center justify-center">
+				<Loading className="sm:w-32 sm:h-32" />
+			</div>
+		)
+	}
 
 	return (
 		<AuthContext.Provider
@@ -62,13 +98,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				signOut,
 			}}
 		>
-			{loading ? (
-				<div className="w-full h-screen flex items-center justify-center">
-					<Loading className="sm:w-32 sm:h-32" />
-				</div>
-			) : (
-				children
-			)}
+			{children}
 		</AuthContext.Provider>
 	)
 }

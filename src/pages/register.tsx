@@ -167,7 +167,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			},
 		}
 
-	if (session.user.user_metadata?.internal_profile)
+	if (session.user.user_metadata?.confirmed_registration)
 		return {
 			redirect: {
 				destination: '/home',
