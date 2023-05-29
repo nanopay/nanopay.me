@@ -92,7 +92,7 @@ export function ImageInput({
 			/>
 			<div
 				className={clsx(
-					'group relative h-32 w-32 cursor-pointer rounded-full',
+					'group relative h-32 w-32 cursor-pointer rounded-full bg-slate-200',
 					progress ? '' : isError ? 'border-2 border-red-400' : '',
 					className,
 				)}

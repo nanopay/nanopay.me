@@ -1,19 +1,24 @@
 import clsx from 'clsx'
+import Image from 'next/image'
 import { forwardRef } from 'react'
 
 export interface DefaultAvatarProps
 	extends React.HTMLAttributes<HTMLDivElement> {
-	size?: number
 	name: string
+	size?: number
+	src?: string
 }
 
 const DefaultAvatar = forwardRef<HTMLDivElement, DefaultAvatarProps>(
-	function DefaultAvatar({ size = 40, name, className, style, ...props }, ref) {
+	function DefaultAvatar(
+		{ name, size = 40, src, className, style, ...props },
+		ref,
+	) {
 		return (
 			<div
 				ref={ref}
 				className={clsx(
-					'text-nano border-nano flex shrink-0 items-center justify-center rounded-full border-2 bg-white p-1',
+					'text-nano border-slate-200 flex shrink-0 items-center justify-center rounded-full border-2 bg-white p-1',
 					className,
 				)}
 				style={{
@@ -23,15 +28,25 @@ const DefaultAvatar = forwardRef<HTMLDivElement, DefaultAvatarProps>(
 				}}
 				{...props}
 			>
-				<span
-					className="font-bold"
-					style={{
-						fontSize: size * 0.7,
-						lineHeight: size,
-					}}
-				>
-					{name[0].toUpperCase()}
-				</span>
+				{src ? (
+					<Image
+						className="rounded-full"
+						width={size}
+						height={size}
+						src={src}
+						alt={name}
+					/>
+				) : (
+					<span
+						className="font-bold"
+						style={{
+							fontSize: size * 0.7,
+							lineHeight: size,
+						}}
+					>
+						{name[0].toUpperCase()}
+					</span>
+				)}
 			</div>
 		)
 	},
