@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		await router.push('/login')
 	}
 
-	if (loading) {
+	if (loading && router.pathname !== '/' && router.pathname !== '/login') {
 		return (
 			<div className="w-full h-screen flex items-center justify-center">
 				<Loading className="sm:w-32 sm:h-32" />

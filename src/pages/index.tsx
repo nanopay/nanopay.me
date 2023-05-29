@@ -3,7 +3,6 @@ import { Faqs } from '@/components/Faqs'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Hero } from '@/components/Hero'
-import { UserProfile } from '@/types/users'
 import { useAuth } from '@/contexts/Auth'
 
 export default function Home() {
