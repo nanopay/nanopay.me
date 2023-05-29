@@ -235,7 +235,7 @@ export default function Checkout({
 											variant="text"
 											className="w-full sm:w-auto PayButton"
 											endIcon={<ReceiptRefundIcon className="w-4 h-4" />}
-											href={`mailto:refund@nanopay.me?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: YOUR_ADDRESS_HERE}`}
+											href={`mailto:refund@nanopay.me?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
 										>
 											Refund Ӿ{amountPaid}{' '}
 										</MButton>
