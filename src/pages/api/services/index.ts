@@ -50,7 +50,7 @@ const getServices = async (req: NextApiRequest, res: NextApiResponse) => {
 	res.status(200).json(data)
 }
 
-const postService = async (req: NextApiRequest, res: NextApiResponse) => {
+const createService = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (!ajv.validate(schema, req.body)) {
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
@@ -126,7 +126,7 @@ const postService = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method === 'POST') {
-		await postService(req, res)
+		await createService(req, res)
 	} else if (req.method === 'GET') {
 		await getServices(req, res)
 	} else {

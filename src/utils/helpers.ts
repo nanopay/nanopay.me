@@ -1,5 +1,3 @@
-import path from 'path'
-
 /**
  *  An object that can be used to represent binary data.
  */
@@ -67,7 +65,7 @@ export const concatURL = (
 	paths: string | string[],
 ): string => {
 	const pathsArray = Array.isArray(paths) ? paths : [paths]
-	return new URL(path.join(...pathsArray), baseURL).toString()
+	return new URL(pathsArray.join('/'), baseURL).toString()
 }
 
 export const sanitizeSlug = (name: string) => {
