@@ -14,7 +14,6 @@ import { useToast } from '@/hooks/useToast'
 import ImageInput from '@/components/ImageInput'
 import { ServiceCreate } from '@/types/services'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { PROJECT_AVATAR_PLACEHOLDER } from '@/constants'
 import { Header } from '@/components/Header'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/helpers'
@@ -109,7 +108,7 @@ export default function NewService() {
 					</div>
 
 					<ImageInput
-						source={watch('avatar_url') || PROJECT_AVATAR_PLACEHOLDER}
+						source={watch('avatar_url')}
 						crop={true}
 						onChange={uploadImage}
 						isLoading={uploading}

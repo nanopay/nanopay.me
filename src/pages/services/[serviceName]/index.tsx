@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'
 import Invoices from '@/components/Invoices'
 import { useAuth } from '@/contexts/Auth'
+import DefaultAvatar from '@/components/DefaultAvatar'
 
 export default function ServiceDashboard() {
 	const { user } = useAuth()
@@ -104,18 +105,22 @@ export default function ServiceDashboard() {
 							<div className="min-w-0 flex-1">
 								{/* Profile */}
 								<div className="flex items-center">
-									<Image
-										className="hidden h-16 w-16 rounded-full sm:block"
-										src={logoXno}
-										alt=""
-									/>
+									<div className="hidden sm:flex">
+										<DefaultAvatar
+											name={service.name}
+											size={64}
+											src={service.avatar_url}
+										/>
+									</div>
 									<div>
 										<div className="flex items-center">
-											<Image
-												className="h-16 w-16 rounded-full sm:hidden"
-												src={logoXno}
-												alt=""
-											/>
+											<div className="sm:hidden">
+												<DefaultAvatar
+													name={service.name}
+													size={64}
+													src={service.avatar_url}
+												/>
+											</div>
 											<h1 className="ml-3 text-2xl font-bold leading-7 text-slate-900 sm:truncate sm:leading-9">
 												{service.name}
 											</h1>

@@ -1,7 +1,6 @@
-import { PROJECT_AVATAR_PLACEHOLDER } from '@/constants'
 import { Service } from '@/types/services'
-import Image from 'next/image'
 import Link from 'next/link'
+import DefaultAvatar from './DefaultAvatar'
 
 export default function ServicesList({ services }: { services: Service[] }) {
 	return (
@@ -13,15 +12,11 @@ export default function ServicesList({ services }: { services: Service[] }) {
 				>
 					<div>
 						<span className="inline-flex rounded-full p-3 bg-sky-50 text-sky-700 ring-4 ring-white">
-							{
-								<Image
-									className="rounded-full"
-									src={service.avatar_url || PROJECT_AVATAR_PLACEHOLDER}
-									alt={service.name}
-									width={40}
-									height={40}
-								/>
-							}
+							<DefaultAvatar
+								name={service.name}
+								src={service.avatar_url}
+								size={40}
+							/>
 						</span>
 					</div>
 					<div className="mt-8">
