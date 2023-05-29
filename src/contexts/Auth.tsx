@@ -28,11 +28,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const router = useRouter()
 
-	const redirectedFrom =
-		typeof router.query.redirectedFrom === 'string'
-			? router.query.redirectedFrom
-			: null
-
 	const retrieveUserProfile = async () => {
 		const { data, error } = await supabaseClient.from('profiles').select('*')
 
@@ -65,10 +60,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 						setLoading(false)
 					}
 				} else if (!supabaseUser && session) {
-					await signOut().then(() => setLoading(false))
+					await signOut()
+					setLoading(false)
 				} else {
+					await router.push('/login')
 					setLoading(false)
 				}
+			} else {
+				setLoading(false)
 			}
 		}
 	}
