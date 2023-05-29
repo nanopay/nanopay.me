@@ -15,6 +15,7 @@ import { JSONSchemaType } from 'ajv'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { UserProfile } from '@/types/users'
+import { useAuth } from '@/contexts/Auth'
 
 const schema: JSONSchemaType<UserProfile> = {
 	type: 'object',
@@ -29,6 +30,8 @@ const schema: JSONSchemaType<UserProfile> = {
 export default function Register({ user }: { user: User }) {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
+
+	const { retrieveUser } = useAuth()
 
 	const [acceptTerms, setAcceptTerms] = useState(false)
 
@@ -60,6 +63,7 @@ export default function Register({ user }: { user: User }) {
 				email,
 				avatar_url,
 			})
+			await retrieveUser()
 			showSuccess('Success')
 			router.push(redirectTo)
 		} catch (e: any) {
