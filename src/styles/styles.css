@@ -68,6 +68,7 @@
 	}
 }
 
+/* Check SVG */
 #check-group {
 	animation: 0.32s ease-in-out 1.03s check-group;
 	transform-origin: center;
@@ -117,6 +118,86 @@
 	}
 }
 @keyframes check-group {
+	from {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.09);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+/* X SVG */
+#x-group {
+	animation: 0.32s ease-in-out 1.03s x-group;
+	transform-origin: center;
+}
+
+#x-group #x-line-1 {
+	animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards x-line-1;
+	stroke-dasharray: 0, 75px;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+#x-group #x-line-2 {
+	animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards x-line-2;
+	stroke-dasharray: 0, 75px;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+#x-group #outline {
+	animation: 0.38s ease-in outline;
+	transform: rotate(0deg);
+	transform-origin: center;
+}
+
+#x-group #white-circle {
+	animation: 0.35s ease-in 0.35s forwards circle;
+	transform: none;
+	transform-origin: center;
+}
+
+@keyframes outline {
+	from {
+		stroke-dasharray: 0, 345.576px;
+	}
+	to {
+		stroke-dasharray: 345.576px, 345.576px;
+	}
+}
+
+@keyframes circle {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(0);
+	}
+}
+
+@keyframes x-line-1 {
+	from {
+		stroke-dasharray: 0, 75px;
+	}
+	to {
+		stroke-dasharray: 75px, 75px;
+	}
+}
+
+@keyframes x-line-2 {
+	from {
+		stroke-dasharray: 0, 75px;
+	}
+	to {
+		stroke-dasharray: 75px, 75px;
+	}
+}
+
+@keyframes x-group {
 	from {
 		transform: scale(1);
 	}

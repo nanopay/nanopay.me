@@ -1,11 +1,14 @@
 import {
 	ArrowDownTrayIcon,
 	ArrowTopRightOnSquareIcon,
+	ArrowUpRightIcon,
 	ChevronDoubleDownIcon,
 	ChevronDownIcon,
 	DocumentDuplicateIcon,
 	ExclamationCircleIcon,
+	PaperAirplaneIcon,
 	QrCodeIcon,
+	ReceiptRefundIcon,
 } from '@heroicons/react/24/solid'
 import { Logo } from './Logo'
 import logoXno from '@/images/logos/nano-xno.svg'
@@ -83,11 +86,12 @@ export default function Checkout({
 		to: Unit.raw,
 	})}`
 
-	console.log(service)
+	const isExpired =
+		!paid && new Date(expiresAt).getTime() - new Date().getTime() < 0
 
 	return (
 		<div className="w-full flex flex-col md:flex-row rounded-3xl shadow">
-			<nav className="hidden md:flex flex-col gap-16 bg-[#1e2c3d] justify-between items-center sm:rounded-l-3xl py-2 px-4 w-72">
+			<nav className="hidden md:flex flex-col gap-16 bg-[#1e2c3d] justify-between items-center sm:rounded-l-3xl py-2 px-4 w-72 border-r border-[#1e2c3d]">
 				<div className="hidden md:block">
 					<div className="p-4 mt-4 text-white flex flex-col items-center gap-2">
 						{service.avatar_url ? (
@@ -163,7 +167,95 @@ export default function Checkout({
 			</Accordion>
 
 			<main className="flex flex-col flex-1 px-4 py-2 bg-white rounded-r-3xl">
-				{paid ? (
+				{isExpired ? (
+					<>
+						<div className="flex flex-1 justify-center items-center py-4">
+							<div className="flex flex-col items-center gap-2">
+								<svg
+									width="115px"
+									height="115px"
+									viewBox="0 0 133 133"
+									version="1.1"
+									xmlns="http://www.w3.org/2000/svg"
+									xmlnsXlink="http://www.w3.org/1999/xlink"
+								>
+									<g
+										id="x-group"
+										stroke="none"
+										stroke-width="1"
+										fill="none"
+										fill-rule="evenodd"
+									>
+										<circle
+											id="filled-circle"
+											fill="#be123c"
+											cx="66.5"
+											cy="66.5"
+											r="54.5"
+										/>
+										<circle
+											id="white-circle"
+											fill="#FFFFFF"
+											cx="66.5"
+											cy="66.5"
+											r="55.5"
+										/>
+										<circle
+											id="outline"
+											stroke="#be123c"
+											stroke-width="4"
+											cx="66.5"
+											cy="66.5"
+											r="54.5"
+										/>
+										<line
+											id="x-line-1"
+											stroke="#FFFFFF"
+											stroke-width="5.5"
+											x1="41"
+											y1="41"
+											x2="92"
+											y2="92"
+										/>
+										<line
+											id="x-line-2"
+											stroke="#FFFFFF"
+											stroke-width="5.5"
+											x1="41"
+											y1="92"
+											x2="92"
+											y2="41"
+										/>
+									</g>
+								</svg>
+								<h3 className="text-xl font-semibold text-gray-600">Expired</h3>
+							</div>
+						</div>
+
+						<div className="sm:px-4">
+							<div className="flex justify-between py-2 border-y border-slate-200 border-dashed text-sm">
+								<div className="text-gray-500">Invoice</div>
+								<div className="font-medium text-gray-900">#{invoiceId}</div>
+							</div>
+							<div className="flex justify-between py-2 border-b border-slate-200 border-dashed text-sm">
+								<div className="text-gray-500">Expired At</div>
+								{formatDateTime(expiresAt.toDateString())}
+							</div>
+
+							{payments.length && (
+								<Transactions
+									transactions={payments.map(payment => {
+										return {
+											amount: payment.amount,
+											hash: payment.hash,
+											timestamp: payment.timestamp,
+										}
+									})}
+								/>
+							)}
+						</div>
+					</>
+				) : paid ? (
 					<>
 						<div className="flex flex-1 justify-center items-center py-4">
 							<div className="flex flex-col items-center gap-2">
