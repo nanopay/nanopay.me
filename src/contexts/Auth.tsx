@@ -1,7 +1,6 @@
 import Loading from '@/components/Loading'
 import { UserProfile } from '@/types/users'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
-import { AuthError } from '@supabase/supabase-js'
 import { useRouter } from 'next/router'
 import React, { useContext, useState, useEffect, createContext } from 'react'
 import { useToast } from '../hooks/useToast'
@@ -21,14 +20,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const [user, setUser] = useState<UserProfile>()
 	const [loading, setLoading] = useState(true)
 
-	// const supabaseClient = useSupabaseClient<Database>()
 	const supabaseUser = useUser()
 
-	const { isLoading, error, supabaseClient, session } = useSessionContext()
+	const { isLoading, error, supabaseClient } = useSessionContext()
 
 	const { showError } = useToast()
 
 	const router = useRouter()
+
+	const redirectedFrom =
+		typeof router.query.redirectedFrom === 'string'
+			? router.query.redirectedFrom
+			: null
 
 	const retrieveUserProfile = async () => {
 		const { data, error } = await supabaseClient.from('profiles').select('*')
@@ -50,31 +53,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		})
 	}
 
-	useEffect(() => {
+	const handleUserLoading = async () => {
 		if (!isLoading) {
 			if (
 				supabaseUser &&
-				router.pathname != '/login' &&
+				router.pathname !== '/login' &&
 				router.pathname !== '/register'
 			) {
-				retrieveUserProfile()
-					.catch(e => showError(e.message))
-					.finally(() => setLoading(false))
-			} else {
-				if (router.pathname === '/logout') {
-					router.push('/login').then(() => setLoading(false))
-				} else {
+				try {
+					await retrieveUserProfile()
+					setLoading(false)
+				} catch (error: any) {
+					showError(error.message)
 					setLoading(false)
 				}
+			} else {
+				setLoading(false)
 			}
 		}
+	}
+
+	useEffect(() => {
+		handleUserLoading()
 	}, [supabaseUser, isLoading])
 
 	useEffect(() => {
 		if (error) {
-			console.log('redirecting to login')
 			showError(error.name, error.message)
-			router.push('/login')
+			router.push('/login').then(res => setLoading(false))
 		}
 	}, [error])
 

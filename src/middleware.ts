@@ -31,7 +31,9 @@ export async function middleware(req: NextRequest) {
 		// Auth condition not met, redirect to login or register page.
 		const redirectUrl = req.nextUrl.clone()
 		redirectUrl.pathname = pathname
-		redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
+		if (req.nextUrl.pathname !== '/logout') {
+			redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
+		}
 		return NextResponse.redirect(redirectUrl)
 	} catch (err: any) {
 		console.error(err)
@@ -40,5 +42,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/services/:path*', '/home'],
+	matcher: ['/services/:path*', '/home', '/logout'],
 }
