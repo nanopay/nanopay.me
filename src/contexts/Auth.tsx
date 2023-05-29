@@ -61,7 +61,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 					.catch(e => showError(e.message))
 					.finally(() => setLoading(false))
 			} else {
-				router.push('/login').then(() => setLoading(false))
+				if (router.pathname === '/logout') {
+					router.push('/login').then(() => setLoading(false))
+				} else {
+					setLoading(false)
+				}
 			}
 		}
 	}, [supabaseUser, isLoading])
