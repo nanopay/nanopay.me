@@ -1,13 +1,14 @@
 import Loading from '@/components/Loading'
-import { UserProfile } from '@/types/users'
+import { User } from '@/types/users'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import React, { useContext, useState, useEffect, createContext } from 'react'
 import { useToast } from '../hooks/useToast'
 
 interface AuthContextValues {
-	user: UserProfile
+	user: User
 	signOut: () => Promise<void>
+	retrieveUser: () => Promise<User>
 }
 
 interface AuthProviderProps {
@@ -17,7 +18,7 @@ interface AuthProviderProps {
 const AuthContext = createContext({} as AuthContextValues)
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [user, setUser] = useState<UserProfile>()
+	const [user, setUser] = useState<User>()
 	const [loading, setLoading] = useState(true)
 
 	const supabaseUser = useUser()
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const router = useRouter()
 
-	const retrieveUserProfile = async () => {
+	const retrieveUser = async () => {
 		const { data, error } = await supabaseClient.from('profiles').select('*')
 
 		if (error) {
@@ -41,11 +42,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			throw new Error('Cannot retrieve user profile')
 		}
 
-		setUser({
+		const user = {
+			id: data[0].user_id,
 			name: data[0].name,
 			email: data[0].email,
 			avatar_url: data[0].avatar_url,
-		})
+		}
+
+		setUser(user)
+
+		return user
 	}
 
 	const handleUserLoading = async () => {
@@ -53,7 +59,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			if (router.pathname !== '/login' && router.pathname !== '/register') {
 				if (supabaseUser) {
 					try {
-						await retrieveUserProfile()
+						await retrieveUser()
 						setLoading(false)
 					} catch (error: any) {
 						showError(error.message)
@@ -103,8 +109,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	return (
 		<AuthContext.Provider
 			value={{
-				user: user as UserProfile,
+				user: user as User,
 				signOut,
+				retrieveUser,
 			}}
 		>
 			{children}

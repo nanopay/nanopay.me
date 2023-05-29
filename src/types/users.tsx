@@ -3,3 +3,7 @@ export interface UserProfile {
 	email: string
 	avatar_url: string
 }
+
+export interface User extends UserProfile {
+	id: string
+}
