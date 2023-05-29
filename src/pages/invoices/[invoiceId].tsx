@@ -23,13 +23,17 @@ export default function PayInvoice({
 }: PayInvoiceProps) {
 	const [payments, setPayments] = useState<Payment[]>(_payments)
 
-	const amountPaid = payments.reduce((acc, curr) => acc + curr.amount, 0)
-	const paid = amountPaid >= invoice.price
-	const timeLeft = new Date(invoice.expires_at).getTime() - new Date().getTime()
-	const isExpired = !paid && timeLeft <= 0
-
 	useEffect(() => {
-		if (!invoice || paid || isExpired) return
+		if (!invoice) return
+
+		const amountPaid = payments.reduce((acc, curr) => acc + curr.amount, 0)
+		const paid = amountPaid >= invoice.price
+		const timeLeft =
+			new Date(invoice.expires_at).getTime() - new Date().getTime()
+		const isExpired = !paid && timeLeft <= 0
+
+		if (paid || isExpired) return
+
 		Pusher.logToConsole = true
 		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
 			cluster: 'us2',
