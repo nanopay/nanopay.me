@@ -5,7 +5,7 @@ import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import clsx from 'clsx'
 
 interface ImageInputProps {
-	source: string
+	source?: string | null
 	onChange?: (file: File) => void
 	isLoading?: boolean
 	isError?: boolean
@@ -25,7 +25,7 @@ export function ImageInput({
 	crop = false,
 	progress = 0,
 }: ImageInputProps) {
-	const [imageSource, setImageSource] = useState<string>(source)
+	const [imageSource, setImageSource] = useState<string | null>(source || null)
 	const [imageToCrop, setImageToCrop] = useState<string | null>(null)
 	const [resetProgress, setResetProgress] = useState(0)
 	const [localProgress, setLocalProgress] = useState(0)
@@ -98,14 +98,16 @@ export function ImageInput({
 				)}
 				onClick={handleInputClick}
 			>
-				<img
-					src={imageSource}
-					alt=""
-					className={clsx(
-						'h-full w-full rounded-full',
-						isLoading && 'animate-pulse',
-					)}
-				/>
+				{imageSource && (
+					<img
+						src={imageSource}
+						alt=""
+						className={clsx(
+							'h-full w-full rounded-full',
+							isLoading && 'animate-pulse',
+						)}
+					/>
+				)}
 				<div className="absolute inset-0 -m-0.5">
 					<CircularProgressbar
 						value={localProgress}

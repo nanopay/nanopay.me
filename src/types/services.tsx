@@ -1,6 +1,6 @@
 export interface ServiceCreate {
 	name: string
-	avatar_url: string
+	avatar_url?: string | null
 	description: string
 }
 

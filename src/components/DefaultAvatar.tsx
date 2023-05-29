@@ -6,7 +6,7 @@ export interface DefaultAvatarProps
 	extends React.HTMLAttributes<HTMLDivElement> {
 	name: string
 	size?: number
-	src?: string
+	src?: string | null
 }
 
 const DefaultAvatar = forwardRef<HTMLDivElement, DefaultAvatarProps>(

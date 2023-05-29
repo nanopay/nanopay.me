@@ -33,6 +33,7 @@ const schema: JSONSchemaType<ServiceCreate> = {
 			format: 'url',
 			minLength: 12,
 			maxLength: 256,
+			nullable: true,
 		},
 		description: { type: 'string', minLength: 1, maxLength: 512 },
 	},
