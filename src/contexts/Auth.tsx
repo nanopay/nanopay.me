@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const supabaseUser = useUser()
 
-	const { isLoading, error, supabaseClient } = useSessionContext()
+	const { isLoading, error, supabaseClient, session } = useSessionContext()
 
 	const { showError } = useToast()
 
@@ -55,20 +55,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const handleUserLoading = async () => {
 		if (!isLoading) {
-			if (
-				supabaseUser &&
-				router.pathname !== '/login' &&
-				router.pathname !== '/register'
-			) {
-				try {
-					await retrieveUserProfile()
-					setLoading(false)
-				} catch (error: any) {
-					showError(error.message)
+			if (router.pathname !== '/login' && router.pathname !== '/register') {
+				if (supabaseUser) {
+					try {
+						await retrieveUserProfile()
+						setLoading(false)
+					} catch (error: any) {
+						showError(error.message)
+						setLoading(false)
+					}
+				} else if (!supabaseUser && session) {
+					await signOut().then(() => setLoading(false))
+				} else {
 					setLoading(false)
 				}
-			} else {
-				setLoading(false)
 			}
 		}
 	}
