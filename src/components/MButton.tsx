@@ -3,6 +3,7 @@ import {
 	ButtonProps as MaterialButtonProps,
 } from '@mui/material'
 import clsx from 'clsx'
+import Link from 'next/link'
 
 interface ButtonProps extends MaterialButtonProps {
 	loading?: boolean
@@ -38,6 +39,7 @@ export default function MButton({ loading, ...props }: ButtonProps) {
 			{...props}
 			disabled={loading || props.disabled}
 			className={clsx('Button', props.className)}
+			LinkComponent={Link}
 		/>
 	)
 }
