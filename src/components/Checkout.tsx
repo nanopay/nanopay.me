@@ -229,6 +229,18 @@ export default function Checkout({
 									</g>
 								</svg>
 								<h3 className="text-xl font-semibold text-gray-600">Expired</h3>
+								{amountPaid > 0 && (
+									<div className="mt-4 flex flex-col gap-1">
+										<MButton
+											variant="text"
+											className="w-full sm:w-auto PayButton"
+											endIcon={<ReceiptRefundIcon className="w-4 h-4" />}
+											href={`mailto:refund@nanopay.me?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: YOUR_ADDRESS_HERE}`}
+										>
+											Refund Ӿ{amountPaid}{' '}
+										</MButton>
+									</div>
+								)}
 							</div>
 						</div>
 
