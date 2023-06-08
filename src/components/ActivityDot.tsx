@@ -4,20 +4,30 @@ const statusColor = {
 	pending: 'yellow',
 	error: 'red',
 }
+import tailwindColors from 'tailwindcss/colors'
+import { DefaultColors } from 'tailwindcss/types/generated/colors'
 
 export default function ActivityDot({
 	status,
 }: {
 	status: keyof typeof statusColor
 }) {
-	const color = statusColor[status]
+	const color = statusColor[status] as keyof DefaultColors
 
 	return (
 		<span
-			className={`bg-${color}-100 h-4 w-4 flex items-center justify-center rounded-full`}
+			className={`h-4 w-4 flex items-center justify-center rounded-full`}
+			style={{
+				backgroundColor: tailwindColors[color]['100'],
+			}}
 			aria-hidden="true"
 		>
-			<span className={`bg-${color}-400 h-2 w-2 rounded-full`} />
+			<span
+				className={`h-2 w-2 rounded-full`}
+				style={{
+					backgroundColor: tailwindColors[color]['400'],
+				}}
+			/>
 		</span>
 	)
 }
