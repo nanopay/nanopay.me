@@ -64,7 +64,7 @@ export default function ApiKeys() {
 						role="list"
 						className="divide-y divide-gray-200 border-b border-gray-200"
 					>
-						{false &&
+						{apiKeys &&
 							apiKeys?.map(apiKey => (
 								<li
 									key={apiKey.id}
