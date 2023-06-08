@@ -40,7 +40,7 @@ export default function Webhooks() {
 			</Head>
 			<Layout user={user}>
 				<>
-					<div className="border-b border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
+					<div className="py-4 px-1">
 						<div className="flex items-center">
 							<h1 className="flex-1 text-lg font-medium">Webhooks</h1>
 							<Button
@@ -54,14 +54,11 @@ export default function Webhooks() {
 						</div>
 					</div>
 					{webhooks?.length ? (
-						<ul
-							role="list"
-							className="divide-y divide-gray-200 border-b border-gray-200"
-						>
+						<ul role="list" className="space-y-2">
 							{webhooks?.map(hook => (
 								<li
 									key={hook.id}
-									className="relative py-5 pl-4 pr-6 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
+									className="relative py-5 pl-4 pr-6 border border-slate-200 bg-white hover:bg-gray-50 rounded-md sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
 								>
 									<div className="flex items-center justify-between space-x-4">
 										{/* Service name and description */}
