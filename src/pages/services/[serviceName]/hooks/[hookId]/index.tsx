@@ -27,6 +27,7 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
 import tailwindColors from 'tailwindcss/colors'
+import Link from 'next/link'
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',
@@ -73,6 +74,17 @@ export default function Webhooks() {
 
 	const hookId = router.query.hookId as string
 
+	const tabs = [
+		{
+			label: 'Settings',
+			href: `/services/${serviceName}/hooks/${hookId}`,
+		},
+		{
+			label: 'Deliveries',
+			href: `/services/${serviceName}/hooks/${hookId}/deliveries`,
+		},
+	]
+
 	const { data: hook } = useQuery({
 		queryKey: ['hooks', hookId],
 		queryFn: () =>
@@ -97,13 +109,15 @@ export default function Webhooks() {
 			</Head>
 			<Layout user={user}>
 				<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
-					<Tabs
-						value={0}
-						// onChange={handleChange}
-						aria-label="basic tabs example"
-					>
-						<Tab label="Settings" />
-						<Tab label="Deliveries" />
+					<Tabs value={0}>
+						{tabs.map((tab, index) => (
+							<Tab
+								key={index}
+								label={tab.label}
+								href={tab.href}
+								LinkComponent={Link}
+							/>
+						))}
 					</Tabs>
 				</Box>
 				<>
