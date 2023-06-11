@@ -59,24 +59,17 @@ export const services = (axiosInstance: AxiosInstance) => {
 			): Promise<AxiosResponse<{ id: string }>> => {
 				return axiosInstance.post(`/services/${serviceName}/hooks`, data)
 			},
-			get: async (
-				serviceName: string,
-				id: string,
-			): Promise<AxiosResponse<Hook>> => {
-				return axiosInstance.get(`/services/${serviceName}/hooks/${id}`)
+			get: async (id: string): Promise<AxiosResponse<Hook>> => {
+				return axiosInstance.get(`/hooks/${id}`)
 			},
 			list: async (serviceName: string): Promise<AxiosResponse<Hook[]>> => {
 				return axiosInstance.get(`/services/${serviceName}/hooks`)
 			},
 			update: async (
-				serviceName: string,
 				hookId: string,
 				data: HookUpdate,
 			): Promise<AxiosResponse<void>> => {
-				return axiosInstance.put(
-					`/services/${serviceName}/hooks/${hookId}`,
-					data,
-				)
+				return axiosInstance.put(`/hooks/${hookId}`, data)
 			},
 			deliveries: {
 				list: async (

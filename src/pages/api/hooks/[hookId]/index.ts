@@ -43,12 +43,7 @@ const schema: JSONSchemaType<HookUpdate> = {
 }
 
 const getHook = async (req: NextApiRequest, res: NextApiResponse) => {
-	const serviceName = req.query.serviceName as string
 	const hookId = req.query.hookId as string
-
-	if (!serviceName) {
-		return res.status(400).json({ message: 'Missing service name' })
-	}
 
 	if (!hookId) {
 		return res.status(400).json({ message: 'Missing hook id' })
@@ -67,7 +62,7 @@ const getHook = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	if (hookError) {
 		if (hookError.code === 'PGRST116') {
-			return res.status(404).json({ message: 'not found' })
+			return res.status(403).json({ message: 'forbidden' })
 		}
 		return res.status(500).json({ message: hookError.message })
 	}
@@ -80,12 +75,7 @@ const updateHook = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(400).json({ message: ajv.errorsText() })
 	}
 
-	const serviceName = req.query.serviceName as string
 	const hookId = req.query.hookId as string
-
-	if (!serviceName) {
-		return res.status(400).json({ message: 'Missing service name' })
-	}
 
 	if (!hookId) {
 		return res.status(400).json({ message: 'Missing hook id' })
@@ -104,7 +94,7 @@ const updateHook = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	if (updateError) {
 		if (updateError.code === 'PGRST116') {
-			return res.status(404).json({ message: 'nothing updated' })
+			return res.status(403).json({ message: 'nothing updated' })
 		}
 		return res.status(500).json({ message: updateError.message })
 	}

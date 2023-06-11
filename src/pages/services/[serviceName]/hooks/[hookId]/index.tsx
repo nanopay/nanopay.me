@@ -87,8 +87,7 @@ export default function Webhooks() {
 
 	const { data: hook } = useQuery({
 		queryKey: ['hooks', hookId],
-		queryFn: () =>
-			api.services.hooks.get(serviceName, hookId).then(res => res.data),
+		queryFn: () => api.services.hooks.get(hookId).then(res => res.data),
 		enabled: !!serviceName && !!hookId,
 		onError: (err: any) => {
 			showError(
@@ -131,7 +130,7 @@ export default function Webhooks() {
 							sx={{ bgcolor: tailwindColors.slate['200'] }}
 						/>
 					) : (
-						<HookForm hook={hook} serviceName={serviceName} />
+						<HookForm hook={hook} />
 					)}
 				</>
 			</Layout>
@@ -139,13 +138,7 @@ export default function Webhooks() {
 	)
 }
 
-const HookForm = ({
-	hook,
-	serviceName,
-}: {
-	hook: Hook
-	serviceName: string
-}) => {
+const HookForm = ({ hook }: { hook: Hook }) => {
 	const { showError, showSuccess } = useToast()
 	const {
 		control,
@@ -165,15 +158,9 @@ const HookForm = ({
 		},
 	})
 
-	const {
-		mutate: onSubmit,
-		isLoading: isSubmitting,
-		isSuccess,
-	} = useMutation({
+	const { mutate: onSubmit, isLoading: isSubmitting } = useMutation({
 		mutationFn: async (data: HookCreate) =>
-			api.services.hooks
-				.update(serviceName, hook.id, data)
-				.then(res => res.data),
+			api.services.hooks.update(hook.id, data).then(res => res.data),
 		onSuccess: () => {
 			showSuccess('Webhook updated')
 		},
