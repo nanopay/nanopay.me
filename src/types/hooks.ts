@@ -6,6 +6,8 @@ export interface HookCreate {
 	secret?: string
 }
 
+export interface HookUpdate extends HookCreate {}
+
 export interface Hook extends HookCreate {
 	id: string
 	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'

@@ -1,4 +1,4 @@
-import { Hook, HookCreate } from '@/types/hooks'
+import { Hook, HookCreate, HookUpdate } from '@/types/hooks'
 import { ApiKey, ApiKeyCreate, Service, ServiceCreate } from '@/types/services'
 import { concatURL } from '@/utils/helpers'
 import { AxiosInstance, AxiosResponse } from 'axios'
@@ -67,6 +67,16 @@ export const services = (axiosInstance: AxiosInstance) => {
 			},
 			list: async (serviceName: string): Promise<AxiosResponse<Hook[]>> => {
 				return axiosInstance.get(`/services/${serviceName}/hooks`)
+			},
+			update: async (
+				serviceName: string,
+				hookId: string,
+				data: HookUpdate,
+			): Promise<AxiosResponse<void>> => {
+				return axiosInstance.put(
+					`/services/${serviceName}/hooks/${hookId}`,
+					data,
+				)
 			},
 		},
 	}
