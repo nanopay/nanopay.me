@@ -7,8 +7,6 @@ import {
 	KeyIcon,
 	PlusIcon,
 } from '@heroicons/react/24/solid'
-import Image from 'next/image'
-import logoXno from '@/images/logos/nano-xno.svg'
 import { Receipt, Webhook } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
