@@ -11,6 +11,7 @@ import api from '@/services/api'
 import Layout from '@/components/Layout'
 import ActivityDot from '@/components/ActivityDot'
 import { useAuth } from '@/contexts/Auth'
+import Link from 'next/link'
 
 export default function Webhooks() {
 	const { user } = useAuth()
@@ -69,16 +70,20 @@ export default function Webhooks() {
 												) : (
 													<ActivityDot status="inactive" />
 												)}
-												<h2 className="text-sm font-medium">
-													<span
-														className="absolute inset-0"
-														aria-hidden="true"
-													/>
-													{hook.name}
-												</h2>
+												<Link
+													href={`/services/${serviceName}/hooks/${hook.id}`}
+												>
+													<h2 className="text-sm font-medium">
+														<span
+															className="absolute inset-0"
+															aria-hidden="true"
+														/>
+														{hook.name}
+													</h2>
+												</Link>
 											</div>
 											<p className="group relative flex items-center space-x-2.5">
-												<span className="text-xs font-medium text-gray-500 group-hover:text-gray-900">
+												<span className="text-xs font-medium text-gray-500">
 													{hook.url}
 												</span>
 											</p>
