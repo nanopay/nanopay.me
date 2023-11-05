@@ -1,6 +1,3 @@
-import Link from 'next/link'
-
-import { Logo } from '@/components/Logo'
 import { ReactNode } from 'react'
 
 function BackgroundIllustration(props: React.ComponentProps<'svg'>) {
@@ -20,15 +17,9 @@ function BackgroundIllustration(props: React.ComponentProps<'svg'>) {
 	)
 }
 
-interface AuthLayoutProps {
-	title: string
-	subtitle?: string | ReactNode
-	children: React.ReactNode
-}
-
-export function AuthLayout({ children }: AuthLayoutProps) {
+export default function AuthLayout({ children }: { children: ReactNode }) {
 	return (
-		<main className="flex min-h-full overflow-hidden sm:pt-16 sm:py-28 bg-zinc-900">
+		<main className="flex flex-col flex-1 min-h-full overflow-hidden sm:pt-16 sm:py-28">
 			<div className="mx-auto flex w-full max-w-2xl flex-col sm:px-6">
 				<div className="relative mt-16 hidden sm:block">
 					<BackgroundIllustration
