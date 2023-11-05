@@ -33,7 +33,7 @@ export default async function RootLayout({
 			<body className={inter.className}>
 				<SupabaseProvider session={session}>
 					<ClientContexts>
-						{children}
+						<div className="min-h-screen flex flex-col">{children}</div>
 						<NProgressBar />
 					</ClientContexts>
 				</SupabaseProvider>
