@@ -2,10 +2,8 @@
 const nextConfig = {
 	reactStrictMode: true,
 	experimental: {
-		scrollRestoration: true,
 		appDir: true,
 		serverActions: true
-
 	},
 	images: {
 		remotePatterns: [
@@ -20,6 +18,18 @@ const nextConfig = {
 				pathname: '/**',
 			},
 		],
+	},
+	async rewrites() {
+		return [
+			{
+				source: '/login',
+				destination: '/auth/login',
+			},
+			{
+				source: '/signup',
+				destination: '/auth/signup',
+			},
+		]
 	},
 }
 
