@@ -10,7 +10,7 @@ specifiers:
   '@hookform/resolvers': ^2.9.11
   '@mui/icons-material': ^5.11.11
   '@mui/material': ^5.11.12
-  '@supabase/auth-helpers-nextjs': ^0.5.9
+  '@supabase/auth-helpers-nextjs': ^0.8.7
   '@supabase/auth-helpers-react': ^0.3.1
   '@supabase/auth-ui-react': ^0.3.4
   '@supabase/auth-ui-shared': ^0.1.3
@@ -62,7 +62,7 @@ dependencies:
   '@hookform/resolvers': 2.9.11_react-hook-form@7.43.9
   '@mui/icons-material': 5.11.16_22smegrbxnl5hqjm3sqhhqv3om
   '@mui/material': 5.13.1_u5ttawkk55ehfgt4lc4neid4ue
-  '@supabase/auth-helpers-nextjs': 0.5.9_r3gkvssv2zdfxym6k2bu33pzk4
+  '@supabase/auth-helpers-nextjs': 0.8.7_r3gkvssv2zdfxym6k2bu33pzk4
   '@supabase/auth-helpers-react': 0.3.1_r3gkvssv2zdfxym6k2bu33pzk4
   '@supabase/auth-ui-react': 0.3.6_r3gkvssv2zdfxym6k2bu33pzk4
   '@supabase/auth-ui-shared': 0.1.6_r3gkvssv2zdfxym6k2bu33pzk4
@@ -1746,13 +1746,14 @@ packages:
     resolution: {integrity: sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==}
     dev: false
 
-  /@supabase/auth-helpers-nextjs/0.5.9_r3gkvssv2zdfxym6k2bu33pzk4:
-    resolution: {integrity: sha512-OBmltVuPNFbtznBAgQgOFaWh3dO6rRmU7i77TVzEkbViZoK2ylzlKPIORg9Wh+4ZgYbP2QMsI5GzEtAz+aNTvA==}
+  /@supabase/auth-helpers-nextjs/0.8.7_r3gkvssv2zdfxym6k2bu33pzk4:
+    resolution: {integrity: sha512-iYdOjFo0GkRvha340l8JdCiBiyXQuG9v8jnq7qMJ/2fakrskRgHTCOt7ryWbip1T6BExcWKC8SoJrhCzPOxhhg==}
     peerDependencies:
-      '@supabase/supabase-js': ^2.0.4
+      '@supabase/supabase-js': ^2.19.0
     dependencies:
-      '@supabase/auth-helpers-shared': 0.3.3_r3gkvssv2zdfxym6k2bu33pzk4
+      '@supabase/auth-helpers-shared': 0.6.3_r3gkvssv2zdfxym6k2bu33pzk4
       '@supabase/supabase-js': 2.22.0_encoding@0.1.13
+      set-cookie-parser: 2.6.0
     dev: false
 
   /@supabase/auth-helpers-react/0.3.1_r3gkvssv2zdfxym6k2bu33pzk4:
@@ -1763,13 +1764,13 @@ packages:
       '@supabase/supabase-js': 2.22.0_encoding@0.1.13
     dev: false
 
-  /@supabase/auth-helpers-shared/0.3.3_r3gkvssv2zdfxym6k2bu33pzk4:
-    resolution: {integrity: sha512-ZwZGffApfyz9MiT3knnZoF1DMWE56H/Q0Mrsn22J9ubhss7/+e7TP3dChxxwlUYqtDmjmLV6OV8W0BANENfUew==}
+  /@supabase/auth-helpers-shared/0.6.3_r3gkvssv2zdfxym6k2bu33pzk4:
+    resolution: {integrity: sha512-xYQRLFeFkL4ZfwC7p9VKcarshj3FB2QJMgJPydvOY7J5czJe6xSG5/wM1z63RmAzGbCkKg+dzpq61oeSyWiGBQ==}
     peerDependencies:
-      '@supabase/supabase-js': ^2.0.4
+      '@supabase/supabase-js': ^2.19.0
     dependencies:
       '@supabase/supabase-js': 2.22.0_encoding@0.1.13
-      js-base64: 3.7.5
+      jose: 4.15.4
     dev: false
 
   /@supabase/auth-ui-react/0.3.6_r3gkvssv2zdfxym6k2bu33pzk4:
@@ -3880,8 +3881,8 @@ packages:
     hasBin: true
     dev: false
 
-  /js-base64/3.7.5:
-    resolution: {integrity: sha512-3MEt5DTINKqfScXKfJFrRbxkrnk2AxPWGBL/ycjz4dK8iqiSJ06UxD8jh8xuh6p10TX4t2+7FsBYVxxQbMg+qA==}
+  /jose/4.15.4:
+    resolution: {integrity: sha512-W+oqK4H+r5sITxfxpSU+MMdr/YSWGvgZMQDIsNoBDGGy4i7GBPTtvFKibQzW06n3U3TqHjhvBJsirShsEJ6eeQ==}
     dev: false
 
   /js-sdsl/4.4.0:
@@ -4843,6 +4844,10 @@ packages:
     dependencies:
       lru-cache: 6.0.0
     dev: true
+
+  /set-cookie-parser/2.6.0:
+    resolution: {integrity: sha512-RVnVQxTXuerk653XfuliOxBP81Sf0+qfQE73LIYKcyMYHG94AuH0kgrQpRDuTZnSmjpysHmzxJXKNfa6PjFhyQ==}
+    dev: false
 
   /set-function-length/1.1.1:
     resolution: {integrity: sha512-VoaqjbBJKiWtg4yRcKBQ7g7wnGnLV3M8oLvVWwOk2PdYY6PEFegR1vezXR0tw6fZGF9csVakIRjrJiy2veSBFQ==}
