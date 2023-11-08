@@ -1,5 +1,6 @@
 import '@/styles/styles.css'
 import '@/styles/tailwind.css'
+import 'react-toastify/dist/ReactToastify.css'
 import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Inter } from 'next/font/google'
 import SupabaseProvider from './supabase-provider'
