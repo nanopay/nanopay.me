@@ -14,8 +14,6 @@ import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { Controller, useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
-import { useState } from 'react'
-import MailSentSvg from '@/images/mail-sent.svg'
 
 interface AuthEmailPassword {
 	email: string
@@ -32,8 +30,6 @@ const schema: JSONSchemaType<AuthEmailPassword> = {
 }
 
 export default function LoginPage() {
-	const [verificationIsPending, setVerificationIsPending] = useState(false)
-
 	const supabase = createBrowserSupabaseClient<Database>()
 
 	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
@@ -42,7 +38,7 @@ export default function LoginPage() {
 		typeof redirectedFrom === 'string' ? redirectedFrom : '/home',
 	)}`
 
-	const { showError, showSuccess } = useToast()
+	const { showError } = useToast()
 
 	const router = useRouter()
 
@@ -70,57 +66,19 @@ export default function LoginPage() {
 	}
 
 	const signWithPassword = async ({ email, password }: AuthEmailPassword) => {
-		const { error, data } = await supabase.auth.signInWithPassword({
+		const { error } = await supabase.auth.signInWithPassword({
 			email,
 			password,
 		})
 		if (error) {
-			console.log(
-				error.cause,
-				error.name,
-				error.stack,
-				error.status,
-				error.message,
-			)
 			if (error.message === 'Email not confirmed') {
-				setVerificationIsPending(true)
+				await router.push(`/verify-email?email=${email}`)
 			} else {
 				showError(error.message)
 			}
 		} else {
 			await router.push('/home')
 		}
-	}
-
-	if (verificationIsPending) {
-		return (
-			<div className="w-full flex flex-col px-2 sm:px-4 divide-y divide-slate-200">
-				<div className="py-6 w-full border-t border-slate-200">
-					<h1 className="text-2xl font-semibold text-slate-900">
-						Verify your Email
-					</h1>
-					<p className="text-base font-medium text-slate-600">
-						We sent you an email with a magic link to sign in.
-					</p>
-					<div className="w-full flex justify-center">
-						<Image
-							width={250}
-							height={250}
-							src={MailSentSvg}
-							alt="email sent art"
-						/>
-					</div>
-				</div>
-				<div className="py-6 flex flex-col items-center">
-					<h2 className="text-base font-semibold text-slate-600">
-						Back to{' '}
-						<Link href="/login" className="text-nano underline">
-							Login
-						</Link>
-					</h2>
-				</div>
-			</div>
-		)
 	}
 
 	return (

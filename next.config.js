@@ -29,6 +29,10 @@ const nextConfig = {
 				source: '/signup',
 				destination: '/auth/signup',
 			},
+			{
+				source: '/verify-email',
+				destination: '/auth/verify-email',
+			},
 		]
 	},
 }
