@@ -148,7 +148,7 @@ export default function LoginPage() {
 				<h2 className="text-base font-semibold text-slate-600">
 					Don't have an account ?{' '}
 					<Link href="/signup" className="text-nano underline">
-						Sign In
+						Sign Up
 					</Link>
 				</h2>
 			</div>
