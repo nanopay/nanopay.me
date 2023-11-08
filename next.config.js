@@ -37,6 +37,10 @@ const nextConfig = {
 				source: '/forgot-password',
 				destination: '/auth/forgot-password',
 			},
+			{
+				source: '/magic-link',
+				destination: '/auth/magic-link',
+			}
 		]
 	},
 }

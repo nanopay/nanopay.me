@@ -130,7 +130,10 @@ export default function LoginPage() {
 					Sign In
 				</Button>
 				<div className="pt-6 flex flex-col items-center">
-					<Link href="" className="text-sm text-nano hover:underline">
+					<Link
+						href="/magic-link"
+						className="text-sm text-nano hover:underline"
+					>
 						Send a magic link email
 					</Link>
 					<Link
