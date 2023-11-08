@@ -57,12 +57,15 @@ export default function LoginPage() {
 	})
 
 	const signWithGithub = async () => {
-		await supabase.auth.signInWithOAuth({
+		const { error } = await supabase.auth.signInWithOAuth({
 			provider: 'github',
 			options: {
 				redirectTo,
 			},
 		})
+		if (error) {
+			showError(error.message)
+		}
 	}
 
 	const signWithPassword = async ({ email, password }: AuthEmailPassword) => {
