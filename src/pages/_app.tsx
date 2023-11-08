@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app'
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import '@/styles/tailwind.css'
 import '@/styles/styles.css'
@@ -20,7 +20,7 @@ export default function App({
 	Component,
 	pageProps: { session, ...pageProps },
 }: AppProps) {
-	const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+	const [supabaseClient] = useState(() => createClientComponentClient())
 
 	return (
 		<QueryClientProvider client={queryClient}>

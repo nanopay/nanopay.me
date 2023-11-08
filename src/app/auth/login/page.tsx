@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter } from 'next/navigation'
 import { getURL } from '@/utils/helpers'
 import Link from 'next/link'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
 import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
@@ -30,7 +30,7 @@ const schema: JSONSchemaType<AuthEmailPassword> = {
 }
 
 export default function LoginPage() {
-	const supabase = createBrowserSupabaseClient<Database>()
+	const supabase = createClientComponentClient<Database>()
 
 	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
 

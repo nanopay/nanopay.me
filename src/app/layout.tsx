@@ -1,10 +1,7 @@
 import '@/styles/styles.css'
 import '@/styles/tailwind.css'
 import 'react-toastify/dist/ReactToastify.css'
-import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Inter } from 'next/font/google'
-import SupabaseProvider from './supabase-provider'
-import { headers, cookies } from 'next/headers'
 import ClientContexts from './clientContexts'
 import NProgressBar from '@/components/NProgressBar'
 
@@ -20,24 +17,13 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
-	const supabase = createServerComponentSupabaseClient({
-		headers,
-		cookies,
-	})
-
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<SupabaseProvider session={session}>
-					<ClientContexts>
-						<div className="min-h-screen flex flex-col">{children}</div>
-						<NProgressBar />
-					</ClientContexts>
-				</SupabaseProvider>
+				<ClientContexts>
+					<div className="min-h-screen flex flex-col">{children}</div>
+					<NProgressBar />
+				</ClientContexts>
 			</body>
 		</html>
 	)

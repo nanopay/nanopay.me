@@ -1,10 +1,13 @@
 import Loading from '@/components/Loading'
 import { User } from '@/types/users'
-import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
+
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+
 import { AuthResponse } from '@supabase/supabase-js'
-import { useRouter } from 'next/router'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useContext, useState, useEffect, createContext } from 'react'
 import { useToast } from '../hooks/useToast'
+import { Database } from '@/types/supabase'
 
 interface AuthContextValues {
 	user: User
@@ -24,23 +27,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const [loading, setLoading] = useState(true)
 	const [sessionRefreshed, setSessionRefreshed] = useState(false)
 
-	const supabaseUser = useUser()
-
-	const { isLoading, error, supabaseClient } = useSessionContext()
+	const supabase = createClientComponentClient<Database>()
 
 	const { showError } = useToast()
 
 	const router = useRouter()
 
+	const pathname = usePathname()
+
 	const retrieveUser = async () => {
-		const { data, error } = await supabaseClient.from('profiles').select('*')
+		const { data, error } = await supabase.from('profiles').select('*').single()
 
 		if (error) {
 			await router.push('/500')
 			throw new Error(error.message)
 		}
 
-		if (!data || data.length === 0) {
+		if (!data) {
 			/*
 			 * It can mean 2 things:
 			 * 1. User did not complete the registration
@@ -64,48 +67,48 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 
 		setUser({
-			id: data[0].user_id,
-			name: data[0].name,
-			email: data[0].email,
-			avatar_url: data[0].avatar_url,
+			id: data.user_id,
+			name: data.name,
+			email: data.email,
+			avatar_url: data.avatar_url,
 		})
 	}
 
 	const handleUserLoading = async () => {
-		if (!isLoading) {
-			if (
-				router.pathname !== '/login' &&
-				router.pathname !== '/register' &&
-				supabaseUser
-			) {
+		const { data, error } = await supabase.auth.getUser()
+		if (error) {
+			showError(error.message)
+		}
+		if (data.user?.email) {
+			setUser({
+				id: data.user.id,
+				email: data.user.email,
+				name: '',
+				avatar_url: null,
+			})
+			if (pathname !== '/login' && pathname !== '/register') {
 				try {
-					await retrieveUser()
-					setLoading(false)
+					if (data.user) {
+						await retrieveUser()
+					}
 				} catch (error: any) {
 					showError(error.message)
+				} finally {
 					setLoading(false)
 				}
-			} else {
-				setLoading(false)
 			}
 		}
+		setLoading(false)
 	}
 
 	useEffect(() => {
 		handleUserLoading()
-	}, [supabaseUser, isLoading])
+	}, [])
 
-	useEffect(() => {
-		if (error) {
-			showError(error.name, error.message)
-			router.push('/login').then(res => setLoading(false))
-		}
-	}, [error])
-
-	const refreshSession = () => supabaseClient.auth.refreshSession()
+	const refreshSession = () => supabase.auth.refreshSession()
 
 	const signOut = async () => {
-		const { error } = await supabaseClient.auth.signOut()
+		const { error } = await supabase.auth.signOut()
 		if (error) {
 			showError(error.name, error.message)
 			throw error
@@ -113,7 +116,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		await router.push('/login')
 	}
 
-	if (loading && router.pathname !== '/' && router.pathname !== '/login') {
+	if (loading && pathname !== '/' && pathname !== '/login') {
 		return (
 			<div className="w-full h-screen flex items-center justify-center">
 				<Loading className="sm:w-32 sm:h-32" />

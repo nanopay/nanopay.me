@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
 import { Button } from '@/components/Button'
 import Input from '@/components/Input'
@@ -25,7 +25,7 @@ const schema: JSONSchemaType<ResetEmailPassword> = {
 }
 
 export default function ForgotPasswordPage() {
-	const supabase = createBrowserSupabaseClient<Database>()
+	const supabase = createClientComponentClient<Database>()
 
 	const router = useRouter()
 
