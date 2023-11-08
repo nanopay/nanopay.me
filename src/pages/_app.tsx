@@ -10,9 +10,9 @@ import { ToastContainer } from 'react-toastify'
 import { ThemeProvider } from '@mui/material/styles'
 import 'react-toastify/dist/ReactToastify.css'
 import { theme } from '@/styles/mui-theme'
-import { AuthProvider } from '@/contexts/Auth'
+import { AuthProvider } from '@/contexts/AuthProvider'
 import NProgressBar from '@/components/NProgressBar'
-import PreferencesProvider from '@/contexts/Preferences'
+import PreferencesProvider from '@/contexts/PreferencesProvider'
 
 const queryClient = new QueryClient()
 

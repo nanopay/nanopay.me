@@ -5,8 +5,8 @@ import { theme } from '@/styles/mui-theme'
 import { ThemeProvider } from '@mui/material'
 import { ToastContainer } from 'react-toastify'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import PreferencesProvider from '@/contexts/Preferences'
-import { AuthProvider } from '@/contexts/Auth'
+import PreferencesProvider from '@/contexts/PreferencesProvider'
+import { AuthProvider } from '@/contexts/AuthProvider'
 
 const queryClient = new QueryClient()
 

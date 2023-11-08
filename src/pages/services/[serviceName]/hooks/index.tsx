@@ -10,7 +10,7 @@ import { Button } from '@/components/Button'
 import api from '@/services/api'
 import Layout from '@/components/Layout'
 import ActivityDot from '@/components/ActivityDot'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 import Link from 'next/link'
 
 export default function Webhooks() {

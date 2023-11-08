@@ -16,7 +16,7 @@ import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import Layout from '@/components/Layout'
 import { sanitizeSlug } from '@/utils/helpers'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 const roboto = Roboto({
 	weight: '400',

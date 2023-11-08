@@ -6,7 +6,7 @@ import { UserProfile } from '@/types/users'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 export default function InvoicePage() {
 	const router = useRouter()

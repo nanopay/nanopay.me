@@ -17,7 +17,7 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Header } from '@/components/Header'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/helpers'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 const schema: JSONSchemaType<ServiceCreate> = {
 	type: 'object',

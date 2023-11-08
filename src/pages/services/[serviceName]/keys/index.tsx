@@ -10,7 +10,7 @@ import { Button } from '@/components/Button'
 import api from '@/services/api'
 import Layout from '@/components/Layout'
 import ErrorPage500 from '@/pages/500'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 export default function ApiKeys() {
 	const { user } = useAuth()

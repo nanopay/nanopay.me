@@ -16,7 +16,7 @@ import { UserProfile } from '@/types/users'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
 import Layout from '@/components/Layout'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',

@@ -16,7 +16,7 @@ import Fireworks from '@/components/Fireworks'
 import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'
 import Invoices from '@/components/Invoices'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 import DefaultAvatar from '@/components/DefaultAvatar'
 
 export default function ServiceDashboard() {

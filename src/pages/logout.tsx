@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 import Image from 'next/image'
 
 export default function Logout() {

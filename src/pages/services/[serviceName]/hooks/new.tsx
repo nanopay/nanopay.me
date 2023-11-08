@@ -22,7 +22,7 @@ import {
 } from '@mui/material'
 import { HookCreate } from '@/types/hooks'
 import MButton from '@/components/MButton'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',

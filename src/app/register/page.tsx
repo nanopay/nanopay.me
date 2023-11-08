@@ -15,7 +15,7 @@ import { JSONSchemaType } from 'ajv'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { UserProfile } from '@/types/users'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 const schema: JSONSchemaType<UserProfile> = {
 	type: 'object',

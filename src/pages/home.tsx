@@ -8,7 +8,7 @@ import Loading from '@/components/Loading'
 import ProfileBoard from '@/components/ProfileBoard'
 import Layout from '@/components/Layout'
 import Invoices from '@/components/Invoices'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/AuthProvider'
 
 export default function Home() {
 	const { user } = useAuth()
