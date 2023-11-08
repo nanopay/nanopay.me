@@ -1,4 +1,4 @@
-import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
 
 	try {
 		// Create authenticated Supabase Client.
-		const supabase = createMiddlewareSupabaseClient({ req, res })
+		const supabase = createMiddlewareClient({ req, res })
 
 		// Check if we have a session
 		const {
@@ -21,10 +21,15 @@ export async function middleware(req: NextRequest) {
 			session?.user?.user_metadata?.confirmed_registration
 
 		if (role === 'authenticated') {
-			if (confirmedRegistration) {
-				return res
-			} else {
+			if (req.nextUrl.pathname !== '/register' && !confirmedRegistration) {
 				pathname = '/register'
+			} else if (
+				req.nextUrl.pathname === '/register' &&
+				confirmedRegistration
+			) {
+				pathname = '/home'
+			} else {
+				return res
 			}
 		}
 
@@ -42,5 +47,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/services/:path*', '/home', '/logout'],
+	matcher: ['/services/:path*', '/register', '/home', '/logout'],
 }

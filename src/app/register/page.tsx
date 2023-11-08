@@ -1,5 +1,7 @@
+'use client'
+
 import { Container } from '@/components/Container'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from '@/hooks/useToast'
 import { useForm, Controller } from 'react-hook-form'
 import Image from 'next/image'
@@ -7,8 +9,6 @@ import Input from '@/components/Input'
 import MButton from '@/components/MButton'
 import { Checkbox } from '@mui/material'
 import { useState } from 'react'
-import { createServerSupabaseClient, User } from '@supabase/auth-helpers-nextjs'
-import { GetServerSidePropsContext } from 'next'
 import { Logomark } from '@/components/Logo'
 import api from '@/services/api'
 import { JSONSchemaType } from 'ajv'
@@ -27,18 +27,21 @@ const schema: JSONSchemaType<UserProfile> = {
 	required: ['email', 'name', 'avatar_url'],
 }
 
-export default function Register({ user }: { user: User }) {
+export default function Register() {
+	const { user } = useAuth()
+
 	const { showError, showSuccess } = useToast()
-	const router = useRouter()
 
 	const { retrieveUser } = useAuth()
 
 	const [acceptTerms, setAcceptTerms] = useState(false)
 
+	const router = useRouter()
+
+	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
+
 	const redirectTo =
-		typeof router.query.redirectedFrom === 'string'
-			? router.query.redirectedFrom
-			: '/home'
+		typeof redirectedFrom === 'string' ? redirectedFrom : '/home'
 
 	const {
 		control,
@@ -47,9 +50,9 @@ export default function Register({ user }: { user: User }) {
 		formState: { errors, isSubmitting },
 	} = useForm<UserProfile>({
 		defaultValues: {
-			name: user.user_metadata?.name,
-			email: user.user_metadata?.email,
-			avatar_url: user.user_metadata?.avatar_url,
+			name: user?.name,
+			email: user?.email,
+			avatar_url: user?.avatar_url,
 		},
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
@@ -88,7 +91,7 @@ export default function Register({ user }: { user: User }) {
 					<div />
 				</div>
 				<Image
-					src={getValues('avatar_url')}
+					src={getValues('avatar_url') || ''}
 					alt="Logo"
 					width={128}
 					height={128}
@@ -155,33 +158,4 @@ export default function Register({ user }: { user: User }) {
 			</Container>
 		</div>
 	)
-}
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-	const supabase = createServerSupabaseClient(ctx)
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	if (!session || !session.user)
-		return {
-			redirect: {
-				destination: '/login',
-				permanent: false,
-			},
-		}
-
-	if (session.user.user_metadata?.confirmed_registration)
-		return {
-			redirect: {
-				destination: '/home',
-				permanent: false,
-			},
-		}
-
-	return {
-		props: {
-			user: session.user,
-		},
-	}
 }
