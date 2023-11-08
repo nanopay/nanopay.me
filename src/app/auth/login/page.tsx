@@ -133,7 +133,10 @@ export default function LoginPage() {
 					<Link href="" className="text-sm text-nano hover:underline">
 						Send a magic link email
 					</Link>
-					<Link href="" className="text-sm text-nano hover:underline">
+					<Link
+						href="/forgot-password"
+						className="text-sm text-nano hover:underline"
+					>
 						Forgot your password ?
 					</Link>
 				</div>
@@ -142,7 +145,7 @@ export default function LoginPage() {
 				<h2 className="text-base font-semibold text-slate-600">
 					Don't have an account ?{' '}
 					<Link href="/signup" className="text-nano underline">
-						Sign Up
+						Sign In
 					</Link>
 				</h2>
 			</div>

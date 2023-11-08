@@ -33,6 +33,10 @@ const nextConfig = {
 				source: '/verify-email',
 				destination: '/auth/verify-email',
 			},
+			{
+				source: '/forgot-password',
+				destination: '/auth/forgot-password',
+			},
 		]
 	},
 }
