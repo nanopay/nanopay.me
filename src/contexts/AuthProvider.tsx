@@ -41,7 +41,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		const { data, error } = await supabase.from('profiles').select('*').single()
 
 		if (error && error.code !== 'PGRST116') {
-			await router.push('/500')
 			throw new Error(error.message)
 		}
 

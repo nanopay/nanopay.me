@@ -9,7 +9,6 @@ import {
 } from '@heroicons/react/24/solid'
 import { Button } from '@/components/Button'
 import api from '@/services/api'
-import ErrorPage500 from '@/pages/500'
 
 export default function ApiKeys({
 	params: { serviceName },
@@ -34,7 +33,12 @@ export default function ApiKeys({
 	}
 
 	if (error) {
-		return <ErrorPage500 />
+		const message = api.getErrorMessage(error)
+		if (message) {
+			throw new Error(message)
+		} else {
+			throw error
+		}
 	}
 
 	return (
