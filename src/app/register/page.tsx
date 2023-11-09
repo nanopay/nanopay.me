@@ -70,7 +70,10 @@ export default function Register() {
 			showSuccess('Success')
 			router.push(redirectTo)
 		} catch (e: any) {
-			showError('Error registering user', api.getErrorMessage(e))
+			showError(
+				'Error registering user',
+				api.getErrorMessage(e) || 'Try again later',
+			)
 		}
 	}
 

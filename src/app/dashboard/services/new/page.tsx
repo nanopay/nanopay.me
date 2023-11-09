@@ -72,7 +72,10 @@ export default function NewService() {
 			setValue('avatar_url', url)
 		},
 		onError: (err: any) => {
-			showError('Error uploading image', api.getErrorMessage(err))
+			showError(
+				'Error uploading image',
+				api.getErrorMessage(err) || 'Try again Later',
+			)
 		},
 	})
 
@@ -87,7 +90,10 @@ export default function NewService() {
 			router.push('/services/' + watch('name') + '#new')
 		},
 		onError: (err: any) => {
-			showError('Error creating service', api.getErrorMessage(err))
+			showError(
+				'Error creating service',
+				api.getErrorMessage(err) || 'Try again Later',
+			)
 		},
 	})
 

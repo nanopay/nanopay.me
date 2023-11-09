@@ -157,7 +157,10 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 			showSuccess('Webhook updated')
 		},
 		onError: (err: any) => {
-			showError('Error updating webhook', api.getErrorMessage(err))
+			showError(
+				'Error updating webhook',
+				api.getErrorMessage(err) || 'Try again later',
+			)
 		},
 	})
 

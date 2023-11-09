@@ -98,7 +98,10 @@ export default function NewApiKey({
 			router.push(`/services/${serviceName}/hooks`)
 		},
 		onError: (err: any) => {
-			showError('Error creating webhook', api.getErrorMessage(err))
+			showError(
+				'Error creating webhook',
+				api.getErrorMessage(err) || 'Try again Later',
+			)
 		},
 	})
 

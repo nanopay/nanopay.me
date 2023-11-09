@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import * as nanocurrency from 'nanocurrency'
 import Ajv, { JSONSchemaType } from 'ajv'
-import { supabase } from '@/lib/supabase'
+import { cookieHasSbAuthToken, supabase } from '@/lib/supabase'
 import { API_KEY_CHECKSUM_BYTES_LENGTH, verifyApiKey } from '@/utils/apiKey'
 import { catchMiddleware } from '@/utils/catchMiddleware'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
@@ -53,9 +53,7 @@ const createInvoice = async (req: NextApiRequest, res: NextApiResponse) => {
 	let serviceId: string | null = null
 	let userId: string
 
-	const supabaseCookies = req.cookies['supabase-auth-token']
-
-	if (supabaseCookies) {
+	if (cookieHasSbAuthToken(req.cookies)) {
 		const supabaseServerClient = createServerSupabaseClient<Database>({
 			req,
 			res,

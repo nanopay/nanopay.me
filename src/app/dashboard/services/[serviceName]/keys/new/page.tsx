@@ -77,7 +77,10 @@ export default function NewApiKey({
 			showSuccess('API Key created')
 		},
 		onError: (err: any) => {
-			showError('Error creating service', api.getErrorMessage(err))
+			showError(
+				'Error creating service',
+				api.getErrorMessage(err) || 'Try again later',
+			)
 		},
 	})
 

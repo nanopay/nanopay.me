@@ -81,7 +81,10 @@ export default function NewService({
 			router.push(`/services/${service?.name}/invoices/${res.id}`)
 		},
 		onError: (err: any) => {
-			showError('Error creating service', api.getErrorMessage(err))
+			showError(
+				'Error creating service',
+				api.getErrorMessage(err) || 'Try again later',
+			)
 		},
 	})
 

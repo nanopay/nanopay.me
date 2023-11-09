@@ -25,6 +25,7 @@ export default function ServiceDashboard({
 	params: { serviceName: string }
 	searchParams: { isNew?: 'true' }
 }) {
+	throw new Error('abc')
 	const { user } = useAuth()
 
 	const isNew = searchParams.isNew ? true : false
