@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			id: data.user_id,
 			name: data.name,
 			email: data.email,
-			avatar_url: data.avatar_url,
+			avatar_url: data.avatar_url || DEFAULT_AVATAR_URL,
 		})
 	}
 
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 					id: user.id,
 					email: user.email,
 					name: '',
-					avatar_url: null,
+					avatar_url: DEFAULT_AVATAR_URL,
 				})
 				if (pathname !== '/register') {
 					await retrieveUser()

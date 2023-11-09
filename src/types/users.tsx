@@ -1,7 +1,7 @@
 export interface UserProfile {
 	name: string
 	email: string
-	avatar_url: string | null
+	avatar_url: string
 }
 
 export interface User extends UserProfile {

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import clsx from 'clsx'
 import {
@@ -93,6 +93,7 @@ const getSize = (size: HeaderProps['size']) => {
 export function Header({ user, size = 'md', ...props }: HeaderProps) {
 	const supabaseClient = useSupabaseClient()
 	const router = useRouter()
+	const pathname = usePathname()
 
 	const sizes = getSize(size)
 
@@ -101,7 +102,7 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 		await router.push('/login')
 	}
 
-	const isHome = router.pathname.startsWith('/home')
+	const isHome = pathname?.startsWith('/home')
 
 	return (
 		<header {...props}>
