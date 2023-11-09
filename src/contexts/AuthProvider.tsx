@@ -10,6 +10,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import React, { useContext, useState, useEffect, createContext } from 'react'
 import { useToast } from '../hooks/useToast'
 import { Database } from '@/types/supabase'
+import { DEFAULT_AVATAR_URL } from '@/constants'
 
 export interface AuthContextValues {
 	user: User
