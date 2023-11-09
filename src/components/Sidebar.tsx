@@ -20,7 +20,7 @@ import {
 	KeyIcon,
 	UserIcon,
 } from '@heroicons/react/24/outline'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MButton from './MButton'
 import Loading from './Loading'
@@ -28,7 +28,7 @@ import Loading from './Loading'
 export default function Sidebar() {
 	const router = useRouter()
 	const pathname = usePathname()
-	const serviceName = useSearchParams()?.get('serviceName')
+	const serviceName = useParams()?.serviceName
 
 	const [currentService, setCurrentService] = useState<null | Service>(null)
 	const [openServices, setOpenServices] = useState<boolean>(false)
