@@ -1,3 +1,5 @@
+'use client'
+
 import Head from 'next/head'
 import { Header } from '@/components/Header'
 import { Button } from '@/components/Button'
@@ -8,25 +10,24 @@ import {
 	PlusIcon,
 } from '@heroicons/react/24/solid'
 import { Receipt, Webhook } from '@mui/icons-material'
-import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import api from '@/services/api'
 import Loading from '@/components/Loading'
 import Fireworks from '@/components/Fireworks'
-import { useEffect, useState } from 'react'
-import Layout from '@/components/Layout'
 import Invoices from '@/components/Invoices'
 import { useAuth } from '@/contexts/AuthProvider'
 import DefaultAvatar from '@/components/DefaultAvatar'
 
-export default function ServiceDashboard() {
+export default function ServiceDashboard({
+	params: { serviceName },
+	searchParams,
+}: {
+	params: { serviceName: string }
+	searchParams: { isNew?: 'true' }
+}) {
 	const { user } = useAuth()
 
-	const router = useRouter()
-
-	const [isNew, setIsNew] = useState(false)
-
-	const serviceName = router.query.serviceName as string
+	const isNew = searchParams.isNew ? true : false
 
 	const { data: service, isLoading } = useQuery({
 		queryKey: ['service', serviceName],
@@ -39,15 +40,6 @@ export default function ServiceDashboard() {
 			api.invoices.list(service?.id as string).then(res => res.data),
 		enabled: !!service,
 	})
-
-	useEffect(() => {
-		// check if #new is in the url
-		if (router.asPath.includes('#new')) {
-			// set state new and remove #new from url
-			setIsNew(true)
-			router.replace(router.asPath.replace('#new', ''))
-		}
-	}, [])
 
 	if (!serviceName) {
 		return null
@@ -93,10 +85,10 @@ export default function ServiceDashboard() {
 
 	return (
 		<>
-			<Head>
+			{/* <Head>
 				<title>{service.name} - NanoPay.me</title>
-			</Head>
-			<Layout user={user} showFooter>
+			</Head> */}
+			<>
 				<div className="bg-white shadow rounded-lg">
 					<div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
 						<div className="py-6 md:flex md:items-center md:justify-between">
@@ -228,7 +220,7 @@ export default function ServiceDashboard() {
 				</section>
 
 				{isNew && <Fireworks count={3} />}
-			</Layout>
+			</>
 		</>
 	)
 }

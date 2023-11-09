@@ -1,19 +1,18 @@
+'use client'
+
 import Invoice from '@/components/Invoice'
 import Loading from '@/components/Loading'
-import Layout from '@/components/Layout'
 import api from '@/services/api'
-import { UserProfile } from '@/types/users'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
-import { useAuth } from '@/contexts/AuthProvider'
 
-export default function InvoicePage() {
-	const router = useRouter()
-	const invoiceId = router.query.invoiceId as string
-
-	const { user } = useAuth()
-
+export default function InvoicePage({
+	params: { invoiceId },
+}: {
+	params: {
+		invoiceId: string
+	}
+}) {
 	const {
 		data: invoice,
 		isLoading,
@@ -48,11 +47,9 @@ export default function InvoicePage() {
 			<Head>
 				<title>Invoice - NanoPay.me</title>
 			</Head>
-			<Layout user={user}>
-				<div className="sm:mt-4 w-full max-w-5xl sm:mx-auto">
-					<Invoice invoice={invoice} />
-				</div>
-			</Layout>
+			<div className="sm:mt-4 w-full max-w-5xl sm:mx-auto">
+				<Invoice invoice={invoice} />
+			</div>
 		</>
 	)
 }

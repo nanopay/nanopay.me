@@ -1,10 +1,10 @@
+'use client'
+
 import { useState } from 'react'
-import { useRouter } from 'next/router'
-import Head from 'next/head'
+import { useRouter } from 'next/navigation'
 import { useMutation } from 'react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
-
 import { Container } from '@/components/Container'
 import MButton from '@/components/MButton'
 import Input from '@/components/Input'
@@ -14,7 +14,6 @@ import { useToast } from '@/hooks/useToast'
 import ImageInput from '@/components/ImageInput'
 import { ServiceCreate } from '@/types/services'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { Header } from '@/components/Header'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/helpers'
 import { useAuth } from '@/contexts/AuthProvider'
@@ -97,87 +96,78 @@ export default function NewService() {
 	}
 
 	return (
-		<>
-			<Head>
-				<title>New Service - NanoPay.me</title>
-			</Head>
-			<Header user={user} className="bg-white border-b border-slate-100" />
-			<main>
-				<Container className="sm:mt-24 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
-					<div className="w-full flex justify-center items-center py-3 mb-8 border-b border-slate-200">
-						<h3 className="text-slate-700">Create a new service</h3>
-					</div>
+		<Container className="w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
+			<div className="w-full flex justify-center items-center py-3 mb-8 border-b border-slate-200">
+				<h3 className="text-slate-700">Create a new service</h3>
+			</div>
 
-					<ImageInput
-						source={watch('avatar_url')}
-						crop={true}
-						onChange={uploadImage}
-						isLoading={uploading}
-						isError={uploadError}
-						progress={uploadProgress}
-					/>
+			<ImageInput
+				source={watch('avatar_url')}
+				crop={true}
+				onChange={uploadImage}
+				isLoading={uploading}
+				isError={uploadError}
+				progress={uploadProgress}
+			/>
 
-					<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-6">
+			<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-6">
+				<div>
+					<div className="flex mb-2 items-center text-xs text-gray-600">
+						<InformationCircleIcon className="w-4 mr-1" />
 						<div>
-							<div className="flex mb-2 items-center text-xs text-gray-600">
-								<InformationCircleIcon className="w-4 mr-1" />
-								<div>
-									Use a name like:{' '}
-									<span className="font-semibold">my-service</span>
-									{' or '}
-									<span className="font-semibold">myservice2.com</span>
-								</div>
-							</div>
-							<Controller
-								name="name"
-								control={control}
-								render={({ field }) => (
-									<Input
-										label="Name"
-										{...field}
-										onChange={e => field.onChange(sanitizeSlug(e.target.value))}
-										errorMessage={errors.name?.message}
-										className="w-full"
-										autoCapitalize="words"
-										style={{
-											textTransform: 'capitalize',
-										}}
-									/>
-								)}
-							/>
+							Use a name like: <span className="font-semibold">my-service</span>
+							{' or '}
+							<span className="font-semibold">myservice2.com</span>
 						</div>
-
-						<Controller
-							name="description"
-							control={control}
-							render={({ field }) => (
-								<Input
-									label="Description"
-									{...field}
-									onChange={e => field.onChange(e.target.value.slice(0, 512))}
-									errorMessage={errors.description?.message}
-									className="w-full"
-									multiline={true}
-								/>
-							)}
-						/>
 					</div>
-					<div />
-					<MButton
-						onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
-						loading={isSubmitting}
-						disabled={isSuccess || uploading || !watch('name')}
-					>
-						{uploading
-							? 'Uploading image...'
-							: isSubmitting
-							? 'Creating service...'
-							: isSuccess
-							? 'Service Created'
-							: 'Create service'}
-					</MButton>
-				</Container>
-			</main>
-		</>
+					<Controller
+						name="name"
+						control={control}
+						render={({ field }) => (
+							<Input
+								label="Name"
+								{...field}
+								onChange={e => field.onChange(sanitizeSlug(e.target.value))}
+								errorMessage={errors.name?.message}
+								className="w-full"
+								autoCapitalize="words"
+								style={{
+									textTransform: 'capitalize',
+								}}
+							/>
+						)}
+					/>
+				</div>
+
+				<Controller
+					name="description"
+					control={control}
+					render={({ field }) => (
+						<Input
+							label="Description"
+							{...field}
+							onChange={e => field.onChange(e.target.value.slice(0, 512))}
+							errorMessage={errors.description?.message}
+							className="w-full"
+							multiline={true}
+						/>
+					)}
+				/>
+			</div>
+			<div />
+			<MButton
+				onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
+				loading={isSubmitting}
+				disabled={isSuccess || uploading || !watch('name')}
+			>
+				{uploading
+					? 'Uploading image...'
+					: isSubmitting
+					? 'Creating service...'
+					: isSuccess
+					? 'Service Created'
+					: 'Create service'}
+			</MButton>
+		</Container>
 	)
 }

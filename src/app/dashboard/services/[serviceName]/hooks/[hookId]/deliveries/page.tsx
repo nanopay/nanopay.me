@@ -1,9 +1,6 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import api from '@/services/api'
-import Layout from '@/components/Layout'
-import { useAuth } from '@/contexts/AuthProvider'
 import { useToast } from '@/hooks/useToast'
 import { Box, Skeleton, Tab, Tabs } from '@mui/material'
 import tailwindColors from 'tailwindcss/colors'
@@ -11,16 +8,15 @@ import { HookDelivery } from '@/types/hooks'
 import Link from 'next/link'
 import HookDelivieries from '@/components/HookDeliveries'
 
-export default function Webhooks() {
-	const { user } = useAuth()
-
-	const router = useRouter()
-
+export default function Webhooks({
+	params: { serviceName, hookId },
+}: {
+	params: {
+		serviceName: string
+		hookId: string
+	}
+}) {
 	const { showError } = useToast()
-
-	const serviceName = router.query.serviceName as string
-
-	const hookId = router.query.hookId as string
 
 	const tabs = [
 		{
@@ -55,34 +51,30 @@ export default function Webhooks() {
 			<Head>
 				<title>Webook Deliveries - NanoPay.me</title>
 			</Head>
-			<Layout user={user}>
-				<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
-					<Tabs value={1}>
-						{tabs.map((tab, index) => (
-							<Tab
-								key={index}
-								label={tab.label}
-								href={tab.href}
-								LinkComponent={Link}
-							/>
-						))}
-					</Tabs>
-				</Box>
-				<>
-					{!deliveries ? (
-						<Skeleton
-							variant="rectangular"
-							animation="wave"
-							width="full"
-							height={240}
-							className="rounded-lg"
-							sx={{ bgcolor: tailwindColors.slate['200'] }}
+			<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
+				<Tabs value={1}>
+					{tabs.map((tab, index) => (
+						<Tab
+							key={index}
+							label={tab.label}
+							href={tab.href}
+							LinkComponent={Link}
 						/>
-					) : (
-						<HookDeliveriesList deliveries={deliveries} />
-					)}
-				</>
-			</Layout>
+					))}
+				</Tabs>
+			</Box>
+			{!deliveries ? (
+				<Skeleton
+					variant="rectangular"
+					animation="wave"
+					width="full"
+					height={240}
+					className="rounded-lg"
+					sx={{ bgcolor: tailwindColors.slate['200'] }}
+				/>
+			) : (
+				<HookDeliveriesList deliveries={deliveries} />
+			)}
 		</>
 	)
 }

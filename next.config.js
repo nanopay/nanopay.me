@@ -45,6 +45,10 @@ const nextConfig = {
 				source: '/home',
 				destination: '/dashboard/home',
 			},
+			{
+				source: '/services/:path*',
+				destination: '/dashboard/services/:path*',
+			}
 		]
 	},
 }
