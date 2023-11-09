@@ -36,7 +36,11 @@ const nextConfig = {
 			{
 				source: '/magic-link',
 				destination: '/auth/magic-link',
-			}
+			},
+			{
+				source: '/home',
+				destination: '/dashboard/home',
+			},
 		]
 	},
 }
