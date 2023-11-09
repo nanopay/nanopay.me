@@ -4,7 +4,6 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { getURL } from '@/utils/helpers'
 import Link from 'next/link'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/types/supabase'
 import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
 import { Button } from '@/components/Button'
@@ -30,7 +29,7 @@ const schema: JSONSchemaType<AuthEmailPassword> = {
 }
 
 export default function LoginPage() {
-	const supabase = createClientComponentClient<Database>()
+	const supabase = createClientComponentClient()
 
 	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
 
@@ -69,19 +68,20 @@ export default function LoginPage() {
 	}
 
 	const signWithPassword = async ({ email, password }: AuthEmailPassword) => {
-		const { error } = await supabase.auth.signInWithPassword({
+		const { data, error } = await supabase.auth.signInWithPassword({
 			email,
 			password,
 		})
 		if (error) {
 			if (error.message === 'Email not confirmed') {
-				await router.push(`/verify-email?email=${email}`)
-			} else {
-				showError(error.message)
+				return await router.push(`/verify-email?email=${email}`)
 			}
-		} else {
-			await router.push('/home')
+			return showError(error.message)
 		}
+		if (!data.session) {
+			throw new Error('Session is missing')
+		}
+		router.push(`/home`)
 	}
 
 	return (
