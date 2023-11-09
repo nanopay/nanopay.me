@@ -95,7 +95,7 @@ export default function Register() {
 					alt="Logo"
 					width={128}
 					height={128}
-					className="mb-4 rounded-full border-2 border-slate-400"
+					className="mb-4 rounded-full border-2 border-slate-200"
 					priority
 				/>
 				<div className="w-full flex flex-col space-y-6 px-8">
