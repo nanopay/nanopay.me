@@ -22,6 +22,10 @@ const nextConfig = {
 				destination: '/auth/login',
 			},
 			{
+				source: '/logout',
+				destination: '/auth/logout',
+			},
+			{
 				source: '/signup',
 				destination: '/auth/signup',
 			},
