@@ -20,13 +20,15 @@ import {
 	KeyIcon,
 	UserIcon,
 } from '@heroicons/react/24/outline'
-import { useRouter } from 'next/router'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import MButton from './MButton'
 import Loading from './Loading'
 
 export default function Sidebar() {
 	const router = useRouter()
+	const pathname = usePathname()
+	const serviceName = useSearchParams()?.get('serviceName')
 
 	const [currentService, setCurrentService] = useState<null | Service>(null)
 	const [openServices, setOpenServices] = useState<boolean>(false)
@@ -41,13 +43,13 @@ export default function Sidebar() {
 			name: 'Home',
 			href: '/home',
 			icon: HomeIcon,
-			current: router.pathname === '/home',
+			current: pathname === '/home',
 		},
 		{
 			name: 'Profile',
 			href: '/profile',
 			icon: UserIcon,
-			current: router.pathname === '/profile',
+			current: pathname === '/profile',
 		},
 	]
 
@@ -56,39 +58,38 @@ export default function Sidebar() {
 			name: 'Dashboard',
 			href: `/services/${currentService?.name}`,
 			icon: HomeIcon,
-			current: router.pathname === '/services/[serviceName]',
+			current: pathname === '/services/[serviceName]',
 		},
 		{
 			name: 'Invoices',
 			href: `/services/${currentService?.name}/invoices`,
 			icon: BanknotesIcon,
-			current: router.pathname === '/services/[serviceName]/invoices',
+			current: pathname === '/services/[serviceName]/invoices',
 		},
 		{
 			name: 'Webhooks',
 			href: `/services/${currentService?.name}/hooks`,
 			icon: Webhook,
-			current: router.pathname === '/services/[serviceName]/hooks',
+			current: pathname === '/services/[serviceName]/hooks',
 		},
 		{
 			name: 'Api Keys',
 			href: `/services/${currentService?.name}/keys`,
 			icon: KeyIcon,
-			current: router.pathname === '/services/[serviceName]/keys',
+			current: pathname === '/services/[serviceName]/keys',
 		},
 		{
 			name: 'Settings',
 			href: `/services/${currentService?.name}/settings`,
 			icon: Cog6ToothIcon,
-			current: router.pathname === '/services/[serviceName]/settings',
+			current: pathname === '/services/[serviceName]/settings',
 		},
 	]
 
 	useEffect(() => {
-		if (router.query.serviceName) {
+		if (serviceName) {
 			setCurrentService(
-				services?.find(service => service.name === router.query.serviceName) ||
-					null,
+				services?.find(service => service.name === serviceName) || null,
 			)
 		}
 	}, [services])
