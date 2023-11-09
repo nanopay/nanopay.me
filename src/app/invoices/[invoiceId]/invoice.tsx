@@ -1,10 +1,10 @@
+'use client'
+
 import Checkout from '@/components/Checkout'
 import { Invoice } from '@/types/invoice'
 import { useEffect, useState } from 'react'
 import Pusher from 'pusher-js'
-import { GetServerSidePropsContext } from 'next'
 import { Payment } from '@/types/payment'
-import api from '@/services/api'
 
 interface PayInvoiceProps {
 	invoice: Invoice
@@ -76,34 +76,4 @@ export default function PayInvoice({
 			/>
 		</div>
 	)
-}
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-	try {
-		const { invoiceId } = ctx.query
-
-		if (typeof invoiceId !== 'string') {
-			throw new Error('Invalid invoice ID')
-		}
-
-		const invoice = await api.invoices.get(invoiceId).then(res => res.data)
-		const payments = await api.invoices
-			.payments(invoiceId)
-			.then(res => res.data)
-
-		return {
-			props: {
-				invoice,
-				payments,
-			},
-		}
-	} catch (err: any) {
-		console.error(err)
-		return {
-			props: {
-				invoice: null,
-				payments: [],
-			},
-		}
-	}
 }
