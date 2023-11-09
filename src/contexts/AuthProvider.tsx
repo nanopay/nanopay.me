@@ -1,3 +1,5 @@
+'use client'
+
 import Loading from '@/components/Loading'
 import { User } from '@/types/users'
 
@@ -9,23 +11,22 @@ import React, { useContext, useState, useEffect, createContext } from 'react'
 import { useToast } from '../hooks/useToast'
 import { Database } from '@/types/supabase'
 
-interface AuthContextValues {
+export interface AuthContextValues {
 	user: User
 	signOut: () => Promise<void>
 	retrieveUser: () => Promise<void>
 	refreshSession: () => Promise<AuthResponse>
 }
 
-interface AuthProviderProps {
+export interface AuthProviderProps {
 	children: React.ReactNode
 }
 
 const AuthContext = createContext({} as AuthContextValues)
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [user, setUser] = useState<User>()
-	const [loading, setLoading] = useState(true)
-	const [sessionRefreshed, setSessionRefreshed] = useState(false)
+	const [user, setUser] = useState<User | null>(null)
+	const [isLoading, setIsLoading] = useState(true)
 
 	const supabase = createClientComponentClient<Database>()
 
@@ -38,32 +39,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const retrieveUser = async () => {
 		const { data, error } = await supabase.from('profiles').select('*').single()
 
-		if (error) {
+		if (error && error.code !== 'PGRST116') {
 			await router.push('/500')
 			throw new Error(error.message)
 		}
 
 		if (!data) {
-			/*
-			 * It can mean 2 things:
-			 * 1. User did not complete the registration
-			 * 2. User has been deleted
-			 */
-
-			if (!sessionRefreshed) {
-				// Refresh the token
-				setSessionRefreshed(true)
-				const { error } = await refreshSession()
-				if (error) {
-					await signOut()
-					throw new Error('Cannot refresh session')
-				}
-			} else {
-				// Redirect to register
-				setSessionRefreshed(false)
-				await router.push('/register')
-				return
-			}
+			// User has been deleted
+			await refreshSession()
+			return
 		}
 
 		setUser({
@@ -74,35 +58,56 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		})
 	}
 
-	const handleUserLoading = async () => {
-		const { data, error } = await supabase.auth.getUser()
-		if (error) {
-			showError(error.message)
-		}
-		if (data.user?.email) {
-			setUser({
-				id: data.user.id,
-				email: data.user.email,
-				name: '',
-				avatar_url: null,
-			})
-			if (pathname !== '/login' && pathname !== '/register') {
-				try {
-					if (data.user) {
-						await retrieveUser()
-					}
-				} catch (error: any) {
-					showError(error.message)
-				} finally {
-					setLoading(false)
+	const initUserRetrieve = async () => {
+		try {
+			const {
+				data: { session },
+				error,
+			} = await supabase.auth.getSession()
+			console.log('data', session)
+			if (error) {
+				alert('here')
+				showError(error.message)
+				return
+			}
+			const user = session?.user
+			if (user?.email) {
+				setUser({
+					id: user.id,
+					email: user.email,
+					name: '',
+					avatar_url: null,
+				})
+				if (pathname !== '/register') {
+					await retrieveUser()
 				}
 			}
+		} catch (error) {
+			showError(error instanceof Error ? error.message : JSON.stringify(error))
+		} finally {
+			setIsLoading(false)
 		}
-		setLoading(false)
 	}
 
 	useEffect(() => {
-		handleUserLoading()
+		initUserRetrieve()
+	}, [])
+
+	useEffect(() => {
+		const {
+			data: { subscription },
+		} = supabase.auth.onAuthStateChange(async (event, session) => {
+			if (event === 'SIGNED_IN') {
+				initUserRetrieve()
+			}
+			if (event === 'SIGNED_OUT') {
+				setUser(null)
+			}
+		})
+
+		return () => {
+			subscription.unsubscribe()
+		}
 	}, [])
 
 	const refreshSession = () => supabase.auth.refreshSession()
@@ -116,7 +121,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		await router.push('/login')
 	}
 
-	if (loading && pathname !== '/' && pathname !== '/login') {
+	if (isLoading && pathname !== '/' && pathname !== '/login') {
 		return (
 			<div className="w-full h-screen flex items-center justify-center">
 				<Loading className="sm:w-32 sm:h-32" />
