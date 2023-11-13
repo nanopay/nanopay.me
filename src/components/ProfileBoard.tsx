@@ -1,7 +1,11 @@
-import { UserProfile } from '@/types/users'
+'use client'
+
+import { useAuth } from '@/contexts/AuthProvider'
 import Image from 'next/image'
 
-export default function ProfileBoard({ user }: { user: UserProfile }) {
+export default function ProfileBoard() {
+	const { user } = useAuth()
+
 	return (
 		<div className="overflow-hidden rounded-lg bg-white shadow">
 			<h2 className="sr-only" id="profile-overview-title">

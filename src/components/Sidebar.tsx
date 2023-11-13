@@ -35,7 +35,7 @@ export default function Sidebar() {
 
 	const { data: services, isLoading: servicesLoading } = useQuery(
 		'services',
-		() => api.services.list().then(res => res.data),
+		() => api.services.list(),
 	)
 
 	const defaultNavigation = [
