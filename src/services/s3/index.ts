@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios'
-import { S3Fields } from '../api/s3'
 import {
 	S3Client,
 	DeleteObjectCommand,
@@ -7,6 +6,8 @@ import {
 } from '@aws-sdk/client-s3'
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { Conditions as ConditionsType } from '@aws-sdk/s3-presigned-post/dist-types/types'
+
+export type S3Fields = Record<string, string>
 
 const Bucket = process.env.S3_BUCKET as string
 const Region = process.env.S3_REGION as string
