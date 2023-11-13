@@ -1,23 +1,33 @@
+import Fetcher, { FetcherOptions } from '@/lib/fetcher'
 import { Invoice, InvoiceCreate } from '@/types/invoice'
 import { Payment } from '@/types/payment'
-import { AxiosInstance, AxiosResponse } from 'axios'
 
-export const invoices = (axiosInstance: AxiosInstance) => {
+export const invoices = (fetcher: Fetcher) => {
 	return {
 		create: async (
 			serviceId: string,
 			data: InvoiceCreate,
-		): Promise<AxiosResponse<{ id: string }>> => {
-			return axiosInstance.post(`/invoices?service_id=${serviceId}`, data)
+			options?: FetcherOptions,
+		): Promise<{ id: string }> => {
+			return fetcher.post(`/invoices?service_id=${serviceId}`, data)
 		},
-		get: async (invoiceId: string): Promise<AxiosResponse<Invoice>> => {
-			return axiosInstance.get(`/invoices/${invoiceId}`)
+		get: async (
+			invoiceId: string,
+			options?: FetcherOptions,
+		): Promise<Invoice> => {
+			return fetcher.get(`/invoices/${invoiceId}`, null, options)
 		},
-		list: async (serviceId: string): Promise<AxiosResponse<Invoice[]>> => {
-			return axiosInstance.get(`/invoices?service_id=${serviceId}`)
+		list: async (
+			serviceId: string,
+			options?: FetcherOptions,
+		): Promise<Invoice[]> => {
+			return fetcher.get(`/invoices?service_id=${serviceId}`, null, options)
 		},
-		payments: async (invoiceId: string): Promise<AxiosResponse<Payment[]>> => {
-			return axiosInstance.get(`/invoices/${invoiceId}/payments`)
+		payments: async (
+			invoiceId: string,
+			options?: FetcherOptions,
+		): Promise<Payment[]> => {
+			return fetcher.get(`/invoices/${invoiceId}/payments`, null, options)
 		},
 	}
 }

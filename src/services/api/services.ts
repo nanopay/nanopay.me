@@ -1,21 +1,25 @@
+import Fetcher, { FetcherOptions } from '@/lib/fetcher'
+import s3 from '@/services/s3'
 import { Hook, HookCreate, HookDelivery, HookUpdate } from '@/types/hooks'
 import { ApiKey, ApiKeyCreate, Service, ServiceCreate } from '@/types/services'
 import { concatURL } from '@/utils/helpers'
-import { AxiosInstance, AxiosResponse } from 'axios'
-import s3 from '../s3'
 
-export const services = (axiosInstance: AxiosInstance) => {
+export const services = (fetcher: Fetcher) => {
 	return {
 		create: async (
 			data: ServiceCreate,
-		): Promise<AxiosResponse<{ id: string }>> => {
-			return axiosInstance.post('/services', data)
+			options?: FetcherOptions,
+		): Promise<{ id: string }> => {
+			return fetcher.post('/services', data, options)
 		},
-		get: async (serviceName: string): Promise<AxiosResponse<Service>> => {
-			return axiosInstance.get(`/services/${serviceName}`)
+		get: async (
+			serviceName: string,
+			options?: FetcherOptions,
+		): Promise<Service> => {
+			return fetcher.get(`/services/${serviceName}`, null, options)
 		},
-		list: async (): Promise<AxiosResponse<Service[]>> => {
-			return axiosInstance.get('/services')
+		list: async (options?: FetcherOptions): Promise<Service[]> => {
+			return fetcher.get('/services', null, options)
 		},
 		upload: {
 			avatar: async (
@@ -25,9 +29,8 @@ export const services = (axiosInstance: AxiosInstance) => {
 				if (file.size > 1024 * 1024 * 5) {
 					throw new Error('File size must be less than 5MB')
 				}
-				const { url, fields } = await axiosInstance
-					.post('/upload/image')
-					.then(res => res.data)
+				const { url, fields } = await fetcher.post('/upload/image')
+
 				await s3.uploadObject(file, fields, url, progressCallback)
 				return concatURL(
 					`https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}`,
@@ -39,43 +42,53 @@ export const services = (axiosInstance: AxiosInstance) => {
 			create: async (
 				serviceName: string,
 				data: ApiKeyCreate,
-			): Promise<AxiosResponse<{ apiKey: string }>> => {
-				return axiosInstance.post(`/services/${serviceName}/keys`, data)
+				options?: FetcherOptions,
+			): Promise<{ apiKey: string }> => {
+				return fetcher.post(`/services/${serviceName}/keys`, data, options)
 			},
 			get: async (
-				serviceName: string,
-				id: string,
-			): Promise<AxiosResponse<{ id: string; key: string }>> => {
-				return axiosInstance.get(`/services/${serviceName}/keys/${id}`)
+				keyId: string,
+				options?: FetcherOptions,
+			): Promise<{ id: string; key: string }> => {
+				return fetcher.get(`/keys/${keyId}`, null, options)
 			},
-			list: async (serviceName: string): Promise<AxiosResponse<ApiKey[]>> => {
-				return axiosInstance.get(`/services/${serviceName}/keys`)
+			list: async (
+				serviceName: string,
+				options?: FetcherOptions,
+			): Promise<ApiKey[]> => {
+				return fetcher.get(`/services/${serviceName}/keys`, null, options)
 			},
 		},
 		hooks: {
 			create: async (
 				serviceName: string,
 				data: HookCreate,
-			): Promise<AxiosResponse<{ id: string }>> => {
-				return axiosInstance.post(`/services/${serviceName}/hooks`, data)
+				options?: FetcherOptions,
+			): Promise<{ id: string }> => {
+				return fetcher.post(`/services/${serviceName}/hooks`, data, options)
 			},
-			get: async (id: string): Promise<AxiosResponse<Hook>> => {
-				return axiosInstance.get(`/hooks/${id}`)
+			get: async (id: string, options?: FetcherOptions): Promise<Hook> => {
+				return fetcher.get(`/hooks/${id}`, null, options)
 			},
-			list: async (serviceName: string): Promise<AxiosResponse<Hook[]>> => {
-				return axiosInstance.get(`/services/${serviceName}/hooks`)
+			list: async (
+				serviceName: string,
+				options?: FetcherOptions,
+			): Promise<Hook[]> => {
+				return fetcher.get(`/services/${serviceName}/hooks`, null, options)
 			},
 			update: async (
 				hookId: string,
 				data: HookUpdate,
-			): Promise<AxiosResponse<void>> => {
-				return axiosInstance.put(`/hooks/${hookId}`, data)
+				options?: FetcherOptions,
+			): Promise<void> => {
+				return fetcher.put(`/hooks/${hookId}`, data, options)
 			},
 			deliveries: {
 				list: async (
 					hookId: string,
-				): Promise<AxiosResponse<HookDelivery[]>> => {
-					return axiosInstance.get(`/hooks/${hookId}/deliveries`)
+					options?: FetcherOptions,
+				): Promise<HookDelivery[]> => {
+					return fetcher.get(`/hooks/${hookId}/deliveries`, null, options)
 				},
 			},
 		},

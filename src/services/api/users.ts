@@ -1,12 +1,12 @@
 import { UserProfile } from '@/types/users'
 import { concatURL } from '@/utils/helpers'
-import { AxiosInstance } from 'axios'
-import s3 from '../s3'
+import s3 from '@/services/s3'
+import Fetcher, { FetcherOptions } from '@/lib/fetcher'
 
-export const users = (axiosInstance: AxiosInstance) => {
+export const users = (fetcher: Fetcher) => {
 	return {
-		register: async (data: UserProfile) => {
-			return axiosInstance.post('/users/register', data)
+		register: async (data: UserProfile, options?: FetcherOptions) => {
+			return fetcher.post('/users/register', data, options)
 		},
 		upload: {
 			avatar: async (
@@ -16,9 +16,8 @@ export const users = (axiosInstance: AxiosInstance) => {
 				if (file.size > 1024 * 1024 * 5) {
 					throw new Error('File size must be less than 5MB')
 				}
-				const { url, fields } = await axiosInstance
-					.post('/upload/image')
-					.then(res => res.data)
+				const { url, fields } = await fetcher.post('/upload/image')
+
 				await s3.uploadObject(file, fields, url, progressCallback)
 				return concatURL(
 					`https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}`,

@@ -1,23 +1,19 @@
-import axios from 'axios'
 import { services } from './services'
 import { users } from './users'
 import { invoices } from './invoices'
+import Fetcher from '@/lib/fetcher'
 
-export const axiosInstance = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL,
-})
+const fetcher = new Fetcher(process.env.NEXT_PUBLIC_API_URL!!)
 
-const getErrorMessage = (error: any): string => {
-	const message = error.response?.data?.message
-	if (message && typeof message === 'string') return message
-	return error.message || 'Unknown error'
+const getErrorMessage = (error: any): string | null => {
+	return error.message
 }
 
 const api = {
-	client: axiosInstance,
-	users: users(axiosInstance),
-	services: services(axiosInstance),
-	invoices: invoices(axiosInstance),
+	client: fetcher,
+	users: users(fetcher),
+	services: services(fetcher),
+	invoices: invoices(fetcher),
 	getErrorMessage,
 }
 
