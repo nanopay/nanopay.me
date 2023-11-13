@@ -1,28 +1,48 @@
-'use client'
-
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { Button } from '@/components/Button'
-import { useQuery } from 'react-query'
 import api from '@/services/api'
 import ServicesList from '@/components/ServicesList'
-import Loading from '@/components/Loading'
 import ProfileBoard from '@/components/ProfileBoard'
 import Invoices from '@/components/Invoices'
-import { useAuth } from '@/contexts/AuthProvider'
+import { cookies } from 'next/headers'
+import { Service } from '@/types/services'
+import { supabase } from '@/lib/supabase'
+import { Metadata } from 'next'
 
-export default function Home() {
-	const { user } = useAuth()
+async function fetchData(): Promise<Service[]> {
+	const { data, error } = await supabase.authWithCookies(cookies())
 
-	const { data: services, isLoading } = useQuery(
-		'services',
-		async () => await api.services.list().then(res => res.data),
-	)
+	if (error) {
+		throw new Error(error.message)
+	}
+
+	if (!data?.user) {
+		throw new Error('No user data')
+	}
+
+	return await api.services.list({
+		headers: {
+			Cookie: cookies().toString(),
+		},
+		next: {
+			revalidate: false,
+			tags: [`user-${data.user.id}-services`],
+		},
+	})
+}
+
+export const metadata: Metadata = {
+	title: 'Home',
+}
+
+export default async function Home() {
+	const services = await fetchData()
 
 	return (
 		<div className="grid grid-cols-1 gap-4 lg:col-span-2">
 			{/* Welcome panel */}
 			<section aria-labelledby="profile-overview-title">
-				<ProfileBoard user={user} />
+				<ProfileBoard />
 			</section>
 
 			{/* Actions panel */}
@@ -42,14 +62,7 @@ export default function Home() {
 						</div>
 					</Button>
 				</div>
-				{isLoading ? (
-					<div className="flex flex-col space-y-6 justify-center items-center py-16">
-						<Loading />
-						<div className="text-slate-600 animate-pulse text-sm">
-							Loading your services...
-						</div>
-					</div>
-				) : services?.length ? (
+				{services.length > 0 ? (
 					<ServicesList services={services} />
 				) : (
 					<div className="flex justify-center items-center py-16 rounded-lg bg-slate-200 shadow0">
