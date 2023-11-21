@@ -1,7 +1,8 @@
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/utils/supabase/server'
 import { createApiKey } from '@/utils/apiKey'
 import Ajv, { Schema } from 'ajv'
 import { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
 
 const ajv = new Ajv()
 
@@ -34,7 +35,9 @@ export async function POST(
 		return Response.json({ message: ajv.errorsText() }, { status: 400 })
 	}
 
-	const { error: authError } = await supabase.authWithCookies(req.cookies)
+	const supabase = createClient(cookies())
+
+	const { error: authError } = await supabase.auth.getUser()
 
 	if (authError) {
 		return Response.json({ message: authError.message }, { status: 401 })
@@ -88,7 +91,9 @@ export async function GET(
 		}
 	},
 ) {
-	const { error: authError } = await supabase.authWithCookies(req.cookies)
+	const supabase = createClient(cookies())
+
+	const { error: authError } = await supabase.auth.getUser()
 
 	if (authError) {
 		return Response.json({ message: authError.message }, { status: 401 })
