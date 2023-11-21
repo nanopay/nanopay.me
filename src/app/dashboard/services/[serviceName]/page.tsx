@@ -15,7 +15,7 @@ import api from '@/services/api'
 import Loading from '@/components/Loading'
 import Fireworks from '@/components/Fireworks'
 import Invoices from '@/components/Invoices'
-import { useAuth } from '@/contexts/AuthProvider'
+import { useUser } from '@/contexts/UserProvider'
 import DefaultAvatar from '@/components/DefaultAvatar'
 
 export default function ServiceDashboard({
@@ -25,19 +25,18 @@ export default function ServiceDashboard({
 	params: { serviceName: string }
 	searchParams: { isNew?: 'true' }
 }) {
-	const { user } = useAuth()
+	const user = useUser()
 
 	const isNew = searchParams.isNew ? true : false
 
 	const { data: service, isLoading } = useQuery({
 		queryKey: ['service', serviceName],
-		queryFn: () => api.services.get(serviceName).then(res => res.data),
+		queryFn: () => api.services.get(serviceName),
 	})
 
 	const { data: invoices, isLoading: isLoadingInvoices } = useQuery({
 		queryKey: ['invoices', service?.id],
-		queryFn: () =>
-			api.invoices.list(service?.id as string).then(res => res.data),
+		queryFn: () => api.invoices.list(service?.id as string),
 		enabled: !!service,
 	})
 

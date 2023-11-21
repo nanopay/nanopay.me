@@ -1,3 +1,5 @@
+'use client'
+
 import Head from 'next/head'
 import { useQuery } from 'react-query'
 import {
@@ -19,7 +21,7 @@ export default function Webhooks({
 }) {
 	const { data: webhooks, isLoading } = useQuery({
 		queryKey: ['hooks', serviceName],
-		queryFn: () => api.services.hooks.list(serviceName).then(res => res.data),
+		queryFn: () => api.services.hooks.list(serviceName),
 		enabled: !!serviceName,
 	})
 

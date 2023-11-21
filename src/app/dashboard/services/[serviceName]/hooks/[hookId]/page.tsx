@@ -1,3 +1,5 @@
+'use client'
+
 import Head from 'next/head'
 import { useMutation, useQuery } from 'react-query'
 import api from '@/services/api'
@@ -83,7 +85,7 @@ export default function Webhooks({
 
 	const { data: hook } = useQuery({
 		queryKey: ['hooks', hookId],
-		queryFn: () => api.services.hooks.get(hookId).then(res => res.data),
+		queryFn: () => api.services.hooks.get(hookId),
 		enabled: !!serviceName && !!hookId,
 		onError: (err: any) => {
 			showError(
@@ -152,7 +154,7 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 
 	const { mutate: onSubmit, isLoading: isSubmitting } = useMutation({
 		mutationFn: async (data: HookCreate) =>
-			api.services.hooks.update(hook.id, data).then(res => res.data),
+			api.services.hooks.update(hook.id, data),
 		onSuccess: () => {
 			showSuccess('Webhook updated')
 		},

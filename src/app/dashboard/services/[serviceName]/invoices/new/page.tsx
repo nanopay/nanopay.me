@@ -55,7 +55,7 @@ export default function NewService({
 
 	const { data: service, isLoading } = useQuery({
 		queryKey: ['service', serviceName],
-		queryFn: () => api.services.get(serviceName).then(res => res.data),
+		queryFn: () => api.services.get(serviceName),
 	})
 
 	const {
@@ -75,7 +75,7 @@ export default function NewService({
 		isSuccess,
 	} = useMutation({
 		mutationFn: async (data: InvoiceCreate) =>
-			api.invoices.create(service?.id as string, data).then(res => res.data),
+			api.invoices.create(service?.id as string, data),
 		onSuccess: res => {
 			showSuccess('Invoice created')
 			router.push(`/services/${service?.name}/invoices/${res.id}`)

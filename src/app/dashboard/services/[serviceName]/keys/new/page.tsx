@@ -67,12 +67,10 @@ export default function NewApiKey({
 		data: createdApiKey,
 	} = useMutation({
 		mutationFn: async (data: ApiKeyCreate) =>
-			api.services.apiKeys
-				.create(serviceName, {
-					...data,
-					service: serviceName,
-				})
-				.then(res => res.data),
+			api.services.apiKeys.create(serviceName, {
+				...data,
+				service: serviceName,
+			}),
 		onSuccess: () => {
 			showSuccess('API Key created')
 		},

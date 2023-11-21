@@ -9,10 +9,8 @@ export default async function InvoicePage({
 	}
 }) {
 	try {
-		const invoice = await api.invoices.get(invoiceId).then(res => res.data)
-		const payments = await api.invoices
-			.payments(invoiceId)
-			.then(res => res.data)
+		const invoice = await api.invoices.get(invoiceId)
+		const payments = await api.invoices.payments(invoiceId)
 
 		return <PayInvoice invoice={invoice} payments={payments} />
 	} catch (error) {

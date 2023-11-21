@@ -1,3 +1,5 @@
+'use client'
+
 import { useRouter } from 'next/navigation'
 import Head from 'next/head'
 import { useMutation } from 'react-query'
@@ -92,7 +94,7 @@ export default function NewApiKey({
 		isSuccess,
 	} = useMutation({
 		mutationFn: async (data: HookCreate) =>
-			api.services.hooks.create(serviceName, data).then(res => res.data),
+			api.services.hooks.create(serviceName, data),
 		onSuccess: () => {
 			showSuccess('Webhook created')
 			router.push(`/services/${serviceName}/hooks`)

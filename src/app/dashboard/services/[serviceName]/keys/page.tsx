@@ -21,7 +21,7 @@ export default function ApiKeys({
 		error,
 	} = useQuery({
 		queryKey: ['apiKeys', serviceName],
-		queryFn: () => api.services.apiKeys.list(serviceName).then(res => res.data),
+		queryFn: () => api.services.apiKeys.list(serviceName),
 	})
 
 	if (!serviceName) {

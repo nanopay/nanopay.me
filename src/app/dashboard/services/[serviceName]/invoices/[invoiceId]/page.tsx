@@ -20,7 +20,7 @@ export default function InvoicePage({
 		error,
 	} = useQuery({
 		queryKey: ['invoice', invoiceId],
-		queryFn: () => api.invoices.get(invoiceId).then(res => res.data),
+		queryFn: () => api.invoices.get(invoiceId),
 	})
 
 	if (isLoading || isError) {
