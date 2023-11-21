@@ -1,43 +1,40 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createClient } from './utils/supabase/middleware'
 
-export async function middleware(req: NextRequest) {
-	const res = NextResponse.next()
+export async function middleware(request: NextRequest) {
+	const { supabase, response } = createClient(request)
 
-	// Create authenticated Supabase Client.
-	const supabase = createMiddlewareClient({ req, res })
-
-	// Check if we have a session
 	const {
 		data: { session },
 	} = await supabase.auth.getSession()
 
-	let pathname = '/login'
+	const isAuthenticated = !!session
 
-	const role = session?.user?.role
-	const confirmedRegistration =
-		session?.user?.user_metadata?.confirmed_registration
+	let pathname = request.nextUrl.pathname
 
-	if (role === 'authenticated') {
-		if (req.nextUrl.pathname !== '/register' && !confirmedRegistration) {
-			pathname = '/register'
-		} else if (req.nextUrl.pathname === '/register' && confirmedRegistration) {
+	if (isAuthenticated) {
+		if (pathname === '/login') {
 			pathname = '/home'
 		} else {
-			return res
+			return response
 		}
+	} else {
+		if (pathname === '/login') {
+			return response
+		}
+		pathname = '/login'
 	}
 
 	// Auth condition not met, redirect to login or register page.
-	const redirectUrl = req.nextUrl.clone()
+	const redirectUrl = request.nextUrl.clone()
 	redirectUrl.pathname = pathname
-	if (req.nextUrl.pathname !== '/logout') {
-		redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
+	if (request.nextUrl.pathname !== '/logout') {
+		redirectUrl.searchParams.set(`redirectedFrom`, request.nextUrl.pathname)
 	}
 	return NextResponse.redirect(redirectUrl)
 }
 
 export const config = {
-	matcher: ['/services/:path*', '/register', '/home', '/logout'],
+	matcher: ['/services/:path*', '/home', '/logout', '/login'],
 }
