@@ -47,7 +47,8 @@
 		"react-hook-form": "^7.43.5",
 		"react-qr-code": "^2.0.11",
 		"react-query": "^3.39.3",
-		"react-toastify": "^9.1.1"
+		"react-toastify": "^9.1.1",
+		"server-only": "^0.0.1"
 	},
 	"devDependencies": {
 		"@hookform/resolvers": "^3.3.2",
