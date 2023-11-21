@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import clsx from 'clsx'
 import {
@@ -9,7 +9,6 @@ import {
 	Transition,
 } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
@@ -17,6 +16,7 @@ import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import { UserProfile } from '@/types/users'
 import { Fragment } from 'react'
+import { signOut } from '@/app/auth/logout/actions'
 
 function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
@@ -91,16 +91,9 @@ const getSize = (size: HeaderProps['size']) => {
 }
 
 export function Header({ user, size = 'md', ...props }: HeaderProps) {
-	const supabaseClient = useSupabaseClient()
-	const router = useRouter()
 	const pathname = usePathname()
 
 	const sizes = getSize(size)
-
-	const logout = async () => {
-		await supabaseClient.auth.signOut()
-		await router.push('/login')
-	}
 
 	const isHome = pathname?.startsWith('/home')
 
@@ -176,7 +169,7 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 																	</div>
 																</div>
 																<Button
-																	onClick={() => logout()}
+																	onClick={() => signOut()}
 																	variant="outline"
 																	className="w-full"
 																>
@@ -230,7 +223,7 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 																active ? 'bg-gray-100' : '',
 																'w-full text-left block py-2 px-4 text-sm text-gray-700 cursor-pointer',
 															)}
-															onClick={logout}
+															onClick={() => signOut()}
 														>
 															Log out
 														</div>
