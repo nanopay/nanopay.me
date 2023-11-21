@@ -1,54 +1,49 @@
-import { supabase } from '@/lib/supabase'
-import { Database } from '@/types/supabase'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
+import { NextRequest } from 'next/server'
 
-export default async function getInvoice(
-	req: NextApiRequest,
-	res: NextApiResponse,
+export async function GET(
+	req: NextRequest,
+	{
+		params: { invoiceId },
+	}: {
+		params: {
+			invoiceId: string
+		}
+	},
 ) {
-	if (req.method !== 'GET') {
-		res.setHeader('Allow', 'GET')
-		return res.status(405).json({ message: 'Method not allowed' })
-	}
-
-	const supabaseServerClient = createServerSupabaseClient<Database>({
-		req,
-		res,
-	})
+	const supabase = createClient(cookies())
 
 	const {
 		data: { user },
 		error: userError,
-	} = await supabaseServerClient.auth.getUser()
+	} = await supabase.auth.getUser()
 
 	if (userError && userError.status !== 401) {
 		console.log('userError', userError)
-		return res.status(500).json({ message: userError.message })
+		return Response.json({ message: userError.message }, { status: 500 })
 	}
-
-	const { invoiceId } = req.query
 
 	const { data: invoice, error } = await supabase
 		.from('invoices')
 		.select(
 			'*, service:services(name, display_name, avatar_url, description, id, website, contact_email, user_id)',
 		)
-		.eq('id', invoiceId)
+		.eq('id', invoiceId as string)
 		.single()
 
 	if (error) {
 		console.log('error', error)
-		return res.status(500).json({ message: error.message })
+		return Response.json({ message: error.message }, { status: 500 })
 	}
 
 	if (!invoice) {
-		return res.status(404).json({ message: 'Invoice not found' })
+		return Response.json({ message: 'Invoice not found' }, { status: 404 })
 	}
 
-	const isOwner = (invoice.service as any)?.user_id === user?.id
+	const isOwner = invoice.service[0]?.user_id === user?.id
 
-	res.status(200).json({
+	return Response.json({
 		id: invoice.id,
 		created_at: invoice.created_at,
 		expires_at: invoice.expires_at,

@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/utils/supabase'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function getInvoice(
@@ -15,7 +15,7 @@ export default async function getInvoice(
 	const { data: payments, error } = await supabase
 		.from('payments')
 		.select('id, from, to, hash, amount, timestamp')
-		.eq('invoice_id', invoiceId)
+		.eq('invoice_id', invoiceId as string)
 
 	if (error) {
 		console.log('error', error)
