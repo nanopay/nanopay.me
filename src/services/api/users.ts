@@ -1,10 +1,13 @@
-import { UserProfile } from '@/types/users'
+import { User, UserProfile } from '@/types/users'
 import { concatURL } from '@/utils/helpers'
 import s3 from '@/services/s3'
 import Fetcher, { FetcherOptions } from '@/lib/fetcher'
 
 export const users = (fetcher: Fetcher) => {
 	return {
+		retrieve: (options?: FetcherOptions): Promise<User> => {
+			return fetcher.get('/user', null, options)
+		},
 		register: async (data: UserProfile, options?: FetcherOptions) => {
 			return fetcher.post('/users/register', data, options)
 		},
