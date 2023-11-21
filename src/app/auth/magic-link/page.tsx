@@ -2,15 +2,15 @@
 
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/types/supabase'
-import { Button } from '@/components/Button'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { Controller, useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
+import { useTransition } from 'react'
+import { sendMagicLink } from './actions'
+import MButton from '@/components/MButton'
 
 interface MagicEmail {
 	email: string
@@ -25,7 +25,7 @@ const schema: JSONSchemaType<MagicEmail> = {
 }
 
 export default function MagicLinkPage() {
-	const supabase = createClientComponentClient<Database>()
+	const [isPending, startTransition] = useTransition()
 
 	const router = useRouter()
 
@@ -44,18 +44,24 @@ export default function MagicLinkPage() {
 		}),
 	})
 
-	const sendMagicLink = async ({ email }: MagicEmail) => {
-		const { error } = await supabase.auth.signInWithOtp({ email })
-		if (error) {
-			showError(error.message)
-		} else {
-			await router.push(`/verify-email?email=${email}`)
-		}
+	const onSubmit = ({ email }: MagicEmail) => {
+		startTransition(async () => {
+			try {
+				await sendMagicLink(email)
+			} catch (error) {
+				showError(
+					'Error sending magic link',
+					error instanceof Error
+						? error.message
+						: 'Check the email or try again later.',
+				)
+			}
+		})
 	}
 
 	return (
 		<div className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200">
-			<div className="py-6 w-full">
+			<form className="py-6 w-full" onSubmit={handleSubmit(onSubmit)}>
 				<Controller
 					name="email"
 					control={control}
@@ -69,15 +75,10 @@ export default function MagicLinkPage() {
 					)}
 				/>
 
-				<Button
-					color="nano"
-					onClick={handleSubmit(sendMagicLink)}
-					className="w-full"
-					disabled={isSubmitting}
-				>
+				<MButton type="submit" className="w-full" disabled={isSubmitting}>
 					Send Magic Link
-				</Button>
-			</div>
+				</MButton>
+			</form>
 			<div className="py-6 flex flex-col items-center">
 				<h2 className="text-base font-semibold text-slate-600">
 					Back to{' '}

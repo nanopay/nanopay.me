@@ -1,9 +1,8 @@
 'use client'
 
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { getURL } from '@/utils/helpers'
 import Link from 'next/link'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
 import { Button } from '@/components/Button'
@@ -12,7 +11,7 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { Controller, useForm } from 'react-hook-form'
-import { useToast } from '@/hooks/useToast'
+import { signWithGithub, signWithPassword } from './actions'
 
 interface AuthEmailPassword {
 	email: string
@@ -29,17 +28,11 @@ const schema: JSONSchemaType<AuthEmailPassword> = {
 }
 
 export default function LoginPage() {
-	const supabase = createClientComponentClient()
-
 	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
 
 	const redirectTo = `${getURL()}redirect?to=${encodeURI(
 		typeof redirectedFrom === 'string' ? redirectedFrom : '/home',
 	)}`
-
-	const { showError } = useToast()
-
-	const router = useRouter()
 
 	const {
 		control,
@@ -55,38 +48,16 @@ export default function LoginPage() {
 		}),
 	})
 
-	const signWithGithub = async () => {
-		const { error } = await supabase.auth.signInWithOAuth({
-			provider: 'github',
-			options: {
-				redirectTo,
-			},
-		})
-		if (error) {
-			showError(error.message)
-		}
-	}
-
-	const signWithPassword = async ({ email, password }: AuthEmailPassword) => {
-		const { data, error } = await supabase.auth.signInWithPassword({
-			email,
-			password,
-		})
-		if (error) {
-			if (error.message === 'Email not confirmed') {
-				return await router.push(`/verify-email?email=${email}`)
-			}
-			return showError(error.message)
-		}
-		if (!data.session) {
-			throw new Error('Session is missing')
-		}
-		router.push(`/home`)
-	}
-
 	return (
-		<div className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200">
-			<Button color="slate" onClick={signWithGithub} variant="outline">
+		<form
+			className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200"
+			onSubmit={handleSubmit(data => signWithPassword(data))}
+		>
+			<Button
+				color="slate"
+				onClick={() => signWithGithub(redirectTo)}
+				variant="outline"
+			>
 				<div className="flex items-center space-x-2">
 					<Image src={GithubSVG} width={20} height={20} alt="github icon" />
 					<span>Sign in with Github</span>
@@ -123,7 +94,8 @@ export default function LoginPage() {
 
 				<Button
 					color="nano"
-					onClick={handleSubmit(signWithPassword)}
+					formAction="sign-with-password"
+					type="submit"
 					className="w-full"
 					disabled={isSubmitting}
 				>
@@ -146,12 +118,12 @@ export default function LoginPage() {
 			</div>
 			<div className="py-6 flex flex-col items-center">
 				<h2 className="text-base font-semibold text-slate-600">
-					Don't have an account ?{' '}
+					Don&apos;t have an account ?{' '}
 					<Link href="/signup" className="text-nano underline">
 						Sign Up
 					</Link>
 				</h2>
 			</div>
-		</div>
+		</form>
 	)
 }

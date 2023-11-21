@@ -3,8 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getURL } from '@/utils/helpers'
 import Link from 'next/link'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/types/supabase'
 import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
 import { Button } from '@/components/Button'
@@ -14,6 +12,10 @@ import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { Controller, useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
+import { signWithGithub } from '../login/actions'
+import MButton from '@/components/MButton'
+import { useTransition } from 'react'
+import { signUpWithPassword } from './actions'
 
 interface SignUpEmailPassword {
 	email: string
@@ -30,7 +32,7 @@ const schema: JSONSchemaType<SignUpEmailPassword> = {
 }
 
 export default function SignUpPage() {
-	const supabase = createClientComponentClient<Database>()
+	const [isPending, startTransition] = useTransition()
 
 	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
 
@@ -56,33 +58,32 @@ export default function SignUpPage() {
 		}),
 	})
 
-	const signWithGithub = async () => {
-		await supabase.auth.signInWithOAuth({
-			provider: 'github',
-			options: {
-				redirectTo,
-			},
+	const onSubmit = ({ email, password }: SignUpEmailPassword) => {
+		startTransition(async () => {
+			try {
+				await signUpWithPassword({ email, password })
+			} catch (error) {
+				showError(
+					'Error signing up',
+					error instanceof Error
+						? error.message
+						: 'Check the data or try again later.',
+				)
+			}
 		})
-	}
-
-	const signUpWithPassword = async ({
-		email,
-		password,
-	}: SignUpEmailPassword) => {
-		const { error, data } = await supabase.auth.signUp({
-			email,
-			password,
-		})
-		if (error) {
-			showError(error.message)
-		} else {
-			await router.push(`/verify-email?email=${email}`)
-		}
 	}
 
 	return (
-		<div className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200">
-			<Button color="slate" onClick={signWithGithub} variant="outline">
+		<form
+			className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200"
+			onSubmit={handleSubmit(onSubmit)}
+		>
+			<Button
+				color="slate"
+				type="button"
+				onClick={() => signWithGithub(redirectTo)}
+				variant="outline"
+			>
 				<div className="flex items-center space-x-2">
 					<Image src={GithubSVG} width={20} height={20} alt="github icon" />
 					<span>Sign up with Github</span>
@@ -117,14 +118,13 @@ export default function SignUpPage() {
 					)}
 				/>
 
-				<Button
-					color="nano"
-					onClick={handleSubmit(signUpWithPassword)}
+				<MButton
+					type="submit"
 					className="w-full"
-					disabled={isSubmitting}
+					loading={isSubmitting || isPending}
 				>
 					Sign Up
-				</Button>
+				</MButton>
 			</div>
 			<div className="py-6 flex flex-col items-center">
 				<h2 className="text-base font-semibold text-slate-600">
@@ -134,6 +134,6 @@ export default function SignUpPage() {
 					</Link>
 				</h2>
 			</div>
-		</div>
+		</form>
 	)
 }

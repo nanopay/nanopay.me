@@ -1,11 +1,12 @@
 'use client'
 
 import { Button } from '@/components/Button'
-import { useAuth } from '@/contexts/AuthProvider'
+import { useUser } from '@/contexts/UserProvider'
 import Image from 'next/image'
+import { signOut } from './actions'
 
 export default function Logout() {
-	const { user, signOut } = useAuth()
+	const user = useUser()
 
 	return (
 		<div className="flex flex-col items-center justify-center">

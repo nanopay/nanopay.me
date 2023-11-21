@@ -1,16 +1,15 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/types/supabase'
-import { Button } from '@/components/Button'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { Controller, useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
+import { resetPassword } from './actions'
+import { useTransition } from 'react'
+import MButton from '@/components/MButton'
 
 interface ResetEmailPassword {
 	email: string
@@ -25,9 +24,7 @@ const schema: JSONSchemaType<ResetEmailPassword> = {
 }
 
 export default function ForgotPasswordPage() {
-	const supabase = createClientComponentClient<Database>()
-
-	const router = useRouter()
+	const [isPending, startTransition] = useTransition()
 
 	const { showError } = useToast()
 
@@ -44,18 +41,24 @@ export default function ForgotPasswordPage() {
 		}),
 	})
 
-	const resetPassword = async ({ email }: ResetEmailPassword) => {
-		const { error } = await supabase.auth.resetPasswordForEmail(email)
-		if (error) {
-			showError(error.message)
-		} else {
-			await router.push(`/verify-email?email=${email}`)
-		}
+	const onSubmit = ({ email }: ResetEmailPassword) => {
+		startTransition(async () => {
+			try {
+				await resetPassword(email)
+			} catch (error) {
+				showError(
+					'Error reseting passsword',
+					error instanceof Error
+						? error.message
+						: 'Check the email or try again later.',
+				)
+			}
+		})
 	}
 
 	return (
 		<div className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200">
-			<div className="py-6 w-full">
+			<form className="py-6 w-full" onSubmit={handleSubmit(onSubmit)}>
 				<Controller
 					name="email"
 					control={control}
@@ -69,15 +72,14 @@ export default function ForgotPasswordPage() {
 					)}
 				/>
 
-				<Button
-					color="nano"
-					onClick={handleSubmit(resetPassword)}
+				<MButton
+					type="submit"
 					className="w-full"
-					disabled={isSubmitting}
+					loading={isSubmitting || isPending}
 				>
 					Reset Password
-				</Button>
-			</div>
+				</MButton>
+			</form>
 			<div className="py-6 flex flex-col items-center">
 				<h2 className="text-base font-semibold text-slate-600">
 					Back to{' '}
