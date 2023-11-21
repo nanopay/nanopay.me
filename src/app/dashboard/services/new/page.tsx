@@ -16,7 +16,6 @@ import { ServiceCreate } from '@/types/services'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/helpers'
-import { useAuth } from '@/contexts/AuthProvider'
 
 const schema: JSONSchemaType<ServiceCreate> = {
 	type: 'object',
@@ -43,8 +42,6 @@ const schema: JSONSchemaType<ServiceCreate> = {
 export default function NewService() {
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
-
-	const { user } = useAuth()
 
 	const [uploadProgress, setUploadProgress] = useState(0)
 
