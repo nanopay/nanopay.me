@@ -8,7 +8,7 @@ import clsx from 'clsx'
 import { Logo } from '@/components/Logo'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useAuth } from '@/contexts/AuthProvider'
+import { useUser } from '@/contexts/UserProvider'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 
 const userNavigation = [
@@ -17,7 +17,7 @@ const userNavigation = [
 ]
 
 export default function Appbar() {
-	const { user } = useAuth()
+	const user = useUser()
 	const { setSidebarOpen } = usePreferences()
 
 	return (

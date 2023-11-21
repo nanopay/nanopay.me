@@ -1,10 +1,10 @@
 'use client'
 
-import { useAuth } from '@/contexts/AuthProvider'
+import { useUser } from '@/contexts/UserProvider'
 import Image from 'next/image'
 
 export default function ProfileBoard() {
-	const { user } = useAuth()
+	const user = useUser()
 
 	return (
 		<div className="overflow-hidden rounded-lg bg-white shadow">
