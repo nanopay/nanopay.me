@@ -6,17 +6,17 @@ import ProfileBoard from '@/components/ProfileBoard'
 import Invoices from '@/components/Invoices'
 import { cookies } from 'next/headers'
 import { Service } from '@/types/services'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/utils/supabase/server'
 import { Metadata } from 'next'
 
 async function fetchData(): Promise<Service[]> {
-	const { data, error } = await supabase.authWithCookies(cookies())
+	const supabase = createClient(cookies())
 
-	if (error) {
-		throw new Error(error.message)
-	}
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
 
-	if (!data?.user) {
+	if (!session?.user) {
 		throw new Error('No user data')
 	}
 
@@ -26,7 +26,7 @@ async function fetchData(): Promise<Service[]> {
 		},
 		next: {
 			revalidate: false,
-			tags: [`user-${data.user.id}-services`],
+			tags: [`user-${session.user.id}-services`],
 		},
 	})
 }

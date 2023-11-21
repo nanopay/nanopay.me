@@ -1,10 +1,11 @@
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/utils/supabase/server'
 import Ajv from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import s3 from '@/services/s3'
 import { randomUUID } from 'crypto'
 import { concatURL } from '@/utils/helpers'
 import { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
 
 const ajv = new Ajv({ allErrors: true, formats: fullFormats })
 
@@ -18,10 +19,14 @@ const schema = {
 	required: ['name'],
 }
 
-export async function GET(req: NextRequest) {
-	const { error: authError } = await supabase.authWithCookies(req.cookies)
+export async function GET() {
+	const supabase = createClient(cookies())
 
-	if (authError) {
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
+
+	if (!session) {
 		return Response.json(
 			{ message: 'Unauthorized' },
 			{
@@ -49,7 +54,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
 	const body = await req.json()
 
-	if (!ajv.validate(schema, req.body)) {
+	if (!ajv.validate(schema, body)) {
 		return Response.json(
 			{ message: ajv.errorsText() },
 			{
@@ -58,9 +63,13 @@ export async function POST(req: NextRequest) {
 		)
 	}
 
-	const { data, error: authError } = await supabase.authWithCookies(req.cookies)
+	const supabase = createClient(cookies())
 
-	if (authError || !data?.user) {
+	const {
+		data: { session },
+		error: authError,
+	} = await supabase.auth.getSession()
+	if (authError || !session?.user) {
 		return Response.json(
 			{ message: 'Unauthorized' },
 			{
@@ -69,6 +78,7 @@ export async function POST(req: NextRequest) {
 		)
 	}
 
+	const user = session.user
 	const serviceId = randomUUID()
 
 	let avatarUrl = body.avatar_url
@@ -115,9 +125,9 @@ export async function POST(req: NextRequest) {
 	}
 
 	const { error } = await supabase.from('services').insert({
-		...req.body,
+		...body,
 		id: serviceId,
-		user_id: data.user.id,
+		user_id: user.id,
 		display_name: body.name,
 		avatar_url: avatarUrl,
 	})
