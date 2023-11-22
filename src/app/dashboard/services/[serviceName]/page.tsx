@@ -50,8 +50,7 @@ export default function ServiceDashboard({
 				<Head>
 					<title>Dashboard - NanoPay.me</title>
 				</Head>
-				<Header className="bg-white border-b border-slate-100" user={user} />
-				<div className="py-8 flex items-center justify-center h-full -mt-16">
+				<div className="py-8 flex items-center justify-center h-full">
 					<Loading />
 				</div>
 			</>

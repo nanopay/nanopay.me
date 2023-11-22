@@ -8,7 +8,10 @@ import NProgressBar from '@/components/NProgressBar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-	title: 'NanoPay.me',
+	title: {
+		default: 'Nano Pay | NanoPay.me',
+		template: '%s | NanoPay.me',
+	},
 	description: 'Pay and receive payments with Nano.',
 }
 
