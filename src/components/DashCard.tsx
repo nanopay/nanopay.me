@@ -1,6 +1,7 @@
 import { SvgIconComponent } from '@mui/icons-material'
+import clsx from 'clsx'
 
-export interface DashCardProps {
+export interface DashCardProps extends React.HTMLProps<HTMLDivElement> {
 	name: string
 	href: string
 	icon:
@@ -21,9 +22,16 @@ export default function DashCard({
 	amount,
 	href,
 	hrefLabel,
+	...props
 }: DashCardProps) {
 	return (
-		<div key={name} className="overflow-hidden rounded-lg bg-white shadow">
+		<div
+			{...props}
+			className={clsx(
+				'overflow-hidden rounded-lg bg-white shadow',
+				props.className,
+			)}
+		>
 			<div className="p-5">
 				<div className="flex items-center">
 					<div className="flex-shrink-0">
