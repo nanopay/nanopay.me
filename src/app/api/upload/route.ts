@@ -1,7 +1,7 @@
 import { createPresigned } from '@/services/s3'
 import { randomUUID } from 'crypto'
 
-export default async function () {
+export async function POST() {
 	// Todo: Protect route
 
 	const { url, fields } = await createPresigned({
