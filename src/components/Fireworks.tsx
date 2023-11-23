@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useCallback, useEffect, useRef } from 'react'
 import ReactCanvasConfetti from 'react-canvas-confetti'
 
