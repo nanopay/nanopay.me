@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 
-export default async function getInvoice(
+export async function GET(
 	req: NextRequest,
 	{
 		params: { invoiceId },
