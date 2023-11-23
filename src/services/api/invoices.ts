@@ -18,10 +18,10 @@ export const invoices = (fetcher: Fetcher) => {
 			return fetcher.get(`/invoices/${invoiceId}`, null, options)
 		},
 		list: async (
-			serviceId: string,
+			serviceName: string,
 			options?: FetcherOptions,
 		): Promise<Invoice[]> => {
-			return fetcher.get(`/invoices?service_id=${serviceId}`, null, options)
+			return fetcher.get(`/services/${serviceName}/invoices`, null, options)
 		},
 		payments: async (
 			invoiceId: string,

@@ -59,9 +59,6 @@ export async function POST(
 		return Response.json({ message: ajv.errorsText() }, { status: 400 })
 	}
 
-	let userId: string
-	let serviceId: string
-
 	const supabase = createClient(cookies())
 
 	const {
@@ -160,84 +157,26 @@ export async function POST(
 	})
 }
 
-// const listInvoices = async (req: NextApiRequest, res: NextApiResponse) => {
-// 	const supabaseServerClient = createServerSupabaseClient<Database>({
-// 		req,
-// 		res,
-// 	})
+export async function GET(
+	req: NextRequest,
+	{
+		params: { serviceName },
+	}: {
+		params: {
+			serviceName: string
+		}
+	},
+) {
+	const supabase = createClient(cookies())
 
-// 	let serviceId: string
-// 	let userId: string
+	const { data: invoices, error: invoicesError } = await supabase
+		.from('invoices')
+		.select('*, service:services(name)')
+		.eq('service.name', serviceName)
 
-// 	if (supabaseServerClient) {
-// 		// If the request is authenticated with a Supabase session cookie, then we can
-// 		// use `supabase.auth.getUser()` to retrieve the user's details.
-// 		const {
-// 			data: { user },
-// 			error: userError,
-// 		} = await supabaseServerClient.auth.getUser()
+	if (invoicesError) {
+		return Response.json({ message: invoicesError.message }, { status: 500 })
+	}
 
-// 		if (userError) {
-// 			return res.status(500).json({ message: userError.message })
-// 		}
-
-// 		if (!user) {
-// 			return res.status(401).json({ message: 'Unauthorized' })
-// 		}
-
-// 		userId = user.id
-
-// 		serviceId = req.query.service_id as string
-
-// 		if (!serviceId) {
-// 			return res.status(400).json({ message: 'Missing service id' })
-// 		}
-// 	} else {
-// 		// If the request is not authenticated with a Supabase session cookie, then
-// 		// we'll need to use an API key to authenticate the request.
-// 		const authorization = req.headers.authorization || ''
-
-// 		if (!authorization) {
-// 			return res.status(400).json({ message: 'Missing authorization header' })
-// 		}
-
-// 		const apiKey = authorization.split('Bearer ')[1]
-
-// 		if (!apiKey) {
-// 			return res.status(400).json({ message: 'Missing bearer apiKey' })
-// 		}
-
-// 		if (!verifyApiKey(apiKey)) {
-// 			return res.status(401).json({ message: 'Invalid apiKey' })
-// 		}
-
-// 		const checksum = apiKey.slice(-API_KEY_CHECKSUM_BYTES_LENGTH * 2)
-
-// 		const { data: apiKeyData, error: apiKeyError } = await supabase
-// 			.from('api_keys')
-// 			.select('service_id')
-// 			.eq('checksum', checksum)
-// 			.single()
-
-// 		if (apiKeyError) {
-// 			return res.status(500).json({ message: apiKeyError.message })
-// 		}
-
-// 		if (!apiKeyData) {
-// 			return res.status(401).json({ message: 'Unauthorized' })
-// 		}
-
-// 		serviceId = apiKeyData.service_id
-// 	}
-
-// 	const { data: invoices, error: invoicesError } = await supabase
-// 		.from('invoices')
-// 		.select('*')
-// 		.eq('service_id', serviceId)
-
-// 	if (invoicesError) {
-// 		return res.status(500).json({ message: invoicesError.message })
-// 	}
-
-// 	res.status(200).json(invoices)
-// }
+	return Response.json(invoices)
+}
