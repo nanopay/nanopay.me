@@ -1,6 +1,5 @@
 import api from '@/services/api'
 import Fireworks from '@/components/Fireworks'
-import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import { KeyIcon } from '@heroicons/react/24/solid'
 import { Receipt, Webhook } from '@mui/icons-material'
@@ -14,16 +13,6 @@ interface Params {
 }
 
 const fetchData = async (serviceName: string) => {
-	const supabase = createClient(cookies())
-
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	if (!session?.user) {
-		throw new Error('No user data')
-	}
-
 	const [service, invoices] = await Promise.all([
 		api.services.get(serviceName, {
 			headers: {
