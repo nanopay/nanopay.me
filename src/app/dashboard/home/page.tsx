@@ -6,19 +6,11 @@ import ProfileBoard from '@/components/ProfileBoard'
 import Invoices from '@/components/Invoices'
 import { cookies } from 'next/headers'
 import { Service } from '@/types/services'
-import { createClient } from '@/utils/supabase/server'
+import { getUserId } from '@/utils/supabase/server'
 import { Metadata } from 'next'
 
 async function fetchData(): Promise<Service[]> {
-	const supabase = createClient(cookies())
-
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	if (!session?.user) {
-		throw new Error('No user data')
-	}
+	const userId = await getUserId(cookies())
 
 	return await api.services.list({
 		headers: {
@@ -26,7 +18,7 @@ async function fetchData(): Promise<Service[]> {
 		},
 		next: {
 			revalidate: false,
-			tags: [`user-${session.user.id}-services`],
+			tags: [`user-${userId}-services`],
 		},
 	})
 }
