@@ -22,3 +22,16 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
 		},
 	})
 }
+
+export const getUserId = async (cookieStore: ReturnType<typeof cookies>) => {
+	const supabase = createClient(cookieStore)
+
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
+
+	if (!session?.user) {
+		throw new Error('No user data')
+	}
+	return session.user.id
+}
