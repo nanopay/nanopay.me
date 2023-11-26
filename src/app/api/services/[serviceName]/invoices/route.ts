@@ -1,6 +1,5 @@
 import * as nanocurrency from 'nanocurrency'
 import Ajv, { JSONSchemaType } from 'ajv'
-import { checksumFromApiKey, verifyApiKey } from '@/utils/apiKey'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_EXPIRATION, INVOICE_MINIMUM_PRICE } from '@/constants'
 import paymentWorker from '@/services/paymentWorker'
