@@ -1,21 +1,16 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createClient } from './utils/supabase/middleware'
+import { applySetCookie } from './utils/cookies'
 
 export async function middleware(request: NextRequest) {
-	const { supabase, response, modified } = createClient(request)
+	const { supabase, response } = createClient(request)
 
 	const {
 		data: { session },
 	} = await supabase.auth.getSession()
 
-	if (modified) {
-		/*
-			Workaround to fix missing cookies from middleware in server components
-			Read more: https://github.com/vercel/next.js/issues/49442
-		*/
-		return response
-	}
+	applySetCookie(request, response)
 
 	const isAuthenticated = !!session
 
