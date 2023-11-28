@@ -1,22 +1,15 @@
+'use client'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import Image from 'next/image'
 import clsx from 'clsx'
-import {
-	Menu,
-	Popover,
-	PopoverButtonProps,
-	Transition,
-} from '@headlessui/react'
+import { Popover, PopoverButtonProps } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
-import { UserProfile } from '@/types/users'
-import { Fragment } from 'react'
-import { signOut } from '@/app/auth/logout/actions'
 
 function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
@@ -57,7 +50,7 @@ function MobileNavLink({ children, ...props }: PopoverButtonProps<'a'>) {
 }
 
 interface HeaderProps extends React.ComponentProps<'header'> {
-	user?: UserProfile
+	isAuthenticated: boolean
 	size?: 'sm' | 'md' | 'lg'
 }
 
@@ -90,7 +83,11 @@ const getSize = (size: HeaderProps['size']) => {
 	}
 }
 
-export function Header({ user, size = 'md', ...props }: HeaderProps) {
+export function Header({
+	isAuthenticated,
+	size = 'md',
+	...props
+}: HeaderProps) {
 	const pathname = usePathname()
 
 	const sizes = getSize(size)
@@ -154,28 +151,14 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 														<MobileNavLink href="/#faqs">FAQs</MobileNavLink>
 													</div>
 													<div className="mt-8 flex flex-col gap-4">
-														{user ? (
-															<div className="w-full border-y border-slate-200">
-																<div className="w-full py-4 flex items-center space-x-2">
-																	<Image
-																		src={user.avatar_url}
-																		alt="user avatar"
-																		className="rounded-full"
-																		width={sizes.avatar}
-																		height={sizes.avatar}
-																	/>
-																	<div className="font-semibold">
-																		{user.name}
-																	</div>
-																</div>
-																<Button
-																	onClick={() => signOut()}
-																	variant="outline"
-																	className="w-full"
-																>
-																	<div className="flex w-full">Log out</div>
-																</Button>
-															</div>
+														{isAuthenticated ? (
+															<Button
+																href="/home"
+																variant="outline"
+																className="w-full"
+															>
+																<div className="flex w-full">Home</div>
+															</Button>
 														) : (
 															<Button href="/login" variant="outline">
 																Log in
@@ -191,57 +174,10 @@ export function Header({ user, size = 'md', ...props }: HeaderProps) {
 						</Popover>
 
 						<div className="hidden lg:block">
-							{user ? (
-								<div className="flex items-center space-x-4">
-									<Menu as="div" className="relative ml-5 flex-shrink-0">
-										<div>
-											<Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-nano focus:ring-offset-2">
-												<span className="sr-only">Open user menu</span>
-												<Image
-													src={user.avatar_url}
-													alt="user avatar"
-													className="rounded-full"
-													width={sizes.avatar}
-													height={sizes.avatar}
-												/>
-											</Menu.Button>
-										</div>
-										<Transition
-											as={Fragment}
-											enter="transition ease-out duration-100"
-											enterFrom="transform opacity-0 scale-95"
-											enterTo="transform opacity-100 scale-100"
-											leave="transition ease-in duration-75"
-											leaveFrom="transform opacity-100 scale-100"
-											leaveTo="transform opacity-0 scale-95"
-										>
-											<Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-												<Menu.Item>
-													{({ active }) => (
-														<div
-															className={clsx(
-																active ? 'bg-gray-100' : '',
-																'w-full text-left block py-2 px-4 text-sm text-gray-700 cursor-pointer',
-															)}
-															onClick={() => signOut()}
-														>
-															Log out
-														</div>
-													)}
-												</Menu.Item>
-											</Menu.Items>
-										</Transition>
-									</Menu>
-
-									{!isHome && (
-										<>
-											<div className="h-8 border-l border-slate-200" />
-											<Button href="/home" variant="outline">
-												Home
-											</Button>
-										</>
-									)}
-								</div>
+							{isAuthenticated ? (
+								<Button href="/home" variant="solid" color="slate">
+									Home
+								</Button>
 							) : (
 								<Button href="/login" variant="solid" color="slate">
 									Log in

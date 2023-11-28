@@ -1,17 +1,16 @@
-'use client'
-
 import { Faqs } from '@/components/Faqs'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Hero } from '@/components/Hero'
-import { useAuth } from '@/contexts/AuthProvider'
+import { isAuthenticated } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
 
-export default function Index() {
-	const { user } = useAuth()
+export default async function Index() {
+	const authenticated = await isAuthenticated(cookies())
 
 	return (
 		<>
-			<Header size="lg" user={user} />
+			<Header size="lg" isAuthenticated={authenticated} />
 			<main>
 				<Hero />
 				<Faqs />
