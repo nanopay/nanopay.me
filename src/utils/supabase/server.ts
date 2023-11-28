@@ -35,3 +35,19 @@ export const getUserId = async (cookieStore: ReturnType<typeof cookies>) => {
 	}
 	return session.user.id
 }
+
+export const isAuthenticated = async (
+	cookieStore: ReturnType<typeof cookies>,
+) => {
+	try {
+		const supabase = createClient(cookieStore)
+
+		const {
+			data: { session },
+		} = await supabase.auth.getSession()
+
+		return !!session
+	} catch {
+		return false
+	}
+}
