@@ -8,9 +8,6 @@ export const users = (fetcher: Fetcher) => {
 		retrieve: (options?: FetcherOptions): Promise<User> => {
 			return fetcher.get('/user', null, options)
 		},
-		register: async (data: UserProfile, options?: FetcherOptions) => {
-			return fetcher.post('/users/register', data, options)
-		},
 		upload: {
 			avatar: async (
 				file: File,
