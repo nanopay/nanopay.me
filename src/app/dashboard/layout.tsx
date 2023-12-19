@@ -3,41 +3,53 @@ import { TransitionSidebar } from '@/components/Sidebar'
 import Appbar from '@/components/Appbar'
 import PopupAlert from '@/components/PopupAlert'
 import { UserProvider } from '@/contexts/UserProvider'
-import { createClient } from '@/utils/supabase/server'
+import { getUserId } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import api from '@/services/api'
 import { redirect } from 'next/navigation'
+
+async function fetchData() {
+	const userId = await getUserId(cookies())
+
+	const [user, services] = await Promise.all([
+		api.users.retrieve({
+			headers: {
+				Cookie: cookies().toString(),
+			},
+			next: {
+				revalidate: false,
+				tags: [`user-${userId}`],
+			},
+		}),
+		api.services.list({
+			headers: {
+				Cookie: cookies().toString(),
+			},
+			next: {
+				revalidate: false,
+				tags: [`user-${userId}-services`],
+			},
+		}),
+	])
+
+	return {
+		user,
+		services,
+	}
+}
 
 export default async function DashboardLayout({
 	children,
 }: {
 	children: React.ReactNode
 }) {
-	const supabase = createClient(cookies())
-
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	if (!session?.user) {
-		throw new Error('No user data')
-	}
-
 	try {
-		const user = await api.users.retrieve({
-			headers: {
-				Cookie: cookies().toString(),
-			},
-			next: {
-				revalidate: false,
-				tags: [`user-${session.user.id}`],
-			},
-		})
+		const { user, services } = await fetchData()
 
 		return (
 			<UserProvider user={user}>
 				<div className="w-full flex flex-col flex-1">
-					<TransitionSidebar />
+					<TransitionSidebar services={services} />
 
 					<Appbar />
 
