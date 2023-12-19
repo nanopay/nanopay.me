@@ -29,7 +29,6 @@ export async function middleware(request: NextRequest) {
 		pathname = '/login'
 	}
 
-	// Auth condition not met, redirect to login or register page.
 	const redirectUrl = request.nextUrl.clone()
 	redirectUrl.pathname = pathname
 	if (request.nextUrl.pathname !== '/logout') {
@@ -39,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/services/:path*', '/home', '/logout', '/login'],
+	matcher: ['/services/:path*', '/home', '/logout', '/login', '/register'],
 }
