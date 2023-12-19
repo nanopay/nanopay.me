@@ -21,9 +21,6 @@ export default async function RegisterUser() {
 			headers: {
 				Cookie: cookies().toString(),
 			},
-			next: {
-				tags: [`user-${session.user.id}`],
-			},
 		})
 
 		if (!!userProfile) {
