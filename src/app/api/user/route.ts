@@ -4,19 +4,6 @@ import { cookies } from 'next/headers'
 export async function GET() {
 	const supabase = createClient(cookies())
 
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	if (!session) {
-		return Response.json(
-			{ message: 'Unauthorized' },
-			{
-				status: 401,
-			},
-		)
-	}
-
 	const { data, error } = await supabase.from('profiles').select('*').single()
 
 	if (error && error.code !== 'PGRST116') {
