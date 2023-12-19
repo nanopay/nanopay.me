@@ -2,9 +2,7 @@
 
 import { Dialog, Transition } from '@headlessui/react'
 
-import api from '@/services/api'
 import { Fragment, useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { Logo } from './Logo'
 import { Service } from '@/types/services'
 import Image from 'next/image'
@@ -28,21 +26,19 @@ import {
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MButton from './MButton'
-import Loading from './Loading'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 
-export function Sidebar() {
+export interface SidebarProps {
+	services: Service[]
+}
+
+export function Sidebar({ services }: SidebarProps) {
 	const router = useRouter()
 	const pathname = usePathname()
 	const serviceName = useParams()?.serviceName
 
 	const [currentService, setCurrentService] = useState<null | Service>(null)
 	const [openServices, setOpenServices] = useState<boolean>(false)
-
-	const { data: services, isLoading: servicesLoading } = useQuery(
-		'services',
-		() => api.services.list(),
-	)
 
 	const defaultNavigation = [
 		{
@@ -98,7 +94,7 @@ export function Sidebar() {
 				services?.find(service => service.name === serviceName) || null,
 			)
 		}
-	}, [services])
+	}, [services, serviceName])
 
 	const selectService = (serviceName: string) => {
 		router.push(`/services/${serviceName}`)
@@ -114,14 +110,7 @@ export function Sidebar() {
 				<nav className="flex flex-1 flex-col">
 					<ul role="list" className="flex flex-1 flex-col gap-y-7">
 						<li className="border-b border-gray-100 pb-4">
-							{servicesLoading || !services ? (
-								<div>
-									<div className="text-sm font-semibold leading-6 text-gray-400">
-										Current Service
-									</div>
-									<Loading className="h-12 mx-auto mt-2" />
-								</div>
-							) : services.length > 0 ? (
+							{services.length > 0 ? (
 								<>
 									{currentService && (
 										<div className="text-sm font-semibold leading-6 text-gray-500">
@@ -214,7 +203,7 @@ export function Sidebar() {
 								role="list"
 								className={clsx(
 									'-mx-2 space-y-2',
-									(servicesLoading || !currentService) && 'blur-[2px]',
+									!currentService && 'blur-[2px]',
 								)}
 							>
 								{serviceNavigation.map(item => (
@@ -242,7 +231,7 @@ export function Sidebar() {
 									</li>
 								))}
 							</ul>
-							{(servicesLoading || !currentService) && (
+							{!currentService && (
 								<div className="-mx-2 absolute inset-0 flex items-center justify-center bg-white opacity-20" />
 							)}
 						</li>
@@ -281,7 +270,7 @@ export function Sidebar() {
 	)
 }
 
-export function TransitionSidebar() {
+export function TransitionSidebar({ services }: SidebarProps) {
 	const { sidebarOpen, setSidebarOpen } = usePreferences()
 
 	return (
@@ -338,7 +327,7 @@ export function TransitionSidebar() {
 										</button>
 									</div>
 								</Transition.Child>
-								<Sidebar />
+								<Sidebar services={services} />
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>
@@ -346,7 +335,7 @@ export function TransitionSidebar() {
 			</Transition.Root>
 
 			<div className="hidden lg:block">
-				<Sidebar />
+				<Sidebar services={services} />
 			</div>
 		</>
 	)
