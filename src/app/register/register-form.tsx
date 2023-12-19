@@ -62,7 +62,7 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 	const onSubmit = async ({ name, email, avatar_url }: UserProfile) => {
 		startTransition(async () => {
 			try {
-				await registerUser({ name, email, avatar_url })
+				await registerUser({ name, avatar_url })
 			} catch (error) {
 				showError(
 					'Error registering user',

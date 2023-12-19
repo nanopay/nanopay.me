@@ -3,14 +3,10 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
-import { UserProfile } from '@/types/users'
+import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
 
-export const registerUser = async ({
-	name,
-	email,
-	avatar_url,
-}: UserProfile) => {
+export const registerUser = async ({ name, avatar_url }: UserEditables) => {
 	const supabase = createClient(cookies())
 
 	const {
@@ -29,15 +25,12 @@ export const registerUser = async ({
 	const { error: createError } = await supabase.from('profiles').insert({
 		user_id: user.id,
 		name,
-		email,
 		avatar_url: avatar_url || DEFAULT_AVATAR_URL,
-	})
+	} as any)
 
 	if (createError) {
 		throw new Error(createError.message)
 	}
-
-	await supabase.auth.refreshSession()
 
 	redirect('/home')
 }
