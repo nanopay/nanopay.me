@@ -2,32 +2,6 @@ body {
 	@apply bg-slate-50;
 }
 
-.reverse-spinner {
-	position: relative;
-	border: 2px solid transparent;
-	border-top-color: #209ce9;
-	border-left-color: #209ce9;
-	border-radius: 50%;
-	-webkit-animation: spin 1.8s linear infinite;
-	animation: spin 1.8s linear infinite;
-}
-
-.reverse-spinner::before {
-	position: absolute;
-	top: 15px;
-	left: 15px;
-	right: 15px;
-	bottom: 15px;
-	content: '';
-	border: 2px solid transparent;
-	border-top-color: #209ce9;
-	border-left-color: #209ce9;
-	opacity: 0.75;
-	border-radius: 50%;
-	-webkit-animation: spinBack 1.2s linear infinite;
-	animation: spinBack 1.2s linear infinite;
-}
-
 @-webkit-keyframes spin {
 	from {
 		-webkit-transform: rotate(0deg);
