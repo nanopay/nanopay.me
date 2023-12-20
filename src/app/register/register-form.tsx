@@ -10,18 +10,17 @@ import { useState, useTransition } from 'react'
 import { JSONSchemaType } from 'ajv'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
-import { UserProfile } from '@/types/users'
+import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
 import { registerUser } from './actions'
 
-const schema: JSONSchemaType<UserProfile> = {
+const schema: JSONSchemaType<UserEditables> = {
 	type: 'object',
 	properties: {
-		email: { type: 'string', format: 'email', maxLength: 128 },
 		name: { type: 'string', minLength: 2, maxLength: 40 },
 		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
 	},
-	required: ['email', 'name', 'avatar_url'],
+	required: ['name', 'avatar_url'],
 }
 
 export interface RegisterFormProps {
@@ -44,10 +43,9 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 		handleSubmit,
 		getValues,
 		formState: { errors, isSubmitting },
-	} = useForm<UserProfile>({
+	} = useForm<UserEditables>({
 		defaultValues: {
 			name: initialData.name,
-			email: initialData.email,
 			avatar_url: initialData.avatar_url || DEFAULT_AVATAR_URL,
 		},
 		resolver: ajvResolver(schema, {
@@ -59,7 +57,7 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 		setAcceptTerms(event.target.checked)
 	}
 
-	const onSubmit = async ({ name, email, avatar_url }: UserProfile) => {
+	const onSubmit = async ({ name, avatar_url }: UserEditables) => {
 		startTransition(async () => {
 			try {
 				await registerUser({ name, avatar_url })
@@ -106,21 +104,15 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 					)}
 				/>
 
-				<Controller
-					name="email"
-					control={control}
-					render={({ field }) => (
-						<Input
-							label="E-mail"
-							{...field}
-							errorMessage={errors.email?.message}
-							className="w-full"
-							InputLabelProps={{
-								shrink: true,
-							}}
-							disabled
-						/>
-					)}
+				<Input
+					label="E-mail"
+					value={initialData.email}
+					errorMessage={!initialData ? 'Missing email' : undefined}
+					className="w-full"
+					InputLabelProps={{
+						shrink: true,
+					}}
+					disabled
 				/>
 			</div>
 			<div className="flex items-center">
@@ -137,7 +129,7 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 				loading={isSubmitting || isPending}
 				disabled={
 					!getValues('name') ||
-					!getValues('email') ||
+					!initialData.email ||
 					!getValues('avatar_url') ||
 					!acceptTerms
 				}
