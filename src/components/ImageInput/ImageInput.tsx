@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CameraIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid'
-import { ImageCrop } from './ImageCrop'
+import ImageCrop from './ImageCrop'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import clsx from 'clsx'
 
@@ -143,6 +143,8 @@ export function ImageInput({
 			{imageToCrop !== null && (
 				<ImageCrop
 					source={imageToCrop}
+					type="png"
+					resize={{ width: 300, height: 300 }}
 					onCancel={() => setImageToCrop(null)}
 					onConfirm={croppedImage => {
 						setImageToCrop(null)
