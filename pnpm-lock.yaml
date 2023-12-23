@@ -44,7 +44,7 @@ specifiers:
   react-circular-progressbar: ^2.1.0
   react-countdown: ^2.3.5
   react-dom: 18.2.0
-  react-easy-crop: ^4.7.4
+  react-easy-crop: ^5.0.4
   react-hook-form: ^7.43.5
   react-qr-code: ^2.0.11
   react-query: ^3.39.3
@@ -82,7 +82,7 @@ dependencies:
   react-circular-progressbar: 2.1.0_react@18.2.0
   react-countdown: 2.3.5_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
-  react-easy-crop: 4.7.4_biqbaboplfbrettd7655fr4n2y
+  react-easy-crop: 5.0.4_biqbaboplfbrettd7655fr4n2y
   react-hook-form: 7.43.9_react@18.2.0
   react-qr-code: 2.0.11_react@18.2.0
   react-query: 3.39.3_biqbaboplfbrettd7655fr4n2y
@@ -4499,8 +4499,8 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-easy-crop/4.7.4_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-oDi1375Jo/zuPUvo3oauxnNbfy8L4wsbmHD1KB2vT55fdgu+q8/K0w/rDWzy9jz4jfQ94Q9+3Yu366sDDFVmiA==}
+  /react-easy-crop/5.0.4_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-JfzSk4cBHoksgAtgWUHR/jDYretebMxS0rpAlltP1LeELGMj4WTa420m4PsYFpgQXoJZV0DXmINUlBWAoAD/PQ==}
     peerDependencies:
       react: '>=16.4.0'
       react-dom: '>=16.4.0'
