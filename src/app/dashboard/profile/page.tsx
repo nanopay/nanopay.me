@@ -8,18 +8,23 @@ import { UserEditables } from '@/types/users'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
-import Image from 'next/image'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { updateUser } from './actions'
+import {
+	UpdateUserProps,
+	getAvatarUploadPresignedUrl,
+	updateAvatar,
+	updateUser,
+} from './actions'
+import ImageInput from '@/components/ImageInput'
+import { uploadObject } from '@/services/s3'
 
-const schema: JSONSchemaType<UserEditables> = {
+const schema: JSONSchemaType<UpdateUserProps> = {
 	type: 'object',
 	properties: {
 		name: { type: 'string', minLength: 2, maxLength: 40 },
-		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
 	},
-	required: ['name', 'avatar_url'],
+	required: ['name'],
 }
 
 export default async function Profile() {
@@ -32,25 +37,23 @@ export default async function Profile() {
 	const {
 		control,
 		handleSubmit,
-		getValues,
 		formState: { errors, isSubmitting, isDirty },
-	} = useForm<UserEditables>({
+	} = useForm<UpdateUserProps>({
 		defaultValues: {
 			name: user.name,
-			avatar_url: user.avatar_url,
 		},
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
 	})
 
-	const onSubmit = async ({ name, avatar_url }: UserEditables) => {
+	const onSubmit = async ({ name }: Partial<UserEditables>) => {
 		startTransition(async () => {
 			try {
-				await updateUser({ name, avatar_url })
+				await updateUser({ name })
 			} catch (error) {
 				showError(
-					'Error registering user',
+					'Error updating user',
 					error instanceof Error
 						? error.message
 						: 'Check the data or try again later.',
@@ -58,20 +61,13 @@ export default async function Profile() {
 			}
 		})
 	}
-
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
 			className="w-full max-w-sm flex flex-col items-center space-y-6"
 		>
-			<Image
-				src={getValues('avatar_url') || ''}
-				alt="Logo"
-				width={128}
-				height={128}
-				className="mb-4 rounded-full border-2 border-slate-200"
-				priority
-			/>
+			<UserAvatar url={user.avatar_url} />
+
 			<div className="w-full flex flex-col space-y-6">
 				<Controller
 					name="name"
@@ -110,5 +106,47 @@ export default async function Profile() {
 				Update
 			</MButton>
 		</form>
+	)
+}
+
+function UserAvatar({ url }: { url: string }) {
+	const [progress, setProgress] = useState(0)
+	const [isError, setIsError] = useState(false)
+	const [isPending, startTransition] = useTransition()
+	const { showError } = useToast()
+
+	const handleUploadAvatar = async (file: File) => {
+		startTransition(async () => {
+			try {
+				console.log('**** file size', file.size / 1024 / 1024)
+
+				const { url } = await getAvatarUploadPresignedUrl({
+					type: file.type,
+					size: file.size,
+				})
+
+				await uploadObject(file, url, setProgress)
+				await updateAvatar()
+			} catch (error) {
+				setIsError(true)
+				showError(
+					'Error uploading avatar',
+					error instanceof Error
+						? error.message
+						: 'Check the data or try again later.',
+				)
+			}
+		})
+	}
+
+	return (
+		<ImageInput
+			source={url}
+			crop={true}
+			onChange={handleUploadAvatar}
+			isLoading={isPending}
+			isError={isError}
+			progress={progress}
+		/>
 	)
 }
