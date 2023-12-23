@@ -57,14 +57,14 @@ export const uploadObject = async (
 
 export interface CreatePresignedProps {
 	key: string
-	length: number
+	size: number
 	expires?: number
 	type?: string
 }
 
 export const createPresignedUrl = async ({
 	key,
-	length,
+	size,
 	type,
 }: CreatePresignedProps): Promise<string> => {
 	const Key = sanitizeKey(key)
@@ -73,7 +73,7 @@ export const createPresignedUrl = async ({
 		Bucket,
 		Key,
 		ACL: 'public-read',
-		ContentLength: length,
+		ContentLength: size,
 		ContentType: type,
 	})
 
