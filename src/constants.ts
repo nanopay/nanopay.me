@@ -3,3 +3,5 @@ export const INVOICE_EXPIRATION = 1000 * 60 * 15 // 15 minutes
 export const MAX_HOOKS = 5
 
 export const DEFAULT_AVATAR_URL = 'https://static.nanopay.me/images/user.png'
+export const MAX_IMAGE_SIZE = 1024 * 1024 * 8 // 8 MB
+export const ALLOWED_IMAGE_TYPES = ['image/png']
