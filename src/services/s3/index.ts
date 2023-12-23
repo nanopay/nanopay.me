@@ -1,22 +1,20 @@
-import axios, { AxiosResponse } from 'axios'
 import {
 	S3Client,
 	DeleteObjectCommand,
 	CopyObjectCommand,
+	PutObjectCommand,
 } from '@aws-sdk/client-s3'
-import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
-import { Conditions as ConditionsType } from '@aws-sdk/s3-presigned-post/dist-types/types'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 export type S3Fields = Record<string, string>
 
 const Bucket = process.env.S3_BUCKET as string
-const Region = process.env.S3_REGION as string
 
 const client = new S3Client({
-	region: Region,
+	endpoint: process.env.S3_ENDPOINT,
 	credentials: {
-		accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
-		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+		accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+		secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
 	},
 })
 
@@ -27,64 +25,73 @@ const sanitizeKey = (key: string): string => {
 
 export const uploadObject = async (
 	file: File,
-	fields: S3Fields,
 	presignedUrl: string,
 	progressCallback?: (progress: number) => void,
-): Promise<AxiosResponse<void>> => {
-	const formData = new FormData()
-	Object.keys(fields).forEach(key => {
-		formData.append(key, fields[key as keyof S3Fields])
-	})
-	formData.append('file', file)
-	return axios.post(presignedUrl, formData, {
-		headers: {
-			'Content-Type': 'multipart/form-data',
-		},
-		onUploadProgress: progressEvent => {
-			if (progressCallback && progressEvent.total) {
-				const progress: number = Math.round(
-					(progressEvent.loaded * 100) / progressEvent.total,
-				)
-				progressCallback(progress)
+): Promise<void> => {
+	return new Promise((resolve, reject) => {
+		const xhr = new XMLHttpRequest()
+		xhr.open('PUT', presignedUrl, true)
+
+		xhr.upload.onprogress = function (event) {
+			if (progressCallback && event.lengthComputable) {
+				const percentComplete = (event.loaded / event.total) * 100
+				progressCallback(percentComplete)
 			}
-		},
+		}
+
+		xhr.onload = function () {
+			if (xhr.status === 200) {
+				resolve()
+			} else {
+				reject('Error uploading file. Status: ' + xhr.status)
+			}
+		}
+
+		xhr.onerror = function () {
+			reject('Error uploading file. Check your network connection.')
+		}
+
+		xhr.send(file)
 	})
 }
 
-interface CreatePresignedProps {
+export interface CreatePresignedProps {
 	key: string
-	minLength?: number
-	maxLength?: number
+	length: number
 	expires?: number
+	type?: string
 }
 
-export const createPresigned = async ({
+export const createPresignedUrl = async ({
 	key,
-	minLength = 1,
-	maxLength = 1024 * 1024 * 1024, // 1GB
-	expires = 900, // 15 minutes
-}: CreatePresignedProps): Promise<{ url: string; fields: S3Fields }> => {
+	length,
+	type,
+}: CreatePresignedProps): Promise<string> => {
 	const Key = sanitizeKey(key)
 
-	const Conditions: ConditionsType[] = [
-		{ acl: 'public-read' },
-		{ bucket: Bucket },
-		['starts-with', '$key', Key],
-		['content-length-range', minLength, maxLength],
-	]
-
-	const Fields = {
-		acl: 'public-read',
-	}
-
-	const { url, fields } = await createPresignedPost(client, {
+	const command = new PutObjectCommand({
 		Bucket,
 		Key,
-		Conditions,
-		Fields,
-		Expires: expires,
+		ACL: 'public-read',
+		ContentLength: length,
+		ContentType: type,
 	})
-	return { url, fields }
+
+	const url = await getSignedUrl(client, command, {
+		expiresIn: 3600,
+	})
+	return url
+}
+
+export const putObject = async (key: string, file: File): Promise<void> => {
+	const Key = sanitizeKey(key)
+	const command = new PutObjectCommand({
+		Bucket,
+		Key,
+		ACL: 'public-read',
+		Body: file,
+	})
+	await client.send(command)
 }
 
 export const deleteObject = async (key: string): Promise<void> => {
@@ -118,7 +125,7 @@ export const moveObject = async (
 
 const s3 = {
 	uploadObject,
-	createPresigned,
+	createPresignedUrl,
 	deleteObject,
 	moveObject,
 }
