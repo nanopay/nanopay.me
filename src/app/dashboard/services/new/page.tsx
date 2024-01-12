@@ -1,9 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useMutation } from 'react-query'
-import { Controller, useForm } from 'react-hook-form'
+import { useState, useTransition } from 'react'
+import { Controller, FieldErrors, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { Container } from '@/components/Container'
 import MButton from '@/components/MButton'
@@ -16,6 +14,8 @@ import { ServiceCreate } from '@/types/services'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/helpers'
+import { createAvatarUploadPresignedUrl, createService } from './actions'
+import { uploadObject } from '@/services/s3'
 
 const schema: JSONSchemaType<ServiceCreate> = {
 	type: 'object',
@@ -40,10 +40,11 @@ const schema: JSONSchemaType<ServiceCreate> = {
 }
 
 export default function NewService() {
-	const { showError, showSuccess } = useToast()
-	const router = useRouter()
+	const { showError } = useToast()
 
-	const [uploadProgress, setUploadProgress] = useState(0)
+	const [isUploading, setIsUploading] = useState(false)
+
+	const [isPending, startTransition] = useTransition()
 
 	const {
 		control,
@@ -57,45 +58,26 @@ export default function NewService() {
 		}),
 	})
 
-	const {
-		mutate: uploadImage,
-		isLoading: uploading,
-		isError: uploadError,
-	} = useMutation({
-		mutationFn: (file: File) =>
-			api.services.upload.avatar(file, setUploadProgress),
-		onSuccess: (url: string) => {
-			console.log('Url: ', url)
-			setValue('avatar_url', url)
-		},
-		onError: (err: any) => {
-			showError(
-				'Error uploading image',
-				api.getErrorMessage(err) || 'Try again Later',
-			)
-		},
-	})
+	const onSubmit = async (data: ServiceCreate) => {
+		startTransition(async () => {
+			try {
+				await createService(data)
+			} catch (error) {
+				showError(
+					'Error creating service',
+					api.getErrorMessage(error) || 'Try again Later',
+				)
+			}
+		})
+	}
 
-	const {
-		mutate: onSubmit,
-		isLoading: isSubmitting,
-		isSuccess,
-	} = useMutation({
-		mutationFn: async (data: ServiceCreate) => api.services.create(data),
-		onSuccess: () => {
-			showSuccess('Service created')
-			router.push('/services/' + watch('name') + '#new')
-		},
-		onError: (err: any) => {
-			showError(
-				'Error creating service',
-				api.getErrorMessage(err) || 'Try again Later',
-			)
-		},
-	})
-
-	const onErrorSubmiting = () => {
-		showError('Error creating service', 'Check the fields entered')
+	const onErrorSubmiting = (e: FieldErrors<ServiceCreate>) => {
+		showError(
+			'Error creating service',
+			e.avatar_url
+				? `avatar_url ${e.avatar_url.message}`
+				: 'Check the fields entered',
+		)
 	}
 
 	return (
@@ -104,13 +86,13 @@ export default function NewService() {
 				<h3 className="text-slate-700">Create a new service</h3>
 			</div>
 
-			<ImageInput
-				source={watch('avatar_url')}
-				crop={true}
-				onChange={uploadImage}
-				isLoading={uploading}
-				isError={uploadError}
-				progress={uploadProgress}
+			<ServiceAvatar
+				url={watch('avatar_url') || undefined}
+				onChange={url => {
+					console.log('new url', url)
+					setValue('avatar_url', url)
+				}}
+				onUploading={setIsUploading}
 			/>
 
 			<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-6">
@@ -160,17 +142,67 @@ export default function NewService() {
 			<div />
 			<MButton
 				onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
-				loading={isSubmitting}
-				disabled={isSuccess || uploading || !watch('name')}
+				loading={isPending}
+				disabled={isUploading || !watch('name')}
 			>
-				{uploading
+				{isUploading
 					? 'Uploading image...'
-					: isSubmitting
+					: isPending
 					? 'Creating service...'
-					: isSuccess
-					? 'Service Created'
 					: 'Create service'}
 			</MButton>
 		</Container>
+	)
+}
+
+function ServiceAvatar({
+	url,
+	onChange,
+	onUploading,
+}: {
+	url?: string
+	onChange: (url: string) => void
+	onUploading: (bool: boolean) => void
+}) {
+	const [progress, setProgress] = useState(0)
+	const [isError, setIsError] = useState(false)
+	const [isPending, startTransition] = useTransition()
+	const { showError } = useToast()
+
+	const handleUploadAvatar = async (file: File) => {
+		startTransition(async () => {
+			try {
+				onUploading(true)
+
+				const { uploadUrl, getUrl } = await createAvatarUploadPresignedUrl({
+					type: file.type,
+					size: file.size,
+				})
+
+				await uploadObject(file, uploadUrl, setProgress)
+				onChange(getUrl)
+			} catch (error) {
+				setIsError(true)
+				showError(
+					'Error uploading avatar',
+					error instanceof Error
+						? error.message
+						: 'Check the data or try again later.',
+				)
+			} finally {
+				onUploading(false)
+			}
+		})
+	}
+
+	return (
+		<ImageInput
+			source={url}
+			crop={true}
+			onChange={handleUploadAvatar}
+			isLoading={isPending}
+			isError={isError}
+			progress={progress}
+		/>
 	)
 }
