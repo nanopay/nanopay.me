@@ -12,7 +12,7 @@ import { useState, useTransition } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
 	UpdateUserProps,
-	getAvatarUploadPresignedUrl,
+	createAvatarUploadPresignedUrl,
 	updateAvatar,
 	updateUser,
 } from './actions'
@@ -118,9 +118,7 @@ function UserAvatar({ url }: { url: string }) {
 	const handleUploadAvatar = async (file: File) => {
 		startTransition(async () => {
 			try {
-				console.log('**** file size', file.size / 1024 / 1024)
-
-				const { url } = await getAvatarUploadPresignedUrl({
+				const url = await createAvatarUploadPresignedUrl({
 					type: file.type,
 					size: file.size,
 				})

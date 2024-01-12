@@ -30,15 +30,13 @@ export const updateUser = async ({ name }: Partial<UpdateUserProps>) => {
 	revalidateTag(`user-${userId}`)
 }
 
-export interface GetAvatarUploadPresignedUrlProps {
-	type: string
-	size: number
-}
-
-export const getAvatarUploadPresignedUrl = async ({
+export const createAvatarUploadPresignedUrl = async ({
 	type,
 	size,
-}: GetAvatarUploadPresignedUrlProps) => {
+}: {
+	type: string
+	size: number
+}) => {
 	const userId = await getUserId(cookies())
 
 	if (!ALLOWED_IMAGE_TYPES.includes(type)) {
@@ -61,7 +59,7 @@ export const getAvatarUploadPresignedUrl = async ({
 		size,
 	})
 
-	return { url, key }
+	return url
 }
 
 export const updateAvatar = async () => {
