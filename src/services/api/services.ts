@@ -1,17 +1,9 @@
 import Fetcher, { FetcherOptions } from '@/lib/fetcher'
-import s3 from '@/services/s3'
 import { Hook, HookCreate, HookDelivery, HookUpdate } from '@/types/hooks'
-import { ApiKey, ApiKeyCreate, Service, ServiceCreate } from '@/types/services'
-import { concatURL } from '@/utils/helpers'
+import { ApiKey, ApiKeyCreate, Service } from '@/types/services'
 
 export const services = (fetcher: Fetcher) => {
 	return {
-		create: async (
-			data: ServiceCreate,
-			options?: FetcherOptions,
-		): Promise<{ id: string }> => {
-			return fetcher.post('/services', data, options)
-		},
 		get: async (
 			serviceName: string,
 			options?: FetcherOptions,
@@ -20,23 +12,6 @@ export const services = (fetcher: Fetcher) => {
 		},
 		list: async (options?: FetcherOptions): Promise<Service[]> => {
 			return fetcher.get('/services', null, options)
-		},
-		upload: {
-			avatar: async (
-				file: File,
-				progressCallback?: (progress: number) => void,
-			): Promise<string> => {
-				if (file.size > 1024 * 1024 * 5) {
-					throw new Error('File size must be less than 5MB')
-				}
-				const { url, fields } = await fetcher.post('/upload/image')
-
-				await s3.uploadObject(file, fields, url, progressCallback)
-				return concatURL(
-					`https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}`,
-					fields.key,
-				)
-			},
 		},
 		apiKeys: {
 			create: async (
