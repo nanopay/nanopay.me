@@ -23,7 +23,7 @@ import {
 	UserIcon,
 	XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MButton from './MButton'
 import { usePreferences } from '@/contexts/PreferencesProvider'
@@ -35,9 +35,8 @@ export interface SidebarProps {
 export function Sidebar({ services }: SidebarProps) {
 	const router = useRouter()
 	const pathname = usePathname()
-	const serviceName = useParams()?.serviceName
+	const { currentService } = usePreferences()
 
-	const [currentService, setCurrentService] = useState<null | Service>(null)
 	const [openServices, setOpenServices] = useState<boolean>(false)
 
 	const defaultNavigation = [
@@ -87,14 +86,6 @@ export function Sidebar({ services }: SidebarProps) {
 			current: pathname === '/services/[serviceName]/settings',
 		},
 	]
-
-	useEffect(() => {
-		if (serviceName) {
-			setCurrentService(
-				services?.find(service => service.name === serviceName) || null,
-			)
-		}
-	}, [services, serviceName])
 
 	const selectService = (serviceName: string) => {
 		router.push(`/services/${serviceName}`)

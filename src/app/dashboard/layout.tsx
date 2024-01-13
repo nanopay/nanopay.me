@@ -7,6 +7,7 @@ import { getUserId } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import api from '@/services/api'
 import { redirect } from 'next/navigation'
+import PreferencesProvider from '@/contexts/PreferencesProvider'
 
 async function fetchData() {
 	const userId = await getUserId(cookies())
@@ -48,24 +49,26 @@ export default async function DashboardLayout({
 
 		return (
 			<UserProvider user={user}>
-				<div className="w-full flex flex-col flex-1">
-					<TransitionSidebar services={services} />
+				<PreferencesProvider services={services}>
+					<div className="w-full flex flex-col flex-1">
+						<TransitionSidebar services={services} />
 
-					<Appbar />
+						<Appbar />
 
-					<div className="lg:pl-72 flex flex-col flex-1">
-						<PopupAlert
-							message="This is the alpha version. It may have bugs. Do not use in
+						<div className="lg:pl-72 flex flex-col flex-1">
+							<PopupAlert
+								message="This is the alpha version. It may have bugs. Do not use in
 								production or for high-value payments."
-						/>
+							/>
 
-						<main className="flex flex-col w-full flex-1 py-6 px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
-							{children}
-						</main>
+							<main className="flex flex-col w-full flex-1 py-6 px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
+								{children}
+							</main>
 
-						<Footer />
+							<Footer />
+						</div>
 					</div>
-				</div>
+				</PreferencesProvider>
 			</UserProvider>
 		)
 	} catch (error) {
