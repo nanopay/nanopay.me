@@ -10,6 +10,7 @@ import { ServiceCreate } from '@/types/services'
 import { checkUUID } from '@/utils/helpers'
 import { createClient, getUserId } from '@/utils/supabase/server'
 import { UUID, randomUUID } from 'crypto'
+import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -41,6 +42,8 @@ export const createService = async ({
 		console.log(error)
 		throw new Error(error.message)
 	}
+
+	revalidateTag(`user-${userId}-services`)
 
 	redirect(`/dashboard/services/${name}`)
 }
