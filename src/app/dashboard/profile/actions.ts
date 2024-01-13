@@ -2,7 +2,11 @@
 
 import { cookies } from 'next/headers'
 import { createClient, getUserId } from '@/utils/supabase/server'
-import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE } from '@/constants'
+import {
+	ALLOWED_IMAGE_TYPES,
+	MAX_IMAGE_SIZE,
+	STATIC_ASSETS_HOST,
+} from '@/constants'
 import { revalidateTag } from 'next/cache'
 import { createPresignedUrl, moveObject } from '@/services/s3'
 import { concatURL } from '@/utils/helpers'
@@ -73,8 +77,7 @@ export const updateAvatar = async () => {
 	await moveObject(oldKey, newKey)
 
 	const url =
-		concatURL(`https://${process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST}`, newKey) +
-		`?v=${Date.now()}`
+		concatURL(`https://${STATIC_ASSETS_HOST}`, newKey) + `?v=${Date.now()}`
 
 	const { error } = await supabase
 		.from('profiles')
