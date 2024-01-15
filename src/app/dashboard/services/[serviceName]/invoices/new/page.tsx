@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import Head from 'next/head'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation } from 'react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
@@ -15,6 +15,7 @@ import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
+import { usePreferences } from '@/contexts/PreferencesProvider'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
@@ -53,10 +54,7 @@ export default function NewService({
 
 	const { showError, showSuccess } = useToast()
 
-	const { data: service, isLoading } = useQuery({
-		queryKey: ['service', serviceName],
-		queryFn: () => api.services.get(serviceName),
-	})
+	const { currentService } = usePreferences()
 
 	const {
 		control,
@@ -75,14 +73,14 @@ export default function NewService({
 		isSuccess,
 	} = useMutation({
 		mutationFn: async (data: InvoiceCreate) =>
-			api.invoices.create(service?.id as string, data),
+			api.invoices.create(currentService?.name as string, data),
 		onSuccess: res => {
 			showSuccess('Invoice created')
-			router.push(`/services/${service?.name}/invoices/${res.id}`)
+			router.push(`/services/${currentService?.name}/invoices/${res.id}`)
 		},
 		onError: (err: any) => {
 			showError(
-				'Error creating service',
+				'Error creating invoice',
 				api.getErrorMessage(err) || 'Try again later',
 			)
 		},
@@ -96,7 +94,7 @@ export default function NewService({
 		return null
 	}
 
-	if (!isLoading && !service) {
+	if (!currentService) {
 		return (
 			<>
 				<Head>

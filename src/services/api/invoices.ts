@@ -5,11 +5,11 @@ import { Payment } from '@/types/payment'
 export const invoices = (fetcher: Fetcher) => {
 	return {
 		create: async (
-			serviceId: string,
+			serviceName: string,
 			data: InvoiceCreate,
 			options?: FetcherOptions,
 		): Promise<{ id: string }> => {
-			return fetcher.post(`/invoices?service_id=${serviceId}`, data)
+			return fetcher.post(`/services/${serviceName}/invoices`, data, options)
 		},
 		get: async (
 			invoiceId: string,
