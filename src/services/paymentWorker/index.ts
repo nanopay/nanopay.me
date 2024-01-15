@@ -1,28 +1,40 @@
-import axios, { AxiosResponse } from 'axios'
+import Fetcher from '@/lib/fetcher'
+import { InvoiceCreate } from '@/types/invoice'
 
-export const axiosInstance = axios.create({
-	baseURL: process.env.PAYMENT_WORKER_URL,
-})
+const fetcher = new Fetcher(process.env.PAYMENT_WORKER_URL!)
 
-interface PaymentAddProps {
-	invoiceId: string
+export interface CreateUserInvoiceRequest extends InvoiceCreate {
+	user_id: string | null
+}
+
+export interface CreateServiceInvoiceRequest extends InvoiceCreate {
+	service_id: string
+}
+
+export type CreateInvoiceRequest =
+	| CreateUserInvoiceRequest
+	| CreateServiceInvoiceRequest
+
+export interface CreateInvoiceResponse {
+	id: string
+	pay_address: string
+	expires_at: string
 }
 
 const paymentWorker = {
-	client: axiosInstance,
+	client: fetcher,
 	getErrorMessage: (error: any): string => {
-		const reason = error.response?.data?.reason
-		if (reason && typeof reason === 'string') return reason
-		return error.message || 'Unknown error'
+		return error.message
 	},
-	queue: {
-		add: async (
-			data: PaymentAddProps,
-		): Promise<AxiosResponse<Record<'message', string>>> => {
-			return axiosInstance.post('/', data, {
+	invoices: {
+		create: async (
+			data: CreateInvoiceRequest,
+		): Promise<CreateInvoiceResponse> => {
+			// Ask Payment Worker to watch for payments
+			return fetcher.post('/', data, {
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${process.env.PAYMENT_WORKER_AUTH_TOKEN}`,
+					Authorization: `Bearer ${process.env.PAYMENT_WORKER_AUTH_TOKEN!}`,
 				},
 			})
 		},
