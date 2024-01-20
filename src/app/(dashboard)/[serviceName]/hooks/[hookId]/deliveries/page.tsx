@@ -23,11 +23,11 @@ export default function Webhooks({
 	const tabs = [
 		{
 			label: 'Settings',
-			href: `/services/${serviceName}/hooks/${hookId}`,
+			href: `/${serviceName}/hooks/${hookId}`,
 		},
 		{
 			label: 'Deliveries',
-			href: `/services/${serviceName}/hooks/${hookId}/deliveries`,
+			href: `/${serviceName}/hooks/${hookId}/deliveries`,
 		},
 	]
 

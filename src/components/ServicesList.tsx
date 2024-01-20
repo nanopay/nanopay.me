@@ -21,10 +21,7 @@ export default function ServicesList({ services }: { services: Service[] }) {
 					</div>
 					<div className="mt-8">
 						<h3 className="text-lg font-medium">
-							<Link
-								href={`/services/${service.name}`}
-								className="focus:outline-none"
-							>
+							<Link href={`/${service.name}`} className="focus:outline-none">
 								{/* Extend touch target to entire panel */}
 								<span className="absolute inset-0" aria-hidden="true"></span>
 								{service.name}

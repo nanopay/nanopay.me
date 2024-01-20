@@ -1,28 +1,32 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Head from 'next/head'
-import { useMutation } from 'react-query'
-import { Controller, useForm } from 'react-hook-form'
-import { fullFormats } from 'ajv-formats/dist/formats'
-import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
+import { useMutation, useQuery } from 'react-query'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { JSONSchemaType } from 'ajv'
-import { sanitizeSlug } from '@/utils/helpers'
+import MButton from '@/components/MButton'
+import { Controller, useForm } from 'react-hook-form'
 import {
 	Autocomplete,
+	Box,
 	FormControl,
 	FormControlLabel,
 	FormLabel,
 	Radio,
 	RadioGroup,
+	Skeleton,
+	Tab,
+	Tabs,
 	TextField,
 } from '@mui/material'
-import { HookCreate } from '@/types/hooks'
-import MButton from '@/components/MButton'
+import Input from '@/components/Input'
+import { sanitizeSlug } from '@/utils/helpers'
+import { Hook, HookCreate } from '@/types/hooks'
+import { ajvResolver } from '@hookform/resolvers/ajv'
+import { fullFormats } from 'ajv-formats/dist/formats'
+import { JSONSchemaType } from 'ajv'
+import tailwindColors from 'tailwindcss/colors'
+import Link from 'next/link'
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',
@@ -58,61 +62,113 @@ const schema: JSONSchemaType<HookCreate> = {
 	additionalProperties: false,
 }
 
-export default function NewApiKey({
-	params: { serviceName },
+export default function Webhooks({
+	params: { serviceName, hookId },
 }: {
 	params: {
 		serviceName: string
+		hookId: string
 	}
 }) {
-	const { showError, showSuccess } = useToast()
-	const router = useRouter()
+	const { showError } = useToast()
 
+	const tabs = [
+		{
+			label: 'Settings',
+			href: `/${serviceName}/hooks/${hookId}`,
+		},
+		{
+			label: 'Deliveries',
+			href: `/${serviceName}/hooks/${hookId}/deliveries`,
+		},
+	]
+
+	const { data: hook } = useQuery({
+		queryKey: ['hooks', hookId],
+		queryFn: () => api.services.hooks.get(hookId),
+		enabled: !!serviceName && !!hookId,
+		onError: (err: any) => {
+			showError(
+				'Fail getting hook',
+				api.getErrorMessage(err) || 'Try again later',
+			)
+		},
+	})
+
+	if (!serviceName || !hookId) {
+		return null
+	}
+
+	return (
+		<>
+			<Head>
+				<title>Webooks - NanoPay.me</title>
+			</Head>
+			<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
+				<Tabs value={0}>
+					{tabs.map((tab, index) => (
+						<Tab
+							key={index}
+							label={tab.label}
+							href={tab.href}
+							LinkComponent={Link}
+						/>
+					))}
+				</Tabs>
+			</Box>
+			{!hook ? (
+				<Skeleton
+					variant="rectangular"
+					animation="wave"
+					width="full"
+					height={240}
+					className="rounded-lg"
+					sx={{ bgcolor: tailwindColors.slate['200'] }}
+				/>
+			) : (
+				<HookForm hook={hook} />
+			)}
+		</>
+	)
+}
+
+const HookForm = ({ hook }: { hook: Hook }) => {
+	const { showError, showSuccess } = useToast()
 	const {
 		control,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isDirty },
 		setValue,
 		getValues,
-		watch,
 	} = useForm<HookCreate>({
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
 		defaultValues: {
-			name: '',
-			description: undefined,
-			url: '',
-			event_types: ['invoice.paid'],
-			secret: undefined,
+			name: hook.name,
+			description: hook.description,
+			event_types: hook.event_types,
+			url: hook.url,
 		},
 	})
 
-	const {
-		mutate: onSubmit,
-		isLoading: isSubmitting,
-		isSuccess,
-	} = useMutation({
+	const { mutate: onSubmit, isLoading: isSubmitting } = useMutation({
 		mutationFn: async (data: HookCreate) =>
-			api.services.hooks.create(serviceName, data),
+			api.services.hooks.update(hook.id, data),
 		onSuccess: () => {
-			showSuccess('Webhook created')
-			router.push(`/services/${serviceName}/hooks`)
+			showSuccess('Webhook updated')
 		},
 		onError: (err: any) => {
 			showError(
-				'Error creating webhook',
-				api.getErrorMessage(err) || 'Try again Later',
+				'Error updating webhook',
+				api.getErrorMessage(err) || 'Try again later',
 			)
 		},
 	})
 
-	if (!serviceName) {
-		return null
-	}
-
-	const onErrorSubmiting = () => {
-		showError('Error creating Webhook', 'Check the fields entered')
+	const onErrorSubmiting = (err: any) => {
+		console.log(JSON.stringify(err, null, 2))
+		showError('Error updating Webhook', 'Check the fields entered')
 	}
 
 	const handleEventType = (e: any) => {
@@ -129,50 +185,34 @@ export default function NewApiKey({
 	}
 
 	return (
-		<>
-			<Head>
-				<title>New API Key - NanoPay.me</title>
-			</Head>
-			<form
-				className="w-full bg-white flex flex-col flex-1 items-center px-8 pb-8 rounded-lg max-w-2xl shadow"
-				onSubmit={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
-			>
-				<div className="w-full flex justify-center items-center space-x-2 py-3 mb-8 border-b border-slate-200">
-					<h3 className="text-slate-700 text-lg font-semibold">
-						Create a Webhook
-					</h3>
-				</div>
+		<form
+			className="w-full bg-white flex flex-col items-center px-6 sm:px-8 pb-8 rounded-lg max-w-2xl xl:max-w-7xl shadow"
+			onSubmit={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
+		>
+			<div className="w-full flex justify-center items-center space-x-2 py-3 mb-8 border-b border-slate-200">
+				<h3 className="text-slate-700 text-lg font-semibold">Manage Webhook</h3>
+			</div>
 
-				<div className="w-full flex flex-col gap-y-4 px-4 sm:px-8 py-4">
-					<div>
-						<div className="flex mb-2 items-center text-xs text-gray-600">
-							<InformationCircleIcon className="w-4 mr-1" />
-							<div>
-								Use a name like:{' '}
-								<span className="font-semibold">my-webhook</span>
-								{' or '}
-								<span className="font-semibold">mywebsite.com</span>
-							</div>
-						</div>
-						<Controller
-							name="name"
-							control={control}
-							render={({ field }) => (
-								<Input
-									label="Name"
-									{...field}
-									onChange={e => field.onChange(sanitizeSlug(e.target.value))}
-									errorMessage={errors.name?.message}
-									className="w-full"
-									autoCapitalize="words"
-									style={{
-										textTransform: 'capitalize',
-									}}
-									disabled={isSubmitting || isSuccess}
-								/>
-							)}
-						/>
-					</div>
+			<div className="w-full flex flex-col xl:flex-row xl:gap-16 gap-4 py-4">
+				<div className="w-full xl:w-1/2 space-y-4">
+					<Controller
+						name="name"
+						control={control}
+						render={({ field }) => (
+							<Input
+								label="Name"
+								{...field}
+								onChange={e => field.onChange(sanitizeSlug(e.target.value))}
+								errorMessage={errors.name?.message}
+								className="w-full"
+								autoCapitalize="words"
+								style={{
+									textTransform: 'capitalize',
+								}}
+								disabled={isSubmitting}
+							/>
+						)}
+					/>
 
 					<Controller
 						name="description"
@@ -185,7 +225,7 @@ export default function NewApiKey({
 								errorMessage={errors.description?.message}
 								className="w-full"
 								multiline={true}
-								disabled={isSubmitting || isSuccess}
+								disabled={isSubmitting}
 							/>
 						)}
 					/>
@@ -201,11 +241,13 @@ export default function NewApiKey({
 								onChange={e => field.onChange(e.target.value.slice(0, 512))}
 								errorMessage={errors.url?.message}
 								className="w-full"
-								disabled={isSubmitting || isSuccess}
+								disabled={isSubmitting}
 							/>
 						)}
 					/>
+				</div>
 
+				<div className="w-full xl:w-1/2 space-y-2">
 					<Controller
 						name="event_types"
 						control={control}
@@ -225,7 +267,7 @@ export default function NewApiKey({
 										control={<Radio onClick={handleEventType} />}
 										label="Invoice Paid"
 										checked={field.value.includes('invoice.paid')}
-										disabled={isSubmitting || isSuccess}
+										disabled={isSubmitting}
 									/>
 									<FormControlLabel
 										disabled
@@ -285,38 +327,17 @@ export default function NewApiKey({
 								onChange={e => field.onChange(e.target.value.slice(0, 512))}
 								errorMessage={errors.secret?.message}
 								className="w-full"
-								disabled={true || isSubmitting || isSuccess}
+								disabled={true || isSubmitting}
 							/>
 						)}
 					/>
-					<div className="my-2 text-sm border border-yellow-300 bg-yellow-100 rounded p-2">
-						<h4 className="font-semibold">Important:</h4>
-						<ul>
-							<li>
-								- Only the events of the next invoices will be delivered for
-								this webhook
-							</li>
-							<li>
-								- If your webhook does not respond with a valid code within 15
-								seconds, we cancel the request. We do not implement retries.
-							</li>
-						</ul>
-					</div>
 				</div>
-				<MButton
-					type="submit"
-					loading={isSubmitting}
-					disabled={
-						isSuccess ||
-						!watch('name') ||
-						!watch('url') ||
-						!watch('event_types') ||
-						watch('event_types').length < 1
-					}
-				>
-					{isSubmitting ? 'Creating Webhook...' : 'Create Webhook'}
+			</div>
+			<div className="w-full flex justify-end">
+				<MButton type="submit" loading={isSubmitting} disabled={!isDirty}>
+					{isSubmitting ? 'Updating Webhook...' : 'Update Webhook'}
 				</MButton>
-			</form>
-		</>
+			</div>
+		</form>
 	)
 }

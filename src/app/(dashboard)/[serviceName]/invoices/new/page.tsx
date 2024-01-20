@@ -76,7 +76,7 @@ export default function NewService({
 			api.invoices.create(currentService?.name as string, data),
 		onSuccess: res => {
 			showSuccess('Invoice created')
-			router.push(`/services/${currentService?.name}/invoices/${res.id}`)
+			router.push(`/${currentService?.name}/invoices/${res.id}`)
 		},
 		onError: (err: any) => {
 			showError(

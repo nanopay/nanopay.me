@@ -57,38 +57,38 @@ export function Sidebar({ services }: SidebarProps) {
 	const serviceNavigation = [
 		{
 			name: 'Dashboard',
-			href: `/services/${currentService?.name}`,
+			href: `/${currentService?.name}`,
 			icon: HomeIcon,
-			current: pathname === '/services/[serviceName]',
+			current: pathname === '/[serviceName]',
 		},
 		{
 			name: 'Invoices',
-			href: `/services/${currentService?.name}/invoices`,
+			href: `/${currentService?.name}/invoices`,
 			icon: BanknotesIcon,
-			current: pathname === '/services/[serviceName]/invoices',
+			current: pathname === '/[serviceName]/invoices',
 		},
 		{
 			name: 'Webhooks',
-			href: `/services/${currentService?.name}/hooks`,
+			href: `/${currentService?.name}/hooks`,
 			icon: Webhook,
-			current: pathname === '/services/[serviceName]/hooks',
+			current: pathname === '/[serviceName]/hooks',
 		},
 		{
 			name: 'Api Keys',
-			href: `/services/${currentService?.name}/keys`,
+			href: `/${currentService?.name}/keys`,
 			icon: KeyIcon,
-			current: pathname === '/services/[serviceName]/keys',
+			current: pathname === '/[serviceName]/keys',
 		},
 		{
 			name: 'Settings',
-			href: `/services/${currentService?.name}/settings`,
+			href: `/${currentService?.name}/settings`,
 			icon: Cog6ToothIcon,
-			current: pathname === '/services/[serviceName]/settings',
+			current: pathname === '/[serviceName]/settings',
 		},
 	]
 
 	const selectService = (serviceName: string) => {
-		router.push(`/services/${serviceName}`)
+		router.push(`/${serviceName}`)
 	}
 
 	return (

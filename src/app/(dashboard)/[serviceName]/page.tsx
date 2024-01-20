@@ -55,21 +55,21 @@ export default async function ServiceDashboardPage({
 	const cards: DashCardProps[] = [
 		{
 			name: 'Invoices',
-			href: `/services/${service.name}/invoices`,
+			href: `/${service.name}/invoices`,
 			icon: Receipt,
 			amount: service.invoices_count,
 			hrefLabel: 'View All',
 		},
 		{
 			name: 'API Keys',
-			href: `/services/${service.name}/keys`,
+			href: `/${service.name}/keys`,
 			icon: KeyIcon,
 			amount: service.api_keys_count,
 			hrefLabel: 'Manage Keys',
 		},
 		{
 			name: 'Webhooks',
-			href: `/services/${service.name}/hooks`,
+			href: `/${service.name}/hooks`,
 			icon: Webhook,
 			amount: service.hooks_count,
 			hrefLabel: 'View All',

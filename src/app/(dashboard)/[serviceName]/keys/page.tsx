@@ -52,7 +52,7 @@ export default function ApiKeys({
 						<h1 className="flex-1 text-lg font-medium">API Keys</h1>
 						<Button
 							color="nano"
-							href={`/services/${serviceName}/keys/new`}
+							href={`/${serviceName}/keys/new`}
 							className="items-center text-xs py-1"
 						>
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />

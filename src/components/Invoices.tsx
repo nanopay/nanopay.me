@@ -128,7 +128,7 @@ export default function Invoices({ invoices, serviceName }: InvoicesProps) {
 													<Link
 														href={
 															serviceName
-																? `/services/${serviceName}/invoices/${invoice.id}`
+																? `/${serviceName}/invoices/${invoice.id}`
 																: `/invoices/${invoice.id}`
 														}
 														className="group inline-flex space-x-2 truncate text-sm"

@@ -40,7 +40,7 @@ export default function Webhooks({
 						<h1 className="flex-1 text-lg font-medium">Webhooks</h1>
 						<Button
 							color="nano"
-							href={`/services/${serviceName}/hooks/new`}
+							href={`/${serviceName}/hooks/new`}
 							className="items-center text-xs py-1"
 						>
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
@@ -64,7 +64,7 @@ export default function Webhooks({
 											) : (
 												<ActivityDot status="inactive" />
 											)}
-											<Link href={`/services/${serviceName}/hooks/${hook.id}`}>
+											<Link href={`/${serviceName}/hooks/${hook.id}`}>
 												<h2 className="text-sm font-medium">
 													<span
 														className="absolute inset-0"

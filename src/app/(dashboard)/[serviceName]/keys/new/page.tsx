@@ -187,9 +187,7 @@ export default function NewApiKey({
 									<li>Delete it or generate a new one at any time.</li>
 								</ul>
 							</div>
-							<MButton
-								onClick={() => router.push(`/services/${serviceName}/keys`)}
-							>
+							<MButton onClick={() => router.push(`/${serviceName}/keys`)}>
 								Done
 							</MButton>
 						</div>

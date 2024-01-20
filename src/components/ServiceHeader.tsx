@@ -72,7 +72,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 						<Button
 							color="nano"
 							className="items-center"
-							href={`/services/${service.name}/invoices/new`}
+							href={`/${service.name}/invoices/new`}
 						>
 							<PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
 							Create Invoice
