@@ -1,5 +1,6 @@
 'use server'
 
+import { getURL } from '@/utils/helpers'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -7,9 +8,11 @@ import { redirect } from 'next/navigation'
 export const signWithPassword = async ({
 	email,
 	password,
+	next,
 }: {
 	email: string
 	password: string
+	next?: string
 }) => {
 	const supabase = createClient(cookies())
 
@@ -31,21 +34,28 @@ export const signWithPassword = async ({
 		throw new Error('Session is missing')
 	}
 
-	const maxAge = 100 * 365 * 24 * 60 * 60 // 100 years, never expires
-
-	redirect(`/home`)
+	redirect(next || `/home`)
 }
 
-export const signWithGithub = async (redirectTo: string) => {
+export const signWithGithub = async ({ next }: { next?: string }) => {
 	const supabase = createClient(cookies())
 
-	const { error } = await supabase.auth.signInWithOAuth({
+	const redirectTo = new URL(getURL())
+	redirectTo.pathname = '/auth/callback'
+	if (next) {
+		redirectTo.searchParams.set('next', next)
+	}
+
+	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider: 'github',
 		options: {
-			redirectTo,
+			redirectTo: redirectTo.toString(),
 		},
 	})
+
 	if (error) {
 		throw new Error(error.message)
 	}
+
+	redirect(data.url)
 }

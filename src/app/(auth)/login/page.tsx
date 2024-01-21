@@ -1,7 +1,6 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { getURL } from '@/utils/helpers'
 import Link from 'next/link'
 import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
@@ -28,11 +27,7 @@ const schema: JSONSchemaType<AuthEmailPassword> = {
 }
 
 export default function LoginPage() {
-	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
-
-	const redirectTo = `${getURL()}redirect?to=${encodeURI(
-		typeof redirectedFrom === 'string' ? redirectedFrom : '/home',
-	)}`
+	const next = useSearchParams().get('next') || undefined
 
 	const {
 		control,
@@ -51,11 +46,12 @@ export default function LoginPage() {
 	return (
 		<form
 			className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200"
-			onSubmit={handleSubmit(data => signWithPassword(data))}
+			onSubmit={handleSubmit(data => signWithPassword({ ...data, next }))}
 		>
 			<Button
 				color="slate"
-				onClick={() => signWithGithub(redirectTo)}
+				type="button"
+				onClick={() => signWithGithub({ next })}
 				variant="outline"
 			>
 				<div className="flex items-center space-x-2">

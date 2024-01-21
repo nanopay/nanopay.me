@@ -1,7 +1,6 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { getURL } from '@/utils/helpers'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
@@ -34,13 +33,7 @@ const schema: JSONSchemaType<SignUpEmailPassword> = {
 export default function SignUpPage() {
 	const [isPending, startTransition] = useTransition()
 
-	const redirectedFrom = useSearchParams()?.get('redirectedFrom')
-
-	const redirectTo = `${getURL()}redirect?to=${encodeURI(
-		typeof redirectedFrom === 'string' ? redirectedFrom : '/home',
-	)}`
-
-	const router = useRouter()
+	const next = useSearchParams().get('next') || undefined
 
 	const { showError } = useToast()
 
@@ -81,7 +74,7 @@ export default function SignUpPage() {
 			<Button
 				color="slate"
 				type="button"
-				onClick={() => signWithGithub(redirectTo)}
+				onClick={() => signWithGithub({ next })}
 				variant="outline"
 			>
 				<div className="flex items-center space-x-2">
