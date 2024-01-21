@@ -13,13 +13,14 @@ export const signUpWithPassword = async ({
 }) => {
 	const supabase = createClient(cookies())
 
-	const { error, data } = await supabase.auth.signUp({
+	const { error } = await supabase.auth.signUp({
 		email,
 		password,
 	})
+
 	if (error) {
 		throw new Error(error.message)
-	} else {
-		redirect(`/verify-email?email=${email}`)
 	}
+
+	redirect(`/verify-email?email=${email}`)
 }
