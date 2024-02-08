@@ -1,11 +1,10 @@
 import api from '@/services/api'
 import Fireworks from '@/components/Fireworks'
 import { cookies } from 'next/headers'
-import { KeyIcon } from '@heroicons/react/24/solid'
 import Invoices from '@/components/Invoices'
 import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
-import { ReceiptIcon, WebhookIcon } from 'lucide-react'
+import { KeyRoundIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
 
 interface Params {
 	params: { serviceName: string }
@@ -63,7 +62,7 @@ export default async function ServiceDashboardPage({
 		{
 			name: 'API Keys',
 			href: `/${service.name}/keys`,
-			icon: KeyIcon,
+			icon: KeyRoundIcon,
 			amount: service.api_keys_count,
 			hrefLabel: 'Manage Keys',
 		},
@@ -82,7 +81,7 @@ export default async function ServiceDashboardPage({
 
 			<section className="mt-8" aria-labelledby="service-overview">
 				<div className="mx-auto max-w-7xl">
-					<h2 className="text-lg font-medium leading-6 text-slate-900 px-2 mb-2">
+					<h2 className="mb-2 px-2 text-lg font-medium leading-6 text-slate-900">
 						Overview
 					</h2>
 					<div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -94,7 +93,7 @@ export default async function ServiceDashboardPage({
 			</section>
 
 			<section className="mt-8" aria-labelledby="service-invoices">
-				<h2 className="mx-auto max-w-7xl px-2 mb-2 text-lg font-medium leading-6 text-slate-900">
+				<h2 className="mx-auto mb-2 max-w-7xl px-2 text-lg font-medium leading-6 text-slate-900">
 					Recent Invoices
 				</h2>
 				<Invoices invoices={invoices || []} serviceName={service.name} />

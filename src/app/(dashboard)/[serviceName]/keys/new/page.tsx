@@ -11,13 +11,12 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { ApiKeyCreate } from '@/types/services'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { JSONSchemaType } from 'ajv'
-import { DocumentDuplicateIcon } from '@heroicons/react/24/solid'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import { sanitizeSlug } from '@/utils/helpers'
 import { Container } from '@/components/Container'
+import { CopyIcon, InfoIcon } from 'lucide-react'
 
 const roboto = Roboto({
 	weight: '400',
@@ -104,17 +103,17 @@ export default function NewApiKey({
 			<Head>
 				<title>New API Key - NanoPay.me</title>
 			</Head>
-			<Container className="w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
-				<div className="w-full flex justify-center items-center space-x-2 py-3 mb-8 border-b border-slate-200">
-					<h3 className="text-slate-700 text-lg font-semibold">
+			<Container className="flex h-screen w-full max-w-xl flex-col items-center space-y-6 border border-slate-200 bg-white px-16 pb-16 sm:h-auto sm:rounded-lg">
+				<div className="mb-8 flex w-full items-center justify-center space-x-2 border-b border-slate-200 py-3">
+					<h3 className="text-lg font-semibold text-slate-700">
 						Create a new key
 					</h3>
 				</div>
 
-				<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-4">
+				<div className="flex w-full flex-col space-y-6 px-4 py-4 sm:px-8">
 					<div>
-						<div className="flex mb-2 items-center text-xs text-gray-600">
-							<InformationCircleIcon className="w-4 mr-1" />
+						<div className="mb-2 flex items-center text-xs text-gray-600">
+							<InfoIcon className="mr-1 w-4" />
 							<div>
 								Use a name like: <span className="font-semibold">my-token</span>
 								{' or '}
@@ -160,7 +159,7 @@ export default function NewApiKey({
 				<div>
 					{isSuccess ? (
 						<div className="flex flex-col items-center space-y-6">
-							<div className="border-2 border-dashed border-slate-200 break-all rounded w-full p-8">
+							<div className="w-full break-all rounded border-2 border-dashed border-slate-200 p-8">
 								<div className="text-sm leading-3 text-gray-600">
 									Your API Key:{' '}
 									<div>
@@ -176,11 +175,11 @@ export default function NewApiKey({
 											className=" text-gray-600 focus:text-nano"
 											onClick={() => copy(createdApiKey?.apiKey)}
 										>
-											<DocumentDuplicateIcon className="w-4 h-4 ml-2" />
+											<CopyIcon className="ml-2 h-4 w-4" />
 										</button>
 									</div>
 								</div>
-								<ul className="text-sm my-4 text-gray-700 list-disc">
+								<ul className="my-4 list-disc text-sm text-gray-700">
 									<li>Safely save your key.</li>
 									<li>You will not be able to view this key again</li>
 									<li>This key has no expiration date.</li>

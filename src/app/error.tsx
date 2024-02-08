@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowPathIcon } from '@heroicons/react/24/solid'
+import { RefreshCcwIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
@@ -18,12 +18,12 @@ export default function Error({
 	const message = error.message
 
 	return (
-		<div className="flex h-[100vh] items-center justify-center w-full">
-			<div className="bg-white p-6 lg:p-12 xl:p-20 rounded-xl shadow text-center">
+		<div className="flex h-[100vh] w-full items-center justify-center">
+			<div className="rounded-xl bg-white p-6 text-center shadow lg:p-12 xl:p-20">
 				<div className="inline-flex rounded-full bg-red-100 p-4">
-					<div className="rounded-full stroke-red-600 bg-red-200 p-4">
+					<div className="rounded-full bg-red-200 stroke-red-600 p-4">
 						<svg
-							className="w-16 h-16"
+							className="h-16 w-16"
 							viewBox="0 0 28 28"
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
@@ -43,27 +43,27 @@ export default function Error({
 						</svg>
 					</div>
 				</div>
-				<h1 className="mt-5 text-2xl lg:text-3xl font-bold text-slate-700">
+				<h1 className="mt-5 text-2xl font-bold text-slate-700 lg:text-3xl">
 					Oops something went wrong.
 				</h1>
 				{message && (
-					<p className="text-slate-600 mt-5 lg:text-lg font-semibold border-b border-gray-100 pb-4">
+					<p className="mt-5 border-b border-gray-100 pb-4 font-semibold text-slate-600 lg:text-lg">
 						Error Message: <span className="font-medium">{message}</span>
 					</p>
 				)}
 				<div className="mt-5 flex justify-center">
 					<button
 						onClick={reset}
-						className="flex gap-2 text-slate-800 bg-nano/50 px-3 py-2 rounded-lg font-semibold uppercase"
+						className="flex gap-2 rounded-lg bg-nano/50 px-3 py-2 font-semibold uppercase text-slate-800"
 					>
-						<ArrowPathIcon className="w-6 h-6" />
+						<RefreshCcwIcon className="h-6 w-6" />
 						<span>Try again</span>
 					</button>
 				</div>
-				<p className="text-slate-600 mt-5 text-sm lg:text-base border-t border-gray-100 pt-4">
+				<p className="mt-5 border-t border-gray-100 pt-4 text-sm text-slate-600 lg:text-base">
 					Feel free to contact us if the problem presists:
 				</p>
-				<p className="text-slate-600 mt-1 text-sm lg:text-base font-semibold">
+				<p className="mt-1 text-sm font-semibold text-slate-600 lg:text-base">
 					<Link href="mailto:support@nanopay.me" className="hover:text-nano">
 						support@nanopay.me
 					</Link>

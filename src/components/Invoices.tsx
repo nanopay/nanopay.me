@@ -1,7 +1,7 @@
 import { Invoice, InvoiceStatus } from '@/types/invoice'
 import { formatDateTime } from '@/utils/others'
-import { BanknotesIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
+import { BanknoteIcon, ChevronRightIcon } from 'lucide-react'
 import Link from 'next/link'
 
 interface InvoicesProps {
@@ -38,7 +38,7 @@ export default function Invoices({ invoices, serviceName }: InvoicesProps) {
 							>
 								<span className="flex items-center space-x-4">
 									<span className="flex flex-1 space-x-2 truncate">
-										<BanknotesIcon
+										<BanknoteIcon
 											className="h-5 w-5 flex-shrink-0 text-slate-400"
 											aria-hidden="true"
 										/>
@@ -133,7 +133,7 @@ export default function Invoices({ invoices, serviceName }: InvoicesProps) {
 														}
 														className="group inline-flex space-x-2 truncate text-sm"
 													>
-														<BanknotesIcon
+														<BanknoteIcon
 															className="h-5 w-5 flex-shrink-0 text-slate-400 group-hover:text-slate-500"
 															aria-hidden="true"
 														/>

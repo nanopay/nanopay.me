@@ -1,7 +1,6 @@
-import { explorerUrl, truncateAddress } from '@/utils/others'
-import { ArrowsRightLeftIcon } from '@heroicons/react/20/solid'
-import { ChevronRightIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
+import { explorerUrl, truncateAddress } from '@/utils/others'
+import { ArrowRightLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 interface TransactionsProps {
 	transactions: {
@@ -32,11 +31,11 @@ export default function Transactions({
 							>
 								<span className="flex items-center space-x-4">
 									<span className="flex flex-1 space-x-2 truncate">
-										<ArrowsRightLeftIcon
+										<ArrowRightLeftIcon
 											className="h-5 w-5 flex-shrink-0 text-slate-400"
 											aria-hidden="true"
 										/>
-										<span className="flex flex-wrap justify-between w-full text-xs text-slate-500">
+										<span className="flex w-full flex-wrap justify-between text-xs text-slate-500">
 											<span className="truncate">
 												{truncateAddress(tx.hash)}
 											</span>
@@ -89,9 +88,9 @@ export default function Transactions({
 													<Link
 														target="_blank"
 														href={explorerUrl(tx.hash)}
-														className="group inline-flex space-x-2 truncate text-xs items-center"
+														className="group inline-flex items-center space-x-2 truncate text-xs"
 													>
-														<ArrowsRightLeftIcon
+														<ArrowRightLeftIcon
 															className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-slate-500"
 															aria-hidden="true"
 														/>

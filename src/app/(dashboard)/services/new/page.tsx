@@ -11,11 +11,11 @@ import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import ImageInput from '@/components/ImageInput'
 import { ServiceCreate } from '@/types/services'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/helpers'
 import { createAvatarUploadPresignedUrl, createService } from './actions'
 import { uploadObject } from '@/services/s3'
+import { InfoIcon } from 'lucide-react'
 
 const schema: JSONSchemaType<ServiceCreate> = {
 	type: 'object',
@@ -81,8 +81,8 @@ export default function NewService() {
 	}
 
 	return (
-		<Container className="w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white px-16 pb-16 border border-slate-200 sm:rounded-lg">
-			<div className="w-full flex justify-center items-center py-3 mb-8 border-b border-slate-200">
+		<Container className="flex h-screen w-full max-w-xl flex-col items-center space-y-6 border border-slate-200 bg-white px-16 pb-16 sm:h-auto sm:rounded-lg">
+			<div className="mb-8 flex w-full items-center justify-center border-b border-slate-200 py-3">
 				<h3 className="text-slate-700">Create a new service</h3>
 			</div>
 
@@ -95,10 +95,10 @@ export default function NewService() {
 				onUploading={setIsUploading}
 			/>
 
-			<div className="w-full flex flex-col space-y-6 px-4 sm:px-8 py-6">
+			<div className="flex w-full flex-col space-y-6 px-4 py-6 sm:px-8">
 				<div>
-					<div className="flex mb-2 items-center text-xs text-gray-600">
-						<InformationCircleIcon className="w-4 mr-1" />
+					<div className="mb-2 flex items-center text-xs text-gray-600">
+						<InfoIcon className="mr-1 w-4" />
 						<div>
 							Use a name like: <span className="font-semibold">my-service</span>
 							{' or '}

@@ -2,13 +2,9 @@
 
 import Head from 'next/head'
 import { useQuery } from 'react-query'
-import {
-	ChevronRightIcon,
-	ExclamationTriangleIcon,
-	PlusIcon,
-} from '@heroicons/react/24/solid'
 import { Button } from '@/components/Button'
 import api from '@/services/api'
+import { AlertTriangle, ChevronRightIcon, PlusIcon } from 'lucide-react'
 
 export default function ApiKeys({
 	params: { serviceName },
@@ -47,13 +43,13 @@ export default function ApiKeys({
 				<title>Api Keys - NanoPay.me</title>
 			</Head>
 			<>
-				<div className="border-b border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
+				<div className="border-b border-gray-200 pb-4 pl-4 pr-6 pt-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
 					<div className="flex items-center">
 						<h1 className="flex-1 text-lg font-medium">API Keys</h1>
 						<Button
 							color="nano"
 							href={`/${serviceName}/keys/new`}
-							className="items-center text-xs py-1"
+							className="items-center py-1 text-xs"
 						>
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
 							Create Key
@@ -108,7 +104,7 @@ export default function ApiKeys({
 											</span>
 										</p>
 										<p className="group relative flex items-center space-x-1">
-											<ExclamationTriangleIcon className="h-4 w-4 text-yellow-400" />
+											<AlertTriangle className="h-4 w-4 text-yellow-400" />
 											<span className="text-xs font-medium text-gray-500 group-hover:text-gray-900">
 												This token has no expiration date.
 											</span>

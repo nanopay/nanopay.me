@@ -2,14 +2,13 @@
 
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Bars3Icon, BellIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { Logo } from '@/components/Logo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useUser } from '@/contexts/UserProvider'
 import { usePreferences } from '@/contexts/PreferencesProvider'
+import { BellIcon, ChevronDownIcon, MenuIcon } from 'lucide-react'
 
 const userNavigation = [
 	{ name: 'Your profile', href: '/profile' },
@@ -21,7 +20,7 @@ export default function Appbar() {
 	const { setSidebarOpen } = usePreferences()
 
 	return (
-		<div className="w-full sticky top-0 z-40 lg:mx-auto">
+		<div className="sticky top-0 z-40 w-full lg:mx-auto">
 			<div className="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 lg:shadow-none">
 				<button
 					type="button"
@@ -29,7 +28,7 @@ export default function Appbar() {
 					onClick={() => setSidebarOpen(true)}
 				>
 					<span className="sr-only">Open sidebar</span>
-					<Bars3Icon className="h-6 w-6" aria-hidden="true" />
+					<MenuIcon className="h-6 w-6" aria-hidden="true" />
 				</button>
 
 				{/* Separator */}
@@ -37,7 +36,7 @@ export default function Appbar() {
 
 				<div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
 					<div className="flex flex-1 items-center">
-						<Logo className="sm:hidden w-36" />
+						<Logo className="w-36 sm:hidden" />
 					</div>
 					<div className="flex items-center gap-x-4 lg:gap-x-6">
 						<button

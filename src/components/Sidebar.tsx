@@ -14,19 +14,21 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from '@mui/material'
-import {
-	BanknotesIcon,
-	Cog6ToothIcon,
-	HomeIcon,
-	KeyIcon,
-	UserIcon,
-	XMarkIcon,
-} from '@heroicons/react/24/outline'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MButton from './MButton'
 import { usePreferences } from '@/contexts/PreferencesProvider'
-import { ChevronDownIcon, ChevronUpIcon, WebhookIcon } from 'lucide-react'
+import {
+	BanknoteIcon,
+	ChevronDownIcon,
+	ChevronUpIcon,
+	HomeIcon,
+	KeyRoundIcon,
+	SettingsIcon,
+	UserRoundIcon,
+	WebhookIcon,
+	XIcon,
+} from 'lucide-react'
 
 export interface SidebarProps {
 	services: Service[]
@@ -49,7 +51,7 @@ export function Sidebar({ services }: SidebarProps) {
 		{
 			name: 'Profile',
 			href: '/profile',
-			icon: UserIcon,
+			icon: UserRoundIcon,
 			current: pathname === '/profile',
 		},
 	]
@@ -64,7 +66,7 @@ export function Sidebar({ services }: SidebarProps) {
 		{
 			name: 'Invoices',
 			href: `/${currentService?.name}/invoices`,
-			icon: BanknotesIcon,
+			icon: BanknoteIcon,
 			current: pathname === '/[serviceName]/invoices',
 		},
 		{
@@ -76,13 +78,13 @@ export function Sidebar({ services }: SidebarProps) {
 		{
 			name: 'Api Keys',
 			href: `/${currentService?.name}/keys`,
-			icon: KeyIcon,
+			icon: KeyRoundIcon,
 			current: pathname === '/[serviceName]/keys',
 		},
 		{
 			name: 'Settings',
 			href: `/${currentService?.name}/settings`,
-			icon: Cog6ToothIcon,
+			icon: SettingsIcon,
 			current: pathname === '/[serviceName]/settings',
 		},
 	]
@@ -92,7 +94,7 @@ export function Sidebar({ services }: SidebarProps) {
 	}
 
 	return (
-		<div className="fixed inset-y-0 z-50 flex lg:w-72 flex-col">
+		<div className="fixed inset-y-0 z-50 flex flex-col lg:w-72">
 			{/* Sidebar component, swap this element with another sidebar if you like */}
 			<div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
 				<div className="flex h-16 shrink-0 items-center">
@@ -110,7 +112,7 @@ export function Sidebar({ services }: SidebarProps) {
 									)}
 									<ListItemButton
 										onClick={() => setOpenServices(!openServices)}
-										className="bg-slate-100 rounded-lg"
+										className="rounded-lg bg-slate-100"
 									>
 										{currentService ? (
 											<>
@@ -124,7 +126,7 @@ export function Sidebar({ services }: SidebarProps) {
 															className="rounded-full"
 														/>
 													) : (
-														<span className="text-nano border-nano flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white">
+														<span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-nano bg-white text-[0.625rem] font-medium text-nano">
 															{currentService.name[0]}
 														</span>
 													)}
@@ -160,9 +162,9 @@ export function Sidebar({ services }: SidebarProps) {
 																	<span
 																		className={clsx(
 																			service.id === service.id
-																				? 'text-nano border-nano'
-																				: 'text-gray-400 border-gray-200 group-hover:border-nano group-hover:text-nano',
-																			'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[0.625rem] font-medium bg-white',
+																				? 'border-nano text-nano'
+																				: 'border-gray-200 text-gray-400 group-hover:border-nano group-hover:text-nano',
+																			'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-white text-[0.625rem] font-medium',
 																		)}
 																	>
 																		{service.name[0]}
@@ -178,7 +180,7 @@ export function Sidebar({ services }: SidebarProps) {
 								</>
 							) : (
 								<>
-									<div className="text-xs font-semibold leading-6 text-gray-400 mb-2">
+									<div className="mb-2 text-xs font-semibold leading-6 text-gray-400">
 										No services found
 									</div>
 									<Link href={'/services/new'}>
@@ -203,9 +205,9 @@ export function Sidebar({ services }: SidebarProps) {
 											href={item.href}
 											className={clsx(
 												item.current
-													? 'bg-slate-50 border border-slatel-100 text-nano'
-													: 'text-gray-600 hover:text-nano hover:bg-gray-50',
-												'group flex gap-x-4 rounded-md p-3 text-base items-center leading-6 font-semibold',
+													? 'border-slatel-100 border bg-slate-50 text-nano'
+													: 'text-gray-600 hover:bg-gray-50 hover:text-nano',
+												'group flex items-center gap-x-4 rounded-md p-3 text-base font-semibold leading-6',
 											)}
 										>
 											<item.icon
@@ -223,7 +225,7 @@ export function Sidebar({ services }: SidebarProps) {
 								))}
 							</ul>
 							{!currentService && (
-								<div className="-mx-2 absolute inset-0 flex items-center justify-center bg-white opacity-20" />
+								<div className="absolute inset-0 -mx-2 flex items-center justify-center bg-white opacity-20" />
 							)}
 						</li>
 						<li className="mt-auto">
@@ -234,9 +236,9 @@ export function Sidebar({ services }: SidebarProps) {
 											href={item.href}
 											className={clsx(
 												item.current
-													? 'bg-slate-50 border border-slatel-100 text-nano'
-													: 'text-gray-700 hover:text-nano hover:bg-gray-50',
-												'group flex gap-x-3 rounded-md p-3 text-base leading-6 font-semibold',
+													? 'border-slatel-100 border bg-slate-50 text-nano'
+													: 'text-gray-700 hover:bg-gray-50 hover:text-nano',
+												'group flex gap-x-3 rounded-md p-3 text-base font-semibold leading-6',
 											)}
 										>
 											<item.icon
@@ -304,14 +306,14 @@ export function TransitionSidebar({ services }: SidebarProps) {
 									leaveFrom="opacity-100"
 									leaveTo="opacity-0"
 								>
-									<div className="absolute top-0 left-full flex w-16 justify-center pt-5">
+									<div className="absolute left-full top-0 flex w-16 justify-center pt-5">
 										<button
 											type="button"
 											className="-m-2.5 p-2.5"
 											onClick={() => setSidebarOpen(false)}
 										>
 											<span className="sr-only">Close sidebar</span>
-											<XMarkIcon
+											<XIcon
 												className="h-6 w-6 text-white"
 												aria-hidden="true"
 											/>

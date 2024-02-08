@@ -1,4 +1,3 @@
-import { PlusIcon } from '@heroicons/react/24/solid'
 import { Button } from '@/components/Button'
 import api from '@/services/api'
 import ServicesList from '@/components/ServicesList'
@@ -8,6 +7,7 @@ import { cookies } from 'next/headers'
 import { Service } from '@/types/services'
 import { getUserId } from '@/utils/supabase/server'
 import { Metadata } from 'next'
+import { PlusIcon } from 'lucide-react'
 
 async function fetchData(): Promise<Service[]> {
 	const userId = await getUserId(cookies())
@@ -39,16 +39,16 @@ export default async function Home() {
 
 			{/* Actions panel */}
 			<section aria-labelledby="services-title">
-				<div className="flex justify-between items-center">
+				<div className="flex items-center justify-between">
 					<h2
 						id="services-title"
-						className="text-xl px-2 py-4 font-semibold
+						className="px-2 py-4 text-xl font-semibold
                                 "
 					>
 						{services?.length} Services
 					</h2>
 					<Button color="nano" href="/services/new">
-						<div className="flex space-x-2 items-center">
+						<div className="flex items-center space-x-2">
 							<PlusIcon className="h-5 w-5" />
 							<span>New Service</span>
 						</div>
@@ -57,8 +57,8 @@ export default async function Home() {
 				{services.length > 0 ? (
 					<ServicesList services={services} />
 				) : (
-					<div className="flex justify-center items-center py-16 rounded-lg bg-slate-200 shadow0">
-						<p className="text-gray-700 text-center">
+					<div className="shadow0 flex items-center justify-center rounded-lg bg-slate-200 py-16">
+						<p className="text-center text-gray-700">
 							You don&apos;t have any services yet.
 						</p>
 					</div>

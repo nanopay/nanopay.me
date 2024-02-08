@@ -1,15 +1,3 @@
-import {
-	ArrowDownTrayIcon,
-	ArrowTopRightOnSquareIcon,
-	ArrowUpRightIcon,
-	ChevronDoubleDownIcon,
-	ChevronDownIcon,
-	DocumentDuplicateIcon,
-	ExclamationCircleIcon,
-	PaperAirplaneIcon,
-	QrCodeIcon,
-	ReceiptRefundIcon,
-} from '@heroicons/react/24/solid'
 import { Logo } from './Logo'
 import logoXno from '@/images/logos/nano-xno.svg'
 import Image from 'next/image'
@@ -19,9 +7,7 @@ import MButton from './MButton'
 import QRCode from 'react-qr-code'
 import {
 	copyToClipboard,
-	formatDate,
 	formatDateTime,
-	formatTime,
 	toFiatCurrency,
 	truncateAddress,
 } from '@/utils/others'
@@ -38,6 +24,15 @@ import {
 	Typography,
 } from '@mui/material'
 import DefaultAvatar from './DefaultAvatar'
+import {
+	AlertCircleIcon,
+	ArrowDownToLine,
+	ChevronDownIcon,
+	CopyIcon,
+	ExternalLinkIcon,
+	QrCodeIcon,
+} from 'lucide-react'
+import clsx from 'clsx'
 
 interface CheckoutProps {
 	invoiceId: string | number
@@ -90,10 +85,10 @@ export default function Checkout({
 		!paid && new Date(expiresAt).getTime() - new Date().getTime() < 0
 
 	return (
-		<div className="w-full flex flex-col md:flex-row rounded-3xl shadow">
-			<nav className="hidden md:flex flex-col gap-16 bg-[#1e2c3d] justify-between items-center sm:rounded-l-3xl py-2 px-4 w-72 border-r border-[#1e2c3d]">
+		<div className="flex w-full flex-col rounded-3xl shadow md:flex-row">
+			<nav className="hidden w-72 flex-col items-center justify-between gap-16 border-r border-[#1e2c3d] bg-[#1e2c3d] px-4 py-2 sm:rounded-l-3xl md:flex">
 				<div className="hidden md:block">
-					<div className="p-4 mt-4 text-white flex flex-col items-center gap-2">
+					<div className="mt-4 flex flex-col items-center gap-2 p-4 text-white">
 						{service.avatar_url ? (
 							<Image
 								alt={service.name}
@@ -107,28 +102,28 @@ export default function Checkout({
 						)}
 						<h2 className="text-lg font-semibold">{service.display_name}</h2>
 					</div>
-					<div className="overflow-y-auto h-1/2">
+					<div className="h-1/2 overflow-y-auto">
 						<div className="mt-8 p-4 text-white">
-							<h2 className="font-semibold pb-2">{title}</h2>
-							<p className="text-sm mt-2">{description || 'No description'}</p>
+							<h2 className="pb-2 font-semibold">{title}</h2>
+							<p className="mt-2 text-sm">{description || 'No description'}</p>
 						</div>
 					</div>
 				</div>
 
-				<div className="p-4 w-48">
+				<div className="w-48 p-4">
 					<a
 						href={process.env.NEXT_PUBLIC_BASE_URL}
 						target="_blank"
 						className="flex flex-col text-gray-200"
 					>
 						<span className="text-xs font-semibold">Powered by</span>
-						<Logo className="w-full h-auto" theme="dark" />
+						<Logo className="h-auto w-full" theme="dark" />
 					</a>
 				</div>
 			</nav>
 
-			<nav className="py-2 px-4 w-full flex justify-center md:hidden bg-slate-700">
-				<Logo className="w-32 h-auto" theme="dark" />
+			<nav className="flex w-full justify-center bg-slate-700 px-4 py-2 md:hidden">
+				<Logo className="h-auto w-32" theme="dark" />
 			</nav>
 
 			<Accordion
@@ -137,7 +132,7 @@ export default function Checkout({
 				className="border-b border-slate-200 md:hidden"
 			>
 				<AccordionSummary
-					expandIcon={<ChevronDownIcon className="text-slate-700 w-5 h-5" />}
+					expandIcon={<ChevronDownIcon className="h-5 w-5 text-slate-700" />}
 				>
 					<Typography className="flex items-center gap-2">
 						{service.avatar_url ? (
@@ -149,7 +144,7 @@ export default function Checkout({
 								className="rounded-full border-2 border-slate-400 bg-white"
 							/>
 						) : (
-							<Logo className="w-32 h-auto" theme="dark" />
+							<Logo className="h-auto w-32" theme="dark" />
 						)}
 						<div className="ml-2 w-full">
 							<h2 className="text-lg font-semibold leading-5">
@@ -166,10 +161,10 @@ export default function Checkout({
 				</AccordionDetails>
 			</Accordion>
 
-			<main className="flex flex-col flex-1 px-4 py-2 bg-white rounded-r-3xl">
+			<main className="flex flex-1 flex-col rounded-r-3xl bg-white px-4 py-2">
 				{isExpired ? (
 					<>
-						<div className="flex flex-1 justify-center items-center py-4">
+						<div className="flex flex-1 items-center justify-center py-4">
 							<div className="flex flex-col items-center gap-2">
 								<svg
 									width="115px"
@@ -233,8 +228,8 @@ export default function Checkout({
 									<div className="mt-4 flex flex-col gap-1">
 										<MButton
 											variant="text"
-											className="w-full sm:w-auto PayButton"
-											endIcon={<ReceiptRefundIcon className="w-4 h-4" />}
+											className="PayButton w-full sm:w-auto"
+											endIcon={<ReceiptRefundIcon className="h-4 w-4" />}
 											href={`mailto:refund@nanopay.me?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
 										>
 											Refund Ӿ{amountPaid}{' '}
@@ -245,11 +240,11 @@ export default function Checkout({
 						</div>
 
 						<div className="sm:px-4">
-							<div className="flex justify-between py-2 border-y border-slate-200 border-dashed text-sm">
+							<div className="flex justify-between border-y border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-gray-500">Invoice</div>
 								<div className="font-medium text-gray-900">#{invoiceId}</div>
 							</div>
-							<div className="flex justify-between py-2 border-b border-slate-200 border-dashed text-sm">
+							<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-gray-500">Expired At</div>
 								{formatDateTime(expiresAt.toDateString())}
 							</div>
@@ -269,7 +264,7 @@ export default function Checkout({
 					</>
 				) : paid ? (
 					<>
-						<div className="flex flex-1 justify-center items-center py-4">
+						<div className="flex flex-1 items-center justify-center py-4">
 							<div className="flex flex-col items-center gap-2">
 								<svg
 									width="115px"
@@ -320,15 +315,15 @@ export default function Checkout({
 									Paid Ӿ{amountPaid}
 								</h3>
 								{usd && (
-									<div className="text-sm sm:text-xs text-gray-500 leading-3">
+									<div className="text-sm leading-3 text-gray-500 sm:text-xs">
 										~ US${toFiatCurrency(usd)}
 									</div>
 								)}
 								<div className="mt-4 flex flex-col gap-1">
 									<MButton
 										variant="text"
-										className="w-full sm:w-auto PayButton"
-										endIcon={<ArrowDownTrayIcon className="w-4 h-4" />}
+										className="PayButton w-full sm:w-auto"
+										endIcon={<ArrowDownToLine className="h-4 w-4" />}
 										href={'#'}
 									>
 										Get Receipt
@@ -338,11 +333,11 @@ export default function Checkout({
 						</div>
 
 						{redirectUrl && (
-							<div className="flex py-4 justify-center">
+							<div className="flex justify-center py-4">
 								<a href={redirectUrl} target="_blank">
 									<MButton
-										className="w-full sm:w-auto PayButton"
-										endIcon={<ArrowTopRightOnSquareIcon className="w-4 h-4" />}
+										className="PayButton w-full sm:w-auto"
+										endIcon={<ExternalLinkIcon className="h-4 w-4" />}
 									>
 										Continue to {service?.name || 'Merchant Site'}
 									</MButton>
@@ -351,11 +346,11 @@ export default function Checkout({
 						)}
 
 						<div className="sm:px-4">
-							<div className="flex justify-between py-2 border-y border-slate-200 border-dashed text-sm">
+							<div className="flex justify-between border-y border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-gray-500">Invoice</div>
 								<div className="font-medium text-gray-900">#{invoiceId}</div>
 							</div>
-							<div className="flex justify-between py-2 border-b border-slate-200 border-dashed text-sm">
+							<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-gray-500">Paid At</div>
 								{formatDateTime(lastPayment.timestamp)}
 							</div>
@@ -374,27 +369,27 @@ export default function Checkout({
 				) : (
 					<>
 						{partiallyPaid && (
-							<div className="w-full py-2 px-4 my-2 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded">
-								<div className="flex gap-2 items-center">
-									<ExclamationCircleIcon className="w-5 sm:w-6 h-5 sm:h-6" />
-									<h3 className="sm:text-lg font-semibold">Partially Paid</h3>
+							<div className="my-2 w-full rounded border border-yellow-300 bg-yellow-100 px-4 py-2 text-yellow-800">
+								<div className="flex items-center gap-2">
+									<AlertCircleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+									<h3 className="font-semibold sm:text-lg">Partially Paid</h3>
 								</div>
-								<p className="text-xs sm:text-sm mt-1">
+								<p className="mt-1 text-xs sm:text-sm">
 									You have paid Ӿ{amountPaid} of Ӿ{amount}. Pay the missing
 									amount Ӿ{missingAmount}
 								</p>
 							</div>
 						)}
-						<div className="flex justify-between items-center my-2 pb-2 md:hidden">
-							<div className="flex gap-2 items-center sm:hidden">
-								<QrCodeIcon className="w-5 h-5 text-slate-400" />
+						<div className="my-2 flex items-center justify-between pb-2 md:hidden">
+							<div className="flex items-center gap-2 sm:hidden">
+								<QrCodeIcon className="h-5 w-5 text-slate-400" />
 								<div className="text-xs font-semibold text-slate-500">
 									Scan QR
 								</div>
 							</div>
 							<div className="hidden sm:block" />
-							<div className="flex gap-2 justify-center items-center text-xs text-gray-500">
-								<div className="animate-spin border border-t-2 border-nano/40 border-t-nano rounded-full w-4 h-4" />
+							<div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+								<div className="h-4 w-4 animate-spin rounded-full border border-t-2 border-nano/40 border-t-nano" />
 								<div className="flex gap-2">
 									Expires in:
 									{/* Avoid hydration error by not rendering the countdown until the component is mounted */}
@@ -412,10 +407,10 @@ export default function Checkout({
 								</div>
 							</div>
 						</div>
-						<div className="sm:px-4 py-4">
-							<div className="flex flex-col md:flex-row flex-1">
-								<div className="hidden md:flex justify-center border-r border-slate-100 pr-12">
-									<div className="relative flex flex-none items-center justify-center w-40 lg:w-48">
+						<div className="py-4 sm:px-4">
+							<div className="flex flex-1 flex-col md:flex-row">
+								<div className="hidden justify-center border-r border-slate-100 pr-12 md:flex">
+									<div className="relative flex w-40 flex-none items-center justify-center lg:w-48">
 										<QrCodeBorder className="absolute inset-0 h-full w-full stroke-slate-300" />
 										<QRCode
 											value={payURI}
@@ -424,18 +419,18 @@ export default function Checkout({
 										/>
 									</div>
 								</div>
-								<div className="flex flex-col flex-1 items-center justify-center">
-									<div className="flex flex-col items-center justify-center gap-1 text-gray-800 py-2 sm:py-4">
+								<div className="flex flex-1 flex-col items-center justify-center">
+									<div className="flex flex-col items-center justify-center gap-1 py-2 text-gray-800 sm:py-4">
 										{missingAmount.toString().length > 2 ? (
 											<>
 												<Image
 													src={logoXno}
 													alt="nano-xno"
-													className="w-12 sm:w-8 h-auto"
+													className="h-auto w-12 sm:w-8"
 													unoptimized
 												/>
 												<div className="flex gap-1">
-													<div className="text-3xl sm:text-2xl font-semibold">
+													<div className="text-3xl font-semibold sm:text-2xl">
 														{missingAmount}
 													</div>
 												</div>
@@ -445,23 +440,23 @@ export default function Checkout({
 												<Image
 													src={logoXno}
 													alt="nano-xno"
-													className="w-9 sm:w-7 h-auto"
+													className="h-auto w-9 sm:w-7"
 													unoptimized
 												/>
-												<div className="text-3xl sm:text-2xl font-semibold">
+												<div className="text-3xl font-semibold sm:text-2xl">
 													{missingAmount}
 												</div>
 											</div>
 										)}
 										{usd && (
-											<div className="text-sm sm:text-xs text-gray-500 leading-3">
+											<div className="text-sm leading-3 text-gray-500 sm:text-xs">
 												~ US${toFiatCurrency(usd)}
 											</div>
 										)}
 									</div>
 
-									<div className="gap-2 justify-center items-center text-xs text-gray-500 hidden sm:flex py-4">
-										<div className="animate-spin border border-t-2 border-nano/40 border-t-nano rounded-full w-4 h-4" />
+									<div className="hidden items-center justify-center gap-2 py-4 text-xs text-gray-500 sm:flex">
+										<div className="h-4 w-4 animate-spin rounded-full border border-t-2 border-nano/40 border-t-nano" />
 										<div className="flex gap-2">
 											Expires in:
 											{/* Avoid hydration error by not rendering the countdown until the component is mounted */}
@@ -481,27 +476,27 @@ export default function Checkout({
 								</div>
 							</div>
 
-							<div className="flex gap-2 justify-between items-center mt-4 py-2 border-y border-slate-200 text-sm text-gray-500 border-dashed">
+							<div className="mt-4 flex items-center justify-between gap-2 border-y border-dashed border-slate-200 py-2 text-sm text-gray-500">
 								<div>Send to:</div>
 								<div>{truncateAddress(address)}</div>
 								<button
 									onClick={() => copyToClipboard(address)}
 									className="text-slate-400 focus:text-nano"
 								>
-									<DocumentDuplicateIcon className="w-4 h-4" />
+									<CopyIcon className="h-4 w-4" />
 								</button>
 							</div>
 
 							<div className="text-sm">
-								<div className="flex justify-between py-2 border-b border-slate-200 border-dashed">
+								<div className="flex justify-between border-b border-dashed border-slate-200 py-2">
 									<div className="text-gray-500">Invoice</div>
 									<div className="font-medium text-gray-900">#{invoiceId}</div>
 								</div>
 							</div>
-							<div className="flex justify-center mt-6">
+							<div className="mt-6 flex justify-center">
 								<MButton
-									className="w-full sm:w-auto PayButton"
-									endIcon={<ArrowTopRightOnSquareIcon className="w-4 h-4" />}
+									className="PayButton w-full sm:w-auto"
+									endIcon={<ExternalLinkIcon className="h-4 w-4" />}
 									href={payURI}
 								>
 									Open Wallet
@@ -523,7 +518,7 @@ export default function Checkout({
 					</>
 				)}
 
-				<footer className="flex sm:mt-6 gap-2 text-2xs px-4 border-t border-slate-100 py-3 text-gray-400 justify-between items-center text-center">
+				<footer className="flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-3 text-center text-2xs text-gray-400 sm:mt-6">
 					<Link href="/terms" className="flex-1 hover:text-nano">
 						Terms of Service
 					</Link>
@@ -541,5 +536,25 @@ export default function Checkout({
 				</footer>
 			</main>
 		</div>
+	)
+}
+
+function ReceiptRefundIcon(props: React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="1.5"
+			stroke="currentColor"
+			className={clsx('h-6 w-6', props.className)}
+			{...props}
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M8.25 9.75h4.875a2.625 2.625 0 0 1 0 5.25H12M8.25 9.75 10.5 7.5M8.25 9.75 10.5 12m9-7.243V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185Z"
+			/>
+		</svg>
 	)
 }

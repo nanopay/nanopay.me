@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { CameraIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import ImageCrop from './ImageCrop'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import clsx from 'clsx'
+import { AlertTriangleIcon, CameraIcon } from 'lucide-react'
 
 interface ImageInputProps {
 	source?: string | null
@@ -130,11 +130,11 @@ export function ImageInput({
 						/>
 					</div>
 				)}
-				<div className="absolute right-2 bottom-0 flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-gray-100 group-hover:bg-gray-200">
+				<div className="absolute bottom-0 right-2 flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-gray-100 group-hover:bg-gray-200">
 					{isLoading ? (
-						<div className="h-4 w-4 animate-spin rounded-full border-t-2 border-b-2 border-gray-400"></div>
+						<div className="h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-gray-400"></div>
 					) : isError ? (
-						<ExclamationCircleIcon className="h-6 w-6 text-red-400" />
+						<AlertTriangleIcon className="h-6 w-6 text-red-400" />
 					) : (
 						icon || <CameraIcon className="h-5 w-5 text-gray-400" />
 					)}

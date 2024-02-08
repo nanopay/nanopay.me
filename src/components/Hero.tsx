@@ -7,14 +7,14 @@ import { Container } from '@/components/Container'
 import { PhoneFrame } from '@/components/PhoneFrame'
 import logoXno from '@/images/logos/nano-xno.svg'
 import { Logo } from './Logo'
+import Link from 'next/link'
 import {
-	DocumentDuplicateIcon,
-	EllipsisHorizontalIcon,
+	CircleEllipsisIcon,
+	CopyIcon,
 	PlayIcon,
 	QrCodeIcon,
 	XCircleIcon,
-} from '@heroicons/react/24/solid'
-import Link from 'next/link'
+} from 'lucide-react'
 
 function BackgroundIllustration(props: React.ComponentProps<'div'>) {
 	let id = useId()
@@ -89,26 +89,26 @@ function AppDemo() {
 	return (
 		<AppScreen>
 			<AppScreen.Body>
-				<div className="w-full px-4 py-2 h-full flex flex-col">
-					<div className="flex gap-2 justify-between items-center">
-						<Logo className="w-28 h-auto" />
-						<XCircleIcon className="w-6 h-6 text-slate-400" />
+				<div className="flex h-full w-full flex-col px-4 py-2">
+					<div className="flex items-center justify-between gap-2">
+						<Logo className="h-auto w-28" />
+						<XCircleIcon className="h-6 w-6 text-slate-400" />
 					</div>
-					<div className="mt-2 border-t border-gray-200 pt-4 flex flex-col flex-1">
-						<div className="flex justify-between items-center mb-1">
-							<div className="flex gap-2 items-center">
-								<QrCodeIcon className="w-5 h-5 text-slate-400" />
+					<div className="mt-2 flex flex-1 flex-col border-t border-gray-200 pt-4">
+						<div className="mb-1 flex items-center justify-between">
+							<div className="flex items-center gap-2">
+								<QrCodeIcon className="h-5 w-5 text-slate-400" />
 								<div className="text-xs font-semibold text-slate-500">
 									Scan QR
 								</div>
 							</div>
-							<EllipsisHorizontalIcon className="w-5 h-5 text-slate-400" />
+							<CircleEllipsisIcon className="h-5 w-5 text-slate-400" />
 						</div>
-						<div className="flex flex-col items-center justify-center gap-1 text-gray-800 py-2 sm:py-4 flex-1">
+						<div className="flex flex-1 flex-col items-center justify-center gap-1 py-2 text-gray-800 sm:py-4">
 							<Image
 								src={logoXno}
 								alt="nano-xno"
-								className="w-8 h-auto"
+								className="h-auto w-8"
 								unoptimized
 							/>
 							<div className="flex gap-1">
@@ -118,14 +118,14 @@ function AppDemo() {
 						</div>
 
 						<div className="py-4">
-							<div className="flex gap-2 justify-between items-center mt-4 py-2 border-t border-gray-100 text-xs text-gray-500">
+							<div className="mt-4 flex items-center justify-between gap-2 border-t border-gray-100 py-2 text-xs text-gray-500">
 								<div>Send to:</div>
 								<div>nano_1payme...jigiof9o</div>
-								<DocumentDuplicateIcon className="w-4 h-4 text-nano" />
+								<CopyIcon className="h-4 w-4 text-nano" />
 							</div>
 
-							<div className="flex gap-2 justify-center items-center py-4 mb-4 border-y border-gray-100 text-xs text-gray-500">
-								<div className="w-4 h-4 rounded-full border border-t-4 border-b-2 border-nano"></div>
+							<div className="mb-4 flex items-center justify-center gap-2 border-y border-gray-100 py-4 text-xs text-gray-500">
+								<div className="h-4 w-4 rounded-full border border-b-2 border-t-4 border-nano"></div>
 								Waiting for Payment
 							</div>
 
@@ -139,12 +139,12 @@ function AppDemo() {
 									<div className="font-medium text-gray-900">#4342</div>
 								</div>
 							</div>
-							<div className="mt-4 rounded-lg bg-nano py-2 px-4 text-center text-sm font-semibold text-white">
+							<div className="mt-4 rounded-lg bg-nano px-4 py-2 text-center text-sm font-semibold text-white">
 								Pay me
 							</div>
 						</div>
 					</div>
-					<div className="flex mt-4 sm:mt-6 gap-2 text-3xs border-t border-gray-100 p-2 text-gray-500 justify-between items-center">
+					<div className="mt-4 flex items-center justify-between gap-2 border-t border-gray-100 p-2 text-3xs text-gray-500 sm:mt-6">
 						<Link href="/terms" className="flex-1">
 							Terms of Service
 						</Link>
@@ -169,10 +169,10 @@ export function Hero() {
 			<Container>
 				<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
 					<div className="relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-20 xl:col-span-6">
-						<h1 className="text-3xl font-medium tracking-tight text-gray-900 font-nunito">
+						<h1 className="font-nunito text-3xl font-medium tracking-tight text-gray-900">
 							Pay and receive payments with Nano.
 						</h1>
-						<div className="flex flex-col mt-6 text-gray-600 text-lg gap-4">
+						<div className="mt-6 flex flex-col gap-4 text-lg text-gray-600">
 							<p>
 								NanoPay.me is a payment gateway for Nano (XNO). Open source,
 								simple to use and no fees.
@@ -185,28 +185,28 @@ export function Hero() {
 						</div>
 						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
 							<Button href="/login" variant="solid" color="nano">
-								<h1 className="text-lg font-nunito">Join the Alfa</h1>
+								<h1 className="font-nunito text-lg">Join the Alfa</h1>
 							</Button>
 							<Button
 								href="/demo"
 								variant="outline"
 								color="nano"
-								className="text-xl items-center border-nano/70"
+								className="items-center border-nano/70 text-xl"
 							>
 								<PlayIcon className="h-6 w-6 flex-none text-nano" />
-								<span className="ml-2.5 text-nano font-nunito">Demo</span>
+								<span className="ml-2.5 font-nunito text-nano">Demo</span>
 							</Button>
 						</div>
 					</div>
 					<div className="relative mt-10 sm:mt-8 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
-						<BackgroundIllustration className="absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-gray-300/70 sm:[mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:top-16 sm:-translate-x-1/2 lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0" />
-						<div className="-mx-4 h-[448px] px-9 sm:[mask-image:linear-gradient(to_bottom,white_60%,transparent)] sm:mx-0 lg:absolute lg:-inset-x-10 lg:-top-10 lg:-bottom-20 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
+						<BackgroundIllustration className="absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-gray-300/70 sm:top-16 sm:-translate-x-1/2 sm:[mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0" />
+						<div className="-mx-4 h-[448px] px-9 sm:mx-0 sm:[mask-image:linear-gradient(to_bottom,white_60%,transparent)] lg:absolute lg:-inset-x-10 lg:-bottom-20 lg:-top-10 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
 							<PhoneFrame className="mx-auto max-w-[366px]" priority>
 								<AppDemo />
 							</PhoneFrame>
 						</div>
 					</div>
-					<div className="-mt-4 lg:mt-0 h-20"></div>
+					<div className="-mt-4 h-20 lg:mt-0"></div>
 				</div>
 			</Container>
 		</div>

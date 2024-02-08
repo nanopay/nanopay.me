@@ -9,7 +9,6 @@ import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/helpers'
 import {
@@ -23,6 +22,7 @@ import {
 } from '@mui/material'
 import { HookCreate } from '@/types/hooks'
 import MButton from '@/components/MButton'
+import { InfoIcon } from 'lucide-react'
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',
@@ -134,19 +134,19 @@ export default function NewApiKey({
 				<title>New API Key - NanoPay.me</title>
 			</Head>
 			<form
-				className="w-full bg-white flex flex-col flex-1 items-center px-8 pb-8 rounded-lg max-w-2xl shadow"
+				className="flex w-full max-w-2xl flex-1 flex-col items-center rounded-lg bg-white px-8 pb-8 shadow"
 				onSubmit={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
 			>
-				<div className="w-full flex justify-center items-center space-x-2 py-3 mb-8 border-b border-slate-200">
-					<h3 className="text-slate-700 text-lg font-semibold">
+				<div className="mb-8 flex w-full items-center justify-center space-x-2 border-b border-slate-200 py-3">
+					<h3 className="text-lg font-semibold text-slate-700">
 						Create a Webhook
 					</h3>
 				</div>
 
-				<div className="w-full flex flex-col gap-y-4 px-4 sm:px-8 py-4">
+				<div className="flex w-full flex-col gap-y-4 px-4 py-4 sm:px-8">
 					<div>
-						<div className="flex mb-2 items-center text-xs text-gray-600">
-							<InformationCircleIcon className="w-4 mr-1" />
+						<div className="mb-2 flex items-center text-xs text-gray-600">
+							<InfoIcon className="mr-1 w-4" />
 							<div>
 								Use a name like:{' '}
 								<span className="font-semibold">my-webhook</span>
@@ -218,7 +218,7 @@ export default function NewApiKey({
 									row
 									aria-labelledby="demo-row-radio-buttons-group-label"
 									name="row-radio-buttons-group"
-									className="text-gray-600 flex justify-between"
+									className="flex justify-between text-gray-600"
 								>
 									<FormControlLabel
 										value="invoice.paid"
@@ -289,7 +289,7 @@ export default function NewApiKey({
 							/>
 						)}
 					/>
-					<div className="my-2 text-sm border border-yellow-300 bg-yellow-100 rounded p-2">
+					<div className="my-2 rounded border border-yellow-300 bg-yellow-100 p-2 text-sm">
 						<h4 className="font-semibold">Important:</h4>
 						<ul>
 							<li>

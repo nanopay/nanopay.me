@@ -2,15 +2,11 @@
 
 import Head from 'next/head'
 import { useQuery } from 'react-query'
-import {
-	ArrowUpCircleIcon,
-	ChevronRightIcon,
-	PlusIcon,
-} from '@heroicons/react/24/solid'
 import { Button } from '@/components/Button'
 import api from '@/services/api'
 import ActivityDot from '@/components/ActivityDot'
 import Link from 'next/link'
+import { ArrowUpCircleIcon, ChevronRightIcon, PlusIcon } from 'lucide-react'
 
 export default function Webhooks({
 	params: { serviceName },
@@ -35,13 +31,13 @@ export default function Webhooks({
 				<title>Webooks - NanoPay.me</title>
 			</Head>
 			<>
-				<div className="py-4 px-1">
+				<div className="px-1 py-4">
 					<div className="flex items-center">
 						<h1 className="flex-1 text-lg font-medium">Webhooks</h1>
 						<Button
 							color="nano"
 							href={`/${serviceName}/hooks/new`}
-							className="items-center text-xs py-1"
+							className="items-center py-1 text-xs"
 						>
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
 							Create Webhook
@@ -53,7 +49,7 @@ export default function Webhooks({
 						{webhooks?.map(hook => (
 							<li
 								key={hook.id}
-								className="relative py-5 pl-4 pr-6 border border-slate-200 bg-white hover:bg-gray-50 rounded-md sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
+								className="relative rounded-md border border-slate-200 bg-white py-5 pl-4 pr-6 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
 							>
 								<div className="flex items-center justify-between space-x-4">
 									{/* Service name and description */}
@@ -119,7 +115,7 @@ export default function Webhooks({
 						))}
 					</ul>
 				) : (
-					<div className="h-40 flex justify-center items-center">
+					<div className="flex h-40 items-center justify-center">
 						<p className="text-gray-500">No webhooks found</p>
 					</div>
 				)}

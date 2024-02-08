@@ -1,8 +1,8 @@
 import { HookDelivery } from '@/types/hooks'
 import { formatDateTime } from '@/utils/others'
-import { ChevronRightIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import ActivityDot from './ActivityDot'
+import { ChevronRightIcon } from 'lucide-react'
 
 interface HookDelivieriesProps {
 	deliveries: HookDelivery[]
@@ -33,10 +33,10 @@ export default function HookDelivieries({ deliveries }: HookDelivieriesProps) {
 										<ActivityDot
 											status={delivery.success ? 'active' : 'error'}
 										/>
-										<span className="flex flex-col truncate text-sm text-slate-600 font-semibold">
+										<span className="flex flex-col truncate text-sm font-semibold text-slate-600">
 											<span>{delivery.type}</span>
 											<span>
-												<span className="text-slate-600 truncate">
+												<span className="truncate text-slate-600">
 													{delivery.url}
 												</span>
 											</span>
@@ -118,13 +118,13 @@ export default function HookDelivieries({ deliveries }: HookDelivieriesProps) {
 													<ActivityDot
 														status={delivery.success ? 'active' : 'error'}
 													/>
-													<p className="text-slate-600 font-bold">
+													<p className="font-bold text-slate-600">
 														{delivery.type}
 													</p>
 												</div>
 											</td>
 											<td className="whitespace-nowrap px-6 py-4 text-right text-sm text-slate-500">
-												<span className="text-slate-600 truncate">
+												<span className="truncate text-slate-600">
 													{delivery.url}
 												</span>
 											</td>
