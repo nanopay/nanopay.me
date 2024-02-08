@@ -1,17 +1,10 @@
-import { SvgIconComponent } from '@mui/icons-material'
 import clsx from 'clsx'
+import { LucideIcon } from 'lucide-react'
 
 export interface DashCardProps extends React.HTMLProps<HTMLDivElement> {
 	name: string
 	href: string
-	icon:
-		| SvgIconComponent
-		| React.ForwardRefExoticComponent<
-				React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & {
-					title?: string
-					titleId?: string
-				} & React.RefAttributes<SVGSVGElement>
-		  >
+	icon: LucideIcon
 	amount: number
 	hrefLabel: string
 }

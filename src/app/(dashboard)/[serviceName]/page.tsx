@@ -2,10 +2,10 @@ import api from '@/services/api'
 import Fireworks from '@/components/Fireworks'
 import { cookies } from 'next/headers'
 import { KeyIcon } from '@heroicons/react/24/solid'
-import { Receipt, Webhook } from '@mui/icons-material'
 import Invoices from '@/components/Invoices'
 import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
+import { ReceiptIcon, WebhookIcon } from 'lucide-react'
 
 interface Params {
 	params: { serviceName: string }
@@ -56,7 +56,7 @@ export default async function ServiceDashboardPage({
 		{
 			name: 'Invoices',
 			href: `/${service.name}/invoices`,
-			icon: Receipt,
+			icon: ReceiptIcon,
 			amount: service.invoices_count,
 			hrefLabel: 'View All',
 		},
@@ -70,7 +70,7 @@ export default async function ServiceDashboardPage({
 		{
 			name: 'Webhooks',
 			href: `/${service.name}/hooks`,
-			icon: Webhook,
+			icon: WebhookIcon,
 			amount: service.hooks_count,
 			hrefLabel: 'View All',
 		},

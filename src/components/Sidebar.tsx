@@ -2,11 +2,10 @@
 
 import { Dialog, Transition } from '@headlessui/react'
 
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Logo } from './Logo'
 import { Service } from '@/types/services'
 import Image from 'next/image'
-import { ExpandLess, ExpandMore, Webhook } from '@mui/icons-material'
 import clsx from 'clsx'
 import {
 	Collapse,
@@ -27,6 +26,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MButton from './MButton'
 import { usePreferences } from '@/contexts/PreferencesProvider'
+import { ChevronDownIcon, ChevronUpIcon, WebhookIcon } from 'lucide-react'
 
 export interface SidebarProps {
 	services: Service[]
@@ -70,7 +70,7 @@ export function Sidebar({ services }: SidebarProps) {
 		{
 			name: 'Webhooks',
 			href: `/${currentService?.name}/hooks`,
-			icon: Webhook,
+			icon: WebhookIcon,
 			current: pathname === '/[serviceName]/hooks',
 		},
 		{
@@ -136,7 +136,7 @@ export function Sidebar({ services }: SidebarProps) {
 												<ListItemText primary={'Select a service'} />
 											</>
 										)}
-										{openServices ? <ExpandLess /> : <ExpandMore />}
+										{openServices ? <ChevronUpIcon /> : <ChevronDownIcon />}
 									</ListItemButton>
 									<Collapse in={openServices} timeout="auto" unmountOnExit>
 										<List component="div" disablePadding>
