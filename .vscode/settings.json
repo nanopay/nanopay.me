@@ -4,9 +4,8 @@
 		"source.fixAll.eslint": "explicit"
 	},
 	"prettier.useEditorConfig": false,
-	// Add those two lines:
-	"editor.formatOnSave": true, // Tell VSCode to format files on save
-	"prettier.configPath": ".prettierrc.json",
+	"editor.formatOnSave": true,
+	"prettier.configPath": "prettier.config.js",
 	"[typescriptreact]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
