@@ -2,7 +2,15 @@ import type { Config } from 'tailwindcss'
 
 const config = {
 	content: ['./src/**/*.{js,jsx,ts,tsx}'],
+	prefix: '',
 	theme: {
+		container: {
+			center: true,
+			padding: '2rem',
+			screens: {
+				'2xl': '1400px',
+			},
+		},
 		fontSize: {
 			xs: ['0.75rem', { lineHeight: '1rem' }],
 			'2xs': ['0.625rem', { lineHeight: '1rem' }],
@@ -23,14 +31,8 @@ const config = {
 			'9xl': ['8rem', { lineHeight: '1' }],
 		},
 		extend: {
-			animation: {
-				'fade-in': 'fade-in 0.5s linear forwards',
-				marquee: 'marquee var(--marquee-duration) linear infinite',
-				'spin-slow': 'spin 4s linear infinite',
-				'spin-slower': 'spin 6s linear infinite',
-				'spin-reverse': 'spin-reverse 1s linear infinite',
-				'spin-reverse-slow': 'spin-reverse 4s linear infinite',
-				'spin-reverse-slower': 'spin-reverse 6s linear infinite',
+			maxWidth: {
+				'2xl': '40rem',
 			},
 			borderRadius: {
 				'4xl': '2rem',
@@ -59,13 +61,29 @@ const config = {
 						transform: 'rotate(-360deg)',
 					},
 				},
+				'accordion-down': {
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' },
+				},
+				'accordion-up': {
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' },
+				},
 			},
-			maxWidth: {
-				'2xl': '40rem',
+			animation: {
+				'fade-in': 'fade-in 0.5s linear forwards',
+				marquee: 'marquee var(--marquee-duration) linear infinite',
+				'spin-slow': 'spin 4s linear infinite',
+				'spin-slower': 'spin 6s linear infinite',
+				'spin-reverse': 'spin-reverse 1s linear infinite',
+				'spin-reverse-slow': 'spin-reverse 4s linear infinite',
+				'spin-reverse-slower': 'spin-reverse 6s linear infinite',
+				'accordion-down': 'accordion-down 0.2s ease-out',
+				'accordion-up': 'accordion-up 0.2s ease-out',
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require('tailwindcss-animate')],
 } satisfies Config
 
 export default config
