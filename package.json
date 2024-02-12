@@ -23,10 +23,11 @@
 		"ajv-errors": "^3.0.0",
 		"ajv-formats": "^2.1.1",
 		"blakejs": "^1.2.1",
-		"clsx": "^1.2.1",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.1.0",
 		"focus-visible": "^5.2.0",
 		"framer-motion": "^6.5.1",
-		"lucide-react": "^0.323.0",
+		"lucide-react": "^0.325.0",
 		"nanocurrency": "^2.5.0",
 		"next": "14.0.2",
 		"nprogress": "^0.2.0",
@@ -42,7 +43,9 @@
 		"react-qr-code": "^2.0.11",
 		"react-query": "^3.39.3",
 		"react-toastify": "^9.1.1",
-		"server-only": "^0.0.1"
+		"server-only": "^0.0.1",
+		"tailwind-merge": "^2.2.1",
+		"tailwindcss-animate": "^1.0.7"
 	},
 	"devDependencies": {
 		"@hookform/resolvers": "^3.3.2",
