@@ -22,7 +22,7 @@ function BackgroundIllustration(props: React.ComponentProps<'svg'>) {
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
 	return (
-		<main className="flex flex-col flex-1 min-h-full overflow-hidden sm:pt-16 sm:py-28">
+		<main className="flex min-h-full flex-1 flex-col overflow-hidden sm:py-28 sm:pt-16">
 			<div className="mx-auto flex w-full max-w-2xl flex-col sm:px-6">
 				<div className="relative mt-16 hidden sm:block">
 					<BackgroundIllustration
@@ -31,8 +31,8 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 						className="absolute -top-7 left-1/2 h-[788px] -translate-x-1/2 stroke-nano/20 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:-top-9 sm:h-auto"
 					/>
 				</div>
-				<div className="sm:mt-10 z-10">
-					<Container className="w-full sm:max-w-lg h-screen sm:h-auto flex flex-col justify-center p-16 rounded-xl sm:shadow-md shadow-nano/10 bg-white">
+				<div className="z-10 sm:mt-10">
+					<Container className="flex h-screen w-full flex-col justify-center rounded-xl bg-white p-16 shadow-nano/10 sm:h-auto sm:max-w-lg sm:shadow-md">
 						<div className="mb-6">
 							<Link href="/" aria-label="Home">
 								<Logo theme="light" className="mx-auto h-12 w-auto" />

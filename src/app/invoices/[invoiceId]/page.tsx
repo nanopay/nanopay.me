@@ -16,9 +16,9 @@ export default async function InvoicePage({
 	} catch (error) {
 		const message = api.getErrorMessage(error) || 'Unknown error'
 		return (
-			<div className="flex items-center justify-center h-full">
+			<div className="flex h-full items-center justify-center">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-4">Error</h1>
+					<h1 className="mb-4 text-2xl font-bold">Error</h1>
 					<p className="text-gray-500">{message}</p>
 				</div>
 			</div>

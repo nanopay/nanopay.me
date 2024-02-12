@@ -75,7 +75,7 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className="w-full max-w-sm flex flex-col items-center space-y-6"
+			className="flex w-full max-w-sm flex-col items-center space-y-6"
 		>
 			<Image
 				src={getValues('avatar_url') || ''}
@@ -85,7 +85,7 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 				className="mb-4 rounded-full border-2 border-slate-200"
 				priority
 			/>
-			<div className="w-full flex flex-col space-y-6">
+			<div className="flex w-full flex-col space-y-6">
 				<Controller
 					name="name"
 					control={control}

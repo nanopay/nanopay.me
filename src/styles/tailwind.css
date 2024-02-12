@@ -10,7 +10,7 @@
 }
 
 .Button.MuiButton-contained {
-	@apply text-white bg-nano hover:bg-nano/90;
+	@apply bg-nano text-white hover:bg-nano/90;
 }
 
 .Button:disabled {

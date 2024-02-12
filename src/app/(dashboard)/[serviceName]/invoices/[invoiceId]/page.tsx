@@ -25,7 +25,7 @@ export default function InvoicePage({
 
 	if (isLoading || isError) {
 		return (
-			<div className="w-full max-w-3xl mx-auto h-screen flex sm:items-center justify-center">
+			<div className="mx-auto flex h-screen w-full max-w-3xl justify-center sm:items-center">
 				<Loading />
 			</div>
 		)
@@ -33,10 +33,10 @@ export default function InvoicePage({
 
 	if (!invoice) {
 		return (
-			<div className="w-full max-w-3xl mx-auto h-screen flex sm:items-center justify-center">
+			<div className="mx-auto flex h-screen w-full max-w-3xl justify-center sm:items-center">
 				<div className="text-center">
 					<h1 className="text-4xl font-bold">Invoice not found</h1>
-					<p className="text-gray-500 mt-2">{api.getErrorMessage(error)}</p>
+					<p className="mt-2 text-gray-500">{api.getErrorMessage(error)}</p>
 				</div>
 			</div>
 		)
@@ -47,7 +47,7 @@ export default function InvoicePage({
 			<Head>
 				<title>Invoice - NanoPay.me</title>
 			</Head>
-			<div className="sm:mt-4 w-full max-w-5xl sm:mx-auto">
+			<div className="w-full max-w-5xl sm:mx-auto sm:mt-4">
 				<Invoice invoice={invoice} />
 			</div>
 		</>

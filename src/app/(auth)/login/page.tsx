@@ -45,7 +45,7 @@ export default function LoginPage() {
 
 	return (
 		<form
-			className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200"
+			className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4"
 			onSubmit={handleSubmit(data => signWithPassword({ ...data, next }))}
 		>
 			<Button
@@ -59,7 +59,7 @@ export default function LoginPage() {
 					<span>Sign in with Github</span>
 				</div>
 			</Button>
-			<div className="py-6 w-full">
+			<div className="w-full py-6">
 				<Controller
 					name="email"
 					control={control}
@@ -97,7 +97,7 @@ export default function LoginPage() {
 				>
 					Sign In
 				</Button>
-				<div className="pt-6 flex flex-col items-center">
+				<div className="flex flex-col items-center pt-6">
 					<Link
 						href="/magic-link"
 						className="text-sm text-nano hover:underline"
@@ -112,7 +112,7 @@ export default function LoginPage() {
 					</Link>
 				</div>
 			</div>
-			<div className="py-6 flex flex-col items-center">
+			<div className="flex flex-col items-center py-6">
 				<h2 className="text-base font-semibold text-slate-600">
 					Don&apos;t have an account ?{' '}
 					<Link href="/signup" className="text-nano underline">

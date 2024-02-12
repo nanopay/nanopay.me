@@ -57,8 +57,8 @@ export default function ForgotPasswordPage() {
 	}
 
 	return (
-		<div className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200">
-			<form className="py-6 w-full" onSubmit={handleSubmit(onSubmit)}>
+		<div className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4">
+			<form className="w-full py-6" onSubmit={handleSubmit(onSubmit)}>
 				<Controller
 					name="email"
 					control={control}
@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
 					Reset Password
 				</MButton>
 			</form>
-			<div className="py-6 flex flex-col items-center">
+			<div className="flex flex-col items-center py-6">
 				<h2 className="text-base font-semibold text-slate-600">
 					Back to{' '}
 					<Link href="/login" className="text-nano underline">

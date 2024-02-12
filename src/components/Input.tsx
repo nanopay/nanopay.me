@@ -39,7 +39,7 @@ export default function Input({
 			/>
 			{errorMessage && (
 				<span
-					className={`mt-1 ml-1 flex items-center text-xs tracking-wide text-red-500 ${roboto.className}`}
+					className={`ml-1 mt-1 flex items-center text-xs tracking-wide text-red-500 ${roboto.className}`}
 				>
 					{errorMessage}
 				</span>

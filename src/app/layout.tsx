@@ -24,7 +24,7 @@ export default async function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<ClientContexts>
-					<div className="min-h-screen flex flex-col">{children}</div>
+					<div className="flex min-h-screen flex-col">{children}</div>
 					<NProgressBar />
 				</ClientContexts>
 			</body>

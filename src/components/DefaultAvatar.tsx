@@ -18,7 +18,7 @@ const DefaultAvatar = forwardRef<HTMLDivElement, DefaultAvatarProps>(
 			<div
 				ref={ref}
 				className={clsx(
-					'text-nano border-slate-200 flex shrink-0 items-center justify-center rounded-full border-2 bg-white p-1',
+					'flex shrink-0 items-center justify-center rounded-full border-2 border-slate-200 bg-white p-1 text-nano',
 					className,
 				)}
 				style={{

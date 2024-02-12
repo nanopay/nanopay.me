@@ -16,7 +16,7 @@ export default function ActivityDot({
 
 	return (
 		<span
-			className={`h-4 w-4 flex items-center justify-center rounded-full`}
+			className={`flex h-4 w-4 items-center justify-center rounded-full`}
 			style={{
 				backgroundColor: tailwindColors[color]['100'],
 			}}

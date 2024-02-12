@@ -112,9 +112,9 @@ export default function NewService({
 			<Head>
 				<title>Invoice - NanoPay.me</title>
 			</Head>
-			<Container className="sm:mt-4 w-full max-w-xl h-screen sm:h-auto flex flex-col items-center space-y-6 bg-white py-8 px-16 pb-16 shadow sm:rounded-lg">
-				<div className="w-full max-w-xl flex flex-col space-y-6 px-4 sm:px-8 pb-4">
-					<div className="w-full flex items-center justify-between space-x-8">
+			<Container className="flex h-screen w-full max-w-xl flex-col items-center space-y-6 bg-white px-16 py-8 pb-16 shadow sm:mt-4 sm:h-auto sm:rounded-lg">
+				<div className="flex w-full max-w-xl flex-col space-y-6 px-4 pb-4 sm:px-8">
+					<div className="flex w-full items-center justify-between space-x-8">
 						<h1 className="text-lg font-semibold text-slate-600">
 							New Invoice
 						</h1>

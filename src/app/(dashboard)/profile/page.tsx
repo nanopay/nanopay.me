@@ -64,11 +64,11 @@ export default async function Profile() {
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className="w-full max-w-sm flex flex-col items-center space-y-6"
+			className="flex w-full max-w-sm flex-col items-center space-y-6"
 		>
 			<UserAvatar url={user.avatar_url} />
 
-			<div className="w-full flex flex-col space-y-6">
+			<div className="flex w-full flex-col space-y-6">
 				<Controller
 					name="name"
 					control={control}

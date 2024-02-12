@@ -50,18 +50,18 @@ export default async function DashboardLayout({
 		return (
 			<UserProvider user={user}>
 				<PreferencesProvider services={services}>
-					<div className="w-full flex flex-col flex-1">
+					<div className="flex w-full flex-1 flex-col">
 						<TransitionSidebar services={services} />
 
 						<Appbar />
 
-						<div className="lg:pl-72 flex flex-col flex-1">
+						<div className="flex flex-1 flex-col lg:pl-72">
 							<PopupAlert
 								message="This is the alpha version. It may have bugs. Do not use in
 								production or for high-value payments."
 							/>
 
-							<main className="flex flex-col w-full flex-1 py-6 px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
+							<main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-6 lg:px-6 xl:px-8">
 								{children}
 							</main>
 

@@ -6,7 +6,7 @@ export default function Loading({ ...props }: React.ComponentProps<'div'>) {
 	const id = useId()
 
 	return (
-		<div {...props} className={clsx("h-[120px] w-[120px]", props.className)}>
+		<div {...props} className={clsx('h-[120px] w-[120px]', props.className)}>
 			<svg
 				viewBox="0 0 1026 1026"
 				fill="none"

@@ -68,7 +68,7 @@ export default function SignUpPage() {
 
 	return (
 		<form
-			className="w-full flex flex-col space-y-6 px-2 sm:px-4 divide-y divide-slate-200"
+			className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4"
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<Button
@@ -82,7 +82,7 @@ export default function SignUpPage() {
 					<span>Sign up with Github</span>
 				</div>
 			</Button>
-			<div className="py-6 w-full">
+			<div className="w-full py-6">
 				<Controller
 					name="email"
 					control={control}
@@ -119,7 +119,7 @@ export default function SignUpPage() {
 					Sign Up
 				</MButton>
 			</div>
-			<div className="py-6 flex flex-col items-center">
+			<div className="flex flex-col items-center py-6">
 				<h2 className="text-base font-semibold text-slate-600">
 					Already have an account ?{' '}
 					<Link href="/login" className="text-nano underline">
