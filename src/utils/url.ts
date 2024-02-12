@@ -24,3 +24,16 @@ export const getSiteUrl = () => {
 
 	return new URL(url).origin
 }
+
+/**
+ * Sanitizes a string to be used as a URL slug.
+ * Only allows lowercase letters, numbers, dashes, underscores and dots.
+ * @param name
+ * @returns
+ */
+export const sanitizeSlug = (name: string) => {
+	return name
+		.slice(0, 40)
+		.replace(/[^a-zA-Z0-9-_\.]/g, '')
+		.toLowerCase()
+}

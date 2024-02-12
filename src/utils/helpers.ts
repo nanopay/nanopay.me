@@ -48,14 +48,6 @@ export function hexlify(data: BytesLike): string {
 	return result
 }
 
-export const sanitizeSlug = (name: string) => {
-	// only allows lowercase letters, numbers, dashes, underscores and dots
-	return name
-		.slice(0, 40)
-		.replace(/[^a-zA-Z0-9-_\.]/g, '')
-		.toLowerCase()
-}
-
 export const checkUUID = (str: string) => {
 	const regex = new RegExp(
 		'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',

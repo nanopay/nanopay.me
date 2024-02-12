@@ -14,7 +14,7 @@ import { ApiKeyCreate } from '@/types/services'
 import { JSONSchemaType } from 'ajv'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
-import { sanitizeSlug } from '@/utils/helpers'
+import { sanitizeSlug } from '@/utils/url'
 import { Container } from '@/components/Container'
 import { CopyIcon, InfoIcon } from 'lucide-react'
 

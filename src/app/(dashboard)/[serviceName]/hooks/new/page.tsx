@@ -10,7 +10,7 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { JSONSchemaType } from 'ajv'
-import { sanitizeSlug } from '@/utils/helpers'
+import { sanitizeSlug } from '@/utils/url'
 import {
 	Autocomplete,
 	FormControl,

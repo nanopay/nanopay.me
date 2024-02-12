@@ -20,7 +20,7 @@ import {
 	TextField,
 } from '@mui/material'
 import Input from '@/components/Input'
-import { sanitizeSlug } from '@/utils/helpers'
+import { sanitizeSlug } from '@/utils/url'
 import { Hook, HookCreate } from '@/types/hooks'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
@@ -186,15 +186,15 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 
 	return (
 		<form
-			className="w-full bg-white flex flex-col items-center px-6 sm:px-8 pb-8 rounded-lg max-w-2xl xl:max-w-7xl shadow"
+			className="flex w-full max-w-2xl flex-col items-center rounded-lg bg-white px-6 pb-8 shadow sm:px-8 xl:max-w-7xl"
 			onSubmit={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
 		>
-			<div className="w-full flex justify-center items-center space-x-2 py-3 mb-8 border-b border-slate-200">
-				<h3 className="text-slate-700 text-lg font-semibold">Manage Webhook</h3>
+			<div className="mb-8 flex w-full items-center justify-center space-x-2 border-b border-slate-200 py-3">
+				<h3 className="text-lg font-semibold text-slate-700">Manage Webhook</h3>
 			</div>
 
-			<div className="w-full flex flex-col xl:flex-row xl:gap-16 gap-4 py-4">
-				<div className="w-full xl:w-1/2 space-y-4">
+			<div className="flex w-full flex-col gap-4 py-4 xl:flex-row xl:gap-16">
+				<div className="w-full space-y-4 xl:w-1/2">
 					<Controller
 						name="name"
 						control={control}
@@ -247,7 +247,7 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 					/>
 				</div>
 
-				<div className="w-full xl:w-1/2 space-y-2">
+				<div className="w-full space-y-2 xl:w-1/2">
 					<Controller
 						name="event_types"
 						control={control}
@@ -260,7 +260,7 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 									row
 									aria-labelledby="demo-row-radio-buttons-group-label"
 									name="row-radio-buttons-group"
-									className="text-gray-600 flex justify-between"
+									className="flex justify-between text-gray-600"
 								>
 									<FormControlLabel
 										value="invoice.paid"
@@ -333,7 +333,7 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 					/>
 				</div>
 			</div>
-			<div className="w-full flex justify-end">
+			<div className="flex w-full justify-end">
 				<MButton type="submit" loading={isSubmitting} disabled={!isDirty}>
 					{isSubmitting ? 'Updating Webhook...' : 'Update Webhook'}
 				</MButton>
