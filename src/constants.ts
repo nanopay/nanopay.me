@@ -1,3 +1,7 @@
+import { getSiteUrl } from './utils/url'
+
+export const SITE_URL = getSiteUrl()
+
 export const INVOICE_MINIMUM_PRICE = 0.0001
 export const MAX_HOOKS = 5
 

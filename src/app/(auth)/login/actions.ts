@@ -1,6 +1,6 @@
 'use server'
 
-import { getURL } from '@/utils/helpers'
+import { SITE_URL } from '@/constants'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -40,7 +40,7 @@ export const signWithPassword = async ({
 export const signWithGithub = async ({ next }: { next?: string }) => {
 	const supabase = createClient(cookies())
 
-	const redirectTo = new URL(getURL())
+	const redirectTo = new URL(SITE_URL)
 	redirectTo.pathname = '/auth/callback'
 	if (next) {
 		redirectTo.searchParams.set('next', next)
