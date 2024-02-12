@@ -2,11 +2,11 @@
 
 import Head from 'next/head'
 import { useQuery } from 'react-query'
-import { Button } from '@/components/Button'
 import api from '@/services/api'
 import ActivityDot from '@/components/ActivityDot'
 import Link from 'next/link'
 import { ArrowUpCircleIcon, ChevronRightIcon, PlusIcon } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 export default function Webhooks({
 	params: { serviceName },
@@ -34,14 +34,12 @@ export default function Webhooks({
 				<div className="px-1 py-4">
 					<div className="flex items-center">
 						<h1 className="flex-1 text-lg font-medium">Webhooks</h1>
-						<Button
-							color="nano"
-							href={`/${serviceName}/hooks/new`}
-							className="items-center py-1 text-xs"
-						>
-							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
-							Create Webhook
-						</Button>
+						<Link href={`/${serviceName}/hooks/new`}>
+							<Button color="nano" size="sm">
+								<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
+								Create Webhook
+							</Button>
+						</Link>
 					</div>
 				</div>
 				{webhooks?.length ? (

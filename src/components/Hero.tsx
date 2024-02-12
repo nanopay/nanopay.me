@@ -32,7 +32,7 @@ function BackgroundIllustration(props: React.ComponentProps<'div'>) {
 				viewBox="0 0 1026 1026"
 				fill="none"
 				aria-hidden="true"
-				className="absolute inset-0 h-full w-full animate-spin-slow"
+				className="animate-spin-slow absolute inset-0 h-full w-full"
 			>
 				<path
 					d="M1025 513c0 282.77-229.23 512-512 512S1 795.77 1 513 230.23 1 513 1s512 229.23 512 512Z"
@@ -62,7 +62,7 @@ function BackgroundIllustration(props: React.ComponentProps<'div'>) {
 				viewBox="0 0 1026 1026"
 				fill="none"
 				aria-hidden="true"
-				className="absolute inset-0 h-full w-full animate-spin-reverse-slower"
+				className="animate-spin-reverse-slower absolute inset-0 h-full w-full"
 			>
 				<path
 					d="M913 513c0 220.914-179.086 400-400 400S113 733.914 113 513s179.086-400 400-400 400 179.086 400 400Z"
@@ -128,11 +128,11 @@ function AppDemo() {
 							<div className="mt-4 flex items-center justify-between gap-2 border-t border-gray-100 py-2 text-xs text-gray-500">
 								<div>Send to:</div>
 								<div>nano_1payme...jigiof9o</div>
-								<CopyIcon className="h-4 w-4 text-nano" />
+								<CopyIcon className="text-nano h-4 w-4" />
 							</div>
 
 							<div className="mb-4 flex items-center justify-center gap-2 border-y border-gray-100 py-4 text-xs text-gray-500">
-								<div className="h-4 w-4 rounded-full border border-b-2 border-t-4 border-nano"></div>
+								<div className="border-nano h-4 w-4 rounded-full border border-b-2 border-t-4"></div>
 								Waiting for Payment
 							</div>
 
@@ -146,12 +146,12 @@ function AppDemo() {
 									<div className="font-medium text-gray-900">#4342</div>
 								</div>
 							</div>
-							<div className="mt-4 rounded-lg bg-nano px-4 py-2 text-center text-sm font-semibold text-white">
+							<div className="bg-nano mt-4 rounded-lg px-4 py-2 text-center text-sm font-semibold text-white">
 								Pay me
 							</div>
 						</div>
 					</div>
-					<div className="mt-4 flex items-center justify-between gap-2 border-t border-gray-100 p-2 text-3xs text-gray-500 sm:mt-6">
+					<div className="text-3xs mt-4 flex items-center justify-between gap-2 border-t border-gray-100 p-2 text-gray-500 sm:mt-6">
 						<Link href="/terms" className="flex-1">
 							Terms of Service
 						</Link>
@@ -201,18 +201,17 @@ export function Hero() {
 								nunito.className,
 							)}
 						>
-							<Button href="/login" variant="solid" color="nano">
-								<h1 className="text-lg">Join the Alfa</h1>
-							</Button>
-							<Button
-								href="/demo"
-								variant="outline"
-								color="nano"
-								className="items-center border-nano/70 text-xl"
-							>
-								<PlayIcon className="h-6 w-6 flex-none text-nano" />
-								<span className="ml-2.5 text-nano">Demo</span>
-							</Button>
+							<Link href="/login">
+								<Button color="nano" className="text-lg">
+									Join the Alfa
+								</Button>
+							</Link>
+							<Link href="/demo">
+								<Button variant="outline" color="nano" className="text-lg">
+									<PlayIcon className="mr-2 h-6 w-6" />
+									Demo
+								</Button>
+							</Link>
 						</div>
 					</div>
 					<div className="relative mt-10 sm:mt-8 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">

@@ -8,6 +8,7 @@ import { Service } from '@/types/services'
 import { getUserId } from '@/utils/supabase/server'
 import { Metadata } from 'next'
 import { PlusIcon } from 'lucide-react'
+import Link from 'next/link'
 
 async function fetchData(): Promise<Service[]> {
 	const userId = await getUserId(cookies())
@@ -47,12 +48,12 @@ export default async function Home() {
 					>
 						{services?.length} Services
 					</h2>
-					<Button color="nano" href="/services/new">
-						<div className="flex items-center space-x-2">
-							<PlusIcon className="h-5 w-5" />
+					<Link href="/services/new">
+						<Button color="nano">
+							<PlusIcon className="mr-2 h-5 w-5" />
 							<span>New Service</span>
-						</div>
-					</Button>
+						</Button>
+					</Link>
 				</div>
 				{services.length > 0 ? (
 					<ServicesList services={services} />

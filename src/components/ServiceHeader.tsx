@@ -2,6 +2,7 @@ import { Button } from '@/components/Button'
 import DefaultAvatar from '@/components/DefaultAvatar'
 import { Service } from '@/types/services'
 import { GlobeIcon, PlusIcon, SettingsIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export default function ServiceHeader({ service }: { service: Service }) {
 	return (
@@ -37,7 +38,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 										<dd className="sm:mr-6">
 											<a
 												href={service.website}
-												className="flex items-center truncate text-sm font-medium text-slate-500 hover:text-nano"
+												className="hover:text-nano flex items-center truncate text-sm font-medium text-slate-500"
 											>
 												<GlobeIcon
 													className="mr-1 h-5 w-5 flex-shrink-0"
@@ -58,18 +59,16 @@ export default function ServiceHeader({ service }: { service: Service }) {
 						</div>
 					</div>
 					<div className="mt-6 flex space-x-3 md:ml-4 md:mt-0">
-						<Button variant="outline" color="nano" className="items-center">
+						<Button variant="outline" color="nano">
 							<SettingsIcon className="-ml-1 mr-2 h-4 w-4" aria-hidden="true" />
 							Settings
 						</Button>
-						<Button
-							color="nano"
-							className="items-center"
-							href={`/${service.name}/invoices/new`}
-						>
-							<PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-							Create Invoice
-						</Button>
+						<Link href={`/${service.name}/invoices/new`}>
+							<Button color="nano">
+								<PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+								Create Invoice
+							</Button>
+						</Link>
 					</div>
 				</div>
 			</div>
