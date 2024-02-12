@@ -15,6 +15,13 @@ import {
 	QrCodeIcon,
 	XCircleIcon,
 } from 'lucide-react'
+import { Nunito } from 'next/font/google'
+import clsx from 'clsx'
+
+const nunito = Nunito({
+	weight: ['500'],
+	subsets: ['latin'],
+})
 
 function BackgroundIllustration(props: React.ComponentProps<'div'>) {
 	let id = useId()
@@ -169,7 +176,12 @@ export function Hero() {
 			<Container>
 				<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
 					<div className="relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-20 xl:col-span-6">
-						<h1 className="font-nunito text-3xl font-medium tracking-tight text-gray-900">
+						<h1
+							className={clsx(
+								'text-3xl font-medium tracking-tight text-gray-900',
+								nunito.className,
+							)}
+						>
 							Pay and receive payments with Nano.
 						</h1>
 						<div className="mt-6 flex flex-col gap-4 text-lg text-gray-600">
@@ -183,9 +195,14 @@ export function Hero() {
 								account for free and get started now!
 							</p>
 						</div>
-						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
+						<div
+							className={clsx(
+								'mt-8 flex flex-wrap gap-x-6 gap-y-4 font-medium',
+								nunito.className,
+							)}
+						>
 							<Button href="/login" variant="solid" color="nano">
-								<h1 className="font-nunito text-lg">Join the Alfa</h1>
+								<h1 className="text-lg">Join the Alfa</h1>
 							</Button>
 							<Button
 								href="/demo"
@@ -194,7 +211,7 @@ export function Hero() {
 								className="items-center border-nano/70 text-xl"
 							>
 								<PlayIcon className="h-6 w-6 flex-none text-nano" />
-								<span className="ml-2.5 font-nunito text-nano">Demo</span>
+								<span className="ml-2.5 text-nano">Demo</span>
 							</Button>
 						</div>
 					</div>
