@@ -151,19 +151,11 @@ export function Header({
 														<MobileNavLink href="/#faqs">FAQs</MobileNavLink>
 													</div>
 													<div className="mt-8 flex flex-col gap-4">
-														{isAuthenticated ? (
-															<Button
-																href="/home"
-																variant="outline"
-																className="w-full"
-															>
-																<div className="flex w-full">Home</div>
+														<Link href={isAuthenticated ? '/home' : '/login'}>
+															<Button variant="outline" className="w-full">
+																{isAuthenticated ? 'Home' : 'Log in'}
 															</Button>
-														) : (
-															<Button href="/login" variant="outline">
-																Log in
-															</Button>
-														)}
+														</Link>
 													</div>
 												</Popover.Panel>
 											</>
@@ -174,15 +166,11 @@ export function Header({
 						</Popover>
 
 						<div className="hidden lg:block">
-							{isAuthenticated ? (
-								<Button href="/home" variant="solid" color="slate">
-									Home
+							<Link href={isAuthenticated ? '/home' : '/login'}>
+								<Button color="slate">
+									{isAuthenticated ? 'Home' : 'Log in'}
 								</Button>
-							) : (
-								<Button href="/login" variant="solid" color="slate">
-									Log in
-								</Button>
-							)}
+							</Link>
 						</div>
 					</div>
 				</Container>
