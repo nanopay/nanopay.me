@@ -41,7 +41,9 @@ const config = {
 			},
 			colors: ({ colors }) => ({
 				gray: colors.neutral,
+				'nano-light': '#d2ebfa',
 				nano: '#209CE9',
+				'nano-dark': '#4a90e2',
 			}),
 			keyframes: {
 				'fade-in': {
