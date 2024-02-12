@@ -48,14 +48,6 @@ export function hexlify(data: BytesLike): string {
 	return result
 }
 
-export const concatURL = (
-	baseURL: string,
-	paths: string | string[],
-): string => {
-	const pathsArray = Array.isArray(paths) ? paths : [paths]
-	return new URL(pathsArray.join('/'), baseURL).toString()
-}
-
 export const sanitizeSlug = (name: string) => {
 	// only allows lowercase letters, numbers, dashes, underscores and dots
 	return name
