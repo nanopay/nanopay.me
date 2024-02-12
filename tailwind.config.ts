@@ -1,7 +1,6 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+import type { Config } from 'tailwindcss'
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
 	content: ['./src/**/*.{js,jsx,ts,tsx}'],
 	theme: {
 		fontSize: {
@@ -44,10 +43,10 @@ module.exports = {
 			keyframes: {
 				'fade-in': {
 					from: {
-						opacity: 0,
+						opacity: '0',
 					},
 					to: {
-						opacity: 1,
+						opacity: '1',
 					},
 				},
 				marquee: {
@@ -67,4 +66,6 @@ module.exports = {
 		},
 	},
 	plugins: [],
-}
+} satisfies Config
+
+export default config
