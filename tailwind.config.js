@@ -41,10 +41,6 @@ module.exports = {
 				gray: colors.neutral,
 				nano: '#209CE9',
 			}),
-			fontFamily: {
-				sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
-				nunito: ['Nunito', ...defaultTheme.fontFamily.sans],
-			},
 			keyframes: {
 				'fade-in': {
 					from: {
