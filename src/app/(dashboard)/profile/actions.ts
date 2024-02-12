@@ -9,7 +9,6 @@ import {
 } from '@/constants'
 import { revalidateTag } from 'next/cache'
 import { createPresignedUrl, moveObject } from '@/services/s3'
-import { concatURL } from '@/utils/helpers'
 
 export interface UpdateUserProps {
 	name: string
@@ -76,13 +75,14 @@ export const updateAvatar = async () => {
 
 	await moveObject(oldKey, newKey)
 
-	const url =
-		concatURL(`https://${STATIC_ASSETS_HOST}`, newKey) + `?v=${Date.now()}`
+	const avatarUrl = new URL(STATIC_ASSETS_HOST)
+	avatarUrl.pathname = newKey
+	avatarUrl.searchParams.set('v', Date.now().toString())
 
 	const { error } = await supabase
 		.from('profiles')
 		.update({
-			avatar_url: url,
+			avatar_url: avatarUrl.toString(),
 		})
 		.eq('user_id', userId)
 

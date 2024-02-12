@@ -79,9 +79,12 @@ export const createAvatarUploadPresignedUrl = async ({
 		size,
 	})
 
+	const getUrl = new URL(STATIC_ASSETS_HOST)
+	getUrl.pathname = key
+
 	return {
 		uploadUrl,
-		getUrl: `https://${STATIC_ASSETS_HOST}/${key}`,
+		getUrl: getUrl.toString(),
 	}
 }
 
@@ -105,6 +108,9 @@ const moveAvatar = async (
 		console.error(error)
 		throw new Error('failed moving avatar')
 	}
-	const newUrl = `https://${STATIC_ASSETS_HOST}/services/${serviceId}/avatar.${type}`
-	return newUrl
+
+	const newUrl = new URL(STATIC_ASSETS_HOST)
+	newUrl.pathname = `/services/${serviceId}/avatar.${type}`
+
+	return newUrl.toString()
 }

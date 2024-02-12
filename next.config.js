@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const staticAssetsUrl = new URL(process.env.NEXT_PUBLIC_STATIC_ASSETS_URL)
+
 const nextConfig = {
 	reactStrictMode: true,
 	images: {
@@ -9,8 +12,8 @@ const nextConfig = {
 				pathname: '/u/**',
 			},
 			{
-				protocol: 'https',
-				hostname: process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST,
+				protocol: staticAssetsUrl.protocol.replace(':', ''),
+				hostname: staticAssetsUrl.hostname,
 				pathname: '/**',
 			},
 		],
