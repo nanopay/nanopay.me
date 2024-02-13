@@ -57,7 +57,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | StrictButtonProps>(
 	(
 		{
 			variant = 'default',
-			color = 'slate',
+			color = 'nano',
 			size = 'default',
 			disabled,
 			loading,
