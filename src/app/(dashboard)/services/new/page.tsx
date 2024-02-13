@@ -4,7 +4,6 @@ import { useState, useTransition } from 'react'
 import { Controller, FieldErrors, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { Container } from '@/components/Container'
-import MButton from '@/components/MButton'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
@@ -16,6 +15,7 @@ import { sanitizeSlug } from '@/utils/url'
 import { createAvatarUploadPresignedUrl, createService } from './actions'
 import { uploadObject } from '@/services/s3'
 import { InfoIcon } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<ServiceCreate> = {
 	type: 'object',
@@ -140,17 +140,13 @@ export default function NewService() {
 				/>
 			</div>
 			<div />
-			<MButton
+			<Button
 				onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
 				loading={isPending}
 				disabled={isUploading || !watch('name')}
 			>
-				{isUploading
-					? 'Uploading image...'
-					: isPending
-					? 'Creating service...'
-					: 'Create service'}
-			</MButton>
+				Create Service
+			</Button>
 		</Container>
 	)
 }

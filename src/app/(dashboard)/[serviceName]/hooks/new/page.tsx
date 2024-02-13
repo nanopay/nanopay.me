@@ -21,8 +21,8 @@ import {
 	TextField,
 } from '@mui/material'
 import { HookCreate } from '@/types/hooks'
-import MButton from '@/components/MButton'
 import { InfoIcon } from 'lucide-react'
+import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',
@@ -303,7 +303,7 @@ export default function NewApiKey({
 						</ul>
 					</div>
 				</div>
-				<MButton
+				<Button
 					type="submit"
 					loading={isSubmitting}
 					disabled={
@@ -314,8 +314,8 @@ export default function NewApiKey({
 						watch('event_types').length < 1
 					}
 				>
-					{isSubmitting ? 'Creating Webhook...' : 'Create Webhook'}
-				</MButton>
+					Create Webhook
+				</Button>
 			</form>
 		</>
 	)

@@ -5,7 +5,6 @@ import Head from 'next/head'
 import { useMutation } from 'react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
-import MButton from '@/components/MButton'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
@@ -17,6 +16,8 @@ import clsx from 'clsx'
 import { sanitizeSlug } from '@/utils/url'
 import { Container } from '@/components/Container'
 import { CopyIcon, InfoIcon } from 'lucide-react'
+import { Button } from '@/components/Button'
+import Link from 'next/link'
 
 const roboto = Roboto({
 	weight: '400',
@@ -172,7 +173,7 @@ export default function NewApiKey({
 											{createdApiKey?.apiKey}
 										</span>
 										<button
-											className=" text-gray-600 focus:text-nano"
+											className=" focus:text-nano text-gray-600"
 											onClick={() => copy(createdApiKey?.apiKey)}
 										>
 											<CopyIcon className="ml-2 h-4 w-4" />
@@ -186,12 +187,12 @@ export default function NewApiKey({
 									<li>Delete it or generate a new one at any time.</li>
 								</ul>
 							</div>
-							<MButton onClick={() => router.push(`/${serviceName}/keys`)}>
-								Done
-							</MButton>
+							<Button asChild>
+								<Link href={`/${serviceName}/keys`}>Done</Link>
+							</Button>
 						</div>
 					) : (
-						<MButton
+						<Button
 							onClick={handleSubmit(
 								fields => onSubmit(fields),
 								onErrorSubmiting,
@@ -199,8 +200,8 @@ export default function NewApiKey({
 							loading={isSubmitting}
 							disabled={isSuccess || !watch('name')}
 						>
-							{isSubmitting ? 'Creating key...' : 'Create Key'}
-						</MButton>
+							Create Key
+						</Button>
 					)}
 				</div>
 			</Container>

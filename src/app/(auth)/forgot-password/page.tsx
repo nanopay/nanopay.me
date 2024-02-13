@@ -9,7 +9,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
 import { resetPassword } from './actions'
 import { useTransition } from 'react'
-import MButton from '@/components/MButton'
+import { Button } from '@/components/Button'
 
 interface ResetEmailPassword {
 	email: string
@@ -72,13 +72,14 @@ export default function ForgotPasswordPage() {
 					)}
 				/>
 
-				<MButton
+				<Button
 					type="submit"
 					className="w-full"
 					loading={isSubmitting || isPending}
+					color="nano"
 				>
 					Reset Password
-				</MButton>
+				</Button>
 			</form>
 			<div className="flex flex-col items-center py-6">
 				<h2 className="text-base font-semibold text-slate-600">

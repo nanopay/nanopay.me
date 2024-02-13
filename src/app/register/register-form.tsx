@@ -4,7 +4,6 @@ import { useToast } from '@/hooks/useToast'
 import { useForm, Controller } from 'react-hook-form'
 import Image from 'next/image'
 import Input from '@/components/Input'
-import MButton from '@/components/MButton'
 import { Checkbox } from '@mui/material'
 import { useState, useTransition } from 'react'
 import { JSONSchemaType } from 'ajv'
@@ -13,6 +12,7 @@ import { fullFormats } from 'ajv-formats/dist/formats'
 import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
 import { registerUser } from './actions'
+import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<UserEditables> = {
 	type: 'object',
@@ -124,7 +124,7 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 					</a>
 				</div>
 			</div>
-			<MButton
+			<Button
 				type="submit"
 				loading={isSubmitting || isPending}
 				disabled={
@@ -135,7 +135,7 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 				}
 			>
 				Register Me
-			</MButton>
+			</Button>
 		</form>
 	)
 }

@@ -4,7 +4,6 @@ import Head from 'next/head'
 import { useMutation, useQuery } from 'react-query'
 import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
-import MButton from '@/components/MButton'
 import { Controller, useForm } from 'react-hook-form'
 import {
 	Autocomplete,
@@ -334,9 +333,9 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 				</div>
 			</div>
 			<div className="flex w-full justify-end">
-				<MButton type="submit" loading={isSubmitting} disabled={!isDirty}>
+				<Button type="submit" loading={isSubmitting} disabled={!isDirty}>
 					{isSubmitting ? 'Updating Webhook...' : 'Update Webhook'}
-				</MButton>
+				</Button>
 			</div>
 		</form>
 	)

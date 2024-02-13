@@ -1,7 +1,6 @@
 'use client'
 
 import Input from '@/components/Input'
-import MButton from '@/components/MButton'
 import { useUser } from '@/contexts/UserProvider'
 import { useToast } from '@/hooks/useToast'
 import { UserEditables } from '@/types/users'
@@ -18,6 +17,7 @@ import {
 } from './actions'
 import ImageInput from '@/components/ImageInput'
 import { uploadObject } from '@/services/s3'
+import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<UpdateUserProps> = {
 	type: 'object',
@@ -98,13 +98,13 @@ export default async function Profile() {
 					disabled
 				/>
 			</div>
-			<MButton
+			<Button
 				type="submit"
 				loading={isSubmitting || isPending}
 				disabled={!isDirty}
 			>
 				Update
-			</MButton>
+			</Button>
 		</form>
 	)
 }

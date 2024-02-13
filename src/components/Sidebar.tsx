@@ -29,6 +29,7 @@ import {
 	WebhookIcon,
 	XIcon,
 } from 'lucide-react'
+import { Button } from './Button'
 
 export interface SidebarProps {
 	services: Service[]
@@ -126,7 +127,7 @@ export function Sidebar({ services }: SidebarProps) {
 															className="rounded-full"
 														/>
 													) : (
-														<span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-nano bg-white text-[0.625rem] font-medium text-nano">
+														<span className="border-nano text-nano flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-white text-[0.625rem] font-medium">
 															{currentService.name[0]}
 														</span>
 													)}
@@ -163,7 +164,7 @@ export function Sidebar({ services }: SidebarProps) {
 																		className={clsx(
 																			service.id === service.id
 																				? 'border-nano text-nano'
-																				: 'border-gray-200 text-gray-400 group-hover:border-nano group-hover:text-nano',
+																				: 'group-hover:border-nano group-hover:text-nano border-gray-200 text-gray-400',
 																			'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-white text-[0.625rem] font-medium',
 																		)}
 																	>
@@ -184,9 +185,7 @@ export function Sidebar({ services }: SidebarProps) {
 										No services found
 									</div>
 									<Link href={'/services/new'}>
-										<MButton variant="outlined" color="primary">
-											Create a service
-										</MButton>
+										<Button variant="outline">Create a Service</Button>
 									</Link>
 								</>
 							)}
@@ -205,8 +204,8 @@ export function Sidebar({ services }: SidebarProps) {
 											href={item.href}
 											className={clsx(
 												item.current
-													? 'border-slatel-100 border bg-slate-50 text-nano'
-													: 'text-gray-600 hover:bg-gray-50 hover:text-nano',
+													? 'border-slatel-100 text-nano border bg-slate-50'
+													: 'hover:text-nano text-gray-600 hover:bg-gray-50',
 												'group flex items-center gap-x-4 rounded-md p-3 text-base font-semibold leading-6',
 											)}
 										>
@@ -214,7 +213,7 @@ export function Sidebar({ services }: SidebarProps) {
 												className={clsx(
 													item.current
 														? 'text-nano'
-														: 'text-gray-400 group-hover:text-nano',
+														: 'group-hover:text-nano text-gray-400',
 													'h-6 w-6 shrink-0',
 												)}
 												aria-hidden="true"
@@ -236,8 +235,8 @@ export function Sidebar({ services }: SidebarProps) {
 											href={item.href}
 											className={clsx(
 												item.current
-													? 'border-slatel-100 border bg-slate-50 text-nano'
-													: 'text-gray-700 hover:bg-gray-50 hover:text-nano',
+													? 'border-slatel-100 text-nano border bg-slate-50'
+													: 'hover:text-nano text-gray-700 hover:bg-gray-50',
 												'group flex gap-x-3 rounded-md p-3 text-base font-semibold leading-6',
 											)}
 										>
@@ -245,7 +244,7 @@ export function Sidebar({ services }: SidebarProps) {
 												className={clsx(
 													item.current
 														? 'text-nano'
-														: 'text-gray-400 group-hover:text-nano',
+														: 'group-hover:text-nano text-gray-400',
 													'h-6 w-6 shrink-0',
 												)}
 												aria-hidden="true"

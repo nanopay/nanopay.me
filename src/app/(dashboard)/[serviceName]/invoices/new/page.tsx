@@ -8,7 +8,6 @@ import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
 
 import { Container } from '@/components/Container'
-import MButton from '@/components/MButton'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import api from '@/services/api'
@@ -16,6 +15,7 @@ import { useToast } from '@/hooks/useToast'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
 import { usePreferences } from '@/contexts/PreferencesProvider'
+import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
@@ -212,7 +212,7 @@ export default function NewService({
 					/>
 				</div>
 
-				<MButton
+				<Button
 					onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
 					loading={isSubmitting}
 					disabled={
@@ -223,7 +223,7 @@ export default function NewService({
 					}
 				>
 					{isSubmitting ? 'Creating Invoice...' : 'Create Invoice'}
-				</MButton>
+				</Button>
 			</Container>
 		</>
 	)

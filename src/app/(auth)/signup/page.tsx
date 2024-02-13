@@ -12,7 +12,6 @@ import { fullFormats } from 'ajv-formats/dist/formats'
 import { Controller, useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
 import { signWithGithub } from '../login/actions'
-import MButton from '@/components/MButton'
 import { useTransition } from 'react'
 import { signUpWithPassword } from './actions'
 
@@ -111,13 +110,13 @@ export default function SignUpPage() {
 					)}
 				/>
 
-				<MButton
+				<Button
 					type="submit"
 					className="w-full"
 					loading={isSubmitting || isPending}
 				>
 					Sign Up
-				</MButton>
+				</Button>
 			</div>
 			<div className="flex flex-col items-center py-6">
 				<h2 className="text-base font-semibold text-slate-600">

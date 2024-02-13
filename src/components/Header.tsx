@@ -152,7 +152,11 @@ export function Header({
 													</div>
 													<div className="mt-8 flex flex-col gap-4">
 														<Link href={isAuthenticated ? '/home' : '/login'}>
-															<Button variant="outline" className="w-full">
+															<Button
+																variant="outline"
+																color="slate"
+																className="w-full"
+															>
 																{isAuthenticated ? 'Home' : 'Log in'}
 															</Button>
 														</Link>

@@ -10,7 +10,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
 import { useTransition } from 'react'
 import { sendMagicLink } from './actions'
-import MButton from '@/components/MButton'
+import { Button } from '@/components/Button'
 
 interface MagicEmail {
 	email: string
@@ -75,9 +75,9 @@ export default function MagicLinkPage() {
 					)}
 				/>
 
-				<MButton type="submit" className="w-full" disabled={isSubmitting}>
+				<Button type="submit" className="w-full" disabled={isSubmitting}>
 					Send Magic Link
-				</MButton>
+				</Button>
 			</form>
 			<div className="flex flex-col items-center py-6">
 				<h2 className="text-base font-semibold text-slate-600">

@@ -3,7 +3,6 @@ import logoXno from '@/images/logos/nano-xno.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import QrCodeBorder from './QrCodeBorder'
-import MButton from './MButton'
 import QRCode from 'react-qr-code'
 import {
 	copyToClipboard,
@@ -33,6 +32,7 @@ import {
 	QrCodeIcon,
 } from 'lucide-react'
 import clsx from 'clsx'
+import { Button } from './Button'
 
 interface CheckoutProps {
 	invoiceId: string | number
@@ -226,14 +226,17 @@ export default function Checkout({
 								<h3 className="text-xl font-semibold text-gray-600">Expired</h3>
 								{amountPaid > 0 && (
 									<div className="mt-4 flex flex-col gap-1">
-										<MButton
-											variant="text"
-											className="PayButton w-full sm:w-auto"
-											endIcon={<ReceiptRefundIcon className="h-4 w-4" />}
+										<Link
 											href={`mailto:refund@nanopay.me?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
 										>
-											Refund Ӿ{amountPaid}{' '}
-										</MButton>
+											<Button
+												variant="ghost"
+												className="PayButton w-full sm:w-auto"
+											>
+												Refund Ӿ{amountPaid}
+												<ReceiptRefundIcon className="ml-2 h-4 w-4" />
+											</Button>
+										</Link>
 									</div>
 								)}
 							</div>
@@ -320,14 +323,15 @@ export default function Checkout({
 									</div>
 								)}
 								<div className="mt-4 flex flex-col gap-1">
-									<MButton
-										variant="text"
-										className="PayButton w-full sm:w-auto"
-										endIcon={<ArrowDownToLine className="h-4 w-4" />}
-										href={'#'}
-									>
-										Get Receipt
-									</MButton>
+									<Link href={'#'}>
+										<Button
+											variant="ghost"
+											className="PayButton w-full sm:w-auto"
+										>
+											Get Receipt
+											<ArrowDownToLine className="ml-2 h-4 w-4" />
+										</Button>
+									</Link>
 								</div>
 							</div>
 						</div>
@@ -335,12 +339,10 @@ export default function Checkout({
 						{redirectUrl && (
 							<div className="flex justify-center py-4">
 								<a href={redirectUrl} target="_blank">
-									<MButton
-										className="PayButton w-full sm:w-auto"
-										endIcon={<ExternalLinkIcon className="h-4 w-4" />}
-									>
+									<Button className="PayButton w-full sm:w-auto">
 										Continue to {service?.name || 'Merchant Site'}
-									</MButton>
+										<ExternalLinkIcon className="ml-2 h-4 w-4" />
+									</Button>
 								</a>
 							</div>
 						)}
@@ -389,7 +391,7 @@ export default function Checkout({
 							</div>
 							<div className="hidden sm:block" />
 							<div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-								<div className="h-4 w-4 animate-spin rounded-full border border-t-2 border-nano/40 border-t-nano" />
+								<div className="border-nano/40 border-t-nano h-4 w-4 animate-spin rounded-full border border-t-2" />
 								<div className="flex gap-2">
 									Expires in:
 									{/* Avoid hydration error by not rendering the countdown until the component is mounted */}
@@ -456,7 +458,7 @@ export default function Checkout({
 									</div>
 
 									<div className="hidden items-center justify-center gap-2 py-4 text-xs text-gray-500 sm:flex">
-										<div className="h-4 w-4 animate-spin rounded-full border border-t-2 border-nano/40 border-t-nano" />
+										<div className="border-nano/40 border-t-nano h-4 w-4 animate-spin rounded-full border border-t-2" />
 										<div className="flex gap-2">
 											Expires in:
 											{/* Avoid hydration error by not rendering the countdown until the component is mounted */}
@@ -481,7 +483,7 @@ export default function Checkout({
 								<div>{truncateAddress(address)}</div>
 								<button
 									onClick={() => copyToClipboard(address)}
-									className="text-slate-400 focus:text-nano"
+									className="focus:text-nano text-slate-400"
 								>
 									<CopyIcon className="h-4 w-4" />
 								</button>
@@ -494,13 +496,12 @@ export default function Checkout({
 								</div>
 							</div>
 							<div className="mt-6 flex justify-center">
-								<MButton
-									className="PayButton w-full sm:w-auto"
-									endIcon={<ExternalLinkIcon className="h-4 w-4" />}
-									href={payURI}
-								>
-									Open Wallet
-								</MButton>
+								<Link href={payURI}>
+									<Button className="PayButton w-full sm:w-auto">
+										Open Wallet
+										<ExternalLinkIcon className="ml-2 h-4 w-4" />
+									</Button>
+								</Link>
 							</div>
 
 							{payments.length > 0 && (
@@ -518,18 +519,18 @@ export default function Checkout({
 					</>
 				)}
 
-				<footer className="flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-3 text-center text-2xs text-gray-400 sm:mt-6">
-					<Link href="/terms" className="flex-1 hover:text-nano">
+				<footer className="text-2xs flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-3 text-center text-gray-400 sm:mt-6">
+					<Link href="/terms" className="hover:text-nano flex-1">
 						Terms of Service
 					</Link>
 					<div className="mx-2 text-gray-100">|</div>
-					<Link href="/privacy" className="flex-1 hover:text-nano">
+					<Link href="/privacy" className="hover:text-nano flex-1">
 						Privacy Policy
 					</Link>
 					<div className="mx-2 text-gray-100">|</div>
 					<Link
 						href="mailto:support@nanopay.me"
-						className="flex-1 hover:text-nano"
+						className="hover:text-nano flex-1"
 					>
 						support@nanopay.me
 					</Link>

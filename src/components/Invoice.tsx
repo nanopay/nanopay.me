@@ -12,6 +12,7 @@ import {
 	ClockIcon,
 	PrinterIcon,
 } from 'lucide-react'
+import { Button } from './Button'
 
 interface InvoiceProps {
 	className?: string
@@ -111,9 +112,10 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 				</div>
 			</div>
 			<div className="flex w-full items-center justify-between bg-slate-100 px-8 py-4">
-				<MButton size="small" startIcon={<PrinterIcon className="h-4 w-4" />}>
+				<Button size="sm">
+					<PrinterIcon className="mr-1.5 h-4 w-4" />
 					Print
-				</MButton>
+				</Button>
 				<div>
 					<h3 className="text-xs text-gray-600">Amount Payable</h3>
 					<p className="text-2xl font-semibold text-gray-800">
