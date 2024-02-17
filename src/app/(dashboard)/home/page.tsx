@@ -32,7 +32,7 @@ export default async function Home() {
 	const services = await fetchData()
 
 	return (
-		<div className="grid grid-cols-1 gap-4 lg:col-span-2">
+		<div className="grid w-full grid-cols-1 gap-4 lg:col-span-2">
 			{/* Welcome panel */}
 			<section aria-labelledby="profile-overview-title">
 				<ProfileBoard />

@@ -48,7 +48,7 @@ export default function Webhooks({
 	}
 
 	return (
-		<>
+		<div className="w-full">
 			<Head>
 				<title>Webook Deliveries - NanoPay.me</title>
 			</Head>
@@ -76,7 +76,7 @@ export default function Webhooks({
 			) : (
 				<HookDeliveriesList deliveries={deliveries} />
 			)}
-		</>
+		</div>
 	)
 }
 

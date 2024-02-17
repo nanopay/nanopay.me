@@ -76,7 +76,7 @@ export default async function ServiceDashboardPage({
 	]
 
 	return (
-		<>
+		<div className="w-full">
 			<ServiceHeader service={service} />
 
 			<section className="mt-8" aria-labelledby="service-overview">
@@ -100,6 +100,6 @@ export default async function ServiceDashboardPage({
 			</section>
 
 			{isNew && <Fireworks count={3} />}
-		</>
+		</div>
 	)
 }

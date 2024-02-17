@@ -39,7 +39,7 @@ export default function ApiKeys({
 	}
 
 	return (
-		<>
+		<div className="w-full">
 			<Head>
 				<title>Api Keys - NanoPay.me</title>
 			</Head>
@@ -114,6 +114,6 @@ export default function ApiKeys({
 						))}
 				</ul>
 			</>
-		</>
+		</div>
 	)
 }
