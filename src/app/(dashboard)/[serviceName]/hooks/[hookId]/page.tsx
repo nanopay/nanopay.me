@@ -26,6 +26,7 @@ import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
 import tailwindColors from 'tailwindcss/colors'
 import Link from 'next/link'
+import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',
