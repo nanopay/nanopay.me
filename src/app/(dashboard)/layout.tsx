@@ -61,7 +61,7 @@ export default async function DashboardLayout({
 								production or for high-value payments."
 							/>
 
-							<main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-6 lg:px-6 xl:px-8">
+							<main className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-6 lg:px-6 xl:px-8">
 								{children}
 							</main>
 
