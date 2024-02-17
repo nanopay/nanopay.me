@@ -1,9 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import Head from 'next/head'
 import { useMutation } from 'react-query'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
@@ -11,18 +10,29 @@ import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/url'
-import {
-	Autocomplete,
-	FormControl,
-	FormControlLabel,
-	FormLabel,
-	Radio,
-	RadioGroup,
-	TextField,
-} from '@mui/material'
 import { HookCreate } from '@/types/hooks'
-import { InfoIcon } from 'lucide-react'
+import { AlertCircle, InfoIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
+import {
+	Form,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form'
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+
+const eventTypes = ['invoice.paid', 'invoice.error', 'invoice.expired']
 
 const schema: JSONSchemaType<HookCreate> = {
 	type: 'object',
@@ -43,7 +53,7 @@ const schema: JSONSchemaType<HookCreate> = {
 			type: 'array',
 			items: {
 				type: 'string',
-				enum: ['invoice.paid', 'invoice.error', 'invoice.expired'],
+				enum: eventTypes,
 			},
 			minItems: 1,
 		},
@@ -68,24 +78,19 @@ export default function NewApiKey({
 	const { showError, showSuccess } = useToast()
 	const router = useRouter()
 
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-		setValue,
-		getValues,
-		watch,
-	} = useForm<HookCreate>({
+	const defaultValues = {
+		name: '',
+		description: undefined,
+		url: '',
+		event_types: ['invoice.paid'],
+		secret: undefined,
+	}
+
+	const { setValue, getValues, ...form } = useForm<HookCreate>({
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
-		defaultValues: {
-			name: '',
-			description: undefined,
-			url: '',
-			event_types: ['invoice.paid'],
-			secret: undefined,
-		},
+		defaultValues,
 	})
 
 	const {
@@ -107,10 +112,6 @@ export default function NewApiKey({
 		},
 	})
 
-	if (!serviceName) {
-		return null
-	}
-
 	const onErrorSubmiting = () => {
 		showError('Error creating Webhook', 'Check the fields entered')
 	}
@@ -128,195 +129,174 @@ export default function NewApiKey({
 		}
 	}
 
+	const formDisabled = isSubmitting || isSuccess
+
+	const buttonDisabled =
+		formDisabled || !form.watch('name') || !form.watch('url')
+
 	return (
-		<>
-			<Head>
-				<title>New API Key - NanoPay.me</title>
-			</Head>
-			<form
-				className="flex w-full max-w-2xl flex-1 flex-col items-center rounded-lg bg-white px-8 pb-8 shadow"
-				onSubmit={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
-			>
-				<div className="mb-8 flex w-full items-center justify-center space-x-2 border-b border-slate-200 py-3">
-					<h3 className="text-lg font-semibold text-slate-700">
-						Create a Webhook
-					</h3>
-				</div>
-
-				<div className="flex w-full flex-col gap-y-4 px-4 py-4 sm:px-8">
-					<div>
-						<div className="mb-2 flex items-center text-xs text-gray-600">
-							<InfoIcon className="mr-1 w-4" />
-							<div>
-								Use a name like:{' '}
-								<span className="font-semibold">my-webhook</span>
-								{' or '}
-								<span className="font-semibold">mywebsite.com</span>
-							</div>
-						</div>
-						<Controller
+		<Card className="w-full max-w-xl text-slate-600">
+			<CardHeader>
+				<CardTitle>Create Webhook</CardTitle>
+				<CardDescription>
+					Get real-time notifications directly in your own backend when an event
+					happens in your account. We will send you a <b>POST</b> request with a{' '}
+					<b>JSON</b> payload.
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<Form setValue={setValue} getValues={getValues} {...form}>
+					<form
+						className="flex w-full flex-1 flex-col gap-y-2"
+						onSubmit={form.handleSubmit(
+							fields => onSubmit(fields),
+							onErrorSubmiting,
+						)}
+					>
+						<FormField
 							name="name"
-							control={control}
+							control={form.control}
 							render={({ field }) => (
-								<Input
-									label="Name"
-									{...field}
-									onChange={e => field.onChange(sanitizeSlug(e.target.value))}
-									errorMessage={errors.name?.message}
-									className="w-full"
-									autoCapitalize="words"
-									style={{
-										textTransform: 'capitalize',
-									}}
-									disabled={isSubmitting || isSuccess}
-								/>
+								<FormItem>
+									<Input
+										label="Name"
+										{...field}
+										onChange={e => field.onChange(sanitizeSlug(e.target.value))}
+										required
+										className="w-full"
+										autoCapitalize="words"
+										style={{
+											textTransform: 'capitalize',
+										}}
+										disabled={formDisabled}
+									/>
+									<FormDescription className="flex items-center text-xs text-slate-600">
+										<InfoIcon className="mr-1 w-4" />
+										<div>
+											Use a name like:{' '}
+											<span className="font-semibold">my-webhook</span>
+											{' or '}
+											<span className="font-semibold">mywebsite.com</span>
+										</div>
+									</FormDescription>
+									<FormMessage />
+								</FormItem>
 							)}
 						/>
-					</div>
 
-					<Controller
-						name="description"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Description"
-								{...field}
-								onChange={e => field.onChange(e.target.value.slice(0, 512))}
-								errorMessage={errors.description?.message}
-								className="w-full"
-								multiline={true}
-								disabled={isSubmitting || isSuccess}
-							/>
-						)}
-					/>
-
-					<Controller
-						name="url"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Hook URL"
-								{...field}
-								type="url"
-								onChange={e => field.onChange(e.target.value.slice(0, 512))}
-								errorMessage={errors.url?.message}
-								className="w-full"
-								disabled={isSubmitting || isSuccess}
-							/>
-						)}
-					/>
-
-					<Controller
-						name="event_types"
-						control={control}
-						render={({ field }) => (
-							<FormControl>
-								<FormLabel id="demo-row-radio-buttons-group-label">
-									Event Types
-								</FormLabel>
-								<RadioGroup
-									row
-									aria-labelledby="demo-row-radio-buttons-group-label"
-									name="row-radio-buttons-group"
-									className="flex justify-between text-gray-600"
-								>
-									<FormControlLabel
-										value="invoice.paid"
-										control={<Radio onClick={handleEventType} />}
-										label="Invoice Paid"
-										checked={field.value.includes('invoice.paid')}
-										disabled={isSubmitting || isSuccess}
+						<FormField
+							name="description"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem>
+									<Input
+										label="Description"
+										{...field}
+										onChange={e => field.onChange(e.target.value.slice(0, 512))}
+										className="w-full"
+										multiline={true}
+										disabled={formDisabled}
 									/>
-									<FormControlLabel
-										disabled
-										value="invoice.error"
-										control={<Radio onClick={handleEventType} />}
-										label="Invoice Error"
-										checked={field.value.includes('invoice.error')}
-									/>
-									<FormControlLabel
-										disabled
-										value="invoice.expired"
-										control={<Radio onClick={handleEventType} />}
-										label="Invoice Expired"
-										checked={field.value.includes('invoice.expired')}
-									/>
-								</RadioGroup>
-							</FormControl>
-						)}
-					/>
-
-					<div className="flex justify-between">
-						<Autocomplete
-							options={['POST']}
-							id="method"
-							readOnly
-							defaultValue={'POST'}
-							renderInput={params => (
-								<TextField {...params} label="Method" variant="standard" />
+									<FormMessage />
+								</FormItem>
 							)}
-							className="w-32"
-							disabled
 						/>
-						<Autocomplete
-							options={['application/json']}
-							id="method"
-							readOnly
-							defaultValue={'application/json'}
-							renderInput={params => (
-								<TextField
-									{...params}
-									label="Content Type"
-									variant="standard"
-								/>
-							)}
-							className="w-64"
-							disabled
-						/>
-					</div>
 
-					<Controller
-						name="secret"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Secret (optional)"
-								{...field}
-								onChange={e => field.onChange(e.target.value.slice(0, 512))}
-								errorMessage={errors.secret?.message}
-								className="w-full"
-								disabled={true || isSubmitting || isSuccess}
-							/>
-						)}
-					/>
-					<div className="my-2 rounded border border-yellow-300 bg-yellow-100 p-2 text-sm">
-						<h4 className="font-semibold">Important:</h4>
-						<ul>
-							<li>
-								- Only the events of the next invoices will be delivered for
-								this webhook
-							</li>
-							<li>
-								- If your webhook does not respond with a valid code within 15
-								seconds, we cancel the request. We do not implement retries.
-							</li>
-						</ul>
-					</div>
-				</div>
-				<Button
-					type="submit"
-					loading={isSubmitting}
-					disabled={
-						isSuccess ||
-						!watch('name') ||
-						!watch('url') ||
-						!watch('event_types') ||
-						watch('event_types').length < 1
-					}
-				>
-					Create Webhook
-				</Button>
-			</form>
-		</>
+						<FormField
+							name="url"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem>
+									<Input
+										label="Hook URL"
+										{...field}
+										required
+										type="url"
+										onChange={e => field.onChange(e.target.value.slice(0, 512))}
+										className="w-full"
+										disabled={formDisabled}
+									/>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							name="event_types"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem className="space-y-2">
+									<FormLabel>Event Types</FormLabel>
+									<RadioGroup className="flex space-x-4" aria-multiselectable>
+										{eventTypes.map(eventType => (
+											<div className="flex items-center space-x-2">
+												<RadioGroupItem
+													value={eventType}
+													id={eventType}
+													checked={field.value.includes(eventType)}
+													disabled={formDisabled}
+												/>
+												<Label htmlFor={eventType}>{eventType}</Label>
+											</div>
+										))}
+									</RadioGroup>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							name="secret"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem>
+									<Input
+										label="Secret (optional)"
+										{...field}
+										onChange={e => field.onChange(e.target.value.slice(0, 512))}
+										className="w-full"
+										disabled={true}
+									/>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<WebhookAlert />
+
+						<Button
+							type="submit"
+							loading={isSubmitting}
+							disabled={buttonDisabled}
+							className="mt-2"
+						>
+							Create Webhook
+						</Button>
+					</form>
+				</Form>
+			</CardContent>
+		</Card>
+	)
+}
+
+function WebhookAlert() {
+	return (
+		<Alert className="border-yellow-200 bg-yellow-50">
+			<AlertCircle className="h-4 w-4 !text-yellow-800" />
+			<AlertTitle className="text-yellow-800">Important</AlertTitle>
+			<AlertDescription className="text-yellow-900">
+				<ul className="list-disc">
+					<li>
+						Only the events of the next invoices will be delivered for this
+						webhook
+					</li>
+					<li>
+						If your webhook does not respond with a valid code within 15
+						seconds, we cancel the request. We do not implement retries
+						currently.
+					</li>
+				</ul>
+			</AlertDescription>
+		</Alert>
 	)
 }
