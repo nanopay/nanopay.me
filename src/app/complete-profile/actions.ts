@@ -7,7 +7,10 @@ import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
 import { Database } from '@/types/supabase'
 
-export const registerUser = async ({ name, avatar_url }: UserEditables) => {
+export const createUserProfile = async ({
+	name,
+	avatar_url,
+}: UserEditables) => {
 	const userId = await getUserId(cookies())
 
 	const supabase = createClient(cookies())

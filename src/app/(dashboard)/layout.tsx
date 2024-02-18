@@ -73,7 +73,7 @@ export default async function DashboardLayout({
 		)
 	} catch (error) {
 		if (error instanceof Error && error.message === 'user not found') {
-			redirect('/register')
+			redirect('/complete-profile')
 		}
 	}
 }

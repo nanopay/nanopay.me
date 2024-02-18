@@ -11,7 +11,7 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
-import { registerUser } from './actions'
+import { createUserProfile } from './actions'
 import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<UserEditables> = {
@@ -23,7 +23,7 @@ const schema: JSONSchemaType<UserEditables> = {
 	required: ['name', 'avatar_url'],
 }
 
-export interface RegisterFormProps {
+export interface CompleteProfileFormProps {
 	initialData: {
 		email: string
 		name?: string
@@ -31,7 +31,9 @@ export interface RegisterFormProps {
 	}
 }
 
-export default function RegisterForm({ initialData }: RegisterFormProps) {
+export default function CompleteProfileForm({
+	initialData,
+}: CompleteProfileFormProps) {
 	const [isPending, startTransition] = useTransition()
 
 	const { showError } = useToast()
@@ -60,10 +62,10 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 	const onSubmit = async ({ name, avatar_url }: UserEditables) => {
 		startTransition(async () => {
 			try {
-				await registerUser({ name, avatar_url })
+				await createUserProfile({ name, avatar_url })
 			} catch (error) {
 				showError(
-					'Error registering user',
+					'Error creating user profile',
 					error instanceof Error
 						? error.message
 						: 'Check the data or try again later.',
@@ -82,39 +84,38 @@ export default function RegisterForm({ initialData }: RegisterFormProps) {
 				alt="Logo"
 				width={128}
 				height={128}
-				className="mb-4 rounded-full border-2 border-slate-200"
+				className="rounded-full border-2 border-slate-200"
 				priority
 			/>
-			<div className="flex w-full flex-col space-y-6">
-				<Controller
-					name="name"
-					control={control}
-					render={({ field }) => (
-						<Input
-							label="Name"
-							{...field}
-							onChange={e => field.onChange(e.target.value.slice(0, 40))}
-							errorMessage={errors.name?.message}
-							className="w-full"
-							autoCapitalize="words"
-							style={{
-								textTransform: 'capitalize',
-							}}
-						/>
-					)}
-				/>
 
-				<Input
-					label="E-mail"
-					value={initialData.email}
-					errorMessage={!initialData ? 'Missing email' : undefined}
-					className="w-full"
-					InputLabelProps={{
-						shrink: true,
-					}}
-					disabled
-				/>
-			</div>
+			<Controller
+				name="name"
+				control={control}
+				render={({ field }) => (
+					<Input
+						label="Name *"
+						{...field}
+						onChange={e => field.onChange(e.target.value.slice(0, 40))}
+						errorMessage={errors.name?.message}
+						className="w-full"
+						autoCapitalize="words"
+						style={{
+							textTransform: 'capitalize',
+						}}
+					/>
+				)}
+			/>
+
+			<Input
+				label="E-mail"
+				value={initialData.email}
+				errorMessage={!initialData ? 'Missing email' : undefined}
+				className="w-full"
+				InputLabelProps={{
+					shrink: true,
+				}}
+				disabled
+			/>
 			<div className="flex items-center">
 				<Checkbox checked={acceptTerms} onChange={handleAcceptTerms} />
 				<div>
