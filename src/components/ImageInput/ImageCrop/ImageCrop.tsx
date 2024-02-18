@@ -1,7 +1,17 @@
-import { Slider } from '@mui/material'
 import { useCallback, useState } from 'react'
 import Cropper, { Area } from 'react-easy-crop'
 import { ImageType, ResizeProps, getCroppedImg } from './ImageCropUtils'
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/Button'
+import { XIcon } from 'lucide-react'
+import { Slider } from '@/components/ui/slider'
 
 export interface ImageCropProps {
 	source: string
@@ -10,6 +20,8 @@ export interface ImageCropProps {
 	onConfirm?: (file: File) => void
 	onCancel?: () => void
 }
+
+type SliderProps = React.ComponentProps<typeof Slider>
 
 export default function ImageCrop({
 	source,
@@ -44,17 +56,31 @@ export default function ImageCrop({
 	}, [croppedAreaPixels])
 
 	return (
-		<div className="safe-h-screen fixed inset-0 z-40 flex w-full items-center justify-center bg-black/90">
-			<div className="relative h-4/5 w-full rounded bg-white">
+		<Dialog open={true}>
+			<DialogContent className="flex h-full w-full max-w-3xl flex-1 flex-col gap-0 overflow-hidden border-0 p-0 md:h-[70%]">
+				<DialogHeader className="flex flex-row items-center justify-between gap-2 p-2">
+					<div className="flex w-20 justify-start">
+						<DialogClose onClick={onCancel}>
+							<XIcon className="h-8 w-8 rounded-full bg-slate-200 p-1 text-slate-700" />
+						</DialogClose>
+					</div>
+
+					<DialogTitle className="!m-0 text-base font-medium text-slate-700">
+						Edit image
+					</DialogTitle>
+
+					<Button
+						type="button"
+						onClick={showCroppedImage}
+						className="!m-0 w-20 font-medium text-white"
+						size="sm"
+					>
+						Save
+					</Button>
+				</DialogHeader>
 				<div
-					className="crop-container"
-					style={{
-						position: 'absolute',
-						top: 0,
-						left: 0,
-						right: 0,
-						bottom: '100px',
-					}}
+					className="relative flex w-full flex-1 flex-col rounded bg-white"
+					aria-label="crop-container"
 				>
 					<Cropper
 						image={source}
@@ -68,49 +94,20 @@ export default function ImageCrop({
 						showGrid={false}
 					/>
 				</div>
-				<div
-					style={{
-						position: 'absolute',
-						bottom: 0,
-						left: '50%',
-						width: '70%',
-						transform: 'translateX(-50%)',
-						height: '100px',
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						justifyContent: 'center',
-					}}
-				>
-					<Slider
-						value={zoom}
-						min={1}
-						max={3}
-						step={0.1}
-						aria-labelledby="Zoom"
-						onChange={(e, zoom) => setZoom(zoom as number)}
-						style={{
-							padding: '22px 0px',
-						}}
-					/>
-					<div className="flex w-full justify-around">
-						<button
-							type="button"
-							onClick={onCancel}
-							className="rounded border border-red-400 bg-red-200 px-4 py-2 text-red-800"
-						>
-							Cancel
-						</button>
-						<button
-							type="button"
-							onClick={showCroppedImage}
-							className="rounded border border-green-400 bg-green-200 px-4 py-2 text-green-800"
-						>
-							Confirm
-						</button>
+				<DialogFooter className="w-full bg-white/60">
+					<div className="flex w-full flex-col items-end p-6">
+						<Slider
+							defaultValue={[zoom]}
+							min={1}
+							max={3}
+							step={0.1}
+							aria-labelledby="Zoom"
+							onValueChange={([newZoom]) => setZoom(newZoom)}
+							className="text-nano"
+						/>
 					</div>
-				</div>
-			</div>
-		</div>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	)
 }
