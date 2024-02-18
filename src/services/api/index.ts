@@ -1,5 +1,4 @@
 import { services } from './services'
-import { users } from './users'
 import { invoices } from './invoices'
 import Fetcher from '@/lib/fetcher'
 
@@ -11,7 +10,6 @@ const getErrorMessage = (error: any): string | null => {
 
 const api = {
 	client: fetcher,
-	users: users(fetcher),
 	services: services(fetcher),
 	invoices: invoices(fetcher),
 	getErrorMessage,
