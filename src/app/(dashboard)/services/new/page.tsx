@@ -97,7 +97,7 @@ export default function NewService() {
 
 			<div className="flex w-full flex-col space-y-6 px-4 py-6 sm:px-8">
 				<div>
-					<div className="mb-2 flex items-center text-xs text-gray-600">
+					<div className="mb-2 flex items-center text-xs text-slate-600">
 						<InfoIcon className="mr-1 w-4" />
 						<div>
 							Use a name like: <span className="font-semibold">my-service</span>

@@ -2,6 +2,8 @@
 
 import { useUser } from '@/contexts/UserProvider'
 import Image from 'next/image'
+import { Button } from './Button'
+import Link from 'next/link'
 
 export default function ProfileBoard() {
 	const user = useUser()
@@ -25,37 +27,20 @@ export default function ProfileBoard() {
 							/>
 						</div>
 						<div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-							<p className="text-xs font-medium text-gray-600">Welcome back,</p>
-							<p className="text-xl font-bold text-gray-900 sm:text-2xl">
+							<p className="text-xs font-medium text-slate-600">
+								Welcome back,
+							</p>
+							<p className="text-xl font-bold text-slate-900 sm:text-2xl">
 								{user.name}
 							</p>
-							<p className="text-sm font-medium text-gray-600">{user.email}</p>
+							<p className="text-sm font-medium text-slate-600">{user.email}</p>
 						</div>
 					</div>
 					<div className="mt-5 flex justify-center sm:mt-0">
-						<a
-							href="#"
-							className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-slate-50"
-						>
-							View profile
-						</a>
+						<Button asChild variant="outline">
+							<Link href="/profile"> View profile</Link>
+						</Button>
 					</div>
-				</div>
-			</div>
-			<div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-slate-200 bg-slate-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-				<div className="px-6 py-5 text-center text-sm font-medium">
-					<span className="text-gray-900">0</span>{' '}
-					<span className="text-gray-600">...</span>
-				</div>
-
-				<div className="px-6 py-5 text-center text-sm font-medium">
-					<span className="text-gray-900">0</span>{' '}
-					<span className="text-gray-600">...</span>
-				</div>
-
-				<div className="px-6 py-5 text-center text-sm font-medium">
-					<span className="text-gray-900">0</span>{' '}
-					<span className="text-gray-600">...</span>
 				</div>
 			</div>
 		</div>

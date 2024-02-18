@@ -113,7 +113,7 @@ export default function NewApiKey({
 
 				<div className="flex w-full flex-col space-y-6 px-4 py-4 sm:px-8">
 					<div>
-						<div className="mb-2 flex items-center text-xs text-gray-600">
+						<div className="mb-2 flex items-center text-xs text-slate-600">
 							<InfoIcon className="mr-1 w-4" />
 							<div>
 								Use a name like: <span className="font-semibold">my-token</span>
@@ -161,26 +161,26 @@ export default function NewApiKey({
 					{isSuccess ? (
 						<div className="flex flex-col items-center space-y-6">
 							<div className="w-full break-all rounded border-2 border-dashed border-slate-200 p-8">
-								<div className="text-sm leading-3 text-gray-600">
+								<div className="text-sm leading-3 text-slate-600">
 									Your API Key:{' '}
 									<div>
 										<span
 											className={clsx(
 												roboto.className,
-												'text-base text-gray-800',
+												'text-base text-slate-800',
 											)}
 										>
 											{createdApiKey?.apiKey}
 										</span>
 										<button
-											className=" focus:text-nano text-gray-600"
+											className=" focus:text-nano text-slate-600"
 											onClick={() => copy(createdApiKey?.apiKey)}
 										>
 											<CopyIcon className="ml-2 h-4 w-4" />
 										</button>
 									</div>
 								</div>
-								<ul className="my-4 list-disc text-sm text-gray-700">
+								<ul className="my-4 list-disc text-sm text-slate-700">
 									<li>Safely save your key.</li>
 									<li>You will not be able to view this key again</li>
 									<li>This key has no expiration date.</li>

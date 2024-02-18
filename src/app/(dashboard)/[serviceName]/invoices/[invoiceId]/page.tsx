@@ -36,7 +36,7 @@ export default function InvoicePage({
 			<div className="mx-auto flex h-screen w-full max-w-3xl justify-center sm:items-center">
 				<div className="text-center">
 					<h1 className="text-4xl font-bold">Invoice not found</h1>
-					<p className="mt-2 text-gray-500">{api.getErrorMessage(error)}</p>
+					<p className="mt-2 text-slate-500">{api.getErrorMessage(error)}</p>
 				</div>
 			</div>
 		)

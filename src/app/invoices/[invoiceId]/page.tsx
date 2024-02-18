@@ -19,7 +19,7 @@ export default async function InvoicePage({
 			<div className="flex h-full items-center justify-center">
 				<div className="text-center">
 					<h1 className="mb-4 text-2xl font-bold">Error</h1>
-					<p className="text-gray-500">{message}</p>
+					<p className="text-slate-500">{message}</p>
 				</div>
 			</div>
 		)

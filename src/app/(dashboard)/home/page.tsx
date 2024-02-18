@@ -59,7 +59,7 @@ export default async function Home() {
 					<ServicesList services={services} />
 				) : (
 					<div className="shadow0 flex items-center justify-center rounded-lg bg-slate-200 py-16">
-						<p className="text-center text-gray-700">
+						<p className="text-center text-slate-700">
 							You don&apos;t have any services yet.
 						</p>
 					</div>

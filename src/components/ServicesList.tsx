@@ -4,11 +4,11 @@ import DefaultAvatar from './DefaultAvatar'
 
 export default function ServicesList({ services }: { services: Service[] }) {
 	return (
-		<div className="animate-fade-in divide-y divide-gray-200 overflow-hidden rounded-lg bg-slate-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
+		<div className="animate-fade-in divide-y divide-slate-200 overflow-hidden rounded-lg bg-slate-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
 			{services?.map((service, index) => (
 				<div
 					key={index}
-					className="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-nano/60"
+					className="focus-within:ring-nano/60 group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset"
 				>
 					<div>
 						<span className="inline-flex rounded-full bg-sky-50 p-3 text-sky-700 ring-4 ring-white">
@@ -27,10 +27,10 @@ export default function ServicesList({ services }: { services: Service[] }) {
 								{service.name}
 							</Link>
 						</h3>
-						<p className="mt-2 text-sm text-gray-500">{service.description}</p>
+						<p className="mt-2 text-sm text-slate-500">{service.description}</p>
 					</div>
 					<span
-						className="pointer-events-none absolute right-6 top-6 text-gray-300 group-hover:text-gray-400"
+						className="pointer-events-none absolute right-6 top-6 text-slate-300 group-hover:text-slate-400"
 						aria-hidden="true"
 					>
 						<svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

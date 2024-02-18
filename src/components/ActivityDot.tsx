@@ -1,6 +1,6 @@
 const statusColor = {
 	active: 'green',
-	inactive: 'gray',
+	inactive: 'slate',
 	pending: 'yellow',
 	error: 'red',
 }

@@ -61,7 +61,7 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 			<div className="flex-1 bg-white px-4">
 				<div className="flex h-20 w-full justify-between border-b border-slate-200 py-4">
 					<div>
-						<h3 className="mb-1 text-xs font-semibold text-gray-500">
+						<h3 className="mb-1 text-xs font-semibold text-slate-500">
 							Merchant:
 						</h3>
 						<div className="flex space-x-2">
@@ -76,7 +76,7 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 						</div>
 					</div>
 					<div>
-						<h3 className="mb-1 text-xs font-semibold text-gray-500">
+						<h3 className="mb-1 text-xs font-semibold text-slate-500">
 							Status:
 						</h3>
 						<p className="text-xl font-semibold capitalize text-sky-600">
@@ -86,13 +86,13 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 				</div>
 				<div className="flex w-full flex-1 flex-col justify-between space-x-4 divide-x divide-slate-200 px-4 py-8 sm:flex-row">
 					<div>
-						<h1 className="text-md font-semibold text-gray-600">
+						<h1 className="text-md font-semibold text-slate-600">
 							{invoice.title}
 						</h1>
-						<p className="text-xs text-gray-500">{invoice.description}</p>
+						<p className="text-xs text-slate-500">{invoice.description}</p>
 					</div>
 					<div className="flex flex-col items-center px-8">
-						<h3 className="mb-4 w-full text-left text-xs text-gray-600">
+						<h3 className="mb-4 w-full text-left text-xs text-slate-600">
 							Go to Checkout:
 						</h3>
 						<div className="relative flex h-24 w-24 flex-none items-center justify-center">
@@ -117,8 +117,8 @@ export default function Invoice({ className, invoice }: InvoiceProps) {
 					Print
 				</Button>
 				<div>
-					<h3 className="text-xs text-gray-600">Amount Payable</h3>
-					<p className="text-2xl font-semibold text-gray-800">
+					<h3 className="text-xs text-slate-600">Amount Payable</h3>
+					<p className="text-2xl font-semibold text-slate-800">
 						Ӿ {invoice.price}
 					</p>
 				</div>

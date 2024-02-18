@@ -47,20 +47,20 @@ export default function Error({
 					Oops something went wrong.
 				</h1>
 				{message && (
-					<p className="mt-5 border-b border-gray-100 pb-4 font-semibold text-slate-600 lg:text-lg">
+					<p className="mt-5 border-b border-slate-100 pb-4 font-semibold text-slate-600 lg:text-lg">
 						Error Message: <span className="font-medium">{message}</span>
 					</p>
 				)}
 				<div className="mt-5 flex justify-center">
 					<button
 						onClick={reset}
-						className="flex gap-2 rounded-lg bg-nano/50 px-3 py-2 font-semibold uppercase text-slate-800"
+						className="bg-nano/50 flex gap-2 rounded-lg px-3 py-2 font-semibold uppercase text-slate-800"
 					>
 						<RefreshCcwIcon className="h-6 w-6" />
 						<span>Try again</span>
 					</button>
 				</div>
-				<p className="mt-5 border-t border-gray-100 pt-4 text-sm text-slate-600 lg:text-base">
+				<p className="mt-5 border-t border-slate-100 pt-4 text-sm text-slate-600 lg:text-base">
 					Feel free to contact us if the problem presists:
 				</p>
 				<p className="mt-1 text-sm font-semibold text-slate-600 lg:text-base">

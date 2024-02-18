@@ -260,7 +260,7 @@ const HookForm = ({ hook }: { hook: Hook }) => {
 									row
 									aria-labelledby="demo-row-radio-buttons-group-label"
 									name="row-radio-buttons-group"
-									className="flex justify-between text-gray-600"
+									className="flex justify-between text-slate-600"
 								>
 									<FormControlLabel
 										value="invoice.paid"

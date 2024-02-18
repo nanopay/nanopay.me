@@ -114,7 +114,7 @@ export default function Checkout({
 					<a
 						href={process.env.NEXT_PUBLIC_BASE_URL}
 						target="_blank"
-						className="flex flex-col text-gray-200"
+						className="flex flex-col text-slate-200"
 					>
 						<span className="text-xs font-semibold">Powered by</span>
 						<Logo className="h-auto w-full" theme="dark" />
@@ -223,7 +223,9 @@ export default function Checkout({
 										/>
 									</g>
 								</svg>
-								<h3 className="text-xl font-semibold text-gray-600">Expired</h3>
+								<h3 className="text-xl font-semibold text-slate-600">
+									Expired
+								</h3>
 								{amountPaid > 0 && (
 									<div className="mt-4 flex flex-col gap-1">
 										<Link
@@ -244,11 +246,11 @@ export default function Checkout({
 
 						<div className="sm:px-4">
 							<div className="flex justify-between border-y border-dashed border-slate-200 py-2 text-sm">
-								<div className="text-gray-500">Invoice</div>
-								<div className="font-medium text-gray-900">#{invoiceId}</div>
+								<div className="text-slate-500">Invoice</div>
+								<div className="font-medium text-slate-900">#{invoiceId}</div>
 							</div>
 							<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
-								<div className="text-gray-500">Expired At</div>
+								<div className="text-slate-500">Expired At</div>
 								{formatDateTime(expiresAt.toDateString())}
 							</div>
 
@@ -314,11 +316,11 @@ export default function Checkout({
 										/>
 									</g>
 								</svg>
-								<h3 className="text-xl font-semibold text-gray-600">
+								<h3 className="text-xl font-semibold text-slate-600">
 									Paid Ӿ{amountPaid}
 								</h3>
 								{usd && (
-									<div className="text-sm leading-3 text-gray-500 sm:text-xs">
+									<div className="text-sm leading-3 text-slate-500 sm:text-xs">
 										~ US${toFiatCurrency(usd)}
 									</div>
 								)}
@@ -349,11 +351,11 @@ export default function Checkout({
 
 						<div className="sm:px-4">
 							<div className="flex justify-between border-y border-dashed border-slate-200 py-2 text-sm">
-								<div className="text-gray-500">Invoice</div>
-								<div className="font-medium text-gray-900">#{invoiceId}</div>
+								<div className="text-slate-500">Invoice</div>
+								<div className="font-medium text-slate-900">#{invoiceId}</div>
 							</div>
 							<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
-								<div className="text-gray-500">Paid At</div>
+								<div className="text-slate-500">Paid At</div>
 								{formatDateTime(lastPayment.timestamp)}
 							</div>
 
@@ -390,7 +392,7 @@ export default function Checkout({
 								</div>
 							</div>
 							<div className="hidden sm:block" />
-							<div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+							<div className="flex items-center justify-center gap-2 text-xs text-slate-500">
 								<div className="border-nano/40 border-t-nano h-4 w-4 animate-spin rounded-full border border-t-2" />
 								<div className="flex gap-2">
 									Expires in:
@@ -400,7 +402,7 @@ export default function Checkout({
 											date={expiresAt}
 											zeroPadTime={2}
 											renderer={props => (
-												<div className="font-medium text-gray-900">
+												<div className="font-medium text-slate-900">
 													{props.minutes}:{props.seconds}
 												</div>
 											)}
@@ -422,7 +424,7 @@ export default function Checkout({
 									</div>
 								</div>
 								<div className="flex flex-1 flex-col items-center justify-center">
-									<div className="flex flex-col items-center justify-center gap-1 py-2 text-gray-800 sm:py-4">
+									<div className="flex flex-col items-center justify-center gap-1 py-2 text-slate-800 sm:py-4">
 										{missingAmount.toString().length > 2 ? (
 											<>
 												<Image
@@ -451,13 +453,13 @@ export default function Checkout({
 											</div>
 										)}
 										{usd && (
-											<div className="text-sm leading-3 text-gray-500 sm:text-xs">
+											<div className="text-sm leading-3 text-slate-500 sm:text-xs">
 												~ US${toFiatCurrency(usd)}
 											</div>
 										)}
 									</div>
 
-									<div className="hidden items-center justify-center gap-2 py-4 text-xs text-gray-500 sm:flex">
+									<div className="hidden items-center justify-center gap-2 py-4 text-xs text-slate-500 sm:flex">
 										<div className="border-nano/40 border-t-nano h-4 w-4 animate-spin rounded-full border border-t-2" />
 										<div className="flex gap-2">
 											Expires in:
@@ -467,7 +469,7 @@ export default function Checkout({
 													date={expiresAt}
 													zeroPadTime={2}
 													renderer={props => (
-														<div className="font-medium text-gray-900">
+														<div className="font-medium text-slate-900">
 															{props.minutes}:{props.seconds}
 														</div>
 													)}
@@ -478,7 +480,7 @@ export default function Checkout({
 								</div>
 							</div>
 
-							<div className="mt-4 flex items-center justify-between gap-2 border-y border-dashed border-slate-200 py-2 text-sm text-gray-500">
+							<div className="mt-4 flex items-center justify-between gap-2 border-y border-dashed border-slate-200 py-2 text-sm text-slate-500">
 								<div>Send to:</div>
 								<div>{truncateAddress(address)}</div>
 								<button
@@ -491,8 +493,8 @@ export default function Checkout({
 
 							<div className="text-sm">
 								<div className="flex justify-between border-b border-dashed border-slate-200 py-2">
-									<div className="text-gray-500">Invoice</div>
-									<div className="font-medium text-gray-900">#{invoiceId}</div>
+									<div className="text-slate-500">Invoice</div>
+									<div className="font-medium text-slate-900">#{invoiceId}</div>
 								</div>
 							</div>
 							<div className="mt-6 flex justify-center">
@@ -519,15 +521,15 @@ export default function Checkout({
 					</>
 				)}
 
-				<footer className="text-2xs flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-3 text-center text-gray-400 sm:mt-6">
+				<footer className="text-2xs flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-3 text-center text-slate-400 sm:mt-6">
 					<Link href="/terms" className="hover:text-nano flex-1">
 						Terms of Service
 					</Link>
-					<div className="mx-2 text-gray-100">|</div>
+					<div className="mx-2 text-slate-100">|</div>
 					<Link href="/privacy" className="hover:text-nano flex-1">
 						Privacy Policy
 					</Link>
-					<div className="mx-2 text-gray-100">|</div>
+					<div className="mx-2 text-slate-100">|</div>
 					<Link
 						href="mailto:support@nanopay.me"
 						className="hover:text-nano flex-1"

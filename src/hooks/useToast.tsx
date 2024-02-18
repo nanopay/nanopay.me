@@ -19,8 +19,8 @@ const Msg = ({
 	description?: string
 }) => (
 	<div>
-		<h2 className="text-md text-semibold text-gray-600">{title}</h2>
-		{description && <p className="text-sm text-gray-500">{description}</p>}
+		<h2 className="text-md text-semibold text-slate-600">{title}</h2>
+		{description && <p className="text-sm text-slate-500">{description}</p>}
 	</div>
 )
 

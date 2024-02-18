@@ -16,7 +16,6 @@ import {
 } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import MButton from './MButton'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 import {
 	BanknoteIcon,
@@ -97,17 +96,17 @@ export function Sidebar({ services }: SidebarProps) {
 	return (
 		<div className="fixed inset-y-0 z-50 flex flex-col lg:w-72">
 			{/* Sidebar component, swap this element with another sidebar if you like */}
-			<div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+			<div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-slate-200 bg-white px-6 pb-4">
 				<div className="flex h-16 shrink-0 items-center">
 					<Logo className="w-48" />
 				</div>
 				<nav className="flex flex-1 flex-col">
 					<ul role="list" className="flex flex-1 flex-col gap-y-7">
-						<li className="border-b border-gray-100 pb-4">
+						<li className="border-b border-slate-100 pb-4">
 							{services.length > 0 ? (
 								<>
 									{currentService && (
-										<div className="text-sm font-semibold leading-6 text-gray-500">
+										<div className="text-sm font-semibold leading-6 text-slate-500">
 											Current Service
 										</div>
 									)}
@@ -164,7 +163,7 @@ export function Sidebar({ services }: SidebarProps) {
 																		className={clsx(
 																			service.id === service.id
 																				? 'border-nano text-nano'
-																				: 'group-hover:border-nano group-hover:text-nano border-gray-200 text-gray-400',
+																				: 'group-hover:border-nano group-hover:text-nano border-slate-200 text-slate-400',
 																			'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-white text-[0.625rem] font-medium',
 																		)}
 																	>
@@ -181,7 +180,7 @@ export function Sidebar({ services }: SidebarProps) {
 								</>
 							) : (
 								<>
-									<div className="mb-2 text-xs font-semibold leading-6 text-gray-400">
+									<div className="mb-2 text-xs font-semibold leading-6 text-slate-400">
 										No services found
 									</div>
 									<Link href={'/services/new'}>
@@ -205,7 +204,7 @@ export function Sidebar({ services }: SidebarProps) {
 											className={clsx(
 												item.current
 													? 'border-slatel-100 text-nano border bg-slate-50'
-													: 'hover:text-nano text-gray-600 hover:bg-gray-50',
+													: 'hover:text-nano text-slate-600 hover:bg-slate-50',
 												'group flex items-center gap-x-4 rounded-md p-3 text-base font-semibold leading-6',
 											)}
 										>
@@ -213,7 +212,7 @@ export function Sidebar({ services }: SidebarProps) {
 												className={clsx(
 													item.current
 														? 'text-nano'
-														: 'group-hover:text-nano text-gray-400',
+														: 'group-hover:text-nano text-slate-400',
 													'h-6 w-6 shrink-0',
 												)}
 												aria-hidden="true"
@@ -236,7 +235,7 @@ export function Sidebar({ services }: SidebarProps) {
 											className={clsx(
 												item.current
 													? 'border-slatel-100 text-nano border bg-slate-50'
-													: 'hover:text-nano text-gray-700 hover:bg-gray-50',
+													: 'hover:text-nano text-slate-700 hover:bg-slate-50',
 												'group flex gap-x-3 rounded-md p-3 text-base font-semibold leading-6',
 											)}
 										>
@@ -244,7 +243,7 @@ export function Sidebar({ services }: SidebarProps) {
 												className={clsx(
 													item.current
 														? 'text-nano'
-														: 'group-hover:text-nano text-gray-400',
+														: 'group-hover:text-nano text-slate-400',
 													'h-6 w-6 shrink-0',
 												)}
 												aria-hidden="true"
@@ -282,7 +281,7 @@ export function TransitionSidebar({ services }: SidebarProps) {
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<div className="fixed inset-0 bg-gray-900/80" />
+						<div className="fixed inset-0 bg-slate-900/80" />
 					</Transition.Child>
 
 					<div className="fixed inset-0 flex">
