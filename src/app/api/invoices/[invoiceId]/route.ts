@@ -32,13 +32,12 @@ export async function GET(
 		.eq('id', invoiceId as string)
 		.single()
 
-	if (error) {
-		console.log('error', error)
+	if (error && error.code !== 'PGRST116') {
 		return Response.json({ message: error.message }, { status: 500 })
 	}
 
 	if (!invoice) {
-		return Response.json({ message: 'Invoice not found' }, { status: 404 })
+		return Response.json({ message: 'invoice not found' }, { status: 404 })
 	}
 
 	const isOwner = invoice.service[0]?.user_id === user?.id
