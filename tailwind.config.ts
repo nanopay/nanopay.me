@@ -40,7 +40,7 @@ const config = {
 				'5xl': '2.5rem',
 			},
 			colors: ({ colors }) => ({
-				gray: colors.neutral,
+				gray: colors.slate,
 				'nano-light': '#d2ebfa',
 				nano: '#209CE9',
 				'nano-dark': '#4a90e2',
