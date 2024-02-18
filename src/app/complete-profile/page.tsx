@@ -2,7 +2,6 @@ import { createClient } from '@/utils/supabase/server'
 import CompleteProfileForm from './complete-profile-form'
 import { cookies } from 'next/headers'
 import { DEFAULT_AVATAR_URL } from '@/constants'
-import api from '@/services/api'
 import { redirect } from 'next/navigation'
 import {
 	Card,
@@ -12,6 +11,23 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { Logomark } from '@/components/Logo'
+
+export async function checkUserProfileExists(): Promise<boolean> {
+	const supabase = createClient(cookies())
+
+	const { error } = await supabase.from('profiles').select('*').single()
+
+	if (error) {
+		if (error.code === 'PGRST116') {
+			// Ok, not found
+			return false
+		}
+		throw new Error(error.message)
+	}
+
+	// No error means we found
+	return true
+}
 
 export default async function CompleteUserProfile() {
 	const supabase = createClient(cookies())
@@ -24,29 +40,14 @@ export default async function CompleteUserProfile() {
 		throw new Error('No user data')
 	}
 
-	try {
-		const userProfile = await api.users.retrieve({
-			headers: {
-				Cookie: cookies().toString(),
-			},
-		})
-
-		if (!!userProfile) {
-			// Register is already done
-			redirect('/home')
-		}
-	} catch (error) {
-		if (!(error instanceof Error) || error.message !== 'user not found') {
-			throw error
-		}
-	}
-
-	if (!session.user) {
-		throw new Error('No user data')
-	}
-
 	if (!session.user.email) {
 		throw new Error('No user email')
+	}
+
+	const userProfileExists = await checkUserProfileExists()
+
+	if (userProfileExists) {
+		redirect('/home')
 	}
 
 	return (
