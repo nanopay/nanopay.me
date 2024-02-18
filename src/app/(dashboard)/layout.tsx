@@ -3,34 +3,64 @@ import { TransitionSidebar } from '@/components/Sidebar'
 import Appbar from '@/components/Appbar'
 import PopupAlert from '@/components/PopupAlert'
 import { UserProvider } from '@/contexts/UserProvider'
-import { getUserId } from '@/utils/supabase/server'
+import { createClient, getUserId } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
-import api from '@/services/api'
 import { redirect } from 'next/navigation'
 import PreferencesProvider from '@/contexts/PreferencesProvider'
+import { unstable_cache } from 'next/cache'
+import { Service } from '@/types/services'
+import { User } from '@/types/users'
+
+export async function fetchUser(): Promise<User> {
+	const supabase = createClient(cookies())
+
+	const { data, error } = await supabase.from('profiles').select('*').single()
+
+	if (error && error.code !== 'PGRST116') {
+		throw new Error(error.message)
+	}
+
+	if (!data) {
+		// User has been deleted
+		await supabase.auth.signOut()
+		redirect('/login')
+	}
+
+	return {
+		id: data.user_id,
+		name: data.name,
+		email: data.email,
+		avatar_url: data.avatar_url,
+	}
+}
+
+export async function fetchUserServices(): Promise<Service[]> {
+	const supabase = createClient(cookies())
+
+	const { data, error } = await supabase.from('services').select('*')
+
+	if (error && error.code !== 'PGRST116') {
+		throw new Error(error.message)
+	}
+
+	return data || []
+}
 
 async function fetchData() {
 	const userId = await getUserId(cookies())
 
+	const getCachedUser = unstable_cache(fetchUser, [`user-${userId}-profile`], {
+		revalidate: false,
+	})
+	const getCachedServices = unstable_cache(
+		fetchUserServices,
+		[`user-${userId}-services`],
+		{ revalidate: false },
+	)
+
 	const [user, services] = await Promise.all([
-		api.users.retrieve({
-			headers: {
-				Cookie: cookies().toString(),
-			},
-			next: {
-				revalidate: false,
-				tags: [`user-${userId}`],
-			},
-		}),
-		api.services.list({
-			headers: {
-				Cookie: cookies().toString(),
-			},
-			next: {
-				revalidate: false,
-				tags: [`user-${userId}-services`],
-			},
-		}),
+		getCachedUser(),
+		getCachedServices(),
 	])
 
 	return {
