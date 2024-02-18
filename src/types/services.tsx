@@ -1,7 +1,7 @@
 export interface ServiceCreate {
 	name: string
 	avatar_url?: string | null
-	description: string
+	description?: string | null
 }
 
 export interface Service extends ServiceCreate {
