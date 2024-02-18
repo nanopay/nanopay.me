@@ -4,7 +4,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
 
 const supabaseUrl = process.env.SUPABASE_URL!
-const supabaseKey = process.env.SUPABASE_SECRET_KEY!
+const supabaseKey = process.env.SUPABASE_ANON_KEY!
 
 export const createClient = (request: NextRequest) => {
 	// Create an unmodified response
