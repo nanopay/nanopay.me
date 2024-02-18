@@ -4,7 +4,6 @@ import { useToast } from '@/hooks/useToast'
 import { useForm, Controller } from 'react-hook-form'
 import Image from 'next/image'
 import Input from '@/components/Input'
-import { Checkbox } from '@mui/material'
 import { useState, useTransition } from 'react'
 import { JSONSchemaType } from 'ajv'
 import { ajvResolver } from '@hookform/resolvers/ajv'
@@ -13,6 +12,9 @@ import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
 import { createUserProfile } from './actions'
 import { Button } from '@/components/Button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { CheckedState } from '@radix-ui/react-checkbox'
+import Link from 'next/link'
 
 const schema: JSONSchemaType<UserEditables> = {
 	type: 'object',
@@ -55,8 +57,8 @@ export default function CompleteProfileForm({
 		}),
 	})
 
-	const handleAcceptTerms = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setAcceptTerms(event.target.checked)
+	const handleAcceptTerms = (checked: CheckedState) => {
+		setAcceptTerms(checked === true)
 	}
 
 	const onSubmit = async ({ name, avatar_url }: UserEditables) => {
@@ -116,14 +118,21 @@ export default function CompleteProfileForm({
 				}}
 				disabled
 			/>
-			<div className="flex items-center">
-				<Checkbox checked={acceptTerms} onChange={handleAcceptTerms} />
-				<div>
+			<div className="flex select-none items-center gap-2">
+				<Checkbox
+					id="terms"
+					checked={acceptTerms}
+					onCheckedChange={handleAcceptTerms}
+				/>
+				<label
+					htmlFor="terms"
+					className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+				>
 					I agree to the{' '}
-					<a href="/terms" target="_blank" className="text-nano">
+					<Link href="/terms" target="_blank" className="text-nano">
 						terms of service
-					</a>
-				</div>
+					</Link>
+				</label>
 			</div>
 			<Button
 				type="submit"
