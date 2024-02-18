@@ -33,7 +33,12 @@ const schema: JSONSchemaType<ServiceCreate> = {
 			maxLength: 256,
 			nullable: true,
 		},
-		description: { type: 'string', minLength: 1, maxLength: 512 },
+		description: {
+			type: 'string',
+			minLength: 1,
+			maxLength: 512,
+			nullable: true,
+		},
 	},
 	required: ['name'],
 	additionalProperties: false,

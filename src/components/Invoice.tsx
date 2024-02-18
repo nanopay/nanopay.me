@@ -4,7 +4,6 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import QRCode from 'react-qr-code'
 import { Logo } from './Logo'
-import MButton from './MButton'
 import QrCodeBorder from './QrCodeBorder'
 import {
 	ArrowUpRightFromSquare,

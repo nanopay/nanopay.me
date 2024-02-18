@@ -116,19 +116,6 @@ export default function NewApiKey({
 		showError('Error creating Webhook', 'Check the fields entered')
 	}
 
-	const handleEventType = (e: any) => {
-		const currentValues = getValues('event_types')
-		const item = (e.target as HTMLInputElement).value
-		if (currentValues.includes(item)) {
-			setValue(
-				'event_types',
-				currentValues.filter(i => i !== item),
-			)
-		} else {
-			setValue('event_types', [...currentValues, item])
-		}
-	}
-
 	const formDisabled = isSubmitting || isSuccess
 
 	const buttonDisabled =
@@ -229,7 +216,10 @@ export default function NewApiKey({
 									<FormLabel>Event Types</FormLabel>
 									<RadioGroup className="flex space-x-4" aria-multiselectable>
 										{eventTypes.map(eventType => (
-											<div className="flex items-center space-x-2">
+											<div
+												className="flex items-center space-x-2"
+												key={eventType}
+											>
 												<RadioGroupItem
 													value={eventType}
 													id={eventType}
