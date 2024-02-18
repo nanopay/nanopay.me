@@ -6,6 +6,7 @@ import { Logomark } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import xnoHeart from '@/images/xno-heart.svg'
 import QrCodeBorder from './QrCodeBorder'
+import { CONTACT_EMAIL } from '@/constants'
 
 export function Footer() {
 	return (
@@ -44,10 +45,10 @@ export function Footer() {
 				</div>
 				<div className="flex flex-col items-center border-t border-slate-200 py-8 md:flex-row-reverse md:justify-between md:pt-6">
 					<Link
-						href="mailto:hello@nanopay.me"
+						href={`mailto:${CONTACT_EMAIL}`}
 						className="text-sm text-slate-500"
 					>
-						hello@nanopay.me
+						{CONTACT_EMAIL}
 					</Link>
 					<p className="mt-6 text-sm text-slate-500 md:mt-0">
 						&copy; Copyright {new Date().getFullYear()}. All rights reserved.

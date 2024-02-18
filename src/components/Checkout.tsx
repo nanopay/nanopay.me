@@ -33,6 +33,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 import { Button } from './Button'
+import { REFUND_EMAIL, SUPPORT_EMAIL } from '@/constants'
 
 interface CheckoutProps {
 	invoiceId: string | number
@@ -229,7 +230,7 @@ export default function Checkout({
 								{amountPaid > 0 && (
 									<div className="mt-4 flex flex-col gap-1">
 										<Link
-											href={`mailto:refund@nanopay.me?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
+											href={`mailto:${REFUND_EMAIL}?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
 										>
 											<Button
 												variant="ghost"
@@ -531,10 +532,10 @@ export default function Checkout({
 					</Link>
 					<div className="mx-2 text-slate-100">|</div>
 					<Link
-						href="mailto:support@nanopay.me"
+						href={`mailto:${SUPPORT_EMAIL}`}
 						className="hover:text-nano flex-1"
 					>
-						support@nanopay.me
+						{SUPPORT_EMAIL}
 					</Link>
 				</footer>
 			</main>

@@ -2,6 +2,10 @@ import { getSiteUrl } from './utils/url'
 
 export const SITE_URL = getSiteUrl()
 
+export const CONTACT_EMAIL = 'hello@nanopay.me'
+export const SUPPORT_EMAIL = 'support@nanopay.me'
+export const REFUND_EMAIL = 'refund@nanopay.me'
+
 export const INVOICE_MINIMUM_PRICE = 0.0001
 export const MAX_HOOKS = 5
 

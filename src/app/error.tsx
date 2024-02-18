@@ -1,5 +1,6 @@
 'use client'
 
+import { SUPPORT_EMAIL } from '@/constants'
 import { RefreshCcwIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
@@ -64,8 +65,8 @@ export default function Error({
 					Feel free to contact us if the problem presists:
 				</p>
 				<p className="mt-1 text-sm font-semibold text-slate-600 lg:text-base">
-					<Link href="mailto:support@nanopay.me" className="hover:text-nano">
-						support@nanopay.me
+					<Link href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-nano">
+						{SUPPORT_EMAIL}
 					</Link>
 				</p>
 			</div>

@@ -17,6 +17,7 @@ import {
 import { Nunito } from 'next/font/google'
 import clsx from 'clsx'
 import { AnimatedBackgroundIllustration } from './BackgroundIllustration'
+import { SUPPORT_EMAIL } from '@/constants'
 
 const nunito = Nunito({
 	weight: ['500'],
@@ -91,8 +92,8 @@ function AppDemo() {
 							Privacy Policy
 						</Link>
 						<div className="mx-2 text-slate-100">|</div>
-						<Link href="mailto:support@nanopay.me" className="flex-1">
-							support@nanopay.me
+						<Link href={`mailto:${SUPPORT_EMAIL}`} className="flex-1">
+							{SUPPORT_EMAIL}
 						</Link>
 					</div>
 				</div>

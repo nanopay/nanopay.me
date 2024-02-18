@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { Container } from '@/components/Container'
+import { CONTACT_EMAIL } from '@/constants'
 
 const faqs = [
 	[
@@ -60,10 +61,10 @@ export function Faqs() {
 					<p className="mt-2 text-lg text-slate-600">
 						If you have anything else you want to ask reach out to us at:{' '}
 						<Link
-							href="mailto:hello@nanopay.me"
+							href={`mailto:${CONTACT_EMAIL}`}
 							className="text-slate-900 underline"
 						>
-							hello@nanopay.me
+							{CONTACT_EMAIL}
 						</Link>
 						.
 					</p>
