@@ -10,6 +10,7 @@ import PreferencesProvider from '@/contexts/PreferencesProvider'
 import { unstable_cache } from 'next/cache'
 import { Service } from '@/types/services'
 import { User } from '@/types/users'
+import { DEFAULT_AVATAR_URL } from '@/constants'
 
 export async function fetchUser(): Promise<User> {
 	const supabase = createClient(cookies())
@@ -30,7 +31,7 @@ export async function fetchUser(): Promise<User> {
 		id: data.user_id,
 		name: data.name,
 		email: data.email,
-		avatar_url: data.avatar_url,
+		avatar_url: data.avatar_url || DEFAULT_AVATAR_URL,
 	}
 }
 
