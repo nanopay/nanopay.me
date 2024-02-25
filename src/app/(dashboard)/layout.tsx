@@ -22,9 +22,7 @@ export async function fetchUser(): Promise<User> {
 	}
 
 	if (!data) {
-		// User has been deleted
-		await supabase.auth.signOut()
-		redirect('/login')
+		throw new Error('profile not found')
 	}
 
 	return {
@@ -103,8 +101,9 @@ export default async function DashboardLayout({
 			</UserProvider>
 		)
 	} catch (error) {
-		if (error instanceof Error && error.message === 'user not found') {
+		if (error instanceof Error && error.message === 'profile not found') {
 			redirect('/complete-profile')
 		}
+		throw error
 	}
 }
