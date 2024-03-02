@@ -54,7 +54,7 @@ This is an alpha release, not recommended for production use yet.
 
 ## Authors
 
-- Kaique Nunes (@anarkrypto)
+- Kaique Nunes ([@anarkrypto](https://github.com/anarkrypto))
 
 ## Security
 
