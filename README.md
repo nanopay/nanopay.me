@@ -1,34 +1,73 @@
-# nanopay.me
+<p align="center">
+  <a href="https://nanopay.me">
+    <picture>
+      <img src="https://static.nanopay.me/images/logo-rounded.png" height="128">
+    </picture>
+    <h1 align="center">NanoPay.me</h1>
+  </a>
+</p>
 
-NanoPay.me is a nanocurrency payment gateway built using [Next.js](https://nextjs.org), [Tailwind CSS](https://tailwindcss.com) and typescript.
+A nanocurrency payment gateway focused on user experience.
 
-## Getting started
+Join the alfa: https://nanopay.me
 
-To get started with this template, first install the npm dependencies:
+# Features
 
-```bash
-npm install
-```
+- Create multiple services
+- Create and share invoices
+- Receive webhooks
+- Merchant REST API
 
-Next, run the development server:
+![nanodrop-desktop-mobile](https://github.com/nanopay/nanopay.me/assets/32111208/6c2c7a31-a178-4fd5-b442-5e5579f41cf1)
 
-```bash
-npm run dev
-```
+## Principles
 
-Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
+- It must be safe
+- It must be fast
+- It must be scalable
+- It must be cheaper to mantain
+- All technologies chosen should be free, Open Source and very tested.
+- The UI should be friendly, beautiful, clean and intuitive
+- Provide great UX: usability, accessibility, utility, performance, consistency, clarity, feedback, flexibility, aesthetics, emotion.
 
-## Customizing
+## Technologies:
 
-You can start editing this template by modifying the files in the `/src` folder. The site will auto-update as you edit these files.
+- Typescript
+- Next.js
+- Tailwind CSS
+- Shadcn UI, Radix UI
+
+## Community
+
+You can currently find us in the Nano official discord:
+https://chat.nano.org/
+
+## Contributing
+
+Contributions to NanoPay.me are welcome and highly appreciated!
+
+Check our Contribution Guidelines.
+
+## 🚧 Work in progress!
+
+This is an alpha release, not recommended for production use yet.
+
+## Authors
+
+- Kaique Nunes (@anarkrypto)
+
+## Security
+
+If you believe you have found a security vulnerability in NanoPay.me, we encourage you to responsibly disclose this and NOT open a public issue.
+We will investigate all legitimate reports. Email security@nanopay.me to disclose any security vulnerabilities
 
 ## License
 
 MIT
 
-## Learn more
+## Donate Ӿ
 
-To learn more about the technologies used in this site template, see the following resources:
+If you find this library useful and want to support its development please consider donating:
+**nano_3dqh8z8ncswmf7151gryu7mqpwbw4f68hi7d8g433omtuabfi438etyyp9ik**
 
-- [Next.js](https://nextjs.org/docs) - the official Next.js documentation
-- [Tailwind CSS](https://tailwindcss.com/docs) - the official Tailwind CSS documentation
+<kbd><img src="https://i.ibb.co/Gs6yhv2/nano-wallet-js-qr-code.png" width="200px" height="200px" /></kbd>
