@@ -1,6 +1,6 @@
 import { BackgroundIllustration } from '@/components/BackgroundIllustration'
 
-export default function RegisterLayout({
+export default function SetupLayout({
 	children,
 }: {
 	children: React.ReactNode
