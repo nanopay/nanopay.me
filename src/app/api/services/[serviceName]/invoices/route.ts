@@ -1,8 +1,7 @@
-import * as nanocurrency from 'nanocurrency'
 import Ajv, { JSONSchemaType } from 'ajv'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
-import paymentWorker from '@/services/paymentWorker'
+import paymentGateway from '@/services/payment-gateway'
 import addFormats from 'ajv-formats'
 import { NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
@@ -77,8 +76,8 @@ export async function POST(
 	}
 
 	try {
-		const { id, pay_address, expires_at } = await paymentWorker.invoices.create(
-			{
+		const { id, pay_address, expires_at } =
+			await paymentGateway.invoices.create({
 				service_id: service.id,
 				title,
 				description,
@@ -86,8 +85,7 @@ export async function POST(
 				price,
 				recipient_address,
 				redirect_url,
-			},
-		)
+			})
 
 		return Response.json({
 			id,
@@ -103,12 +101,15 @@ export async function POST(
 			invoices_limit_reset_at: expires_at,
 		})
 	} catch (error: any) {
-		console.error('Payment Worker Error:', paymentWorker.getErrorMessage(error))
+		console.error(
+			'Payment Worker Error:',
+			paymentGateway.getErrorMessage(error),
+		)
 		return Response.json(
 			{
 				message:
 					'Failed to queue payment worker: ' +
-					paymentWorker.getErrorMessage(error),
+					paymentGateway.getErrorMessage(error),
 			},
 			{ status: 500 },
 		)

@@ -21,7 +21,7 @@ export interface CreateInvoiceResponse {
 	expires_at: string
 }
 
-const paymentWorker = {
+const paymentGateway = {
 	client: fetcher,
 	getErrorMessage: (error: any): string => {
 		return error.message
@@ -41,4 +41,4 @@ const paymentWorker = {
 	},
 }
 
-export default paymentWorker
+export default paymentGateway
