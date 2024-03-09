@@ -25,5 +25,5 @@ export const createUserProfile = async ({
 		throw new Error(createError.message)
 	}
 
-	redirect('/home')
+	redirect('/services/new')
 }
