@@ -38,7 +38,7 @@ export async function fetchUserServices(): Promise<Service[]> {
 
 	const { data, error } = await supabase.from('services').select('*')
 
-	if (error && error.code !== 'PGRST116') {
+	if (error) {
 		throw new Error(error.message)
 	}
 
@@ -75,6 +75,10 @@ export default async function DashboardLayout({
 }) {
 	try {
 		const { user, services } = await fetchData()
+
+		if (services.length === 0) {
+			redirect('/services/new')
+		}
 
 		return (
 			<UserProvider user={user}>
