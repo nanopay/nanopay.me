@@ -1,6 +1,6 @@
 'use client'
 
-import Invoice from '@/components/Invoice'
+import { InvoiceCard } from '@/components/InvoiceCard'
 import Loading from '@/components/Loading'
 import api from '@/services/api'
 import Head from 'next/head'
@@ -48,7 +48,7 @@ export default function InvoicePage({
 				<title>Invoice - NanoPay.me</title>
 			</Head>
 			<div className="w-full max-w-5xl sm:mx-auto sm:mt-4">
-				<Invoice invoice={invoice} />
+				<InvoiceCard invoice={invoice} />
 			</div>
 		</>
 	)
