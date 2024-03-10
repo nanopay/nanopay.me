@@ -13,9 +13,7 @@ export interface HookUpdate extends HookCreate {}
 
 export interface Hook extends HookCreate {
 	id: string
-	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 	service: string
-	headers: Record<string, any>
 	active: boolean
 	created_at: string
 }

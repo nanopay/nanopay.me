@@ -84,18 +84,12 @@ export async function POST(
 		)
 	}
 
-	const headers = {
-		'Content-Type': 'application/json',
-	}
-
 	const { error: hookError, data: hook } = await supabase
 		.from('hooks')
 		.insert([
 			{
 				...body,
 				service_id: service.id,
-				method: 'POST',
-				headers,
 			},
 		])
 		.select('id')
