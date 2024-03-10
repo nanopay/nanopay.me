@@ -4,8 +4,18 @@ export interface ServiceCreate {
 	description?: string | null
 }
 
+export interface PublicService {
+	name: string
+	display_name: string
+	avatar_url: string | null
+	description: string | null
+	website: string | null
+	contact_email: string | null
+}
+
 export interface Service extends ServiceCreate {
 	id: string
+	user_id: string
 	display_name: string
 	website: string | null
 	contact_email: string | null
