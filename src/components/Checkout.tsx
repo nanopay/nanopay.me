@@ -14,7 +14,7 @@ import Countdown from 'react-countdown'
 import { convert, Unit } from 'nanocurrency'
 import { useEffect, useState } from 'react'
 import { Payment } from '@/types/payment'
-import { Service } from '@/types/services'
+import { PublicService } from '@/types/services'
 import Transactions from './Transactions'
 import {
 	Accordion,
@@ -34,18 +34,19 @@ import {
 import clsx from 'clsx'
 import { Button } from './Button'
 import { REFUND_EMAIL, SUPPORT_EMAIL } from '@/constants'
+import { redirectToMerchant } from '@/app/invoices/[invoiceId]/actions'
 
 interface CheckoutProps {
-	invoiceId: string | number
+	invoiceId: string
 	title: string
-	description?: string
+	description: string | null
 	address: string
 	amount: number
 	usd: number
 	expiresAt: Date
 	payments: Payment[]
-	service: Omit<Service, 'api_keys_count'>
-	redirectUrl?: string
+	service: PublicService
+	hasRedirectUrl: boolean
 }
 
 export default function Checkout({
@@ -58,7 +59,7 @@ export default function Checkout({
 	payments,
 	expiresAt,
 	service,
-	redirectUrl,
+	hasRedirectUrl,
 }: CheckoutProps) {
 	const [rendered, setRendered] = useState(false)
 
@@ -84,6 +85,10 @@ export default function Checkout({
 
 	const isExpired =
 		!paid && new Date(expiresAt).getTime() - new Date().getTime() < 0
+
+	const handleRedirectToMerchant = () => {
+		redirectToMerchant(invoiceId)
+	}
 
 	return (
 		<div className="flex w-full flex-col rounded-3xl shadow md:flex-row">
@@ -339,14 +344,16 @@ export default function Checkout({
 							</div>
 						</div>
 
-						{redirectUrl && (
+						{hasRedirectUrl && (
 							<div className="flex justify-center py-4">
-								<a href={redirectUrl} target="_blank">
-									<Button className="PayButton w-full sm:w-auto">
-										Continue to {service?.name || 'Merchant Site'}
-										<ExternalLinkIcon className="ml-2 h-4 w-4" />
-									</Button>
-								</a>
+								<Button
+									className="PayButton w-full sm:w-auto"
+									type="button"
+									onClick={handleRedirectToMerchant}
+								>
+									Continue to {service.name}
+									<ExternalLinkIcon className="ml-2 h-4 w-4" />
+								</Button>
 							</div>
 						)}
 

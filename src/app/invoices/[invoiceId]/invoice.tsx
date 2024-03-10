@@ -1,14 +1,15 @@
 'use client'
 
 import Checkout from '@/components/Checkout'
-import { Invoice } from '@/types/invoice'
+import { PublicInvoice } from '@/types/invoice'
 import { useEffect, useState } from 'react'
 import Pusher from 'pusher-js'
 import { Payment } from '@/types/payment'
 
 interface PayInvoiceProps {
-	invoice: Invoice
+	invoice: PublicInvoice
 	payments: Payment[]
+	hasRedirectUrl: boolean
 }
 
 interface PaymentNotification {
@@ -20,6 +21,7 @@ interface PaymentNotification {
 export default function PayInvoice({
 	invoice,
 	payments: _payments,
+	hasRedirectUrl,
 }: PayInvoiceProps) {
 	const [payments, setPayments] = useState<Payment[]>(_payments)
 
@@ -72,7 +74,7 @@ export default function PayInvoice({
 				payments={payments}
 				expiresAt={new Date(invoice.expires_at)}
 				service={invoice.service}
-				redirectUrl={invoice.redirect_url}
+				hasRedirectUrl={hasRedirectUrl}
 			/>
 		</div>
 	)

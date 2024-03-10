@@ -5,6 +5,7 @@ import { FetcherError } from '@/lib/fetcher'
 import Image from 'next/image'
 import Link from 'next/link'
 import { SUPPORT_EMAIL } from '@/constants'
+import paymentGateway from '@/services/payment-gateway'
 
 interface InvoicePageProps {
 	params: {
@@ -16,23 +17,28 @@ export default async function InvoicePage({
 	params: { invoiceId },
 }: InvoicePageProps) {
 	try {
-		const invoice = await api.invoices.get(invoiceId, {
+		const invoice = await paymentGateway.invoices.get(invoiceId, {
 			next: {
-				revalidate: false,
+				revalidate: 1,
 				tags: [`invoice-${invoiceId}`],
 			},
 		})
+
 		const payments = await api.invoices.payments(invoiceId, {
 			next: {
-				revalidate: false,
+				revalidate: 1,
 				tags: [`invoice-${invoiceId}-payments`],
 			},
 		})
 
-		return <PayInvoice invoice={invoice} payments={payments} />
+		return (
+			<PayInvoice
+				invoice={invoice}
+				payments={payments}
+				hasRedirectUrl={!!invoice.redirect_url}
+			/>
+		)
 	} catch (error) {
-		console.log(error, '8**')
-
 		if (error instanceof FetcherError && error.status === 404) {
 			return (
 				<div className="flex h-screen items-center justify-center">
