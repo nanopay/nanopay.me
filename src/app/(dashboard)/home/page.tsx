@@ -2,7 +2,6 @@ import { Button } from '@/components/Button'
 import api from '@/services/api'
 import ServicesList from '@/components/ServicesList'
 import ProfileBoard from '@/components/ProfileBoard'
-import Invoices from '@/components/Invoices'
 import { cookies } from 'next/headers'
 import { Service } from '@/types/services'
 import { getUserId } from '@/utils/supabase/server'
@@ -64,12 +63,6 @@ export default async function Home() {
 						</p>
 					</div>
 				)}
-			</section>
-			<section aria-labelledby="invoices" className="mt-8">
-				<h2 className="mx-auto mb-2 max-w-7xl px-2 text-lg font-medium leading-6 text-slate-900">
-					All Invoices
-				</h2>
-				<Invoices invoices={[]} />
 			</section>
 		</div>
 	)
