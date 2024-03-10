@@ -1,6 +1,6 @@
 import Fetcher, { FetcherOptions } from '@/lib/fetcher'
 import { InvoiceCreate, InvoiceStatus } from '@/types/invoice'
-import { Service } from '@/types/services'
+import { PublicService } from '@/types/services'
 
 const fetcher = new Fetcher(process.env.PAYMENT_WORKER_URL!)
 
@@ -37,10 +37,8 @@ export type FullInvoiceWithService = {
 	recipient_address: string
 	redirect_url: string | null
 	refunded_amount: number
-	service_id: string | null
-	user_id: string | null
 	created_at: string
-	service: Service | null
+	service: PublicService
 }
 
 const paymentGateway = {
