@@ -20,7 +20,6 @@ export async function GET(
 	} = await supabase.auth.getUser()
 
 	if (userError && userError.status !== 401) {
-		console.log('userError', userError)
 		return Response.json({ message: userError.message }, { status: 500 })
 	}
 
@@ -29,7 +28,7 @@ export async function GET(
 		.select(
 			'*, service:services(name, display_name, avatar_url, description, id, website, contact_email, user_id)',
 		)
-		.eq('id', invoiceId as string)
+		.eq('id', invoiceId)
 		.single()
 
 	if (error && error.code !== 'PGRST116') {
@@ -40,7 +39,7 @@ export async function GET(
 		return Response.json({ message: 'invoice not found' }, { status: 404 })
 	}
 
-	const isOwner = invoice.service[0]?.user_id === user?.id
+	const isOwner = invoice.service?.user_id === user?.id
 
 	return Response.json({
 		id: invoice.id,
