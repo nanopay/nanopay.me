@@ -1,10 +1,16 @@
+'use client'
+
+import { GlobeIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import DefaultAvatar from '@/components/DefaultAvatar'
+import { deleteService } from './actions'
 import { Service } from '@/types/services'
-import { GlobeIcon, PlusIcon, SettingsIcon } from 'lucide-react'
-import Link from 'next/link'
 
-export default function ServiceHeader({ service }: { service: Service }) {
+export interface SettingsProps {
+	service: Service
+}
+
+export function Settings({ service }: SettingsProps) {
 	return (
 		<header className="rounded-lg bg-white shadow">
 			<div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
@@ -59,21 +65,14 @@ export default function ServiceHeader({ service }: { service: Service }) {
 						</div>
 					</div>
 					<div className="mt-6 flex space-x-3 md:ml-4 md:mt-0">
-						<Button variant="outline" color="nano" asChild>
-							<Link href={`/${service.name}/settings`}>
-								<SettingsIcon
-									className="-ml-1 mr-2 h-4 w-4"
-									aria-hidden="true"
-								/>
-								Settings
-							</Link>
+						<Button
+							variant="destructive"
+							color="nano"
+							onClick={() => deleteService(service.name)}
+						>
+							<TrashIcon className="-ml-1 mr-2 h-4 w-4" aria-hidden="true" />
+							Delete
 						</Button>
-						<Link href={`/${service.name}/invoices/new`}>
-							<Button color="nano">
-								<PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-								Create Invoice
-							</Button>
-						</Link>
 					</div>
 				</div>
 			</div>
