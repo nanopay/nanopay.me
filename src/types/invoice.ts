@@ -1,4 +1,4 @@
-import { Service } from './services'
+import { PublicService, Service } from './services'
 
 export type InvoiceStatus =
 	| 'pending'
@@ -30,4 +30,19 @@ export interface Invoice extends InvoiceCreate {
 	received_amount: number
 	refunded_amount: number
 	service: Omit<Service, 'api_keys_count'>
+}
+
+export interface PublicInvoice {
+	id: string
+	title: string
+	description: string | null
+	price: number
+	currency: string
+	status: InvoiceStatus
+	expires_at: string
+	created_at: string
+	pay_address: string
+	received_amount: number
+	refunded_amount: number
+	service: PublicService | null
 }
