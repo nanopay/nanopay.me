@@ -44,5 +44,5 @@ export interface PublicInvoice {
 	pay_address: string
 	received_amount: number
 	refunded_amount: number
-	service: PublicService | null
+	service: PublicService
 }
