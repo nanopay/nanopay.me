@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-	title: 'New API Key',
+	title: 'New Webhook',
 }
 
 export default function NewApiKeyLayout({
