@@ -34,8 +34,11 @@ Join the alfa: https://nanopay.me
 
 - Typescript
 - Next.js
+- Supabase
 - Tailwind CSS
 - Shadcn UI, Radix UI
+
+Read more in our detailed document [TECHNOLOGIES.md](TECHNOLOGIES.md)
 
 ## Community
 
