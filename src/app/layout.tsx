@@ -1,5 +1,4 @@
-import '@/styles/styles.css'
-import '@/styles/tailwind.css'
+import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { Inter } from 'next/font/google'
 import ClientContexts from './clientContexts'

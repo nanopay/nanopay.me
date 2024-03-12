@@ -10,6 +10,7 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
+import { cn } from '@/lib/utils'
 
 function MenuIcon(props: React.ComponentProps<'svg'>) {
 	return (
@@ -95,7 +96,7 @@ export function Header({
 	const isHome = pathname?.startsWith('/home')
 
 	return (
-		<header {...props}>
+		<header {...props} className={cn('', props.className)}>
 			<nav>
 				<Container
 					className={clsx('relative z-50 flex justify-between', sizes.py)}
