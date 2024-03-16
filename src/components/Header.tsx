@@ -172,7 +172,7 @@ export function Header({
 
 						<div className="hidden lg:block">
 							<Link href={isAuthenticated ? '/home' : '/login'}>
-								<Button color="slate">
+								<Button color="slate" className="p-5 text-lg">
 									{isAuthenticated ? 'Home' : 'Log in'}
 								</Button>
 							</Link>
