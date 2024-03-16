@@ -114,7 +114,7 @@ export function Hero() {
 								nunito.className,
 							)}
 						>
-							Pay and receive payments with Nano.
+							Pay and get paid with Nano
 						</h1>
 						<div className="mt-6 flex flex-col gap-4 text-lg text-slate-600">
 							<p>
@@ -134,13 +134,29 @@ export function Hero() {
 							)}
 						>
 							<Link href="/login">
-								<Button color="nano" className="text-lg">
+								<Button color="nano" className="text-xl" size="lg">
 									Join the Alfa
 								</Button>
 							</Link>
 							<Link href="/demo">
-								<Button variant="outline" color="nano" className="text-lg">
-									<PlayIcon className="mr-2 h-6 w-6" />
+								<Button
+									variant="outline"
+									color="nano"
+									className="text-xl"
+									size="lg"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										className="mr-2 h-6 w-6"
+									>
+										<path
+											fill-rule="evenodd"
+											d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
+											clip-rule="evenodd"
+										/>
+									</svg>
 									Demo
 								</Button>
 							</Link>
