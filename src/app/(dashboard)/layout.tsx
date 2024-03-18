@@ -48,15 +48,19 @@ export async function fetchUserServices(): Promise<Service[]> {
 async function fetchData() {
 	const userId = await getUserId(cookies())
 
-	const getCachedUser = unstable_cache(fetchUser, undefined, {
+	const getCachedUser = unstable_cache(fetchUser, [`user-${userId}-profile`], {
 		revalidate: false,
 		tags: [`user-${userId}-profile`],
 	})
 
-	const getCachedServices = unstable_cache(fetchUserServices, undefined, {
-		revalidate: false,
-		tags: [`user-${userId}-services`],
-	})
+	const getCachedServices = unstable_cache(
+		fetchUserServices,
+		[`user-${userId}-services`],
+		{
+			revalidate: false,
+			tags: [`user-${userId}-services`],
+		},
+	)
 
 	const [user, services] = await Promise.all([
 		getCachedUser(),
