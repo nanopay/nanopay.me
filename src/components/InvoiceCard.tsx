@@ -1,8 +1,13 @@
 import { Invoice as IInvoice } from '@/types/invoice'
 import { formatDateTime } from '@/utils/others'
 import { ArrowUpRightFromSquare, CalendarIcon, ClockIcon } from 'lucide-react'
-import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
-import { CardContent } from '@mui/material'
+import {
+	Card,
+	CardDescription,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from './ui/card'
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '@/lib/utils'
