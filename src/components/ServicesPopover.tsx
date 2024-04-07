@@ -1,4 +1,3 @@
-import { Label } from '@/components/ui/label'
 import {
 	Popover,
 	PopoverContent,
@@ -33,7 +32,11 @@ export function ServicesPopover({
 					</div>
 					<div className="grid gap-2">
 						{services.map(service => (
-							<Link href={`/${service.name}`} className="w-full">
+							<Link
+								href={`/${service.name}`}
+								className="w-full"
+								key={service.id}
+							>
 								<Button
 									variant="ghost"
 									key={service.id}
