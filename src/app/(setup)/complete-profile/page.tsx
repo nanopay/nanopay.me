@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/card'
 import { Logomark } from '@/components/Logo'
 
-export async function checkUserProfileExists(): Promise<boolean> {
+async function checkUserProfileExists(): Promise<boolean> {
 	const supabase = createClient(cookies())
 
 	const { error } = await supabase.from('profiles').select('*').single()
