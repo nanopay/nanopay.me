@@ -22,7 +22,7 @@ import {
 	AccordionSummary,
 	Typography,
 } from '@mui/material'
-import DefaultAvatar from './DefaultAvatar'
+import { DefaultAvatar } from './DefaultAvatar'
 import {
 	AlertCircleIcon,
 	ArrowDownToLine,
@@ -95,17 +95,11 @@ export default function Checkout({
 			<nav className="hidden w-72 flex-col items-center justify-between gap-16 border-r border-[#1e2c3d] bg-[#1e2c3d] px-4 py-2 sm:rounded-l-3xl md:flex">
 				<div className="hidden md:block">
 					<div className="mt-4 flex flex-col items-center gap-2 p-4 text-white">
-						{service.avatar_url ? (
-							<Image
-								alt={service.name}
-								src={service.avatar_url}
-								width={64}
-								height={64}
-								className="rounded-full border-2 border-slate-400 bg-white"
-							/>
-						) : (
-							<DefaultAvatar name={service.display_name} />
-						)}
+						<DefaultAvatar
+							id={service.id}
+							src={service.avatar_url}
+							alt={service.display_name}
+						/>
 						<h2 className="text-lg font-semibold">{service.display_name}</h2>
 					</div>
 					<div className="h-1/2 overflow-y-auto">

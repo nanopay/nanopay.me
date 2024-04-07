@@ -1,10 +1,11 @@
 import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
-import { Inter } from 'next/font/google'
+import { Inter, Open_Sans } from 'next/font/google'
 import ClientContexts from './clientContexts'
 import NProgressBar from '@/components/NProgressBar'
 
 const inter = Inter({ subsets: ['latin'] })
+const openSans = Open_Sans({ subsets: ['latin'] })
 
 export const metadata = {
 	title: {
@@ -21,7 +22,7 @@ export default async function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>
+			<body className={openSans.className}>
 				<ClientContexts>
 					<div className="flex min-h-screen flex-col">{children}</div>
 					<NProgressBar />

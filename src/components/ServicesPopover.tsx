@@ -5,7 +5,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover'
 import { Service } from '@/types/services'
-import DefaultAvatar from './DefaultAvatar'
+import { DefaultAvatar } from './DefaultAvatar'
 import { PlusCircleIcon } from 'lucide-react'
 import { Button } from './Button'
 import Link from 'next/link'
@@ -40,9 +40,10 @@ export function ServicesPopover({
 									className="flex w-full items-center justify-start gap-2 text-lg font-medium"
 								>
 									<DefaultAvatar
-										name={service.display_name}
+										id={service.id}
 										size={24}
 										src={service.avatar_url}
+										alt={service.display_name}
 										className="border-slate-300"
 									/>
 									{service.name}
