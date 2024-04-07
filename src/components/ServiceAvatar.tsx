@@ -1,8 +1,7 @@
-import clsx from 'clsx'
 import Image from 'next/image'
 import { forwardRef } from 'react'
 
-export interface DefaultAvatarProps
+export interface ServiceAvatarProps
 	extends React.HTMLAttributes<HTMLDivElement> {
 	id: string
 	alt: string
@@ -10,13 +9,14 @@ export interface DefaultAvatarProps
 	src?: string | null
 }
 
-export const DefaultAvatar = forwardRef<HTMLImageElement, DefaultAvatarProps>(
-	function DefaultAvatar(
+export const ServiceAvatar = forwardRef<HTMLImageElement, ServiceAvatarProps>(
+	function ServiceAvatar(
 		{ id, size = 40, src, alt, className, style, ...props },
 		ref,
 	) {
 		return (
 			<Image
+				{...props}
 				ref={ref}
 				className="rounded-full"
 				width={size}

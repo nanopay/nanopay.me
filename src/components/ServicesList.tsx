@@ -1,6 +1,6 @@
 import { Service } from '@/types/services'
 import Link from 'next/link'
-import { DefaultAvatar } from './DefaultAvatar'
+import { ServiceAvatar } from './ServiceAvatar'
 
 export default function ServicesList({ services }: { services: Service[] }) {
 	return (
@@ -12,7 +12,7 @@ export default function ServicesList({ services }: { services: Service[] }) {
 				>
 					<div>
 						<span className="inline-flex rounded-full bg-sky-50 p-3 text-sky-700 ring-4 ring-white">
-							<DefaultAvatar
+							<ServiceAvatar
 								id={service.id}
 								src={service.avatar_url}
 								size={40}

@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button'
-import { DefaultAvatar } from '@/components/DefaultAvatar'
+import { ServiceAvatar } from '@/components/ServiceAvatar'
 import { Service } from '@/types/services'
 import { GlobeIcon, PlusIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -13,7 +13,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 						{/* Service Profile */}
 						<div className="flex items-center">
 							<div className="hidden sm:flex">
-								<DefaultAvatar
+								<ServiceAvatar
 									id={service.id}
 									size={54}
 									src={service.avatar_url}
@@ -23,7 +23,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 							<div>
 								<div className="flex items-center">
 									<div className="sm:hidden">
-										<DefaultAvatar
+										<ServiceAvatar
 											id={service.id}
 											size={54}
 											src={service.avatar_url}

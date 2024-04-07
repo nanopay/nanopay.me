@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { useUser } from '@/contexts/UserProvider'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 import { BellIcon, ChevronsUpDownIcon } from 'lucide-react'
-import { DefaultAvatar } from './DefaultAvatar'
+import { ServiceAvatar } from './ServiceAvatar'
 import { ServicesPopover } from './ServicesPopover'
 import { Button } from './Button'
 import { Service } from '@/types/services'
@@ -79,7 +79,7 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 									href={`/${currentService.name}`}
 									className="flex items-center gap-2 overflow-hidden text-base font-semibold text-slate-700"
 								>
-									<DefaultAvatar
+									<ServiceAvatar
 										id={currentService.id}
 										size={20}
 										src={currentService.avatar_url}
