@@ -1,113 +1,188 @@
 'use client'
 
-import { Menu, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import clsx from 'clsx'
-import { Logo } from '@/components/Logo'
+import { useState } from 'react'
+import { Logomark } from '@/components/Logo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useUser } from '@/contexts/UserProvider'
 import { usePreferences } from '@/contexts/PreferencesProvider'
-import { BellIcon, ChevronDownIcon, MenuIcon } from 'lucide-react'
+import { BellIcon, ChevronsUpDownIcon } from 'lucide-react'
+import DefaultAvatar from './DefaultAvatar'
+import { ServicesPopover } from './ServicesPopover'
+import { Button } from './Button'
+import { Service } from '@/types/services'
+import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
+import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
+import { AnimatePresence, motion } from 'framer-motion'
+import { UserNavigationPopover } from './UserNavigationPopover'
 
-const userNavigation = [
-	{ name: 'Your profile', href: '/profile' },
-	{ name: 'Logout', href: '/logout' },
-]
+export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {
+	services: Service[]
+}
 
-export default function Appbar() {
+export default function Appbar({ services, ...props }: AppbarProps) {
 	const user = useUser()
-	const { setSidebarOpen } = usePreferences()
+	const { currentService } = usePreferences()
+	const [hoveredLink, setHoveredLink] = useState<string | null>(null)
+
+	const pathname = usePathname()
+
+	const serviceNavigation = [
+		{
+			name: 'Overview',
+			href: `/${currentService?.name}`,
+			current: pathname === '/[serviceName]',
+		},
+		{
+			name: 'Invoices',
+			href: `/${currentService?.name}/invoices`,
+			current: pathname === '/[serviceName]/invoices',
+		},
+		{
+			name: 'Webhooks',
+			href: `/${currentService?.name}/hooks`,
+			current: pathname === '/[serviceName]/hooks',
+		},
+		{
+			name: 'API Keys',
+			href: `/${currentService?.name}/keys`,
+			current: pathname === '/[serviceName]/keys',
+		},
+		{
+			name: 'Settings',
+			href: `/${currentService?.name}/settings`,
+			current: pathname === '/[serviceName]/settings',
+		},
+	]
 
 	return (
-		<div className="sticky top-0 z-40 w-full lg:mx-auto">
-			<div className="flex h-16 items-center gap-x-4 border-b border-slate-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 lg:shadow-none">
-				<button
-					type="button"
-					className="-m-2.5 p-2.5 text-slate-700 lg:hidden"
-					onClick={() => setSidebarOpen(true)}
-				>
-					<span className="sr-only">Open sidebar</span>
-					<MenuIcon className="h-6 w-6" aria-hidden="true" />
-				</button>
+		<>
+			<header
+				{...props}
+				className={cn(
+					'supports-[backdrop-filter]:bg-background/60 flex w-full items-center justify-between gap-8 bg-white/50 px-4 pt-4 backdrop-blur sm:px-6 lg:px-8',
+					props.className,
+				)}
+			>
+				<div className="flex items-center gap-2 overflow-hidden">
+					<Logomark className="ml-2 hidden h-8 w-8 sm:block" />
 
-				{/* Separator */}
-				<div className="h-6 w-px bg-slate-200 lg:hidden" aria-hidden="true" />
+					{currentService && (
+						<>
+							<div className="hidden sm:block">
+								<SlashIcon />
+							</div>
 
-				<div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-					<div className="flex flex-1 items-center">
-						<Logo className="w-36 sm:hidden" />
-					</div>
-					<div className="flex items-center gap-x-4 lg:gap-x-6">
-						<button
-							type="button"
-							className="-m-2.5 p-2.5 text-slate-400 hover:text-slate-500"
-						>
-							<span className="sr-only">View notifications</span>
-							<BellIcon className="h-6 w-6" aria-hidden="true" />
-						</button>
-
-						{/* Separator */}
-						<div
-							className="hidden lg:block lg:h-6 lg:w-px lg:bg-slate-200"
-							aria-hidden="true"
-						/>
-
-						{/* Profile dropdown */}
-						<Menu as="div" className="relative">
-							<Menu.Button className="-m-1.5 flex items-center p-1.5">
-								<span className="sr-only">Open user menu</span>
-								<Image
-									width={40}
-									height={40}
-									className="rounded-full bg-slate-50"
-									src={user.avatar_url}
-									alt=""
-								/>
-								<span className="hidden lg:flex lg:items-center">
-									<span
-										className="ml-4 text-sm font-semibold leading-6 text-slate-900"
-										aria-hidden="true"
-									>
-										{user.name}
-									</span>
-									<ChevronDownIcon
-										className="ml-2 h-5 w-5 text-slate-400"
-										aria-hidden="true"
+							<div className="flex gap-1 overflow-hidden">
+								<Link
+									href={`/${currentService.name}`}
+									className="flex items-center gap-2 overflow-hidden text-base font-semibold text-slate-700"
+								>
+									<DefaultAvatar
+										name={currentService.display_name}
+										size={24}
+										src={currentService.avatar_url}
+										className="border-slate-300"
 									/>
-								</span>
-							</Menu.Button>
-							<Transition
-								as={Fragment}
-								enter="transition ease-out duration-100"
-								enterFrom="transform opacity-0 scale-95"
-								enterTo="transform opacity-100 scale-100"
-								leave="transition ease-in duration-75"
-								leaveFrom="transform opacity-100 scale-100"
-								leaveTo="transform opacity-0 scale-95"
-							>
-								<Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-slate-900/5 focus:outline-none">
-									{userNavigation.map(item => (
-										<Menu.Item key={item.name}>
-											{({ active }) => (
-												<Link
-													href={item.href}
-													className={clsx(
-														active ? 'bg-slate-50' : '',
-														'block px-3 py-1 text-sm leading-6 text-slate-900',
-													)}
-												>
-													{item.name}
-												</Link>
-											)}
-										</Menu.Item>
-									))}
-								</Menu.Items>
-							</Transition>
-						</Menu>
-					</div>
+									<div className="truncate">{currentService.display_name}</div>
+								</Link>
+								<ServicesPopover services={services}>
+									<Button
+										variant="ghost"
+										size="icon"
+										type="button"
+										className="h-8 w-7 active:outline-none"
+									>
+										<ChevronsUpDownIcon className="h-6 w-4 text-slate-500" />
+									</Button>
+								</ServicesPopover>
+							</div>
+						</>
+					)}
 				</div>
-			</div>
-		</div>
+
+				<div className="flex items-center gap-x-4 lg:gap-x-6">
+					<Button
+						type="button"
+						variant="outline"
+						className="hover:text-nano -m-2.5 aspect-square h-8 w-8 rounded-full border-slate-300 p-0 text-slate-500 sm:h-9 sm:w-9"
+					>
+						<span className="sr-only">View notifications</span>
+						<BellIcon className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+					</Button>
+
+					<UserNavigationPopover>
+						<Image
+							width={40}
+							height={40}
+							className="h-8 w-8 rounded-full border border-slate-200 bg-slate-50 sm:h-9 sm:w-9"
+							src={user.avatar_url}
+							alt=""
+						/>
+					</UserNavigationPopover>
+				</div>
+			</header>
+			<nav className="supports-[backdrop-filter]:bg-background/60 sticky top-0 z-20 flex items-center gap-x-4 border-b border-slate-200 bg-white/50 px-4 backdrop-blur sm:gap-x-6 sm:px-6 lg:px-8">
+				<Tabs value={pathname}>
+					<TabsList className="gap-2">
+						{serviceNavigation.map(item => (
+							<TabsTrigger
+								value={item.href}
+								key={item.href}
+								className="group px-0 py-1"
+							>
+								<Link
+									key={item.href}
+									href={item.href}
+									className="relative rounded-md px-3 py-2 text-sm transition-colors delay-150"
+									onMouseEnter={() => setHoveredLink(item.href)}
+									onMouseLeave={() => setHoveredLink(null)}
+								>
+									<AnimatePresence>
+										{hoveredLink === item.href && (
+											<motion.span
+												className="absolute inset-0 rounded-lg bg-slate-100"
+												layoutId="hoverBackground"
+												initial={{ opacity: 0 }}
+												animate={{
+													opacity: 1,
+													transition: { duration: 0.1 },
+												}}
+												exit={{
+													opacity: 0,
+													transition: { duration: 0.1, delay: 0.1 },
+												}}
+											/>
+										)}
+									</AnimatePresence>
+									<span className="relative z-10">{item.name}</span>
+								</Link>
+							</TabsTrigger>
+						))}
+					</TabsList>
+				</Tabs>
+			</nav>
+		</>
+	)
+}
+
+function SlashIcon() {
+	return (
+		<svg
+			className="text-slate-400"
+			data-testid="geist-icon"
+			fill="currentColor"
+			shape-rendering="geometricPrecision"
+			stroke="currentColor"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="2"
+			viewBox="0 0 24 24"
+			height="24"
+			width="24"
+		>
+			<path d="M16.88 3.549L7.12 20.451"></path>
+		</svg>
 	)
 }

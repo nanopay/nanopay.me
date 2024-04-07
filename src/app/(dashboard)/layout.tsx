@@ -1,5 +1,4 @@
 import { Footer } from '@/components/Footer'
-import { TransitionSidebar } from '@/components/Sidebar'
 import Appbar from '@/components/Appbar'
 import PopupAlert from '@/components/PopupAlert'
 import { UserProvider } from '@/contexts/UserProvider'
@@ -89,22 +88,20 @@ export default async function DashboardLayout({
 			<UserProvider user={user}>
 				<PreferencesProvider services={services}>
 					<div className="flex w-full flex-1 flex-col">
-						<TransitionSidebar services={services} />
+						<Appbar services={services} />
 
-						<Appbar />
-
-						<div className="flex flex-1 flex-col lg:pl-72">
+						<div className="mx-auto w-full max-w-7xl px-4 py-4 lg:px-6 xl:px-8">
 							<PopupAlert
 								message="This is the alpha version. It may have bugs. Do not use in
 								production or for high-value payments."
 							/>
-
-							<main className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-6 lg:px-6 xl:px-8">
-								{children}
-							</main>
-
-							<Footer />
 						</div>
+
+						<main className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 pb-4 lg:px-6 xl:px-8">
+							{children}
+						</main>
+
+						<Footer />
 					</div>
 				</PreferencesProvider>
 			</UserProvider>
