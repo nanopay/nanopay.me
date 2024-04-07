@@ -20,7 +20,7 @@ const variantStyles = {
 			'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
 	},
 	ghost: {
-		nano: 'hover:bg-nano/20 hover:text-nano dark:hover:bg-nano dark:hover:text-nano',
+		nano: 'hover:bg-nano/15 hover:text-nano dark:hover:bg-nano dark:hover:text-nano',
 		slate:
 			'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
 	},
