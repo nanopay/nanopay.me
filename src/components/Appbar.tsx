@@ -8,7 +8,7 @@ import { useUser } from '@/contexts/UserProvider'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 import { BellIcon, ChevronsUpDownIcon } from 'lucide-react'
 import { ServiceAvatar } from './ServiceAvatar'
-import { ServicesPopover } from './ServicesPopover'
+import { ServicesNavigationMenu } from './ServicesNavigationMenu'
 import { Button } from './Button'
 import { Service } from '@/types/services'
 import { cn } from '@/lib/utils'
@@ -88,7 +88,7 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 									/>
 									<div className="truncate">{currentService.display_name}</div>
 								</Link>
-								<ServicesPopover services={services}>
+								<ServicesNavigationMenu services={services}>
 									<Button
 										variant="ghost"
 										size="icon"
@@ -97,7 +97,7 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 									>
 										<ChevronsUpDownIcon className="h-6 w-4 text-slate-500" />
 									</Button>
-								</ServicesPopover>
+								</ServicesNavigationMenu>
 							</div>
 						</>
 					)}
