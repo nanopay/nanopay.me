@@ -21,7 +21,7 @@ export default function DashCard({
 		<div
 			{...props}
 			className={clsx(
-				'overflow-hidden rounded-lg bg-white shadow',
+				'overflow-hidden rounded-lg border border-slate-200 bg-white',
 				props.className,
 			)}
 		>

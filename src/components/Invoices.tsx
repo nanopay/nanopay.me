@@ -25,7 +25,7 @@ export default function Invoices({ invoices, serviceName }: InvoicesProps) {
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
-			<div className="shadow sm:hidden">
+			<div className="border border-slate-200 sm:hidden">
 				<ul
 					role="list"
 					className="mt-2 divide-y divide-slate-200 overflow-hidden shadow sm:hidden"
@@ -90,7 +90,7 @@ export default function Invoices({ invoices, serviceName }: InvoicesProps) {
 			<div className="hidden sm:block">
 				<div className="mx-auto max-w-7xl">
 					<div className="mt-2 flex flex-col">
-						<div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+						<div className="min-w-full overflow-hidden overflow-x-auto border border-slate-200 align-middle sm:rounded-lg">
 							<table className="min-w-full divide-y divide-slate-200">
 								<thead>
 									<tr>

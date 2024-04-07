@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function ServiceHeader({ service }: { service: Service }) {
 	return (
-		<header className="rounded-lg bg-white shadow">
+		<header className="rounded-lg border border-slate-200 bg-white">
 			<div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
 				<div className="py-6 md:flex md:items-center md:justify-between">
 					<div className="min-w-0 flex-1">
