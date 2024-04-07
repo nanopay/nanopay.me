@@ -20,7 +20,7 @@ const variantStyles = {
 			'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
 	},
 	ghost: {
-		nano: 'hover:bg-nano hover:text-nano dark:hover:bg-nano dark:hover:text-nano',
+		nano: 'hover:bg-nano/20 hover:text-nano dark:hover:bg-nano dark:hover:text-nano',
 		slate:
 			'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
 	},
@@ -82,7 +82,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | StrictButtonProps>(
 				{...props}
 				className={cn(
 					'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors',
-					'ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2',
+					'ring-offset-white focus-visible:outline-none focus-visible:ring-0',
 					'active:scale-95',
 					'disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300',
 					sizes[size],
