@@ -5,6 +5,7 @@ export interface ServiceCreate {
 }
 
 export interface PublicService {
+	id: string
 	name: string
 	display_name: string
 	avatar_url: string | null
