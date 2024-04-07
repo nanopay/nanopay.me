@@ -7,8 +7,6 @@ import { createContext, useContext, useEffect, useState } from 'react'
 interface PreferencesContextValues {
 	showPreReleaseAlert: boolean
 	setShowPreReleaseAlert: (value: boolean) => void
-	sidebarOpen: boolean
-	setSidebarOpen: (value: boolean) => void
 	currentService: Service | null
 }
 
@@ -24,28 +22,18 @@ export const PreferencesProvider = ({
 	children,
 }: PreferencesProviderProps) => {
 	const [showPreReleaseAlert, setShowPreReleaseAlert] = useState(true)
-	const [sidebarOpen, setSidebarOpen] = useState(false)
-	const [currentService, setCurrentService] = useState<null | Service>(null)
 
 	const serviceName = useParams()?.serviceName
 
-	useEffect(() => {
-		if (serviceName) {
-			setCurrentService(
-				services?.find(service => service.name === serviceName) || null,
-			)
-		} else {
-			setCurrentService(null)
-		}
-	}, [services, serviceName])
+	const currentService = services.find(
+		service => service.name === serviceName,
+	) as Service | null
 
 	return (
 		<PreferencesContext.Provider
 			value={{
 				showPreReleaseAlert,
 				setShowPreReleaseAlert,
-				sidebarOpen,
-				setSidebarOpen,
 				currentService,
 			}}
 		>
