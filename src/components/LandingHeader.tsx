@@ -13,12 +13,12 @@ import { NavLinks } from '@/components/NavLinks'
 import { cn } from '@/lib/utils'
 import { ChevronUpIcon, MenuIcon } from 'lucide-react'
 
-interface HeaderProps extends React.ComponentProps<'header'> {
+interface LandingHeaderProps extends React.ComponentProps<'header'> {
 	isAuthenticated: boolean
 	size?: 'sm' | 'md' | 'lg'
 }
 
-const getSize = (size: HeaderProps['size']) => {
+const getSize = (size: LandingHeaderProps['size']) => {
 	switch (size) {
 		case 'sm':
 			return {
@@ -47,11 +47,11 @@ const getSize = (size: HeaderProps['size']) => {
 	}
 }
 
-export function Header({
+export function LandingHeader({
 	isAuthenticated,
 	size = 'md',
 	...props
-}: HeaderProps) {
+}: LandingHeaderProps) {
 	const pathname = usePathname()
 
 	const sizes = getSize(size)
