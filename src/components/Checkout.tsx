@@ -177,7 +177,7 @@ export default function Checkout({
 									<g
 										id="x-group"
 										stroke="none"
-										stroke-width="1"
+										strokeWidth="1"
 										fill="none"
 										fill-rule="evenodd"
 									>
@@ -198,7 +198,7 @@ export default function Checkout({
 										<circle
 											id="outline"
 											stroke="#be123c"
-											stroke-width="4"
+											strokeWidth="4"
 											cx="66.5"
 											cy="66.5"
 											r="54.5"
@@ -206,7 +206,7 @@ export default function Checkout({
 										<line
 											id="x-line-1"
 											stroke="#FFFFFF"
-											stroke-width="5.5"
+											strokeWidth="5.5"
 											x1="41"
 											y1="41"
 											x2="92"
@@ -215,7 +215,7 @@ export default function Checkout({
 										<line
 											id="x-line-2"
 											stroke="#FFFFFF"
-											stroke-width="5.5"
+											strokeWidth="5.5"
 											x1="41"
 											y1="92"
 											x2="92"
@@ -282,7 +282,7 @@ export default function Checkout({
 									<g
 										id="check-group"
 										stroke="none"
-										stroke-width="1"
+										strokeWidth="1"
 										fill="none"
 										fill-rule="evenodd"
 									>
@@ -303,7 +303,7 @@ export default function Checkout({
 										<circle
 											id="outline"
 											stroke="#07b481"
-											stroke-width="4"
+											strokeWidth="4"
 											cx="66.5"
 											cy="66.5"
 											r="54.5"
@@ -311,7 +311,7 @@ export default function Checkout({
 										<polyline
 											id="check"
 											stroke="#FFFFFF"
-											stroke-width="5.5"
+											strokeWidth="5.5"
 											points="41 70 56 85 92 49"
 										/>
 									</g>
@@ -550,14 +550,14 @@ function ReceiptRefundIcon(props: React.SVGProps<SVGSVGElement>) {
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
-			stroke-width="1.5"
+			strokeWidth="1.5"
 			stroke="currentColor"
 			className={clsx('h-6 w-6', props.className)}
 			{...props}
 		>
 			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 				d="M8.25 9.75h4.875a2.625 2.625 0 0 1 0 5.25H12M8.25 9.75 10.5 7.5M8.25 9.75 10.5 12m9-7.243V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185Z"
 			/>
 		</svg>

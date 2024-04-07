@@ -43,7 +43,7 @@
     <path
       d="M305 14.5H59c-24.577 0-44.5 19.923-44.5 44.5v615c0 23.472 19.028 42.5 42.5 42.5h250c23.472 0 42.5-19.028 42.5-42.5V59c0-24.577-19.923-44.5-44.5-44.5Z"
       stroke="url(#p)" stroke-opacity=".5" />
-    <g filter="url(#q)" shape-rendering="crispEdges">
+    <g filter="url(#q)" shapeRendering="crispEdges">
       <path
         d="M16 59c0-23.748 19.252-43 43-43h246c23.748 0 43 19.252 43 43v615c0 23.196-18.804 42-42 42H58c-23.196 0-42-18.804-42-42V59Z"
         fill="url(#r)" fill-opacity=".3" />
