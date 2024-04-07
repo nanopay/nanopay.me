@@ -44,6 +44,7 @@ const config = {
 				'nano-light': '#d2ebfa',
 				nano: '#209CE9',
 				'nano-dark': '#4a90e2',
+				muted: '#f9f9f9',
 			}),
 			keyframes: {
 				'fade-in': {
