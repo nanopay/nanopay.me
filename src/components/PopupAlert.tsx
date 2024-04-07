@@ -1,33 +1,47 @@
 'use client'
 
 import { usePreferences } from '@/contexts/PreferencesProvider'
-import { InfoIcon, XIcon } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from './ui/alert'
+import { cn } from '@/lib/utils'
 
-export interface PopupAlertProps {
+export interface PopupAlertProps
+	extends React.ComponentPropsWithoutRef<typeof Alert> {
 	message: string
 }
 
-export default function PopupAlert({ message }: PopupAlertProps) {
+export default function PopupAlert({ message, ...props }: PopupAlertProps) {
 	const { showPreReleaseAlert, setShowPreReleaseAlert } = usePreferences()
 
-	return showPreReleaseAlert ? (
-		<div className="mt-4 flex w-full justify-center">
-			<div className="w-full max-w-7xl px-4 lg:px-6 xl:px-8">
-				<div className="flex items-center justify-between space-x-2 rounded-lg border border-yellow-400 bg-yellow-50 p-2 font-semibold">
-					<div className="flex space-x-2">
-						<InfoIcon className="h-6 w-6 text-yellow-600" />
-						<p className="ml-1 text-sm text-yellow-600">{message}</p>
-					</div>
-					<button
-						className="group h-5 w-5 rounded-full hover:bg-yellow-600"
-						onClick={() => setShowPreReleaseAlert(false)}
-					>
-						<XIcon className="h-4 w-5 text-yellow-600 group-hover:text-white" />
-					</button>
+	if (!showPreReleaseAlert) {
+		return null
+	}
+
+	return (
+		<Alert
+			{...props}
+			className={cn(
+				'relative flex flex-col justify-between border-yellow-200 bg-yellow-50 md:flex-row md:gap-8',
+				props.className,
+			)}
+		>
+			<div>
+				<div className="flex items-start gap-2">
+					<AlertCircle className="h-4 w-4 text-yellow-800" />
+					<AlertTitle className="text-yellow-800">Important</AlertTitle>
 				</div>
+				<AlertDescription className="text-yellow-900">
+					{message}
+				</AlertDescription>
 			</div>
-		</div>
-	) : (
-		<></>
+			<div className="flex justify-end">
+				<button
+					onClick={() => setShowPreReleaseAlert(false)}
+					className="mt-2 h-fit w-16 rounded-md border border-yellow-600 px-2 py-1 text-yellow-800 hover:bg-yellow-600 hover:text-yellow-50"
+				>
+					Got it!
+				</button>
+			</div>
+		</Alert>
 	)
 }
