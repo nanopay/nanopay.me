@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-	@apply bg-nano-light/20;
+	@apply bg-slate-50;
 }
 
 .Button.MuiButton-contained {
