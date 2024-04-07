@@ -11,44 +11,7 @@ import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import { cn } from '@/lib/utils'
-
-function MenuIcon(props: React.ComponentProps<'svg'>) {
-	return (
-		<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
-			<path
-				d="M5 6h14M5 18h14M5 12h14"
-				strokeWidth={2}
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
-	)
-}
-
-function ChevronUpIcon(props: React.ComponentProps<'svg'>) {
-	return (
-		<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
-			<path
-				d="M17 14l-5-5-5 5"
-				strokeWidth={2}
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
-	)
-}
-
-function MobileNavLink({ children, ...props }: PopoverButtonProps<'a'>) {
-	return (
-		<Popover.Button
-			as={Link}
-			className="block text-base leading-7 tracking-tight text-slate-700"
-			{...props}
-		>
-			{children}
-		</Popover.Button>
-	)
-}
+import { ChevronUpIcon, MenuIcon } from 'lucide-react'
 
 interface HeaderProps extends React.ComponentProps<'header'> {
 	isAuthenticated: boolean
@@ -92,8 +55,6 @@ export function Header({
 	const pathname = usePathname()
 
 	const sizes = getSize(size)
-
-	const isHome = pathname?.startsWith('/home')
 
 	return (
 		<header {...props} className={cn('', props.className)}>
@@ -181,5 +142,17 @@ export function Header({
 				</Container>
 			</nav>
 		</header>
+	)
+}
+
+function MobileNavLink({ children, ...props }: PopoverButtonProps<'a'>) {
+	return (
+		<Popover.Button
+			as={Link}
+			className="block text-base leading-7 tracking-tight text-slate-700"
+			{...props}
+		>
+			{children}
+		</Popover.Button>
 	)
 }
