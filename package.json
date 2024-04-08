@@ -52,7 +52,6 @@
     "react-toastify": "^9.1.1",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.0"
   },
   "devDependencies": {
@@ -73,6 +72,7 @@
     "prettier-plugin-tailwindcss": "^0.1.13",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.3.0",
+    "tailwindcss-animate": "^1.0.7",
     "tailwindcss-safe-area": "^0.5.1",
     "typescript": "^5.2"
   }
