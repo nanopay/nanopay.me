@@ -1,158 +1,106 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
-import { Popover, PopoverButtonProps } from '@headlessui/react'
-import { AnimatePresence, motion } from 'framer-motion'
-
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import { cn } from '@/lib/utils'
-import { ChevronUpIcon, MenuIcon } from 'lucide-react'
+import { MenuIcon, XIcon } from 'lucide-react'
+import { useState } from 'react'
 
-interface LandingHeaderProps extends React.ComponentProps<'header'> {
-	isAuthenticated: boolean
-	size?: 'sm' | 'md' | 'lg'
-}
+interface LandingHeaderProps extends React.ComponentProps<'header'> {}
 
-const getSize = (size: LandingHeaderProps['size']) => {
-	switch (size) {
-		case 'sm':
-			return {
-				py: 'py-2',
-				logo: 'w-auto h-8',
-				avatar: 36,
-			}
-		case 'md':
-			return {
-				py: 'py-2',
-				logo: 'w-auto h-10',
-				avatar: 40,
-			}
-		case 'lg':
-			return {
-				py: 'py-6',
-				logo: 'w-auto h-12',
-				avatar: 40,
-			}
-		default:
-			return {
-				py: 'py-4',
-				logo: 'w-auto h-12',
-				avatar: 40,
-			}
+const links = [
+	['FAQs', '/#faqs'],
+	['API', '/#api'],
+	['Donate', '/#donate'],
+]
+
+export function LandingHeader({ ...props }: LandingHeaderProps) {
+	const [isOpen, setIsOpen] = useState(false)
+
+	const handleToggleMenu = () => {
+		setIsOpen(prev => !prev)
 	}
-}
-
-export function LandingHeader({
-	isAuthenticated,
-	size = 'md',
-	...props
-}: LandingHeaderProps) {
-	const pathname = usePathname()
-
-	const sizes = getSize(size)
 
 	return (
-		<header {...props} className={cn('', props.className)}>
+		<header
+			{...props}
+			className={cn(
+				'w-full bg-slate-50',
+				isOpen && 'fixed inset-0 z-50',
+				props.className,
+			)}
+		>
 			<nav>
-				<Container
-					className={clsx('relative z-50 flex justify-between', sizes.py)}
-				>
-					<div className={'relative z-10 flex items-center gap-16'}>
+				<Container className="relative flex h-16 items-center justify-between">
+					<div className="relative flex items-center gap-16">
 						<Link href="/" aria-label="Home">
-							<Logo className={sizes.logo} />
+							<Logo className="h-auto w-48" />
 						</Link>
 						<div className="hidden lg:flex lg:gap-10">
 							<NavLinks />
 						</div>
 					</div>
-					<div className="flex items-center gap-6">
-						<Popover className="lg:hidden">
-							{({ open }) => (
-								<>
-									<Popover.Button
-										className="relative z-10 -m-2 inline-flex items-center rounded-lg stroke-slate-900 p-2 hover:bg-slate-200/50 hover:stroke-slate-600 active:stroke-slate-900 [&:not(:focus-visible)]:focus:outline-none"
-										aria-label="Toggle site navigation"
-									>
-										{({ open }) =>
-											open ? (
-												<ChevronUpIcon className="h-6 w-6" />
-											) : (
-												<MenuIcon className="h-6 w-6" />
-											)
-										}
-									</Popover.Button>
-									<AnimatePresence initial={false}>
-										{open && (
-											<>
-												<Popover.Overlay
-													static
-													as={motion.div}
-													initial={{ opacity: 0 }}
-													animate={{ opacity: 1 }}
-													exit={{ opacity: 0 }}
-													className="fixed inset-0 z-0 bg-slate-300/60 backdrop-blur"
-												/>
-												<Popover.Panel
-													static
-													as={motion.div}
-													initial={{ opacity: 0, y: -32 }}
-													animate={{ opacity: 1, y: 0 }}
-													exit={{
-														opacity: 0,
-														y: -32,
-														transition: { duration: 0.2 },
-													}}
-													className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-slate-50 px-6 pb-6 pt-20 shadow-2xl shadow-slate-900/20"
-												>
-													<div className="space-y-4">
-														<MobileNavLink href="/#faqs">FAQs</MobileNavLink>
-													</div>
-													<div className="mt-8 flex flex-col gap-4">
-														<Link href={isAuthenticated ? '/home' : '/login'}>
-															<Button
-																variant="outline"
-																color="slate"
-																className="w-full"
-															>
-																{isAuthenticated ? 'Home' : 'Log in'}
-															</Button>
-														</Link>
-													</div>
-												</Popover.Panel>
-											</>
-										)}
-									</AnimatePresence>
-								</>
+					<div className="gap-4 sm:block">
+						<Link href="/login">
+							<Button color="slate" className="p-5 text-lg" type="button">
+								Login
+							</Button>
+						</Link>
+					</div>
+					<div className="sm:hidden">
+						<Button
+							type="button"
+							color="slate"
+							variant="outline"
+							size="icon"
+							className="rounded-full"
+							onClick={handleToggleMenu}
+						>
+							{isOpen ? (
+								<XIcon className="h-6 w-6" />
+							) : (
+								<MenuIcon className="h-6 w-6" />
 							)}
-						</Popover>
-
-						<div className="hidden lg:block">
-							<Link href={isAuthenticated ? '/home' : '/login'}>
-								<Button color="slate" className="p-5 text-lg">
-									{isAuthenticated ? 'Home' : 'Log in'}
-								</Button>
-							</Link>
-						</div>
+						</Button>
 					</div>
 				</Container>
+				{isOpen && (
+					<Container className="mt-4 sm:hidden">
+						<div className="flex flex-col gap-4">
+							<Link href="/login">
+								<Button
+									color="slate"
+									className="h-12 w-full text-lg"
+									variant="outline"
+								>
+									Login
+								</Button>
+							</Link>
+							<Link href="/signup">
+								<Button color="slate" className="h-12 w-full text-lg">
+									Sign Up
+								</Button>
+							</Link>
+							<div className="flex flex-col divide-y divide-slate-200">
+								{links.map(([label, href]) => (
+									<Link key={label} href={href}>
+										<Button
+											className="flex h-12 w-full justify-start text-lg"
+											variant="link"
+											color="slate"
+										>
+											{label}
+										</Button>
+									</Link>
+								))}
+							</div>
+						</div>
+					</Container>
+				)}
 			</nav>
 		</header>
-	)
-}
-
-function MobileNavLink({ children, ...props }: PopoverButtonProps<'a'>) {
-	return (
-		<Popover.Button
-			as={Link}
-			className="block text-base leading-7 tracking-tight text-slate-700"
-			{...props}
-		>
-			{children}
-		</Popover.Button>
 	)
 }
