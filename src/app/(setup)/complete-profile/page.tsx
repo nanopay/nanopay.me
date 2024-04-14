@@ -47,7 +47,7 @@ export default async function CompleteUserProfile() {
 	const userProfileExists = await checkUserProfileExists()
 
 	if (userProfileExists) {
-		redirect('/home')
+		redirect('/')
 	}
 
 	return (

@@ -22,7 +22,7 @@ export function LogoutCard({ hasPrevious }: { hasPrevious: boolean }) {
 	}
 
 	const handleCancel = () => {
-		hasPrevious ? router.back() : router.push('/home')
+		hasPrevious ? router.back() : router.push('/')
 	}
 
 	return (

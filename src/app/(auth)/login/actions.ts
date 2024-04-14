@@ -34,7 +34,7 @@ export const signWithPassword = async ({
 		throw new Error('Session is missing')
 	}
 
-	redirect(next || `/home`)
+	redirect(next || '/')
 }
 
 export const signWithGithub = async ({ next }: { next?: string }) => {

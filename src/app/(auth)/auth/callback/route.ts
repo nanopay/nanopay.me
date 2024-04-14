@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 	await supabase.auth.exchangeCodeForSession(code)
 
 	const redirectTo = new URL(requestUrl.origin)
-	redirectTo.pathname = next || '/home'
+	redirectTo.pathname = next || '/'
 
 	return NextResponse.redirect(redirectTo.toString())
 }

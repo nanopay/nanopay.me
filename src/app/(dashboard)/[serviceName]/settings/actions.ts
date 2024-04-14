@@ -21,5 +21,5 @@ export const deleteService = async (serviceName: string) => {
 	revalidateTag(`service-${serviceName}`)
 	revalidateTag(`user-${userId}-services`)
 
-	redirect('/home')
+	redirect('/')
 }
