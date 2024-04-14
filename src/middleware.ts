@@ -43,7 +43,7 @@ export async function middleware(request: NextRequest) {
 		if (authRoutes.includes(nextUrl.pathname) || nextUrl.pathname === '/') {
 			// Redirect to the last service
 			const lastService = await getLastService()
-			nextUrl.pathname = lastService ? `/${lastService.name}` : '/services/new'
+			nextUrl.pathname = lastService ? `/${lastService}` : '/services/new'
 		} else {
 			return response
 		}
@@ -80,11 +80,11 @@ export const config = {
 	],
 }
 
-async function getLastService(): Promise<Service | null> {
+async function getLastService(): Promise<string | null> {
 	const lastService = cookies().get('last_service')?.value
 
 	if (lastService) {
-		redirect(`/${lastService}`)
+		return lastService
 	}
 
 	const userId = await getUserId(cookies())
@@ -107,5 +107,5 @@ async function getLastService(): Promise<Service | null> {
 		},
 	)
 
-	return services[0] || null
+	return services[0]?.name || null
 }
