@@ -10,8 +10,26 @@ export const services = (fetcher: Fetcher) => {
 		): Promise<Service> => {
 			return fetcher.get(`/services/${serviceName}`, null, options)
 		},
-		list: async (options?: FetcherOptions): Promise<Service[]> => {
-			return fetcher.get('/services', null, options)
+		list: async (
+			{
+				limit,
+				offset,
+				order,
+				order_by,
+			}: {
+				limit?: number
+				offset?: number
+				order?: 'asc' | 'desc'
+				order_by?: 'name' | 'created_at'
+			},
+			options?: FetcherOptions,
+		): Promise<Service[]> => {
+			const searchParams = new URLSearchParams()
+			if (limit) searchParams.set('limit', limit.toString())
+			if (offset) searchParams.set('offset', offset.toString())
+			if (order) searchParams.set('order', order)
+			if (order_by) searchParams.set('order_by', order_by)
+			return fetcher.get(`/services?${searchParams.toString()}`, null, options)
 		},
 		apiKeys: {
 			create: async (
