@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/middleware'
 import { applySetCookie } from '@/utils/cookies'
+import api from '@/services/api'
+import { cookies } from 'next/headers'
+import { Service } from '@/types/services'
+import { getUserId } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
 const authRoutes = [
 	'/login',
@@ -12,7 +17,7 @@ const authRoutes = [
 	'/auth/callback',
 ]
 
-const publicRoutes = ['/', '/invoices/:path*', ...authRoutes]
+const publicRoutes = ['/invoices/:path*', ...authRoutes]
 
 export async function middleware(request: NextRequest) {
 	const nextUrl = request.nextUrl.clone()
@@ -35,11 +40,15 @@ export async function middleware(request: NextRequest) {
 	const isAuthenticated = !!session
 
 	if (isAuthenticated) {
-		if (authRoutes.includes(nextUrl.pathname)) {
-			nextUrl.pathname = '/home'
+		if (authRoutes.includes(nextUrl.pathname) || nextUrl.pathname === '/') {
+			// Redirect to the last service
+			const lastService = await getLastService()
+			nextUrl.pathname = lastService ? `/${lastService.name}` : '/services/new'
 		} else {
 			return response
 		}
+	} else if (nextUrl.pathname === '/') {
+		return response
 	} else {
 		if (!publicRoutes.includes(nextUrl.pathname)) {
 			nextUrl.searchParams.set(`next`, nextUrl.pathname)
@@ -69,4 +78,34 @@ export const config = {
 			],
 		},
 	],
+}
+
+async function getLastService(): Promise<Service | null> {
+	const lastService = cookies().get('last_service')?.value
+
+	if (lastService) {
+		redirect(`/${lastService}`)
+	}
+
+	const userId = await getUserId(cookies())
+
+	const services = await api.services.list(
+		{
+			limit: 1,
+			offset: 0,
+			order: 'asc',
+			order_by: 'name',
+		},
+		{
+			headers: {
+				Cookie: cookies().toString(),
+			},
+			next: {
+				revalidate: false,
+				tags: [`user-${userId}-services`],
+			},
+		},
+	)
+
+	return services[0] || null
 }
