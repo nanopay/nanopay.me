@@ -1,52 +1,32 @@
-'use client'
-
 import { InvoiceCard } from '@/components/InvoiceCard'
-import Loading from '@/components/Loading'
 import api from '@/services/api'
-import Head from 'next/head'
-import { useQuery } from 'react-query'
+import { cookies } from 'next/headers'
 
-export default function InvoicePage({
-	params: { invoiceId },
-}: {
+const fetchData = async (invoiceId: string) => {
+	return await api.invoices.get(invoiceId, {
+		headers: {
+			Cookie: cookies().toString(),
+		},
+	})
+}
+
+interface Props {
 	params: {
 		invoiceId: string
 	}
-}) {
-	const {
-		data: invoice,
-		isLoading,
-		isError,
-		error,
-	} = useQuery({
-		queryKey: ['invoice', invoiceId],
-		queryFn: () => api.invoices.get(invoiceId),
-	})
+}
 
-	if (isLoading || isError) {
-		return (
-			<div className="mx-auto flex h-screen w-full max-w-3xl justify-center sm:items-center">
-				<Loading />
-			</div>
-		)
+export const generateMetadata = async ({ params }: Props) => {
+	const invoice = await fetchData(params.invoiceId)
+	return {
+		title: `Invoice - ${invoice.title}`,
 	}
+}
 
-	if (!invoice) {
-		return (
-			<div className="mx-auto flex h-screen w-full max-w-3xl justify-center sm:items-center">
-				<div className="text-center">
-					<h1 className="text-4xl font-bold">Invoice not found</h1>
-					<p className="mt-2 text-slate-500">{api.getErrorMessage(error)}</p>
-				</div>
-			</div>
-		)
-	}
-
+export default async function InvoicePage({ params }: Props) {
+	const invoice = await fetchData(params.invoiceId)
 	return (
 		<>
-			<Head>
-				<title>Invoice - NanoPay.me</title>
-			</Head>
 			<div className="w-full max-w-5xl sm:mx-auto sm:mt-4">
 				<InvoiceCard invoice={invoice} />
 			</div>
