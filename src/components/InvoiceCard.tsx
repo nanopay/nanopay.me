@@ -51,7 +51,7 @@ export function InvoiceCard({
 			</CardHeader>
 			<CardContent>
 				<div className="flex flex-col space-y-4">
-					<div>
+					<div className="py-2">
 						<h1 className="text-xl font-semibold text-slate-600">
 							{invoice.title}
 						</h1>
