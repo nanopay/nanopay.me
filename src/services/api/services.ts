@@ -58,30 +58,30 @@ export const services = (fetcher: Fetcher) => {
 				data: HookCreate,
 				options?: FetcherOptions,
 			): Promise<{ id: string }> => {
-				return fetcher.post(`/services/${serviceName}/hooks`, data, options)
+				return fetcher.post(`/services/${serviceName}/webhooks`, data, options)
 			},
 			get: async (id: string, options?: FetcherOptions): Promise<Hook> => {
-				return fetcher.get(`/hooks/${id}`, null, options)
+				return fetcher.get(`/webhooks/${id}`, null, options)
 			},
 			list: async (
 				serviceName: string,
 				options?: FetcherOptions,
 			): Promise<Hook[]> => {
-				return fetcher.get(`/services/${serviceName}/hooks`, null, options)
+				return fetcher.get(`/services/${serviceName}/webhooks`, null, options)
 			},
 			update: async (
 				hookId: string,
 				data: HookUpdate,
 				options?: FetcherOptions,
 			): Promise<void> => {
-				return fetcher.put(`/hooks/${hookId}`, data, options)
+				return fetcher.put(`/webhooks/${hookId}`, data, options)
 			},
 			deliveries: {
 				list: async (
 					hookId: string,
 					options?: FetcherOptions,
 				): Promise<HookDelivery[]> => {
-					return fetcher.get(`/hooks/${hookId}/deliveries`, null, options)
+					return fetcher.get(`/webhooks/${hookId}/deliveries`, null, options)
 				},
 			},
 		},

@@ -35,7 +35,7 @@ export default async function Webhooks({
 			<header className="px-1 py-4">
 				<div className="flex items-center">
 					<h1 className="flex-1 text-lg font-medium">Webhooks</h1>
-					<Link href={`/${serviceName}/hooks/new`}>
+					<Link href={`/${serviceName}/webhooks/new`}>
 						<Button color="nano" size="sm">
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
 							Create Webhook
@@ -59,7 +59,7 @@ export default async function Webhooks({
 										) : (
 											<ActivityDot status="inactive" />
 										)}
-										<Link href={`/${serviceName}/hooks/${hook.id}`}>
+										<Link href={`/${serviceName}/webhooks/${hook.id}`}>
 											<h2 className="text-sm font-medium">
 												<span className="absolute inset-0" aria-hidden="true" />
 												{hook.name}

@@ -41,8 +41,8 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 		},
 		{
 			name: 'Webhooks',
-			href: `/${currentService?.name}/hooks`,
-			current: pathname === '/[serviceName]/hooks',
+			href: `/${currentService?.name}/webhooks`,
+			current: pathname === '/[serviceName]/webhooks',
 		},
 		{
 			name: 'API Keys',

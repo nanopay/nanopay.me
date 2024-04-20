@@ -75,11 +75,11 @@ export default function Webhooks({
 	const tabs = [
 		{
 			label: 'Settings',
-			href: `/${serviceName}/hooks/${hookId}`,
+			href: `/${serviceName}/webhooks/${hookId}`,
 		},
 		{
 			label: 'Deliveries',
-			href: `/${serviceName}/hooks/${hookId}/deliveries`,
+			href: `/${serviceName}/webhooks/${hookId}/deliveries`,
 		},
 	]
 

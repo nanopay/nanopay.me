@@ -102,7 +102,7 @@ export default function NewApiKey({
 			api.services.hooks.create(serviceName, data),
 		onSuccess: () => {
 			showSuccess('Webhook created')
-			router.push(`/${serviceName}/hooks`)
+			router.push(`/${serviceName}/webhooks`)
 		},
 		onError: (err: any) => {
 			showError(
