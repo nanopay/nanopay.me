@@ -16,17 +16,10 @@ import { useEffect, useState } from 'react'
 import { Payment } from '@/types/payment'
 import { PublicService } from '@/types/services'
 import Transactions from './Transactions'
-import {
-	Accordion,
-	AccordionDetails,
-	AccordionSummary,
-	Typography,
-} from '@mui/material'
 import { ServiceAvatar } from './ServiceAvatar'
 import {
 	AlertCircleIcon,
 	ArrowDownToLine,
-	ChevronDownIcon,
 	CopyIcon,
 	ExternalLinkIcon,
 	QrCodeIcon,
@@ -35,6 +28,12 @@ import clsx from 'clsx'
 import { Button } from './Button'
 import { REFUND_EMAIL, SUPPORT_EMAIL } from '@/constants'
 import { redirectToMerchant } from '@/app/invoices/[invoiceId]/actions'
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from './ui/accordion'
 
 interface CheckoutProps {
 	invoiceId: string
@@ -127,38 +126,30 @@ export default function Checkout({
 			</nav>
 
 			<Accordion
-				square
-				elevation={0}
-				className="border-b border-slate-200 md:hidden"
+				type="single"
+				collapsible
+				className="border-b border-slate-200 px-4 md:hidden"
 			>
-				<AccordionSummary
-					expandIcon={<ChevronDownIcon className="h-5 w-5 text-slate-700" />}
-				>
-					<Typography className="flex items-center gap-2">
-						{service.avatar_url ? (
-							<Image
+				<AccordionItem value="item-1">
+					<AccordionTrigger>
+						<div className="flex items-center gap-2 text-left">
+							<ServiceAvatar
 								alt={service.name}
+								id={service.id}
 								src={service.avatar_url}
-								width={40}
-								height={40}
-								className="rounded-full border-2 border-slate-400 bg-white"
 							/>
-						) : (
-							<Logo className="h-auto w-32" theme="dark" />
-						)}
-						<div className="ml-2 w-full">
-							<h2 className="text-lg font-semibold leading-5">
-								{service.display_name}
-							</h2>
-							<p className="text-sm">{title}</p>
+							<div className="ml-2 w-full">
+								<h2 className="text-lg font-semibold leading-5">
+									{service.display_name}
+								</h2>
+								<p className="text-sm">{title}</p>
+							</div>
 						</div>
-					</Typography>
-				</AccordionSummary>
-				<AccordionDetails>
-					<Typography>
+					</AccordionTrigger>
+					<AccordionContent>
 						<p className="text-sm">{description || 'No description'}</p>
-					</Typography>
-				</AccordionDetails>
+					</AccordionContent>
+				</AccordionItem>
 			</Accordion>
 
 			<main className="flex flex-1 flex-col rounded-r-3xl bg-white px-4 py-2">
