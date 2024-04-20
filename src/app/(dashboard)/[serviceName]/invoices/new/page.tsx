@@ -222,7 +222,7 @@ export default function NewService({
 						!watch('recipient_address')
 					}
 				>
-					{isSubmitting ? 'Creating Invoice...' : 'Create Invoice'}
+					Create Invoice
 				</Button>
 			</Container>
 		</>
