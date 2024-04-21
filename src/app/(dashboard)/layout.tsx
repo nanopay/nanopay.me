@@ -11,8 +11,10 @@ import { Service } from '@/types/services'
 import { User } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
 
-export async function fetchUser(): Promise<User> {
-	const supabase = createClient(cookies())
+export async function fetchUser(
+	cookieStore: ReturnType<typeof cookies>,
+): Promise<User> {
+	const supabase = createClient(cookieStore)
 
 	const { data, error } = await supabase.from('profiles').select('*').single()
 
@@ -32,8 +34,10 @@ export async function fetchUser(): Promise<User> {
 	}
 }
 
-export async function fetchUserServices(): Promise<Service[]> {
-	const supabase = createClient(cookies())
+export async function fetchUserServices(
+	cookieStore: ReturnType<typeof cookies>,
+): Promise<Service[]> {
+	const supabase = createClient(cookieStore)
 
 	const { data, error } = await supabase.from('services').select('*')
 
@@ -45,7 +49,8 @@ export async function fetchUserServices(): Promise<Service[]> {
 }
 
 async function fetchData() {
-	const userId = await getUserId(cookies())
+	const cookieStore = cookies()
+	const userId = await getUserId(cookieStore)
 
 	const getCachedUser = unstable_cache(fetchUser, [`user-${userId}-profile`], {
 		revalidate: false,
@@ -62,8 +67,8 @@ async function fetchData() {
 	)
 
 	const [user, services] = await Promise.all([
-		getCachedUser(),
-		getCachedServices(),
+		getCachedUser(cookieStore),
+		getCachedServices(cookieStore),
 	])
 
 	return {
