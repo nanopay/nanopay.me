@@ -1,10 +1,10 @@
-import { MAX_HOOKS } from '@/constants'
 import { HookCreate } from '@/types/hooks'
 import Ajv, { JSONSchemaType } from 'ajv'
 import addFormats from 'ajv-formats'
 import { NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 
 const ajv = new Ajv()
 addFormats(ajv)
@@ -63,7 +63,7 @@ export async function POST(
 
 	const { data: service, error: serviceError } = await supabase
 		.from('services')
-		.select('id, user_id, hooks_count')
+		.select('id')
 		.eq('name', serviceName)
 		.single()
 
@@ -73,15 +73,6 @@ export async function POST(
 
 	if (!service) {
 		return Response.json({ message: 'Service not found' }, { status: 404 })
-	}
-
-	if (service.hooks_count >= MAX_HOOKS) {
-		return Response.json(
-			{
-				message: `Limit of ${MAX_HOOKS} hooks reached`,
-			},
-			{ status: 403 },
-		)
 	}
 
 	const { error: hookError, data: hook } = await supabase
@@ -97,6 +88,8 @@ export async function POST(
 	if (hookError) {
 		return Response.json({ message: hookError.message }, { status: 500 })
 	}
+
+	revalidateTag(`service-${serviceName}-webhooks`)
 
 	return Response.json(hook)
 }
