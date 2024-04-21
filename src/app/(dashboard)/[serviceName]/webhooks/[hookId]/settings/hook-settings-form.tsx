@@ -1,21 +1,14 @@
 'use client'
 
-import Head from 'next/head'
-import { useMutation, useQuery } from 'react-query'
-import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { Controller, useForm } from 'react-hook-form'
 import {
 	Autocomplete,
-	Box,
 	FormControl,
 	FormControlLabel,
 	FormLabel,
 	Radio,
 	RadioGroup,
-	Skeleton,
-	Tab,
-	Tabs,
 	TextField,
 } from '@mui/material'
 import Input from '@/components/Input'
@@ -24,8 +17,8 @@ import { Hook, HookCreate } from '@/types/hooks'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
-import tailwindColors from 'tailwindcss/colors'
-import Link from 'next/link'
+import api from '@/services/api'
+import { useMutation } from 'react-query'
 import { Button } from '@/components/Button'
 
 const schema: JSONSchemaType<HookCreate> = {
@@ -62,77 +55,7 @@ const schema: JSONSchemaType<HookCreate> = {
 	additionalProperties: false,
 }
 
-export default function Webhooks({
-	params: { serviceName, hookId },
-}: {
-	params: {
-		serviceName: string
-		hookId: string
-	}
-}) {
-	const { showError } = useToast()
-
-	const tabs = [
-		{
-			label: 'Settings',
-			href: `/${serviceName}/webhooks/${hookId}`,
-		},
-		{
-			label: 'Deliveries',
-			href: `/${serviceName}/webhooks/${hookId}/deliveries`,
-		},
-	]
-
-	const { data: hook } = useQuery({
-		queryKey: ['hooks', hookId],
-		queryFn: () => api.services.hooks.get(hookId),
-		enabled: !!serviceName && !!hookId,
-		onError: (err: any) => {
-			showError(
-				'Fail getting hook',
-				api.getErrorMessage(err) || 'Try again later',
-			)
-		},
-	})
-
-	if (!serviceName || !hookId) {
-		return null
-	}
-
-	return (
-		<div className="w-full">
-			<Head>
-				<title>Webooks - NanoPay.me</title>
-			</Head>
-			<Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
-				<Tabs value={0}>
-					{tabs.map((tab, index) => (
-						<Tab
-							key={index}
-							label={tab.label}
-							href={tab.href}
-							LinkComponent={Link}
-						/>
-					))}
-				</Tabs>
-			</Box>
-			{!hook ? (
-				<Skeleton
-					variant="rectangular"
-					animation="wave"
-					width="full"
-					height={240}
-					className="rounded-lg"
-					sx={{ bgcolor: tailwindColors.slate['200'] }}
-				/>
-			) : (
-				<HookForm hook={hook} />
-			)}
-		</div>
-	)
-}
-
-const HookForm = ({ hook }: { hook: Hook }) => {
+export function HookForm({ hook }: { hook: Hook }) {
 	const { showError, showSuccess } = useToast()
 	const {
 		control,
