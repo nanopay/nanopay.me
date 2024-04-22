@@ -23,6 +23,13 @@ const nextConfig = {
 			},
 		],
 	},
+	redirects: async () => [
+		{
+			source: '/:serviceName/webhooks/:hookId/',
+			destination: '/:serviceName/webhooks/:hookId/settings',
+			permanent: true,
+		},
+	]
 }
 
 module.exports = nextConfig
