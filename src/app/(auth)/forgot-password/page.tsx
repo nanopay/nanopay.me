@@ -5,11 +5,18 @@ import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
 import { resetPassword } from './actions'
 import { useTransition } from 'react'
 import { Button } from '@/components/Button'
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormMessage,
+} from '@/components/ui/form'
 
 interface ResetEmailPassword {
 	email: string
@@ -28,11 +35,7 @@ export default function ForgotPasswordPage() {
 
 	const { showError } = useToast()
 
-	const {
-		control,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<ResetEmailPassword>({
+	const form = useForm<ResetEmailPassword>({
 		defaultValues: {
 			email: '',
 		},
@@ -58,29 +61,39 @@ export default function ForgotPasswordPage() {
 
 	return (
 		<div className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4">
-			<form className="w-full py-6" onSubmit={handleSubmit(onSubmit)}>
-				<Controller
-					name="email"
-					control={control}
-					render={({ field }) => (
-						<Input
-							label="E-mail"
-							{...field}
-							errorMessage={errors.email?.message}
-							className="w-full !bg-transparent"
-						/>
-					)}
-				/>
-
-				<Button
-					type="submit"
-					className="w-full"
-					loading={isSubmitting || isPending}
-					color="nano"
+			<Form {...form}>
+				<form
+					className="w-full space-y-4 py-6"
+					onSubmit={form.handleSubmit(onSubmit)}
 				>
-					Reset Password
-				</Button>
-			</form>
+					<FormField
+						name="email"
+						control={form.control}
+						render={({ field, fieldState }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										label="E-mail"
+										{...field}
+										invalid={fieldState.invalid}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<Button
+						type="submit"
+						className="w-full"
+						loading={form.formState.isSubmitting || isPending}
+						color="nano"
+						disabled={!form.formState.isDirty}
+					>
+						Reset Password
+					</Button>
+				</form>
+			</Form>
 			<div className="flex flex-col items-center py-6">
 				<h2 className="text-base font-semibold text-slate-600">
 					Back to{' '}
