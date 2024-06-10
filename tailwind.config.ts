@@ -41,10 +41,12 @@ const config = {
 			},
 			colors: ({ colors }) => ({
 				gray: colors.slate,
-				'nano-light': '#d2ebfa',
+				primary: '#209CE9',
 				nano: '#209CE9',
+				'nano-light': '#d2ebfa',
 				'nano-dark': '#4a90e2',
-				muted: '#f9f9f9',
+				muted: '#f8fafc',
+				error: '#ff4d4f',
 			}),
 			keyframes: {
 				'fade-in': {
