@@ -60,7 +60,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 						'peer-focus:text-primary peer-focus:before:border-primary peer-focus:after:border-primary peer-focus:text-xs peer-focus:leading-tight peer-focus:before:border-l-2 peer-focus:before:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-t-2',
 
 						// Peer-disabled styles
-						'peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent',
+						'peer-disabled:before:border-transparent peer-disabled:after:border-transparent',
 
 						// Invalid styles
 						invalid &&
