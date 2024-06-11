@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 const variantStyles = {
 	default: {
-		nano: 'bg-nano hover:bg-nano-dark dark:text-nano text-white dark:bg-nano-light dark:hover:bg-none',
+		nano: 'bg-nano hover:bg-nano-dark dark:text-nano text-white dark:bg-nano-light dark:hover:bg-none hover:shadow-md',
 		slate:
 			'bg-slate-800 text-white hover:bg-slate-700 dark:bg-slate-200 dark:text-slate-900 dark:hover:bg-slate-100',
 	},
@@ -94,11 +94,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | StrictButtonProps>(
 				disabled={loading || disabled}
 				ref={ref}
 			>
-				{loading ? (
-					<Loader2Icon className="mr-2 h-5 w-5 animate-spin" />
-				) : (
-					children
-				)}
+				{loading ? <Loader2Icon className="h-5 w-5 animate-spin" /> : children}
 			</Comp>
 		)
 	},
