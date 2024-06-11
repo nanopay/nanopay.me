@@ -161,7 +161,6 @@ export default function NewService({
 										label="Price / Amount"
 										type="number"
 										{...field}
-										min={0}
 										onChange={e =>
 											field.onChange(Number(e.target.value) || undefined)
 										}
