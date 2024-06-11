@@ -6,9 +6,9 @@ import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
 import { KeyRoundIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
 
-interface Params {
+interface Props {
 	params: { serviceName: string }
-	searchParams: { isNew?: 'true' }
+	searchParams: { new?: 'true' }
 }
 
 const fetchData = async (serviceName: string) => {
@@ -36,7 +36,7 @@ const fetchData = async (serviceName: string) => {
 	return { service, invoices }
 }
 
-export async function generateMetadata({ params: { serviceName } }: Params) {
+export async function generateMetadata({ params: { serviceName } }: Props) {
 	const { service } = await fetchData(serviceName)
 	return {
 		title: service.name,
@@ -46,8 +46,8 @@ export async function generateMetadata({ params: { serviceName } }: Params) {
 export default async function ServiceDashboardPage({
 	params: { serviceName },
 	searchParams,
-}: Params) {
-	const isNew = searchParams.isNew ? true : false
+}: Props) {
+	const isNew = searchParams.new ? true : false
 
 	const { service, invoices } = await fetchData(serviceName)
 

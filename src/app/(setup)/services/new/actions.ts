@@ -45,7 +45,7 @@ export const createService = async ({
 
 	revalidateTag(`user-${userId}-services`)
 
-	redirect(`/${name}`)
+	redirect(`/${name}?new=true`)
 }
 
 export const createAvatarUploadPresignedUrl = async ({
