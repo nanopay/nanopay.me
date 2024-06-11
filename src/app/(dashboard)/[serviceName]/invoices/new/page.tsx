@@ -1,9 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import Head from 'next/head'
 import { useMutation } from 'react-query'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
 
@@ -16,6 +15,14 @@ import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 import { Button } from '@/components/Button'
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormMessage,
+} from '@/components/ui/form'
+import { TextArea } from '@/components/TextArea'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
@@ -56,12 +63,7 @@ export default function NewService({
 
 	const { currentService } = usePreferences()
 
-	const {
-		control,
-		handleSubmit,
-		watch,
-		formState: { errors },
-	} = useForm<InvoiceCreate>({
+	const form = useForm<InvoiceCreate>({
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
@@ -86,10 +88,6 @@ export default function NewService({
 		},
 	})
 
-	const onErrorSubmiting = () => {
-		showError('Error creating service', 'Check the fields entered')
-	}
-
 	if (!serviceName) {
 		return null
 	}
@@ -97,9 +95,6 @@ export default function NewService({
 	if (!currentService) {
 		return (
 			<>
-				<Head>
-					<title>Invoice - NanoPay.me</title>
-				</Head>
 				<Container>
 					<div>Something went wrong!</div>
 				</Container>
@@ -108,12 +103,12 @@ export default function NewService({
 	}
 
 	return (
-		<>
-			<Head>
-				<title>Invoice - NanoPay.me</title>
-			</Head>
-			<Container className="flex h-screen w-full max-w-xl flex-col items-center space-y-6 bg-white px-16 py-8 pb-16 shadow sm:mt-4 sm:h-auto sm:rounded-lg">
-				<div className="flex w-full max-w-xl flex-col space-y-6 px-4 pb-4 sm:px-8">
+		<Form {...form}>
+			<form
+				className="flex h-screen w-full max-w-xl flex-col items-center space-y-6 bg-white px-16 py-8 pb-16 shadow sm:mt-4 sm:h-auto sm:rounded-lg"
+				onSubmit={form.handleSubmit(fields => onSubmit(fields))}
+			>
+				<div className="w-full max-w-xl space-y-4 px-4 pb-4 sm:px-8">
 					<div className="flex w-full items-center justify-between space-x-8">
 						<h1 className="text-lg font-semibold text-slate-600">
 							New Invoice
@@ -121,110 +116,108 @@ export default function NewService({
 						<div />
 					</div>
 
-					<Controller
+					<FormField
 						name="title"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Title"
-								{...field}
-								onChange={e => field.onChange(e.target.value)}
-								errorMessage={errors.title?.message}
-								className="w-full"
-								autoCapitalize="words"
-								style={{
-									textTransform: 'capitalize',
-								}}
-								disabled={isSubmitting || isSuccess}
-							/>
+						control={form.control}
+						render={({ field, fieldState }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										label="Title"
+										{...field}
+										invalid={fieldState.invalid}
+										className="capitalize"
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
 						)}
 					/>
 
-					<Controller
+					<FormField
 						name="description"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Description (optional)"
-								{...field}
-								onChange={e => field.onChange(e.target.value.slice(0, 512))}
-								errorMessage={errors.description?.message}
-								className="w-full"
-								multiline={true}
-								disabled={isSubmitting || isSuccess}
-							/>
+						control={form.control}
+						render={({ field, fieldState }) => (
+							<FormItem>
+								<FormControl>
+									<TextArea
+										label="Description (optional)"
+										{...field}
+										invalid={fieldState.invalid}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
 						)}
 					/>
 
-					<Controller
+					<FormField
 						name="price"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Price / Amount"
-								type="number"
-								{...field}
-								onChange={e => field.onChange(Number(e.target.value))}
-								errorMessage={errors.price?.message}
-								className="w-full"
-								autoCapitalize="words"
-								style={{
-									textTransform: 'capitalize',
-								}}
-								disabled={isSubmitting || isSuccess}
-							/>
+						control={form.control}
+						render={({ field, fieldState }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										label="Price / Amount"
+										type="number"
+										{...field}
+										min={0}
+										onChange={e =>
+											field.onChange(Number(e.target.value) || undefined)
+										}
+										invalid={fieldState.invalid}
+										autoCapitalize="words"
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
 						)}
 					/>
 
-					<Controller
+					<FormField
 						name="recipient_address"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Recipient Nano Address"
-								{...field}
-								onChange={e => field.onChange(e.target.value)}
-								errorMessage={errors.recipient_address?.message}
-								className="w-full"
-								autoCapitalize="words"
-								style={{
-									textTransform: 'capitalize',
-								}}
-								disabled={isSubmitting || isSuccess}
-							/>
+						control={form.control}
+						render={({ field, fieldState }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										label="Recipient Nano Address"
+										{...field}
+										invalid={fieldState.invalid}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
 						)}
 					/>
 
-					<Controller
+					<FormField
 						name="redirect_url"
-						control={control}
-						render={({ field }) => (
-							<Input
-								label="Redirect URL (optional)"
-								{...field}
-								onChange={e => field.onChange(e.target.value)}
-								errorMessage={errors.redirect_url?.message}
-								className="w-full"
-								type="url"
-								disabled={isSubmitting || isSuccess}
-							/>
+						control={form.control}
+						render={({ field, fieldState }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										label="Redirect URL (optional)"
+										{...field}
+										invalid={fieldState.invalid}
+										type="url"
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
 						)}
 					/>
 				</div>
 
 				<Button
-					onClick={handleSubmit(fields => onSubmit(fields), onErrorSubmiting)}
+					type="submit"
 					loading={isSubmitting}
-					disabled={
-						isSuccess ||
-						!watch('title') ||
-						!watch('price') ||
-						!watch('recipient_address')
-					}
+					disabled={form.formState.isSubmitting || isSuccess}
 				>
 					Create Invoice
 				</Button>
-			</Container>
-		</>
+			</form>
+		</Form>
 	)
 }
