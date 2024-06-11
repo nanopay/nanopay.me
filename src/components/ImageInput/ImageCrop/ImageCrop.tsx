@@ -53,7 +53,7 @@ export default function ImageCrop({
 		} catch (e) {
 			console.error(e)
 		}
-	}, [croppedAreaPixels])
+	}, [croppedAreaPixels, onConfirm, resize, source, type])
 
 	return (
 		<Dialog open={true}>

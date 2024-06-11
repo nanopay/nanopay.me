@@ -33,7 +33,6 @@ function getAnimationSettings(originXA: number, originXB: number) {
 interface FireworksProps {
 	count?: number
 }
-
 export default function Fireworks({ count = 1 }: FireworksProps) {
 	const refAnimationInstance = useRef<any>(null)
 
@@ -48,16 +47,16 @@ export default function Fireworks({ count = 1 }: FireworksProps) {
 		}
 	}, [])
 
-	const start = async () => {
-		for (let i = 0; i < count; i++) {
-			nextTickAnimation()
-			await new Promise(resolve => setTimeout(resolve, 1000))
-		}
-	}
-
 	useEffect(() => {
+		const start = async () => {
+			for (let i = 0; i < count; i++) {
+				nextTickAnimation()
+				await new Promise(resolve => setTimeout(resolve, 1000))
+			}
+		}
+
 		start()
-	}, [])
+	}, [count, nextTickAnimation])
 
 	return (
 		<>

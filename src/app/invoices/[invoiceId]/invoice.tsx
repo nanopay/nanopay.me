@@ -58,7 +58,7 @@ export default function PayInvoice({
 			channel.unbind_all()
 			channel.unsubscribe()
 		}
-	}, [invoice])
+	}, [invoice, payments])
 
 	if (!invoice) return <div>Invoice not found</div>
 
