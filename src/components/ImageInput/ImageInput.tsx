@@ -3,6 +3,7 @@ import ImageCrop from './ImageCrop'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import clsx from 'clsx'
 import { AlertTriangleIcon, CameraIcon } from 'lucide-react'
+import Image from 'next/image'
 
 interface ImageInputProps {
 	source?: string | null
@@ -99,9 +100,11 @@ export function ImageInput({
 				onClick={handleInputClick}
 			>
 				{imageSource && (
-					<img
+					<Image
 						src={imageSource}
 						alt=""
+						width={128}
+						height={128}
 						className={clsx(
 							'h-full w-full rounded-full',
 							isLoading && 'animate-pulse',
