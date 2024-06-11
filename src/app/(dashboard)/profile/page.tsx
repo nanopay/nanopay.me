@@ -8,7 +8,7 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { useState, useTransition } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import {
 	UpdateUserProps,
 	createAvatarUploadPresignedUrl,
@@ -18,6 +18,13 @@ import {
 import ImageInput from '@/components/ImageInput'
 import { uploadObject } from '@/services/s3'
 import { Button } from '@/components/Button'
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormMessage,
+} from '@/components/ui/form'
 
 const schema: JSONSchemaType<UpdateUserProps> = {
 	type: 'object',
@@ -34,11 +41,7 @@ export default async function Profile() {
 
 	const [isPending, startTransition] = useTransition()
 
-	const {
-		control,
-		handleSubmit,
-		formState: { errors, isSubmitting, isDirty },
-	} = useForm<UpdateUserProps>({
+	const form = useForm<UpdateUserProps>({
 		defaultValues: {
 			name: user.name,
 		},
@@ -62,50 +65,44 @@ export default async function Profile() {
 		})
 	}
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="flex w-full max-w-sm flex-col items-center space-y-6"
-		>
-			<UserAvatar url={user.avatar_url} />
-
-			<div className="flex w-full flex-col space-y-6">
-				<Controller
-					name="name"
-					control={control}
-					render={({ field }) => (
-						<Input
-							label="Name"
-							{...field}
-							onChange={e => field.onChange(e.target.value.slice(0, 40))}
-							errorMessage={errors.name?.message}
-							className="w-full"
-							autoCapitalize="words"
-							style={{
-								textTransform: 'capitalize',
-							}}
-						/>
-					)}
-				/>
-
-				<Input
-					label="E-mail"
-					value={user.email}
-					errorMessage={!user.email ? 'Missing user email' : undefined}
-					className="w-full"
-					InputLabelProps={{
-						shrink: true,
-					}}
-					disabled
-				/>
-			</div>
-			<Button
-				type="submit"
-				loading={isSubmitting || isPending}
-				disabled={!isDirty}
+		<Form {...form}>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="flex w-full max-w-sm flex-col items-center space-y-6"
 			>
-				Update
-			</Button>
-		</form>
+				<UserAvatar url={user.avatar_url} />
+
+				<div className="flex w-full flex-col space-y-4">
+					<FormField
+						name="name"
+						control={form.control}
+						render={({ field, fieldState }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										label="Name"
+										{...field}
+										onChange={e => field.onChange(e.target.value.slice(0, 40))}
+										invalid={fieldState.invalid}
+										className="capitalize"
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<Input name="email" label="E-mail" value={user.email} disabled />
+				</div>
+				<Button
+					type="submit"
+					loading={form.formState.isSubmitting || isPending}
+					disabled={!form.formState.isDirty}
+				>
+					Update
+				</Button>
+			</form>
+		</Form>
 	)
 }
 
