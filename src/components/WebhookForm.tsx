@@ -3,6 +3,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import {
 	Form,
+	FormControl,
 	FormDescription,
 	FormField,
 	FormItem,
@@ -18,6 +19,7 @@ import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { HookCreate } from '@/types/hooks'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { TextArea } from './TextArea'
 
 const eventTypes = ['invoice.paid', 'invoice.error', 'invoice.expired']
 
@@ -78,27 +80,22 @@ export function WebhookForm({
 
 	return (
 		<Form {...form}>
-			<form
-				className="flex w-full flex-1 flex-col gap-y-2"
-				onSubmit={form.handleSubmit(onSubmit)}
-			>
+			<form className="w-full space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
 				<FormField
 					name="name"
 					control={form.control}
 					render={({ field }) => (
 						<FormItem>
-							<Input
-								label="Name"
-								{...field}
-								onChange={e => field.onChange(sanitizeSlug(e.target.value))}
-								required
-								className="w-full"
-								autoCapitalize="words"
-								style={{
-									textTransform: 'capitalize',
-								}}
-								disabled={formDisabled}
-							/>
+							<FormControl>
+								<Input
+									label="Name"
+									{...field}
+									onChange={e => field.onChange(sanitizeSlug(e.target.value))}
+									required
+									className="capitalize"
+									disabled={formDisabled}
+								/>
+							</FormControl>
 							<FormDescription className="flex items-center text-xs text-slate-600">
 								<InfoIcon className="mr-1 w-4" />
 								<div>
@@ -116,16 +113,17 @@ export function WebhookForm({
 				<FormField
 					name="description"
 					control={form.control}
-					render={({ field }) => (
+					render={({ field, fieldState }) => (
 						<FormItem>
-							<Input
-								label="Description"
-								{...field}
-								onChange={e => field.onChange(e.target.value.slice(0, 512))}
-								className="w-full"
-								multiline={true}
-								disabled={formDisabled}
-							/>
+							<FormControl>
+								<TextArea
+									label="Description"
+									{...field}
+									onChange={e => field.onChange(e.target.value.slice(0, 512))}
+									invalid={fieldState.invalid}
+									disabled={formDisabled}
+								/>
+							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -136,15 +134,16 @@ export function WebhookForm({
 					control={form.control}
 					render={({ field }) => (
 						<FormItem>
-							<Input
-								label="Hook URL"
-								{...field}
-								required
-								type="url"
-								onChange={e => field.onChange(e.target.value.slice(0, 512))}
-								className="w-full"
-								disabled={formDisabled}
-							/>
+							<FormControl>
+								<Input
+									label="Hook URL"
+									{...field}
+									required
+									type="url"
+									onChange={e => field.onChange(e.target.value.slice(0, 512))}
+									disabled={formDisabled}
+								/>
+							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -156,19 +155,24 @@ export function WebhookForm({
 					render={({ field }) => (
 						<FormItem className="space-y-2">
 							<FormLabel>Event Types</FormLabel>
-							<RadioGroup className="flex space-x-4" aria-multiselectable>
-								{eventTypes.map(eventType => (
-									<div className="flex items-center space-x-2" key={eventType}>
-										<RadioGroupItem
-											value={eventType}
-											id={eventType}
-											checked={field.value.includes(eventType)}
-											disabled={formDisabled}
-										/>
-										<Label htmlFor={eventType}>{eventType}</Label>
-									</div>
-								))}
-							</RadioGroup>
+							<FormControl>
+								<RadioGroup className="flex space-x-4" aria-multiselectable>
+									{eventTypes.map(eventType => (
+										<div
+											className="flex items-center space-x-2"
+											key={eventType}
+										>
+											<RadioGroupItem
+												value={eventType}
+												id={eventType}
+												checked={field.value.includes(eventType)}
+												disabled={formDisabled}
+											/>
+											<Label htmlFor={eventType}>{eventType}</Label>
+										</div>
+									))}
+								</RadioGroup>
+							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -179,13 +183,14 @@ export function WebhookForm({
 					control={form.control}
 					render={({ field }) => (
 						<FormItem>
-							<Input
-								label="Secret (optional)"
-								{...field}
-								onChange={e => field.onChange(e.target.value.slice(0, 512))}
-								className="w-full"
-								disabled={true}
-							/>
+							<FormControl>
+								<Input
+									label="Secret (optional)"
+									{...field}
+									onChange={e => field.onChange(e.target.value.slice(0, 512))}
+									disabled
+								/>
+							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
