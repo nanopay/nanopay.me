@@ -34,7 +34,7 @@ const schema: JSONSchemaType<UpdateUserProps> = {
 	required: ['name'],
 }
 
-export default async function Profile() {
+export default function Profile() {
 	const user = useUser()
 
 	const { showError } = useToast()
