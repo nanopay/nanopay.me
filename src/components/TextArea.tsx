@@ -20,7 +20,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 					{...props}
 					className={cn(
 						// Base styles
-						'scrollbar-none peer h-full w-full rounded-md border border-slate-200 border-t-transparent bg-transparent p-3 font-sans text-sm font-normal text-slate-700 outline outline-0 transition-all',
+						'scrollbar-none peer h-full w-full resize-none rounded-md border border-slate-200 border-t-transparent bg-transparent p-3 font-sans text-sm font-normal text-slate-700 outline outline-0 transition-all',
 
 						// Placeholder styles
 						'placeholder:opacity-0 placeholder-shown:border placeholder-shown:border-slate-200 placeholder-shown:border-t-slate-200',
