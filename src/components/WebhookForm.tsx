@@ -98,12 +98,12 @@ export function WebhookForm({
 							</FormControl>
 							<FormDescription className="flex items-center text-xs text-slate-600">
 								<InfoIcon className="mr-1 w-4" />
-								<div>
+								<>
 									Use a name like:{' '}
 									<span className="font-semibold">my-webhook</span>
 									{' or '}
 									<span className="font-semibold">mywebsite.com</span>
-								</div>
+								</>
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
