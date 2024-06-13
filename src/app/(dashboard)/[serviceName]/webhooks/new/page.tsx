@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useMutation } from 'react-query'
 import { useToast } from '@/hooks/useToast'
 import { HookCreate } from '@/types/hooks'
 
@@ -13,7 +11,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { WebhookForm } from '@/components/WebhookForm'
-import api from '@/services/api'
+import { createWebhook } from './actions'
 
 export default function NewApiKey({
 	params: { serviceName },
@@ -22,23 +20,20 @@ export default function NewApiKey({
 		serviceName: string
 	}
 }) {
-	const { showError, showSuccess } = useToast()
-	const router = useRouter()
+	const { showError } = useToast()
 
-	const { mutateAsync: onSubmit, isSuccess } = useMutation({
-		mutationFn: async (data: HookCreate) =>
-			api.services.hooks.create(serviceName, data),
-		onSuccess: () => {
-			showSuccess('Webhook created')
-			router.push(`/${serviceName}/webhooks`)
-		},
-		onError: (err: any) => {
+	const onSubmit = async (values: HookCreate) => {
+		try {
+			await createWebhook(serviceName, values)
+		} catch (error) {
 			showError(
-				'Error creating webhook',
-				api.getErrorMessage(err) || 'Try again Later',
+				'Could not create webhook',
+				error instanceof Error
+					? error.message
+					: 'Check your connection and try again',
 			)
-		},
-	})
+		}
+	}
 
 	return (
 		<Card className="w-full max-w-xl text-slate-600">
@@ -59,7 +54,6 @@ export default function NewApiKey({
 					}}
 					onSubmit={onSubmit}
 					buttonTitle="Create Webhook"
-					disabled={isSuccess}
 				/>
 			</CardContent>
 		</Card>
