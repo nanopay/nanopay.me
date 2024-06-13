@@ -14,6 +14,10 @@ const fetchData = async (hookId: string) => {
 		headers: {
 			Cookie: cookies().toString(),
 		},
+		next: {
+			revalidate: false,
+			tags: [`webhook-${hookId}`],
+		},
 	})
 }
 
