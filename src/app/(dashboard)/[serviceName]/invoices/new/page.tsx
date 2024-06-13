@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
@@ -57,8 +56,6 @@ export default function NewService({
 		serviceName: string
 	}
 }) {
-	const router = useRouter()
-
 	const [isPending, startTransition] = useTransition()
 
 	const { showError } = useToast()
