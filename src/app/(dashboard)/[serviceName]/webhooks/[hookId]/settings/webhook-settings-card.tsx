@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card'
 import { WebhookForm } from '@/components/WebhookForm'
 
-export function HookForm({ hook }: { hook: Hook }) {
+export function WebhookSettingsCard({ hook }: { hook: Hook }) {
 	const { showError, showSuccess } = useToast()
 
 	const { mutateAsync: onSubmit } = useMutation({

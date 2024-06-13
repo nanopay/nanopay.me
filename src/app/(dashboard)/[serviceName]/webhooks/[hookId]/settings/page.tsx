@@ -1,6 +1,6 @@
 import api from '@/services/api'
 import { cookies } from 'next/headers'
-import { HookForm } from './hook-settings-form'
+import { WebhookSettingsCard } from './webhook-settings-card'
 
 interface Props {
 	params: {
@@ -23,5 +23,5 @@ export const metadata = {
 
 export default async function Webhooks({ params }: Props) {
 	const hook = await fetchData(params.hookId)
-	return <HookForm hook={hook} />
+	return <WebhookSettingsCard hook={hook} />
 }
