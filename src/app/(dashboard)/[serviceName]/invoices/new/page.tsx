@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useMutation } from 'react-query'
 import { useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { JSONSchemaType } from 'ajv'
@@ -9,7 +8,6 @@ import { JSONSchemaType } from 'ajv'
 import { Container } from '@/components/Container'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
-import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
@@ -23,6 +21,8 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
+import { useTransition } from 'react'
+import { createInvoice } from './actions'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
@@ -59,7 +59,9 @@ export default function NewService({
 }) {
 	const router = useRouter()
 
-	const { showError, showSuccess } = useToast()
+	const [isPending, startTransition] = useTransition()
+
+	const { showError } = useToast()
 
 	const { currentService } = usePreferences()
 
@@ -69,24 +71,20 @@ export default function NewService({
 		}),
 	})
 
-	const {
-		mutate: onSubmit,
-		isLoading: isSubmitting,
-		isSuccess,
-	} = useMutation({
-		mutationFn: async (data: InvoiceCreate) =>
-			api.invoices.create(currentService?.name as string, data),
-		onSuccess: res => {
-			showSuccess('Invoice created')
-			router.push(`/${currentService?.name}/invoices/${res.id}`)
-		},
-		onError: (err: any) => {
-			showError(
-				'Error creating invoice',
-				api.getErrorMessage(err) || 'Try again later',
-			)
-		},
-	})
+	const onSubmit = async (fields: InvoiceCreate) => {
+		startTransition(async () => {
+			try {
+				await createInvoice(serviceName, fields)
+			} catch (error) {
+				showError(
+					"Couldn't create invoice",
+					error instanceof Error
+						? error.message
+						: 'Check your connection and try again',
+				)
+			}
+		})
+	}
 
 	if (!serviceName) {
 		return null
@@ -211,8 +209,7 @@ export default function NewService({
 
 				<Button
 					type="submit"
-					loading={isSubmitting}
-					disabled={form.formState.isSubmitting || isSuccess}
+					loading={form.formState.isSubmitting || isPending}
 				>
 					Create Invoice
 				</Button>
