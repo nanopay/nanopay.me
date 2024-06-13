@@ -42,5 +42,5 @@ export const createInvoice = async (
 
 	revalidateTag(`service-${serviceName}-invoices`)
 
-	redirect(`/invoices/${id}`)
+	redirect(`/${serviceName}/invoices/${id}`)
 }
