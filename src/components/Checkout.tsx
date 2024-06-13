@@ -170,7 +170,7 @@ export default function Checkout({
 										stroke="none"
 										strokeWidth="1"
 										fill="none"
-										fill-rule="evenodd"
+										fillRule="evenodd"
 									>
 										<circle
 											id="filled-circle"
@@ -275,7 +275,7 @@ export default function Checkout({
 										stroke="none"
 										strokeWidth="1"
 										fill="none"
-										fill-rule="evenodd"
+										fillRule="evenodd"
 									>
 										<circle
 											id="filled-circle"
