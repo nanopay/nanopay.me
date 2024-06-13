@@ -90,7 +90,6 @@ export default function NewService() {
 				<ServiceAvatar
 					url={form.watch('avatar_url') || undefined}
 					onChange={url => {
-						console.log('new url', url)
 						form.setValue('avatar_url', url)
 					}}
 					onUploading={setIsUploading}
