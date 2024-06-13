@@ -25,11 +25,12 @@ const nextConfig = {
 	},
 	redirects: async () => [
 		{
-			source: '/:serviceName/webhooks/:hookId/',
-			destination: '/:serviceName/webhooks/:hookId/settings',
+			source:
+				'/:serviceName((?!api).*)/webhooks/:webhookId((?!new$)[a-z0-9.-]+)',
+			destination: '/:serviceName/webhooks/:webhookId/settings',
 			permanent: true,
 		},
-	]
+	],
 }
 
 module.exports = nextConfig
