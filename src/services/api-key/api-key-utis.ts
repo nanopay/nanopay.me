@@ -1,19 +1,20 @@
 import { blake2bHex } from 'blakejs'
-import { getBytes, hexlify, isHexString } from './helpers'
+import { getBytes, hexlify, isHexString } from './api-key-helpers'
 import crypto from 'crypto'
+import {
+	API_KEYS_SECRET,
+	API_KEYS_SECRET_LENGTH,
+	API_KEY_BYTES_LENGTH,
+	API_KEY_CHECKSUM_BYTES_LENGTH,
+} from './api-key-constants'
 
-export const API_KEYS_SECRET_LENGTH = 64
-export const API_KEY_BYTES_LENGTH = 16
-export const API_KEY_CHECKSUM_BYTES_LENGTH = 4
-const API_KEYS_SECRET = process.env.API_KEYS_SECRET
-
-export const createApiKey = () => {
+export const generateApiKey = () => {
 	if (
 		!API_KEYS_SECRET ||
 		!isHexString(API_KEYS_SECRET) ||
 		API_KEYS_SECRET.length != API_KEYS_SECRET_LENGTH
 	) {
-		throw new Error('API_KEYS_SECRET is not set or is not a valid hex string')
+		throw new Error('API_KEYS_SECRET is not set or is not a valid')
 	}
 
 	const randomBytes = crypto.getRandomValues(
@@ -33,7 +34,9 @@ export const createApiKey = () => {
 	return { apiKey, checksum }
 }
 
-export const verifyApiKey = (apiKey: string) => {
+export const verifyApiKeyWithChecksum = (
+	apiKey: string,
+): { isValid: true; checksum: string } | { isValid: false; checksum: null } => {
 	if (
 		!API_KEYS_SECRET ||
 		!isHexString(API_KEYS_SECRET) ||
@@ -43,14 +46,14 @@ export const verifyApiKey = (apiKey: string) => {
 	}
 
 	if (!isHexString(apiKey)) {
-		return false
+		return { isValid: false, checksum: null }
 	}
 
 	if (
 		apiKey.length !=
 		API_KEY_BYTES_LENGTH * 2 + API_KEY_CHECKSUM_BYTES_LENGTH * 2
 	) {
-		return false
+		return { isValid: false, checksum: null }
 	}
 
 	const randomBytes = getBytes(
@@ -67,5 +70,9 @@ export const verifyApiKey = (apiKey: string) => {
 		API_KEY_CHECKSUM_BYTES_LENGTH,
 	)
 
-	return givenChecksum === computedChecksum
+	if (givenChecksum !== computedChecksum) {
+		return { isValid: false, checksum: null }
+	}
+
+	return { checksum: computedChecksum, isValid: true }
 }
