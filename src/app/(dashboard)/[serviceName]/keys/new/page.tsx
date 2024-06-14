@@ -1,18 +1,16 @@
 'use client'
 
-import { useMutation } from 'react-query'
 import { useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
-import api from '@/services/api'
 import { useToast } from '@/hooks/useToast'
 import { ApiKeyCreate } from '@/types/services'
 import { JSONSchemaType } from 'ajv'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import { sanitizeSlug } from '@/utils/url'
-import { CopyIcon, InfoIcon } from 'lucide-react'
+import { CopyIcon, InfoIcon, LockIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Link from 'next/link'
 import {
@@ -20,9 +18,20 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
+	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
+import { createNewApiKey } from './actions'
+import { useState, useTransition } from 'react'
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card'
+import { API_KEY_BYTES_LENGTH } from '@/services/api-key/api-key-constants'
 
 const roboto = Roboto({
 	weight: '400',
@@ -32,6 +41,7 @@ const roboto = Roboto({
 const schema: JSONSchemaType<Omit<ApiKeyCreate, 'service'>> = {
 	type: 'object',
 	properties: {
+		service: { type: 'string' },
 		name: {
 			type: 'string',
 			minLength: 2,
@@ -44,161 +54,188 @@ const schema: JSONSchemaType<Omit<ApiKeyCreate, 'service'>> = {
 	additionalProperties: false,
 }
 
-export default function NewApiKey({
-	params: { serviceName },
-}: {
+interface Props {
 	params: {
 		serviceName: string
 	}
-}) {
-	const { showError, showSuccess } = useToast()
+}
+
+export default function NewApiKey({ params }: Props) {
+	const { showError } = useToast()
+	const [isPending, startTransition] = useTransition()
+	const [apiKey, setApiKey] = useState<string | null>(null)
 
 	const form = useForm<ApiKeyCreate>({
+		defaultValues: {
+			service: params.serviceName,
+		},
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
 	})
 
-	const {
-		mutateAsync: onSubmit,
-		isLoading: isSubmitting,
-		isSuccess,
-		data: createdApiKey,
-	} = useMutation({
-		mutationFn: async (data: ApiKeyCreate) =>
-			api.services.apiKeys.create(serviceName, {
-				...data,
-				service: serviceName,
-			}),
-		onSuccess: () => {
-			showSuccess('API Key created')
-		},
-		onError: (err: any) => {
-			showError(
-				'Error creating service',
-				api.getErrorMessage(err) || 'Try again later',
-			)
-		},
-	})
-
-	if (!serviceName) {
-		return null
-	}
-
-	const copy = (text: string) => {
-		if (createdApiKey) {
-			navigator.clipboard.writeText(text)
-			showSuccess('Copied to clipboard', undefined, {
-				autoClose: 1000,
-			})
-		}
+	const onSubmit = async (values: ApiKeyCreate) => {
+		startTransition(async () => {
+			try {
+				const { apiKey } = await createNewApiKey(values)
+				console.log('apiKey', apiKey)
+				setApiKey(apiKey)
+			} catch (error) {
+				showError(
+					'Could not create API Key',
+					error instanceof Error
+						? error.message
+						: 'Check your connection and try again',
+				)
+			}
+		})
 	}
 
 	return (
-		<Form {...form}>
-			<form
-				className="h-screen w-full max-w-xl items-center space-y-6 border border-slate-200 bg-white px-16 pb-16 sm:h-auto sm:rounded-lg"
-				onSubmit={form.handleSubmit(fields => onSubmit(fields))}
-			>
-				<div className="mb-8 flex w-full items-center justify-center space-x-2 border-b border-slate-200 py-3">
-					<h3 className="text-lg font-semibold text-slate-700">
-						Create a new key
-					</h3>
-				</div>
-
-				<div className="flex w-full flex-col space-y-4 px-4 py-4 sm:px-8">
-					<div>
-						<div className="mb-2 flex items-center text-xs text-slate-600">
-							<InfoIcon className="mr-1 w-4" />
-							<div>
-								Use a name like: <span className="font-semibold">my-token</span>
-								{' or '}
-								<span className="font-semibold">mywebsite.com</span>
-							</div>
-						</div>
-						<FormField
-							name="name"
-							control={form.control}
-							render={({ field, fieldState }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											label="Name"
-											{...field}
-											onChange={e =>
-												field.onChange(sanitizeSlug(e.target.value))
-											}
-											invalid={fieldState.invalid}
-											className="capitalize"
-											disabled={isSubmitting || isSuccess}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</div>
-
-					<FormField
-						name="description"
-						control={form.control}
-						render={({ field, fieldState }) => (
-							<FormItem>
-								<FormControl>
-									<TextArea
-										label="Description"
-										{...field}
-										onChange={e => field.onChange(e.target.value.slice(0, 512))}
-										invalid={fieldState.invalid}
-										disabled={isSubmitting || isSuccess}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
+		<Card className="w-full max-w-xl sm:p-6">
+			<CardHeader>
+				<CardTitle>New API Key</CardTitle>
+				<CardDescription>
+					Generate a new API key to authenticate your API requests.
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<Form {...form}>
+					<form
+						className="w-full space-y-6"
+						onSubmit={form.handleSubmit(
+							fields => onSubmit(fields),
+							error => console.log('error', error),
 						)}
-					/>
-				</div>
-				<div className="flex w-full justify-center">
-					{isSuccess ? (
-						<div className="flex flex-col items-center space-y-6">
-							<div className="w-full break-all rounded border-2 border-dashed border-slate-200 p-8">
-								<div className="text-sm leading-3 text-slate-600">
-									Your API Key:{' '}
-									{createdApiKey?.apiKey && (
-										<div>
-											<span
-												className={clsx(
-													roboto.className,
-													'text-base text-slate-800',
-												)}
-											>
-												{createdApiKey?.apiKey}
-											</span>
-											<button
-												className=" focus:text-nano text-slate-600"
-												onClick={() => copy(createdApiKey?.apiKey)}
-											>
-												<CopyIcon className="ml-2 h-4 w-4" />
-											</button>
-										</div>
-									)}
-								</div>
-								<ul className="my-4 list-disc text-sm text-slate-700">
-									<li>Safely save your key.</li>
-									<li>You will not be able to view this key again</li>
-									<li>This key has no expiration date.</li>
-									<li>Delete it or generate a new one at any time.</li>
-								</ul>
-							</div>
-							<Button asChild>
-								<Link href={`/${serviceName}/keys`}>Done</Link>
-							</Button>
+					>
+						<div className="flex w-full flex-col space-y-4">
+							<FormField
+								name="name"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<FormItem>
+										<FormLabel className="mb-2 flex items-center px-1 text-xs text-slate-600">
+											<InfoIcon className="mr-1 w-4" />
+											<p>
+												Use a name like:{' '}
+												<span className="font-semibold">my-token</span> or{' '}
+												<span className="font-semibold">mywebsite.com</span>
+											</p>
+										</FormLabel>
+										<FormControl>
+											<Input
+												label="Name"
+												{...field}
+												onChange={e =>
+													field.onChange(sanitizeSlug(e.target.value))
+												}
+												invalid={fieldState.invalid}
+												disabled={
+													field.disabled || form.formState.isSubmitSuccessful
+												}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								name="description"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<FormItem>
+										<FormControl>
+											<TextArea
+												label="Description"
+												{...field}
+												onChange={e =>
+													field.onChange(e.target.value.slice(0, 512))
+												}
+												invalid={fieldState.invalid}
+												disabled={
+													field.disabled || form.formState.isSubmitSuccessful
+												}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 						</div>
-					) : (
-						<Button loading={form.formState.isSubmitting}>Create Key</Button>
+						<div className="flex w-full justify-center">
+							{!!apiKey ? (
+								<ApiKeyBanner
+									apiKey={apiKey}
+									serviceName={params.serviceName}
+								/>
+							) : (
+								<Button
+									type="submit"
+									loading={form.formState.isSubmitting || isPending}
+								>
+									Create Key
+								</Button>
+							)}
+						</div>
+					</form>
+				</Form>
+			</CardContent>
+		</Card>
+	)
+}
+
+function ApiKeyBanner({
+	apiKey,
+	serviceName,
+}: {
+	apiKey?: string
+	serviceName?: string
+}) {
+	const { showSuccess } = useToast()
+
+	const copy = (text: string) => {
+		navigator.clipboard.writeText(text)
+		showSuccess('Copied to clipboard', undefined, {
+			autoClose: 1000,
+		})
+	}
+
+	return (
+		<div className="flex w-full flex-col items-center gap-y-6">
+			<div className="w-full rounded border-y-2 border-dashed border-slate-300 py-4 sm:border-x-2 sm:px-4">
+				<div className="text-sm leading-3 text-slate-600">
+					<div className="mb-2 flex items-center text-sm font-semibold">
+						<LockIcon className="mr-1 h-4 w-4" /> Your API Key
+					</div>
+					{apiKey && (
+						<div className="relative mt-2 flex w-full items-center break-all rounded-lg border border-slate-300 px-2 py-1 pr-8">
+							<p className={clsx(roboto.className, 'text-base text-slate-800')}>
+								<span>{apiKey.slice(0, API_KEY_BYTES_LENGTH * 2)}</span>
+								<span className="font-semibold">
+									{apiKey.slice(API_KEY_BYTES_LENGTH * 2)}
+								</span>
+							</p>
+							<button
+								type="button"
+								className="active:text-nano group absolute right-0 top-0 flex h-full w-8 items-center justify-center rounded-r-md border-l border-slate-300 text-slate-500 hover:text-slate-700"
+								onClick={() => copy(apiKey)}
+							>
+								<CopyIcon className="h-4 w-4 group-active:scale-95" />
+							</button>
+						</div>
 					)}
 				</div>
-			</form>
-		</Form>
+				<ul className="ml-6 mt-4 list-disc text-sm font-medium text-slate-700">
+					<li>Safely save your key.</li>
+					<li>You will not be able to view this key again</li>
+					<li>This key has no expiration date.</li>
+					<li>Delete it or generate a new one at any time.</li>
+				</ul>
+			</div>
+			<Button type="button" asChild>
+				<Link href={`/${serviceName}/keys`}>Done</Link>
+			</Button>
+		</div>
 	)
 }
