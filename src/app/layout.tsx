@@ -1,10 +1,9 @@
 import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
-import { Inter, Open_Sans } from 'next/font/google'
+import { Open_Sans } from 'next/font/google'
 import NProgressBar from '@/components/NProgressBar'
 import { ToastContainer } from 'react-toastify'
 
-const inter = Inter({ subsets: ['latin'] })
 const openSans = Open_Sans({ subsets: ['latin'] })
 
 export const metadata = {
