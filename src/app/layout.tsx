@@ -24,7 +24,6 @@ export default async function RootLayout({
 			<body className={openSans.className}>
 				<div className="flex min-h-screen flex-col">{children}</div>
 				<NProgressBar />
-				{children}
 				<ToastContainer />
 			</body>
 		</html>
