@@ -19,8 +19,6 @@ export const createApiKey = async ({
 
 		const { apiKey, checksum } = generateApiKey()
 
-		console.log('generated api key', apiKey)
-
 		await insertApiKey({
 			service_id,
 			name,

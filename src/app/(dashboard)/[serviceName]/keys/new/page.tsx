@@ -78,7 +78,6 @@ export default function NewApiKey({ params }: Props) {
 		startTransition(async () => {
 			try {
 				const { apiKey } = await createNewApiKey(values)
-				console.log('apiKey', apiKey)
 				setApiKey(apiKey)
 			} catch (error) {
 				showError(
@@ -103,10 +102,7 @@ export default function NewApiKey({ params }: Props) {
 				<Form {...form}>
 					<form
 						className="w-full space-y-6"
-						onSubmit={form.handleSubmit(
-							fields => onSubmit(fields),
-							error => console.log('error', error),
-						)}
+						onSubmit={form.handleSubmit(fields => onSubmit(fields))}
 					>
 						<div className="flex w-full flex-col space-y-4">
 							<FormField
