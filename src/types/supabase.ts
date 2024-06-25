@@ -6,13 +6,13 @@ export type Json =
 	| { [key: string]: Json | undefined }
 	| Json[]
 
-export interface Database {
+export type Database = {
 	public: {
 		Tables: {
 			api_keys: {
 				Row: {
 					checksum: string
-					created_at: string | null
+					created_at: string
 					description: string | null
 					id: number
 					name: string
@@ -21,7 +21,7 @@ export interface Database {
 				}
 				Insert: {
 					checksum: string
-					created_at?: string | null
+					created_at?: string
 					description?: string | null
 					id?: number
 					name: string
@@ -30,7 +30,7 @@ export interface Database {
 				}
 				Update: {
 					checksum?: string
-					created_at?: string | null
+					created_at?: string
 					description?: string | null
 					id?: number
 					name?: string
@@ -50,7 +50,7 @@ export interface Database {
 			hook_deliveries: {
 				Row: {
 					completed_at: string
-					created_at: string | null
+					created_at: string
 					hook_id: string
 					id: string
 					redelivery: boolean
@@ -66,7 +66,7 @@ export interface Database {
 				}
 				Insert: {
 					completed_at: string
-					created_at?: string | null
+					created_at?: string
 					hook_id: string
 					id: string
 					redelivery?: boolean
@@ -82,7 +82,7 @@ export interface Database {
 				}
 				Update: {
 					completed_at?: string
-					created_at?: string | null
+					created_at?: string
 					hook_id?: string
 					id?: string
 					redelivery?: boolean
@@ -109,7 +109,7 @@ export interface Database {
 			hooks: {
 				Row: {
 					active: boolean
-					created_at: string | null
+					created_at: string
 					description: string | null
 					event_types: string[]
 					id: string
@@ -120,7 +120,7 @@ export interface Database {
 				}
 				Insert: {
 					active?: boolean
-					created_at?: string | null
+					created_at?: string
 					description?: string | null
 					event_types: string[]
 					id?: string
@@ -131,7 +131,7 @@ export interface Database {
 				}
 				Update: {
 					active?: boolean
-					created_at?: string | null
+					created_at?: string
 					description?: string | null
 					event_types?: string[]
 					id?: string
@@ -152,8 +152,8 @@ export interface Database {
 			}
 			invoices: {
 				Row: {
-					created_at: string | null
-					currency: string | null
+					created_at: string
+					currency: string
 					description: string | null
 					expires_at: string
 					id: string
@@ -161,17 +161,17 @@ export interface Database {
 					metadata: Json | null
 					pay_address: string | null
 					price: number
-					received_amount: number | null
+					received_amount: number
 					recipient_address: string
 					redirect_url: string | null
-					refunded_amount: number | null
+					refunded_amount: number
 					service_id: string
-					status: string | null
+					status: string
 					title: string
 				}
 				Insert: {
-					created_at?: string | null
-					currency?: string | null
+					created_at?: string
+					currency: string
 					description?: string | null
 					expires_at: string
 					id: string
@@ -179,17 +179,17 @@ export interface Database {
 					metadata?: Json | null
 					pay_address?: string | null
 					price: number
-					received_amount?: number | null
+					received_amount?: number
 					recipient_address: string
 					redirect_url?: string | null
-					refunded_amount?: number | null
+					refunded_amount?: number
 					service_id: string
-					status?: string | null
+					status?: string
 					title: string
 				}
 				Update: {
-					created_at?: string | null
-					currency?: string | null
+					created_at?: string
+					currency?: string
 					description?: string | null
 					expires_at?: string
 					id?: string
@@ -197,12 +197,12 @@ export interface Database {
 					metadata?: Json | null
 					pay_address?: string | null
 					price?: number
-					received_amount?: number | null
+					received_amount?: number
 					recipient_address?: string
 					redirect_url?: string | null
-					refunded_amount?: number | null
+					refunded_amount?: number
 					service_id?: string
-					status?: string | null
+					status?: string
 					title?: string
 				}
 				Relationships: [
@@ -222,7 +222,7 @@ export interface Database {
 					created_at: string
 					from: string
 					hash: string
-					id: number
+					id: string
 					invoice_id: string
 					timestamp: number
 					to: string
@@ -233,7 +233,7 @@ export interface Database {
 					created_at?: string
 					from: string
 					hash: string
-					id?: number
+					id: string
 					invoice_id: string
 					timestamp: number
 					to: string
@@ -244,7 +244,7 @@ export interface Database {
 					created_at?: string
 					from?: string
 					hash?: string
-					id?: number
+					id?: string
 					invoice_id?: string
 					timestamp?: number
 					to?: string
@@ -269,21 +269,21 @@ export interface Database {
 			profiles: {
 				Row: {
 					avatar_url: string | null
-					created_at: string | null
+					created_at: string
 					email: string
 					name: string
 					user_id: string
 				}
 				Insert: {
 					avatar_url?: string | null
-					created_at?: string | null
+					created_at?: string
 					email: string
 					name: string
 					user_id: string
 				}
 				Update: {
 					avatar_url?: string | null
-					created_at?: string | null
+					created_at?: string
 					email?: string
 					name?: string
 					user_id?: string
@@ -300,15 +300,15 @@ export interface Database {
 			}
 			reserved_names: {
 				Row: {
-					created_at: string | null
+					created_at: string
 					name: string
 				}
 				Insert: {
-					created_at?: string | null
+					created_at?: string
 					name: string
 				}
 				Update: {
-					created_at?: string | null
+					created_at?: string
 					name?: string
 				}
 				Relationships: []
@@ -366,6 +366,24 @@ export interface Database {
 					},
 				]
 			}
+			settings: {
+				Row: {
+					created_at: string
+					key: string
+					value: Json
+				}
+				Insert: {
+					created_at?: string
+					key: string
+					value: Json
+				}
+				Update: {
+					created_at?: string
+					key?: string
+					value?: Json
+				}
+				Relationships: []
+			}
 		}
 		Views: {
 			[_ in never]: never
@@ -382,9 +400,11 @@ export interface Database {
 	}
 }
 
+type PublicSchema = Database[Extract<keyof Database, 'public'>]
+
 export type Tables<
 	PublicTableNameOrOptions extends
-		| keyof (Database['public']['Tables'] & Database['public']['Views'])
+		| keyof (PublicSchema['Tables'] & PublicSchema['Views'])
 		| { schema: keyof Database },
 	TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
 		? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
@@ -397,10 +417,10 @@ export type Tables<
 	  }
 		? R
 		: never
-	: PublicTableNameOrOptions extends keyof (Database['public']['Tables'] &
-			Database['public']['Views'])
-	? (Database['public']['Tables'] &
-			Database['public']['Views'])[PublicTableNameOrOptions] extends {
+	: PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
+			PublicSchema['Views'])
+	? (PublicSchema['Tables'] &
+			PublicSchema['Views'])[PublicTableNameOrOptions] extends {
 			Row: infer R
 	  }
 		? R
@@ -409,7 +429,7 @@ export type Tables<
 
 export type TablesInsert<
 	PublicTableNameOrOptions extends
-		| keyof Database['public']['Tables']
+		| keyof PublicSchema['Tables']
 		| { schema: keyof Database },
 	TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
 		? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
@@ -420,8 +440,8 @@ export type TablesInsert<
 	  }
 		? I
 		: never
-	: PublicTableNameOrOptions extends keyof Database['public']['Tables']
-	? Database['public']['Tables'][PublicTableNameOrOptions] extends {
+	: PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+	? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
 			Insert: infer I
 	  }
 		? I
@@ -430,7 +450,7 @@ export type TablesInsert<
 
 export type TablesUpdate<
 	PublicTableNameOrOptions extends
-		| keyof Database['public']['Tables']
+		| keyof PublicSchema['Tables']
 		| { schema: keyof Database },
 	TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
 		? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
@@ -441,8 +461,8 @@ export type TablesUpdate<
 	  }
 		? U
 		: never
-	: PublicTableNameOrOptions extends keyof Database['public']['Tables']
-	? Database['public']['Tables'][PublicTableNameOrOptions] extends {
+	: PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+	? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
 			Update: infer U
 	  }
 		? U
@@ -451,13 +471,13 @@ export type TablesUpdate<
 
 export type Enums<
 	PublicEnumNameOrOptions extends
-		| keyof Database['public']['Enums']
+		| keyof PublicSchema['Enums']
 		| { schema: keyof Database },
 	EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
 		? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
 		: never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
 	? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
-	: PublicEnumNameOrOptions extends keyof Database['public']['Enums']
-	? Database['public']['Enums'][PublicEnumNameOrOptions]
+	: PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
+	? PublicSchema['Enums'][PublicEnumNameOrOptions]
 	: never
