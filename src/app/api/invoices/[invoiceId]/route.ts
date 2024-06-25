@@ -1,5 +1,6 @@
-import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
+import { SITE_URL } from '@/constants'
+import { retrieveApiKey } from '@/services/api-key'
+import { AdminClient } from '@/services/client'
 import { NextRequest } from 'next/server'
 
 export async function GET(
@@ -12,53 +13,46 @@ export async function GET(
 		}
 	},
 ) {
-	const supabase = createClient(cookies())
+	try {
+		const client = new AdminClient()
 
-	const {
-		data: { user },
-		error: userError,
-	} = await supabase.auth.getUser()
+		const apiToken = req.headers.get('Authorization')?.split('Bearer ')[1]
 
-	if (userError && userError.status !== 401) {
-		return Response.json({ message: userError.message }, { status: 500 })
-	}
+		if (!apiToken) {
+			return Response.json(
+				{ message: 'Authorization header is required' },
+				{ status: 401 },
+			)
+		}
 
-	const { data: invoice, error } = await supabase
-		.from('invoices')
-		.select(
-			'*, service:services(name, display_name, avatar_url, description, id, website, contact_email, user_id)',
-		)
-		.eq('id', invoiceId)
-		.single()
+		const { service_id } = await retrieveApiKey(apiToken)
 
-	if (error && error.code !== 'PGRST116') {
-		return Response.json({ message: error.message }, { status: 500 })
-	}
+		const invoice = await client.invoices.get(invoiceId, service_id)
 
-	if (!invoice) {
-		return Response.json({ message: 'invoice not found' }, { status: 404 })
-	}
+		if (!invoice) {
+			return Response.json({ message: 'invoice not found' }, { status: 404 })
+		}
 
-	const isOwner = invoice.service?.user_id === user?.id
-
-	return Response.json({
-		id: invoice.id,
-		created_at: invoice.created_at,
-		expires_at: invoice.expires_at,
-		title: invoice.title,
-		description: invoice.description,
-		currency: 'XNO',
-		pay_address: invoice.pay_address,
-		price: invoice.price,
-		status: invoice.status,
-		received_amount: invoice.received_amount,
-		refunded_amount: invoice.refunded_amount,
-		pay_url: `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`,
-		service: invoice.service,
-		redirect_url: invoice.redirect_url,
-		...(isOwner && {
+		return Response.json({
+			id: invoice.id,
+			created_at: invoice.created_at,
+			expires_at: invoice.expires_at,
+			title: invoice.title,
+			description: invoice.description,
+			currency: 'XNO',
+			pay_address: invoice.pay_address,
+			price: invoice.price,
+			status: invoice.status,
+			received_amount: invoice.received_amount,
+			refunded_amount: invoice.refunded_amount,
+			pay_url: `${SITE_URL}/invoices/${invoice.id}`,
+			redirect_url: invoice.redirect_url,
 			metadata: invoice.metadata,
 			recipient_address: invoice.recipient_address,
-		}),
-	})
+			payments: invoice.payments,
+		})
+	} catch (error) {
+		const message = error instanceof Error ? error.message : 'Unknown error'
+		return Response.json({ message }, { status: 500 })
+	}
 }
