@@ -1,9 +1,6 @@
 import 'server-only'
 
-import {
-	generateApiKey,
-	verifyApiKeyWithChecksum,
-} from '@/services/api-key/api-key-utis'
+import { generateApiKey, verifyApiKeyWithChecksum } from './api-key-utis'
 import { apiKeyCreateSchema } from './api-key-schema'
 import { z } from 'zod'
 import { insertApiKey, retrieveApiKeyFromChecksum } from './api-key-repository'
@@ -45,5 +42,12 @@ export const retrieveApiKey = async (apiKey: string) => {
 
 	const data = await retrieveApiKeyFromChecksum(checksum)
 
-	return data
+	return {
+		id: data.id,
+		service_id: data.service_id,
+		name: data.name,
+		description: data.description,
+		scopes: data.scopes,
+		created_at: data,
+	}
 }

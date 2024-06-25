@@ -1,10 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 import { ApiKeyInsert } from './api-key-types'
+import { Database } from '@/types/supabase'
 
 // Here we create a Supabase client with service role.
 // This client can make any request to the database.
 // BE CAREFUL! Never expose this client to other parts of the application.
-const supabase = createClient(
+const supabase = createClient<Database>(
 	process.env.SUPABASE_URL!,
 	process.env.SUPABASE_SECRET_KEY!,
 )

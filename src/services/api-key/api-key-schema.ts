@@ -7,8 +7,8 @@ export const apiKeyCreateSchema = z.object({
 		.min(2)
 		.max(40)
 		.regex(/^[a-zA-Z0-9-.]+$/),
-	description: z.string().max(512).optional(),
-	scopes: z.array(z.string()).optional(),
+	description: z.string().max(512).nullable().optional(),
+	scopes: z.array(z.string()),
 })
 
 export const apiKeyInsertSchema = apiKeyCreateSchema.extend({
