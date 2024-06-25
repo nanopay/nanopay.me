@@ -11,22 +11,12 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { Logomark } from '@/components/Logo'
+import { Client } from '@/services/client'
 
 async function checkUserProfileExists(): Promise<boolean> {
-	const supabase = createClient(cookies())
-
-	const { error } = await supabase.from('profiles').select('*').single()
-
-	if (error) {
-		if (error.code === 'PGRST116') {
-			// Ok, not found
-			return false
-		}
-		throw new Error(error.message)
-	}
-
-	// No error means we found
-	return true
+	const client = new Client(cookies())
+	const profile = await client.user.getProfile()
+	return !!profile
 }
 
 export default async function CompleteUserProfile() {

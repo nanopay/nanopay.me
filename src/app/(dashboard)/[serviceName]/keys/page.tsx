@@ -1,23 +1,22 @@
 import { Button } from '@/components/Button'
-import api from '@/services/api'
 import { AlertTriangle, ChevronRightIcon, PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
+import { Client } from '@/services/client'
+import DeleteApiKeyButton from './delete'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'API Keys',
+}
 
 export default async function ApiKeys({
 	params: { serviceName },
 }: {
 	params: { serviceName: string }
 }) {
-	const apiKeys = await api.services.apiKeys.list(serviceName, {
-		headers: {
-			Cookie: cookies().toString(),
-		},
-		next: {
-			revalidate: false,
-			tags: [`service-${serviceName}-api-keys`],
-		},
-	})
+	const client = new Client(cookies())
+	const apiKeys = await client.apiKeys.list(serviceName)
 
 	return (
 		<div className="w-full">
@@ -47,7 +46,7 @@ export default async function ApiKeys({
 								<div className="min-w-0 space-y-3">
 									<div className="flex items-center space-x-3">
 										<h2 className="text-sm font-medium">
-											<span className="absolute inset-0" aria-hidden="true" />
+											<span aria-hidden="true" />
 											{apiKey.name}
 										</h2>
 									</div>
@@ -87,6 +86,7 @@ export default async function ApiKeys({
 									</p>
 								</div>
 							</div>
+							<DeleteApiKeyButton apiKeyId={apiKey.id as any} />
 						</li>
 					))}
 			</ul>

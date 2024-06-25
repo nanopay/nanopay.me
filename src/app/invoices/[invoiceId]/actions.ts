@@ -1,15 +1,15 @@
 'use server'
 
-import paymentGateway from '@/services/payment-gateway'
+import { AdminClient } from '@/services/client'
 import { redirect } from 'next/navigation'
 
 export const redirectToMerchant = async (invoiceId: string) => {
-	const invoice = await paymentGateway.invoices.get(invoiceId, {
-		next: {
-			revalidate: 1,
-			tags: [`invoice-${invoiceId}`],
-		},
-	})
+	const client = new AdminClient()
+	const invoice = await client.invoices.get(invoiceId)
+
+	if (!invoice) {
+		throw new Error('Invoice not found')
+	}
 
 	if (!invoice.redirect_url) {
 		throw new Error('Redirect URL not found')

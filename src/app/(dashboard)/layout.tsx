@@ -2,7 +2,7 @@ import { Footer } from '@/components/Footer'
 import Appbar from '@/components/Appbar'
 import PopupAlert from '@/components/PopupAlert'
 import { UserProvider } from '@/contexts/UserProvider'
-import { createClient, getUserId } from '@/utils/supabase/server'
+import { getUserId } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import PreferencesProvider from '@/contexts/PreferencesProvider'
@@ -10,65 +10,56 @@ import { unstable_cache } from 'next/cache'
 import { Service } from '@/types/services'
 import { User } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
+import { Client } from '@/services/client'
 
-export async function fetchUser(
-	cookieStore: ReturnType<typeof cookies>,
-): Promise<User> {
-	const supabase = createClient(cookieStore)
+export async function getCachedUser(userId: string): Promise<User> {
+	const client = new Client(cookies())
 
-	const { data, error } = await supabase.from('profiles').select('*').single()
+	return unstable_cache(
+		async () => {
+			const data = await client.user.getProfile()
 
-	if (error && error.code !== 'PGRST116') {
-		throw new Error(error.message)
-	}
+			if (!data) {
+				throw new Error('profile not found')
+			}
 
-	if (!data) {
-		throw new Error('profile not found')
-	}
-
-	return {
-		id: data.user_id,
-		name: data.name,
-		email: data.email,
-		avatar_url: data.avatar_url || DEFAULT_AVATAR_URL,
-	}
+			return {
+				id: data.user_id,
+				name: data.name,
+				email: data.email,
+				avatar_url: data.avatar_url || DEFAULT_AVATAR_URL,
+			}
+		},
+		[`user-${userId}-profile`],
+		{
+			revalidate: false,
+			tags: [`user-${userId}-profile`],
+		},
+	)()
 }
 
-export async function fetchUserServices(
-	cookieStore: ReturnType<typeof cookies>,
+export async function getCachedUserServices(
+	userId: string,
 ): Promise<Service[]> {
-	const supabase = createClient(cookieStore)
-
-	const { data, error } = await supabase.from('services').select('*')
-
-	if (error) {
-		throw new Error(error.message)
-	}
-
-	return data || []
-}
-
-async function fetchData() {
-	const cookieStore = cookies()
-	const userId = await getUserId(cookieStore)
-
-	const getCachedUser = unstable_cache(fetchUser, [`user-${userId}-profile`], {
-		revalidate: false,
-		tags: [`user-${userId}-profile`],
-	})
-
-	const getCachedServices = unstable_cache(
-		fetchUserServices,
+	const client = new Client(cookies())
+	return unstable_cache(
+		async () => {
+			return await client.services.list()
+		},
 		[`user-${userId}-services`],
 		{
 			revalidate: false,
 			tags: [`user-${userId}-services`],
 		},
-	)
+	)()
+}
+
+async function fetchData() {
+	const userId = await getUserId(cookies())
 
 	const [user, services] = await Promise.all([
-		getCachedUser(cookieStore),
-		getCachedServices(cookieStore),
+		getCachedUser(userId),
+		getCachedUserServices(userId),
 	])
 
 	return {

@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/server'
+import { Client } from '@/services/client'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
 		)
 	}
 
-	const supabase = createClient(cookies())
-	await supabase.auth.exchangeCodeForSession(code)
+	const client = new Client(cookies())
+	await client.auth.exchangeCodeForSession(code)
 
 	const redirectTo = new URL(requestUrl.origin)
 	redirectTo.pathname = next || '/'

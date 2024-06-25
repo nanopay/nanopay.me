@@ -2,28 +2,26 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { createClient, getUserId } from '@/utils/supabase/server'
 import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
-import { Database } from '@/types/supabase'
+import { Client } from '@/services/client'
+import { getUserId } from '@/utils/supabase/server'
+import { revalidateTag } from 'next/cache'
 
 export const createUserProfile = async ({
 	name,
 	avatar_url,
 }: UserEditables) => {
-	const userId = await getUserId(cookies())
+	const userId = getUserId(cookies())
 
-	const supabase = createClient(cookies())
+	const client = new Client(cookies())
 
-	const { error: createError } = await supabase.from('profiles').insert({
-		user_id: userId,
+	await client.user.createProfile({
 		name,
 		avatar_url: avatar_url || DEFAULT_AVATAR_URL,
-	} as Database['public']['Tables']['profiles']['Insert'])
+	})
 
-	if (createError) {
-		throw new Error(createError.message)
-	}
+	revalidateTag(`user-${userId}-profile`)
 
 	redirect('/services/new')
 }

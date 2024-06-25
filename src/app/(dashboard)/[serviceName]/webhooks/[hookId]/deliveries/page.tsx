@@ -1,14 +1,6 @@
-import api from '@/services/api'
 import HookDelivieries from '@/components/HookDeliveries'
 import { cookies } from 'next/headers'
-
-const fetchData = async (hookId: string) => {
-	return api.services.hooks.deliveries.list(hookId, {
-		headers: {
-			Cookie: cookies().toString(),
-		},
-	})
-}
+import { Client } from '@/services/client'
 
 interface Props {
 	params: {
@@ -22,7 +14,8 @@ export const metadata = {
 }
 
 export default async function WebhookDeliveries({ params: { hookId } }: Props) {
-	const deliveries = await fetchData(hookId)
+	const client = new Client(cookies())
+	const deliveries = await client.webhooks.deliveries(hookId)
 
 	return <HookDelivieries deliveries={deliveries} />
 }

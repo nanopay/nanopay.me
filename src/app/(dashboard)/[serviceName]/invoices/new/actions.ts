@@ -1,14 +1,12 @@
 'use server'
 
-import paymentGateway from '@/services/payment-gateway'
+import { Client } from '@/services/client'
 import { InvoiceCreate } from '@/types/invoice'
-import { createClient } from '@/utils/supabase/server'
-import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export const createInvoice = async (
-	serviceName: string,
+	serviceNameOrId: string,
 	{
 		title,
 		description,
@@ -17,21 +15,10 @@ export const createInvoice = async (
 		metadata,
 		redirect_url,
 	}: InvoiceCreate,
-): Promise<string> => {
-	const supabase = createClient(cookies())
+) => {
+	const client = new Client(cookies())
 
-	const { data: service, error } = await supabase
-		.from('services')
-		.select('id')
-		.eq('name', serviceName)
-		.single()
-
-	if (error) {
-		throw new Error(error.message)
-	}
-
-	const { id } = await paymentGateway.invoices.create({
-		service_id: service.id,
+	const { id } = await client.invoices.create(serviceNameOrId, {
 		title,
 		description,
 		metadata,
@@ -40,7 +27,5 @@ export const createInvoice = async (
 		redirect_url,
 	})
 
-	revalidateTag(`service-${serviceName}-invoices`)
-
-	redirect(`/${serviceName}/invoices/${id}`)
+	redirect(`/${serviceNameOrId}/invoices/${id}`)
 }

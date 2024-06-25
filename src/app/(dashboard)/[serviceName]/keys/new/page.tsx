@@ -10,7 +10,7 @@ import { JSONSchemaType } from 'ajv'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import { sanitizeSlug } from '@/utils/url'
-import { CopyIcon, InfoIcon, LockIcon } from 'lucide-react'
+import { CopyCheckIcon, CopyIcon, InfoIcon, LockIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Link from 'next/link'
 import {
@@ -77,7 +77,11 @@ export default function NewApiKey({ params }: Props) {
 	const onSubmit = async (values: ApiKeyCreate) => {
 		startTransition(async () => {
 			try {
-				const { apiKey } = await createNewApiKey(values)
+				const { apiKey } = await createNewApiKey(params.serviceName, {
+					name: values.name,
+					description: values.description,
+					scopes: ['*'],
+				})
 				setApiKey(apiKey)
 			} catch (error) {
 				showError(
@@ -188,13 +192,12 @@ function ApiKeyBanner({
 	apiKey?: string
 	serviceName?: string
 }) {
-	const { showSuccess } = useToast()
+	const [copied, setCopied] = useState(false)
 
 	const copy = (text: string) => {
 		navigator.clipboard.writeText(text)
-		showSuccess('Copied to clipboard', undefined, {
-			autoClose: 1000,
-		})
+		setCopied(true)
+		setTimeout(() => setCopied(false), 3000)
 	}
 
 	return (
@@ -216,8 +219,13 @@ function ApiKeyBanner({
 								type="button"
 								className="active:text-nano group absolute right-0 top-0 flex h-full w-8 items-center justify-center rounded-r-md border-l border-slate-300 text-slate-500 hover:text-slate-700"
 								onClick={() => copy(apiKey)}
+								disabled={copied}
 							>
-								<CopyIcon className="h-4 w-4 group-active:scale-95" />
+								{copied ? (
+									<CopyCheckIcon className="h-4 w-4 text-green-700 group-active:scale-95" />
+								) : (
+									<CopyIcon className="h-4 w-4 group-active:scale-95" />
+								)}
 							</button>
 						</div>
 					)}

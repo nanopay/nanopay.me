@@ -1,7 +1,6 @@
 'use client'
 
 import { useToast } from '@/hooks/useToast'
-import { Hook, HookCreate } from '@/types/hooks'
 import {
 	Card,
 	CardContent,
@@ -11,13 +10,17 @@ import {
 } from '@/components/ui/card'
 import { WebhookForm } from '@/components/WebhookForm'
 import { updateWebhook } from './actions'
+import {
+	Webhook,
+	WebhookUpdate,
+} from '@/services/client/webhooks/webhooks-types'
 
-export function WebhookSettingsCard({ hook }: { hook: Hook }) {
+export function WebhookSettingsCard({ webhook }: { webhook: Webhook }) {
 	const { showError } = useToast()
 
-	const onSubmit = async (values: HookCreate) => {
+	const onSubmit = async (values: WebhookUpdate) => {
 		try {
-			await updateWebhook(hook.id, values)
+			await updateWebhook(webhook.id, values)
 		} catch (error) {
 			showError(
 				'Could not update webhook',
@@ -39,10 +42,10 @@ export function WebhookSettingsCard({ hook }: { hook: Hook }) {
 			<CardContent>
 				<WebhookForm
 					defaultValues={{
-						name: hook.name,
-						description: hook.description,
-						event_types: hook.event_types,
-						url: hook.url,
+						name: webhook.name,
+						description: webhook.description,
+						event_types: webhook.event_types,
+						url: webhook.url,
 					}}
 					onSubmit={onSubmit}
 					buttonTitle="Update Webhook"

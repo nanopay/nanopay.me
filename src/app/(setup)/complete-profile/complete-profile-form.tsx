@@ -135,7 +135,7 @@ export default function CompleteProfileForm({
 					loading={form.formState.isSubmitting || isPending}
 					disabled={!form.watch('name') || !initialData.email || !acceptTerms}
 				>
-					Register Me
+					Register
 				</Button>
 			</form>
 		</Form>

@@ -1,20 +1,13 @@
 import { Button } from '@/components/Button'
 import Invoices from '@/components/Invoices'
-import api from '@/services/api'
+import { Client } from '@/services/client'
 import { PlusIcon } from 'lucide-react'
+import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 
-const fetchData = async (serviceName: string) => {
-	return await api.invoices.list(serviceName, {
-		headers: {
-			Cookie: cookies().toString(),
-		},
-		next: {
-			revalidate: false,
-			tags: [`service-${serviceName}-invoices`],
-		},
-	})
+export const metadata: Metadata = {
+	title: 'Invoices',
 }
 
 interface Props {
@@ -22,7 +15,9 @@ interface Props {
 }
 
 export default async function InvoicesPage({ params: { serviceName } }: Props) {
-	const invoices = await fetchData(serviceName)
+	const client = new Client(cookies())
+	const invoices = await client.invoices.list(serviceName)
+
 	return (
 		<div className="w-full max-w-7xl">
 			<header className="px-1 py-4">

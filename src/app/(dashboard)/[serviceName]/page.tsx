@@ -1,10 +1,10 @@
-import api from '@/services/api'
 import Fireworks from '@/components/Fireworks'
 import { cookies } from 'next/headers'
 import Invoices from '@/components/Invoices'
 import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
 import { KeyRoundIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
+import { Client } from '@/services/client'
 
 interface Props {
 	params: { serviceName: string }
@@ -12,27 +12,11 @@ interface Props {
 }
 
 const fetchData = async (serviceName: string) => {
+	const client = new Client(cookies())
 	const [service, invoices] = await Promise.all([
-		api.services.get(serviceName, {
-			headers: {
-				Cookie: cookies().toString(),
-			},
-			next: {
-				revalidate: false,
-				tags: [`service-${serviceName}`],
-			},
-		}),
-		api.invoices.list(serviceName, {
-			headers: {
-				Cookie: cookies().toString(),
-			},
-			next: {
-				revalidate: false,
-				tags: [`service-${serviceName}-invoices`],
-			},
-		}),
+		client.services.get(serviceName),
+		client.invoices.list(serviceName),
 	])
-
 	return { service, invoices }
 }
 

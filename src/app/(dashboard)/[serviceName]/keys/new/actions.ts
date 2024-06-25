@@ -1,31 +1,19 @@
 'use server'
 
-import { createApiKey } from '@/services/api-key'
-import { ApiKeyCreate } from '@/types/services'
-import { createClient } from '@/utils/supabase/server'
-import { revalidateTag } from 'next/cache'
+import { ApiKeyCreate, Client } from '@/services/client'
 import { cookies } from 'next/headers'
 
-export const createNewApiKey = async (data: ApiKeyCreate) => {
-	const supabase = createClient(cookies())
+export const createNewApiKey = async (
+	serviceNameOrId: string,
+	data: ApiKeyCreate,
+) => {
+	const client = new Client(cookies())
 
-	const { data: service, error } = await supabase
-		.from('services')
-		.select('id')
-		.eq('name', data.service)
-		.single()
-
-	if (error) {
-		throw new Error(error.message)
-	}
-
-	const { apiKey, checksum } = await createApiKey({
-		service_id: service.id,
+	const { apiKey, checksum } = await client.apiKeys.create(serviceNameOrId, {
 		name: data.name,
 		description: data.description,
+		scopes: data.scopes,
 	})
 
-	revalidateTag(`service-${data.service}-api-keys`)
-
-	return { apiKey }
+	return { apiKey, checksum }
 }

@@ -71,7 +71,7 @@ export default function NewService() {
 			} catch (error) {
 				showError(
 					'Error creating service',
-					api.getErrorMessage(error) || 'Try again Later',
+					error instanceof Error ? error.message : 'Try again Later',
 				)
 			}
 		})

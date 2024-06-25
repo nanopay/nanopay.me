@@ -1,23 +1,14 @@
-import api from '@/services/api'
 import { cookies } from 'next/headers'
 import { Settings } from './settings'
+import { Client } from '@/services/client'
 
 interface Params {
 	params: { serviceName: string }
 }
 
 const fetchData = async (serviceName: string) => {
-	const service = await api.services.get(serviceName, {
-		headers: {
-			Cookie: cookies().toString(),
-		},
-		next: {
-			revalidate: false,
-			tags: [`service-${serviceName}`],
-		},
-	})
-
-	return service
+	const client = new Client(cookies())
+	return await client.services.get(serviceName)
 }
 
 export async function generateMetadata({ params: { serviceName } }: Params) {

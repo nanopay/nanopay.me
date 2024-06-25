@@ -1,47 +1,22 @@
 'use server'
 
-import { HookCreate } from '@/types/hooks'
-import { createClient } from '@/utils/supabase/server'
-import { revalidateTag } from 'next/cache'
+import { Client } from '@/services/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { WebhookCreate } from '@/services/client/webhooks/webhooks-types'
 
 export const createWebhook = async (
-	serviceName: string,
-	{ name, description, url, event_types, secret }: HookCreate,
+	serviceNameOrId: string,
+	{ name, description, url, event_types, secret }: WebhookCreate,
 ) => {
-	const supabase = createClient(cookies())
+	const client = new Client(cookies())
+	const { id } = await client.webhooks.create(serviceNameOrId, {
+		name,
+		description,
+		url,
+		event_types,
+		secret,
+	})
 
-	const { data: service, error: serviceError } = await supabase
-		.from('services')
-		.select('id')
-		.eq('name', serviceName)
-		.single()
-
-	if (serviceError) {
-		throw new Error(serviceError.message)
-	}
-
-	const { error: hookError, data: hook } = await supabase
-		.from('hooks')
-		.insert([
-			{
-				name,
-				description,
-				url,
-				event_types,
-				secret,
-				service_id: service.id,
-			},
-		])
-		.select('id')
-		.single()
-
-	if (hookError) {
-		throw new Error(hookError.message)
-	}
-
-	revalidateTag(`service-${serviceName}-webhooks`)
-
-	redirect(`/${serviceName}/webhooks/${hook.id}/settings`)
+	redirect(`/${serviceNameOrId}/webhooks/${id}/settings`)
 }

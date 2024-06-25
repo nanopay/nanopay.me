@@ -1,22 +1,17 @@
 'use server'
 
-import { createClient, getUserId } from '@/utils/supabase/server'
+import { Client } from '@/services/client'
+import { getUserId } from '@/utils/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export const deleteService = async (serviceName: string) => {
 	const userId = await getUserId(cookies())
-	const supabase = createClient(cookies())
 
-	const { error } = await supabase
-		.from('services')
-		.delete()
-		.eq('name', serviceName)
+	const client = new Client(cookies())
 
-	if (error) {
-		throw new Error(error.message)
-	}
+	await client.services.delete(serviceName)
 
 	revalidateTag(`service-${serviceName}`)
 	revalidateTag(`user-${userId}-services`)

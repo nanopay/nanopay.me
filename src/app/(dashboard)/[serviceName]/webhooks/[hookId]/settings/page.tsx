@@ -1,6 +1,6 @@
-import api from '@/services/api'
 import { cookies } from 'next/headers'
 import { WebhookSettingsCard } from './webhook-settings-card'
+import { Client } from '@/services/client'
 
 interface Props {
 	params: {
@@ -9,23 +9,12 @@ interface Props {
 	}
 }
 
-const fetchData = async (hookId: string) => {
-	return api.services.hooks.get(hookId, {
-		headers: {
-			Cookie: cookies().toString(),
-		},
-		next: {
-			revalidate: false,
-			tags: [`webhook-${hookId}`],
-		},
-	})
-}
-
 export const metadata = {
 	title: 'Webhook Settings',
 }
 
 export default async function Webhooks({ params }: Props) {
-	const hook = await fetchData(params.hookId)
-	return <WebhookSettingsCard hook={hook} />
+	const client = new Client(cookies())
+	const webhook = await client.webhooks.get(params.hookId)
+	return <WebhookSettingsCard webhook={webhook} />
 }

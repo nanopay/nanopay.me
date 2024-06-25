@@ -1,20 +1,13 @@
-import api from '@/services/api'
 import ActivityDot from '@/components/ActivityDot'
 import Link from 'next/link'
 import { ArrowUpCircleIcon, ChevronRightIcon, PlusIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { cookies } from 'next/headers'
+import { Client } from '@/services/client'
 
 const fetchData = async (serviceName: string) => {
-	return await api.services.hooks.list(serviceName, {
-		headers: {
-			Cookie: cookies().toString(),
-		},
-		next: {
-			revalidate: false,
-			tags: [`service-${serviceName}-webhooks`],
-		},
-	})
+	const client = new Client(cookies())
+	return await client.webhooks.list(serviceName)
 }
 
 export const metadata = {

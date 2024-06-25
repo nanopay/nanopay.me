@@ -1,15 +1,13 @@
 'use client'
 
 import Checkout from '@/components/Checkout'
-import { PublicInvoice } from '@/types/invoice'
 import { useEffect, useState } from 'react'
 import Pusher from 'pusher-js'
 import { Payment } from '@/types/payment'
+import { InvoicePublic } from '@/services/client'
 
 interface PayInvoiceProps {
-	invoice: PublicInvoice
-	payments: Payment[]
-	hasRedirectUrl: boolean
+	invoice: InvoicePublic
 }
 
 interface PaymentNotification {
@@ -18,12 +16,8 @@ interface PaymentNotification {
 	missing: number
 }
 
-export default function PayInvoice({
-	invoice,
-	payments: _payments,
-	hasRedirectUrl,
-}: PayInvoiceProps) {
-	const [payments, setPayments] = useState<Payment[]>(_payments)
+export default function PayInvoice({ invoice }: PayInvoiceProps) {
+	const [payments, setPayments] = useState<Payment[]>(invoice.payments)
 
 	useEffect(() => {
 		if (!invoice) return
@@ -74,7 +68,7 @@ export default function PayInvoice({
 				payments={payments}
 				expiresAt={new Date(invoice.expires_at)}
 				service={invoice.service}
-				hasRedirectUrl={hasRedirectUrl}
+				hasRedirectUrl={invoice.has_redirect_url}
 			/>
 		</div>
 	)

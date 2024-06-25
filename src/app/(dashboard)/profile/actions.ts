@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { createClient, getUserId } from '@/utils/supabase/server'
+import { getUserId } from '@/utils/supabase/server'
 import {
 	ALLOWED_IMAGE_TYPES,
 	MAX_IMAGE_SIZE,
@@ -9,26 +9,20 @@ import {
 } from '@/constants'
 import { revalidateTag } from 'next/cache'
 import { createPresignedUrl, moveObject } from '@/services/s3'
+import { Client } from '@/services/client'
 
 export interface UpdateUserProps {
 	name: string
 }
 
 export const updateUser = async ({ name }: Partial<UpdateUserProps>) => {
-	const supabase = createClient(cookies())
-
 	const userId = await getUserId(cookies())
 
-	const { error: createError } = await supabase
-		.from('profiles')
-		.update({
-			name,
-		})
-		.eq('user_id', userId)
+	const client = new Client(cookies())
 
-	if (createError) {
-		throw new Error(createError.message)
-	}
+	await client.user.updateProfile({
+		name,
+	})
 
 	revalidateTag(`user-${userId}`)
 }
@@ -66,8 +60,6 @@ export const createAvatarUploadPresignedUrl = async ({
 }
 
 export const updateAvatar = async () => {
-	const supabase = createClient(cookies())
-
 	const userId = await getUserId(cookies())
 
 	const oldKey = `tmp/users/${userId}/avatar.png`
@@ -79,16 +71,11 @@ export const updateAvatar = async () => {
 	avatarUrl.pathname = newKey
 	avatarUrl.searchParams.set('v', Date.now().toString())
 
-	const { error } = await supabase
-		.from('profiles')
-		.update({
-			avatar_url: avatarUrl.toString(),
-		})
-		.eq('user_id', userId)
+	const client = new Client(cookies())
 
-	if (error) {
-		throw new Error(error.message)
-	}
+	await client.user.updateProfile({
+		avatar_url: avatarUrl.toString(),
+	})
 
 	revalidateTag(`user-${userId}`)
 }
