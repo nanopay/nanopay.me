@@ -17,13 +17,21 @@ import { UseFormProps, useForm } from 'react-hook-form'
 import { fullFormats } from 'ajv-formats/dist/formats'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
-import { HookCreate } from '@/types/hooks'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { TextArea } from './TextArea'
+import {
+	WebhookCreate,
+	WebhookEventType,
+} from '@/services/client/webhooks/webhooks-types'
 
-const eventTypes = ['invoice.paid', 'invoice.error', 'invoice.expired']
+const eventTypes: WebhookEventType[] = [
+	'invoice.paid',
+	'invoice.created',
+	'invoice.error',
+	'invoice.expired',
+]
 
-const schema: JSONSchemaType<HookCreate> = {
+const schema: JSONSchemaType<WebhookCreate> = {
 	type: 'object',
 	properties: {
 		name: {
@@ -57,8 +65,8 @@ const schema: JSONSchemaType<HookCreate> = {
 	additionalProperties: false,
 }
 
-export interface WebhookFormProps extends UseFormProps<HookCreate> {
-	onSubmit: (fields: HookCreate) => void
+export interface WebhookFormProps extends UseFormProps<WebhookCreate> {
+	onSubmit: (fields: WebhookCreate) => void
 	buttonTitle: string
 }
 
@@ -67,7 +75,7 @@ export function WebhookForm({
 	buttonTitle,
 	...props
 }: WebhookFormProps) {
-	const { ...form } = useForm<HookCreate>({
+	const { ...form } = useForm<WebhookCreate>({
 		resolver: ajvResolver(schema, {
 			formats: fullFormats,
 		}),
@@ -119,6 +127,7 @@ export function WebhookForm({
 								<TextArea
 									label="Description"
 									{...field}
+									value={field.value ?? ''}
 									onChange={e => field.onChange(e.target.value.slice(0, 512))}
 									invalid={fieldState.invalid}
 									disabled={formDisabled}
@@ -187,6 +196,7 @@ export function WebhookForm({
 								<Input
 									label="Secret (optional)"
 									{...field}
+									value={field.value ?? ''}
 									onChange={e => field.onChange(e.target.value.slice(0, 512))}
 									disabled
 								/>

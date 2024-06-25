@@ -1,11 +1,11 @@
-import { HookDelivery } from '@/types/hooks'
 import { formatDateTime } from '@/utils/others'
 import clsx from 'clsx'
 import ActivityDot from './ActivityDot'
 import { ChevronRightIcon } from 'lucide-react'
+import { WebhookDelivery } from '@/services/client/webhooks/webhooks-types'
 
 interface HookDelivieriesProps {
-	deliveries: HookDelivery[]
+	deliveries: WebhookDelivery[]
 }
 
 const statusStyles = {

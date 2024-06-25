@@ -1,4 +1,3 @@
-import { Invoice as IInvoice } from '@/types/invoice'
 import { formatDateTime } from '@/utils/others'
 import { ArrowUpRightFromSquare, CalendarIcon, ClockIcon } from 'lucide-react'
 import {
@@ -11,9 +10,11 @@ import {
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '@/lib/utils'
+import { Invoice } from '@/services/client'
+import { SITE_URL } from '@/constants'
 
 export interface InvoiceCardProps extends React.HTMLAttributes<HTMLDivElement> {
-	invoice: IInvoice
+	invoice: Invoice
 }
 
 export function InvoiceCard({
@@ -21,12 +22,12 @@ export function InvoiceCard({
 	className,
 	...props
 }: InvoiceCardProps) {
-	const invoiceUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/invoices/${invoice.id}`
+	const invoiceUrl = `${SITE_URL}/invoices/${invoice.id}`
 	return (
 		<Card className={cn('w-full max-w-3xl', className)} {...props}>
 			<CardHeader className="flex flex-col gap-4 border-b border-slate-200">
 				<CardTitle>Invoice #{invoice.id}</CardTitle>
-				<CardDescription className="flex flex-col justify-between gap-4 sm:flex-row">
+				<div className="flex flex-col justify-between gap-4 sm:flex-row">
 					<div className="flex flex-col gap-2">
 						<div className="flex items-center space-x-1 text-xs text-slate-400">
 							<CalendarIcon className="h-4 w-4" />
@@ -43,11 +44,11 @@ export function InvoiceCard({
 					</div>
 					<div>
 						<h3 className="text-xs text-slate-600">Amount Payable</h3>
-						<p className="text-2xl font-semibold text-slate-800">
+						<div className="text-2xl font-semibold text-slate-800">
 							Ӿ {invoice.price}
-						</p>
+						</div>
 					</div>
-				</CardDescription>
+				</div>
 			</CardHeader>
 			<CardContent>
 				<div className="flex flex-col space-y-4">

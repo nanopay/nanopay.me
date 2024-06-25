@@ -26,7 +26,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 import { Button } from './Button'
-import { REFUND_EMAIL, SUPPORT_EMAIL } from '@/constants'
+import { REFUND_EMAIL, SITE_URL, SUPPORT_EMAIL } from '@/constants'
 import { redirectToMerchant } from '@/app/invoices/[invoiceId]/actions'
 import {
 	Accordion,
@@ -111,7 +111,7 @@ export default function Checkout({
 
 				<div className="w-48 p-4">
 					<a
-						href={process.env.NEXT_PUBLIC_BASE_URL}
+						href={SITE_URL}
 						target="_blank"
 						className="flex flex-col text-slate-200"
 					>
