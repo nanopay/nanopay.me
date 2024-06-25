@@ -2,11 +2,8 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/middleware'
 import { applySetCookie } from '@/utils/cookies'
-import api from '@/services/api'
 import { cookies } from 'next/headers'
-import { Service } from '@/types/services'
-import { getUserId } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
+import { Client } from './services/client'
 
 const authRoutes = [
 	'/login',
@@ -81,31 +78,25 @@ export const config = {
 }
 
 async function getLastService(): Promise<string | null> {
-	const lastService = cookies().get('last_service')?.value
+	try {
+		const lastService = cookies().get('last_service')?.value
 
-	if (lastService) {
-		return lastService
-	}
+		if (lastService) {
+			return lastService
+		}
 
-	const userId = await getUserId(cookies())
+		const client = new Client(cookies())
 
-	const services = await api.services.list(
-		{
+		const services = await client.services.list({
 			limit: 1,
 			offset: 0,
 			order: 'asc',
 			order_by: 'name',
-		},
-		{
-			headers: {
-				Cookie: cookies().toString(),
-			},
-			next: {
-				revalidate: false,
-				tags: [`user-${userId}-services`],
-			},
-		},
-	)
+		})
 
-	return services[0]?.name || null
+		return services[0]?.name || null
+	} catch (error) {
+		console.error('Error getting last service:', error)
+		return null
+	}
 }
