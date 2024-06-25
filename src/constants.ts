@@ -6,8 +6,8 @@ export const CONTACT_EMAIL = 'hello@nanopay.me'
 export const SUPPORT_EMAIL = 'support@nanopay.me'
 export const REFUND_EMAIL = 'refund@nanopay.me'
 
-export const INVOICE_MINIMUM_PRICE = 0.0001
-export const MAX_HOOKS = 5
+export const INVOICE_MINIMUM_PRICE = 0.0001 // 0.0001 NANO
+export const INVOICE_MAX_PRICE = 1000000 // 1 million NANO
 
 export const STATIC_ASSETS_HOST = process.env.NEXT_PUBLIC_STATIC_ASSETS_HOST!
 
