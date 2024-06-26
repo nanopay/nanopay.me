@@ -3,7 +3,6 @@
 import Input from '@/components/Input'
 import { useUser } from '@/contexts/UserProvider'
 import { useToast } from '@/hooks/useToast'
-import { UserEditables } from '@/types/users'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { JSONSchemaType } from 'ajv'
 import { fullFormats } from 'ajv-formats/dist/formats'
@@ -25,6 +24,8 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
+import { UserUpdate } from '@/services/client'
+import { DEFAULT_AVATAR_URL } from '@/constants'
 
 const schema: JSONSchemaType<UpdateUserProps> = {
 	type: 'object',
@@ -50,7 +51,7 @@ export default function Profile() {
 		}),
 	})
 
-	const onSubmit = async ({ name }: Partial<UserEditables>) => {
+	const onSubmit = async ({ name }: Partial<UserUpdate>) => {
 		startTransition(async () => {
 			try {
 				await updateUser({ name })
@@ -70,7 +71,7 @@ export default function Profile() {
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="flex w-full max-w-sm flex-col items-center space-y-6"
 			>
-				<UserAvatar url={user.avatar_url} />
+				<UserAvatar url={user.avatar_url || DEFAULT_AVATAR_URL} />
 
 				<div className="flex w-full flex-col space-y-4">
 					<FormField

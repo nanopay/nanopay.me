@@ -1,12 +1,10 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { fullFormats } from 'ajv-formats/dist/formats'
 import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/useToast'
-import { ApiKeyCreate } from '@/types/services'
-import { JSONSchemaType } from 'ajv'
+import { ApiKeyCreate } from '@/services/client'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import { sanitizeSlug } from '@/utils/url'
@@ -32,27 +30,12 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { API_KEY_BYTES_LENGTH } from '@/services/api-key/api-key-constants'
+import { apiKeyCreateSchema } from '@/services/client/api-keys/api-keys-schemas'
 
 const roboto = Roboto({
 	weight: '400',
 	subsets: ['latin'],
 })
-
-const schema: JSONSchemaType<Omit<ApiKeyCreate, 'service'>> = {
-	type: 'object',
-	properties: {
-		service: { type: 'string' },
-		name: {
-			type: 'string',
-			minLength: 2,
-			maxLength: 24,
-			pattern: '^[a-zA-Z0-9-.]+$',
-		},
-		description: { type: 'string', maxLength: 512 },
-	},
-	required: ['name'],
-	additionalProperties: false,
-}
 
 interface Props {
 	params: {
@@ -66,12 +49,7 @@ export default function NewApiKey({ params }: Props) {
 	const [apiKey, setApiKey] = useState<string | null>(null)
 
 	const form = useForm<ApiKeyCreate>({
-		defaultValues: {
-			service: params.serviceName,
-		},
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(apiKeyCreateSchema),
 	})
 
 	const onSubmit = async (values: ApiKeyCreate) => {
@@ -149,6 +127,7 @@ export default function NewApiKey({ params }: Props) {
 											<TextArea
 												label="Description"
 												{...field}
+												value={field.value ?? ''}
 												onChange={e =>
 													field.onChange(e.target.value.slice(0, 512))
 												}

@@ -3,8 +3,7 @@
 import Checkout from '@/components/Checkout'
 import { useEffect, useState } from 'react'
 import Pusher from 'pusher-js'
-import { Payment } from '@/types/payment'
-import { InvoicePublic } from '@/services/client'
+import { InvoicePublic, Payment } from '@/services/client'
 
 interface PayInvoiceProps {
 	invoice: InvoicePublic

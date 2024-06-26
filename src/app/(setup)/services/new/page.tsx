@@ -2,13 +2,10 @@
 
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { fullFormats } from 'ajv-formats/dist/formats'
 import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/useToast'
 import ImageInput from '@/components/ImageInput'
-import { ServiceCreate } from '@/types/services'
-import { JSONSchemaType } from 'ajv'
 import { sanitizeSlug } from '@/utils/url'
 import { createAvatarUploadPresignedUrl, createService } from './actions'
 import { uploadObject } from '@/services/s3'
@@ -22,33 +19,8 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
-
-const schema: JSONSchemaType<ServiceCreate> = {
-	type: 'object',
-	properties: {
-		name: {
-			type: 'string',
-			minLength: 2,
-			maxLength: 40,
-			pattern: '^[a-zA-Z0-9-.]+$',
-		},
-		avatar_url: {
-			type: 'string',
-			format: 'url',
-			minLength: 12,
-			maxLength: 256,
-			nullable: true,
-		},
-		description: {
-			type: 'string',
-			minLength: 1,
-			maxLength: 512,
-			nullable: true,
-		},
-	},
-	required: ['name'],
-	additionalProperties: false,
-}
+import { ServiceCreate } from '@/services/client'
+import { serviceCreateSchema } from '@/services/client/services/services-schema'
 
 export default function NewService() {
 	const { showError } = useToast()
@@ -58,9 +30,7 @@ export default function NewService() {
 	const [isPending, startTransition] = useTransition()
 
 	const form = useForm<ServiceCreate>({
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(serviceCreateSchema),
 	})
 
 	const onSubmit = async (data: ServiceCreate) => {

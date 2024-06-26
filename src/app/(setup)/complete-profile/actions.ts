@@ -2,16 +2,12 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { UserEditables } from '@/types/users'
 import { DEFAULT_AVATAR_URL } from '@/constants'
-import { Client } from '@/services/client'
+import { Client, UserCreate } from '@/services/client'
 import { getUserId } from '@/utils/supabase/server'
 import { revalidateTag } from 'next/cache'
 
-export const createUserProfile = async ({
-	name,
-	avatar_url,
-}: UserEditables) => {
+export const createUserProfile = async ({ name, avatar_url }: UserCreate) => {
 	const userId = getUserId(cookies())
 
 	const client = new Client(cookies())

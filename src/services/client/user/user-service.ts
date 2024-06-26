@@ -32,7 +32,13 @@ export class UserService extends BaseService {
 			}
 			throw new Error(error.message)
 		}
-		return data
+		return {
+			id: data.user_id,
+			name: data.name,
+			email: data.email,
+			avatar_url: data.avatar_url,
+			created_at: data.created_at,
+		}
 	}
 
 	async updateProfile(data: UserUpdate): Promise<void> {

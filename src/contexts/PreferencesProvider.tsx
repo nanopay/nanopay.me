@@ -1,8 +1,8 @@
 'use client'
 
-import { Service } from '@/types/services'
+import { Service } from '@/services/client'
 import { useParams } from 'next/navigation'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 interface PreferencesContextValues {
 	showPreReleaseAlert: boolean

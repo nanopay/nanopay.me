@@ -5,10 +5,7 @@ import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 import Input from '@/components/Input'
 import { useState, useTransition } from 'react'
-import { JSONSchemaType } from 'ajv'
-import { ajvResolver } from '@hookform/resolvers/ajv'
-import { fullFormats } from 'ajv-formats/dist/formats'
-import { UserEditables } from '@/types/users'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { DEFAULT_AVATAR_URL } from '@/constants'
 import { createUserProfile } from './actions'
 import { Button } from '@/components/Button'
@@ -22,16 +19,8 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-
-const schema: JSONSchemaType<UserEditables> = {
-	type: 'object',
-	properties: {
-		name: { type: 'string', minLength: 2, maxLength: 40 },
-		avatar_url: { type: 'string', format: 'url', maxLength: 256 },
-	},
-	required: ['name', 'avatar_url'],
-}
-
+import { UserCreate } from '@/services/client'
+import { userCreateSchema } from '@/services/client/user/user-schema'
 export interface CompleteProfileFormProps {
 	initialData: {
 		email: string
@@ -49,21 +38,19 @@ export default function CompleteProfileForm({
 
 	const [acceptTerms, setAcceptTerms] = useState(false)
 
-	const form = useForm<UserEditables>({
+	const form = useForm<UserCreate>({
 		defaultValues: {
 			name: initialData.name,
 			avatar_url: initialData.avatar_url || DEFAULT_AVATAR_URL,
 		},
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(userCreateSchema),
 	})
 
 	const handleAcceptTerms = (checked: CheckedState) => {
 		setAcceptTerms(checked === true)
 	}
 
-	const onSubmit = async ({ name, avatar_url }: UserEditables) => {
+	const onSubmit = async ({ name, avatar_url }: UserCreate) => {
 		startTransition(async () => {
 			try {
 				await createUserProfile({ name, avatar_url })

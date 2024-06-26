@@ -8,7 +8,6 @@ import { Container } from '@/components/Container'
 import Input from '@/components/Input'
 import { ajvResolver } from '@hookform/resolvers/ajv'
 import { useToast } from '@/hooks/useToast'
-import { InvoiceCreate } from '@/types/invoice'
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 import { Button } from '@/components/Button'
@@ -22,6 +21,7 @@ import {
 import { TextArea } from '@/components/TextArea'
 import { useTransition } from 'react'
 import { createInvoice } from './actions'
+import { InvoiceCreate } from '@/services/client'
 
 const schema: JSONSchemaType<InvoiceCreate> = {
 	type: 'object',
@@ -138,7 +138,7 @@ export default function NewService({
 									<TextArea
 										label="Description (optional)"
 										{...field}
-										invalid={fieldState.invalid}
+										value={field.value || ''}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -196,6 +196,7 @@ export default function NewService({
 										{...field}
 										invalid={fieldState.invalid}
 										type="url"
+										value={field.value || ''}
 									/>
 								</FormControl>
 								<FormMessage />

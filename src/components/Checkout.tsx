@@ -13,8 +13,7 @@ import {
 import Countdown from 'react-countdown'
 import { convert, Unit } from 'nanocurrency'
 import { useEffect, useState } from 'react'
-import { Payment } from '@/types/payment'
-import { PublicService } from '@/types/services'
+import { PublicService } from '@/services/client'
 import Transactions from './Transactions'
 import { ServiceAvatar } from './ServiceAvatar'
 import {
@@ -34,6 +33,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from './ui/accordion'
+import { Payment } from '@/services/client'
 
 interface CheckoutProps {
 	invoiceId: string

@@ -6,7 +6,7 @@ import {
 	STATIC_ASSETS_HOST,
 } from '@/constants'
 import { createPresignedUrl, moveObject } from '@/services/s3'
-import { ServiceCreate } from '@/types/services'
+import { ServiceCreate } from '@/services/client'
 import { checkUUID } from '@/utils/helpers'
 import { createClient, getUserId } from '@/utils/supabase/server'
 import { UUID, randomUUID } from 'crypto'

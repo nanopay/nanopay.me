@@ -1,5 +1,6 @@
 import { INVOICE_MINIMUM_PRICE } from '@/constants'
 import { z } from 'zod'
+import { publicServiceSchema } from '../services/services-schema'
 
 export const invoiceCreateSchema = z
 	.object({
@@ -69,15 +70,7 @@ export const invoicePublicSchema = invoiceSchema
 	.omit({ metadata: true, recipient_address: true, redirect_url: true })
 	.extend({
 		has_redirect_url: z.boolean(),
-		service: z.object({
-			id: z.string(),
-			name: z.string(),
-			display_name: z.string(),
-			avatar_url: z.string().url().nullable(),
-			description: z.string().nullable(),
-			website: z.string().url().nullable(),
-			contact_email: z.string().email().nullable(),
-		}),
+		service: publicServiceSchema,
 	})
 
 export const invoicePaginationSchema = z.object({

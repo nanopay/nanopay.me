@@ -4,7 +4,7 @@ import { GlobeIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { ServiceAvatar } from '@/components/ServiceAvatar'
 import { deleteService } from './actions'
-import { Service } from '@/types/services'
+import { Service } from '@/services/client'
 
 export interface SettingsProps {
 	service: Service

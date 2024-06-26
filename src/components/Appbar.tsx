@@ -10,12 +10,13 @@ import { BellIcon, ChevronsUpDownIcon } from 'lucide-react'
 import { ServiceAvatar } from './ServiceAvatar'
 import { ServicesNavigationMenu } from './ServicesNavigationMenu'
 import { Button } from './Button'
-import { Service } from '@/types/services'
+import { Service } from '@/services/client'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
 import { AnimatePresence, motion } from 'framer-motion'
 import { UserNavigationPopover } from './UserNavigationPopover'
+import { DEFAULT_AVATAR_URL } from '@/constants'
 
 export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {
 	services: Service[]
@@ -118,7 +119,7 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 							width={40}
 							height={40}
 							className="h-8 w-8 rounded-full border border-slate-200 bg-slate-50 sm:h-9 sm:w-9"
-							src={user.avatar_url}
+							src={user.avatar_url || DEFAULT_AVATAR_URL}
 							alt=""
 						/>
 					</UserNavigationPopover>

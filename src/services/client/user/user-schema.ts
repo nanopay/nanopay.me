@@ -6,7 +6,7 @@ const MAX_URL_LENGTH = 256
 const MAX_EMAIL_LENGTH = 128
 
 export const userSchema = z.object({
-	user_id: z.string().uuid(),
+	id: z.string().uuid(),
 	name: z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH),
 	avatar_url: z.string().url().max(MAX_URL_LENGTH).nullable(),
 	email: z.string().email().max(MAX_EMAIL_LENGTH),

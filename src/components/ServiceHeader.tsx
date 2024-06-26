@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button'
 import { ServiceAvatar } from '@/components/ServiceAvatar'
-import { Service } from '@/types/services'
+import { Service } from '@/services/client'
 import { GlobeIcon, PlusIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 

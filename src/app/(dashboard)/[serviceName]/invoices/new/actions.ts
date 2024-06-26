@@ -1,7 +1,6 @@
 'use server'
 
-import { Client } from '@/services/client'
-import { InvoiceCreate } from '@/types/invoice'
+import { Client, InvoiceCreate } from '@/services/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 

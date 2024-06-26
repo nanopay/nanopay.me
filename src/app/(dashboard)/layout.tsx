@@ -7,10 +7,9 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import PreferencesProvider from '@/contexts/PreferencesProvider'
 import { unstable_cache } from 'next/cache'
-import { Service } from '@/types/services'
-import { User } from '@/types/users'
+import { User } from '@/services/client'
 import { DEFAULT_AVATAR_URL } from '@/constants'
-import { Client } from '@/services/client'
+import { Client, Service } from '@/services/client'
 
 export async function getCachedUser(userId: string): Promise<User> {
 	const client = new Client(cookies())
@@ -24,10 +23,11 @@ export async function getCachedUser(userId: string): Promise<User> {
 			}
 
 			return {
-				id: data.user_id,
+				id: data.id,
 				name: data.name,
 				email: data.email,
 				avatar_url: data.avatar_url || DEFAULT_AVATAR_URL,
+				created_at: data.created_at,
 			}
 		},
 		[`user-${userId}-profile`],

@@ -1,6 +1,6 @@
 'use client'
 
-import { User } from '@/types/users'
+import { User } from '@/services/client'
 import React, { useContext, createContext } from 'react'
 export interface UserProviderProps {
 	user: User
