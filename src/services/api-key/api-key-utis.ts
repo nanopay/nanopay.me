@@ -1,6 +1,6 @@
 import { blake2bHex } from 'blakejs'
 import { getBytes, hexlify, isHexString } from './api-key-helpers'
-import crypto from 'crypto'
+
 import {
 	API_KEYS_SECRET,
 	API_KEYS_SECRET_LENGTH,
