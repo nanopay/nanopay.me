@@ -1,6 +1,9 @@
 import { retrieveApiKey } from '@/services/api-key'
 import { AdminClient } from '@/services/client'
+import { ServerRuntime } from 'next'
 import { NextRequest } from 'next/server'
+
+export const runtime: ServerRuntime = 'edge'
 
 export async function GET(req: NextRequest) {
 	try {
