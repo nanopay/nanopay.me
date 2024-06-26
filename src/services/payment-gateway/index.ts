@@ -15,7 +15,7 @@ class PaymentGateway {
 	client: Fetcher
 
 	constructor() {
-		this.client = new Fetcher(process.env.PAYMENT_WORKER_URL!)
+		this.client = new Fetcher(process.env.PAYMENT_GATEWAY_URL!)
 	}
 
 	getErrorMessage(error: any): string {
@@ -29,7 +29,7 @@ class PaymentGateway {
 		return this.client.post('/invoices', data, {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${process.env.PAYMENT_WORKER_AUTH_TOKEN!}`,
+				Authorization: `Bearer ${process.env.PAYMENT_GATEWAY_AUTH_TOKEN!}`,
 			},
 		})
 	}
