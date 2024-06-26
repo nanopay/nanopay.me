@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { ApiKeyInsert } from './api-key-types'
-import { Database } from '@/types/supabase'
+import { Database } from '@/types/database'
 
 // Here we create a Supabase client with service role.
 // This client can make any request to the database.

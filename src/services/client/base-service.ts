@@ -1,4 +1,4 @@
-import { Database } from '@/types/supabase'
+import { Database } from '@/types/database'
 import { checkUUID } from '@/utils/helpers'
 import { SupabaseClient } from '@supabase/supabase-js'
 
