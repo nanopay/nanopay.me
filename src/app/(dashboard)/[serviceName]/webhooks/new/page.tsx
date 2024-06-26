@@ -1,7 +1,6 @@
 'use client'
 
 import { useToast } from '@/hooks/useToast'
-import { HookCreate } from '@/types/hooks'
 
 import {
 	Card,
@@ -12,6 +11,7 @@ import {
 } from '@/components/ui/card'
 import { WebhookForm } from '@/components/WebhookForm'
 import { createWebhook } from './actions'
+import { WebhookCreate } from '@/services/client'
 
 export default function NewApiKey({
 	params: { serviceName },
@@ -22,7 +22,7 @@ export default function NewApiKey({
 }) {
 	const { showError } = useToast()
 
-	const onSubmit = async (values: HookCreate) => {
+	const onSubmit = async (values: WebhookCreate) => {
 		try {
 			await createWebhook(serviceName, values)
 		} catch (error) {
