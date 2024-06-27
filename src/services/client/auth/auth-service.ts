@@ -1,5 +1,6 @@
 import { SITE_URL } from '@/constants'
 import { BaseService } from '../base-service'
+import { signWithEmailAndPasswordSchema } from './auth-schemas'
 
 export class AuthService extends BaseService {
 	async signUpWithEmailAndPassword({
@@ -9,9 +10,7 @@ export class AuthService extends BaseService {
 		email: string
 		password: string
 	}) {
-		if (!email || !password) {
-			throw new Error('Email or password is missing')
-		}
+		signWithEmailAndPasswordSchema.parse({ email, password })
 		const { data, error } = await this.supabase.auth.signUp({
 			email,
 			password,
@@ -29,9 +28,7 @@ export class AuthService extends BaseService {
 		email: string
 		password: string
 	}) {
-		if (!email || !password) {
-			throw new Error('Email or password is missing')
-		}
+		signWithEmailAndPasswordSchema.parse({ email, password })
 		const { data, error } = await this.supabase.auth.signInWithPassword({
 			email,
 			password,
