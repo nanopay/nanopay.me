@@ -1,14 +1,10 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
 import { Button } from '@/components/Button'
 import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
-import { JSONSchemaType } from 'ajv'
-import { fullFormats } from 'ajv-formats/dist/formats'
 import { useForm } from 'react-hook-form'
 import { signWithGithub, signWithPassword } from './actions'
 import {
@@ -18,37 +14,43 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
+import { useAction } from '@/hooks/useAction'
+import { useToast } from '@/hooks/useToast'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { signWithEmailAndPasswordSchema } from '@/services/client/auth/auth-schemas'
 
 interface AuthEmailPassword {
 	email: string
 	password: string
 }
 
-const schema: JSONSchemaType<AuthEmailPassword> = {
-	type: 'object',
-	properties: {
-		email: { type: 'string', format: 'email', maxLength: 128 },
-		password: { type: 'string', minLength: 8, maxLength: 64 },
-	},
-	required: ['email', 'password'],
+interface Props {
+	searchParams: {
+		next?: string
+	}
 }
 
-export default function LoginPage() {
-	const next = useSearchParams().get('next') || undefined
+export default function LoginPage({ searchParams: { next } }: Props) {
+	const { showError } = useToast()
 
 	const form = useForm<AuthEmailPassword>({
 		defaultValues: {
 			email: '',
 			password: '',
 		},
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(signWithEmailAndPasswordSchema),
 	})
 
-	const handleSignWithPassword = async (data: AuthEmailPassword) => {
-		await signWithPassword({ ...data, next })
-	}
+	const { execute: handleSignWithPassword } = useAction(
+		async (data: AuthEmailPassword) => {
+			return await signWithPassword({ ...data, next })
+		},
+		{
+			onError: error => {
+				showError(error.message)
+			},
+		},
+	)
 
 	return (
 		<Form {...form}>
