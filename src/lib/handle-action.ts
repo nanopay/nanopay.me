@@ -1,3 +1,6 @@
+import { isNotFoundError } from 'next/dist/client/components/not-found'
+import { isRedirectError } from 'next/dist/client/components/redirect'
+
 type ActionFunction<T> = (...args: any[]) => Promise<T>
 
 export interface ActionErrorResponse {
@@ -22,6 +25,9 @@ export const handleAction =
 			const result = await action(...args)
 			return { _data: result }
 		} catch (error) {
+			if (isRedirectError(error) || isNotFoundError(error)) {
+				throw error
+			}
 			return {
 				_error: error instanceof Error ? error.message : 'An error occurred',
 			}

@@ -76,7 +76,6 @@ export const useAction = <TArgs extends any[], TResult>(
 	)
 
 	const isErrorResult = (result: unknown) => {
-		console.log('result', result, typeof result)
 		return (
 			result instanceof Object &&
 			'_error' in result &&
@@ -94,17 +93,18 @@ export const useAction = <TArgs extends any[], TResult>(
 				startTransition(async () => {
 					try {
 						const result = await action(...args)
-						console.log('result', result, isErrorResult(result))
 						if (isErrorResult(result)) {
 							return handleError({
 								type: 'error',
 								message: (result as any)._error,
 							})
 						}
-						setData((result as ActionSuccessResponse<TResult>)._data)
-						setIsSuccess(true)
-						if (onSuccess)
-							onSuccess((result as ActionSuccessResponse<TResult>)._data)
+						if (result) {
+							setData((result as ActionSuccessResponse<TResult>)._data)
+							setIsSuccess(true)
+							if (onSuccess)
+								onSuccess((result as ActionSuccessResponse<TResult>)._data)
+						}
 					} catch (error: unknown) {
 						return handleError({
 							type: 'error',
