@@ -10,24 +10,21 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/Button'
 import { useRouter } from 'next/navigation'
-import { useAction } from '@/hooks/useAction'
 import { useToast } from '@/hooks/useToast'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 export function LogoutCard({ hasPrevious }: { hasPrevious: boolean }) {
 	const router = useRouter()
 
 	const { showError } = useToast()
 
-	const { execute: handleLogout, isExecuting } = useAction(
-		async () => {
-			return await signOut()
+	const { executeAsync: handleLogout, isExecuting } = useAction(signOut, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError(message)
 		},
-		{
-			onError: error => {
-				showError(error.message)
-			},
-		},
-	)
+	})
 
 	const handleCancel = () => {
 		hasPrevious ? router.back() : router.push('/')
@@ -43,7 +40,7 @@ export function LogoutCard({ hasPrevious }: { hasPrevious: boolean }) {
 				<Button
 					size="lg"
 					className="w-full text-lg"
-					onClick={handleLogout}
+					onClick={() => handleLogout()}
 					loading={isExecuting}
 				>
 					Logout
