@@ -8,7 +8,7 @@ import { getUserId } from '@/utils/supabase/server'
 import { revalidateTag } from 'next/cache'
 
 export const createUserProfile = async ({ name, avatar_url }: UserCreate) => {
-	const userId = getUserId(cookies())
+	const userId = await getUserId(cookies())
 
 	const client = new Client(cookies())
 
@@ -19,5 +19,5 @@ export const createUserProfile = async ({ name, avatar_url }: UserCreate) => {
 
 	revalidateTag(`user-${userId}-profile`)
 
-	redirect('/services/new')
+	redirect('/')
 }
