@@ -14,13 +14,13 @@ interface NavLink {
 	visible?: boolean
 }
 
-const navLinks: NavLink[] = [
+const navLinks = (canViewProfile: boolean): NavLink[] => [
 	{
 		title: 'Profile',
 		icon: UserRoundIcon,
 		href: '/profile',
 		description: 'View and edit your profile',
-		visible: true,
+		visible: canViewProfile,
 	},
 	{
 		title: 'Logout',
@@ -31,9 +31,12 @@ const navLinks: NavLink[] = [
 	},
 ]
 
-export interface UserNavigationPopoverProps extends PopoverProps {}
+export interface UserNavigationPopoverProps extends PopoverProps {
+	canViewProfile?: boolean
+}
 
 export function UserNavigationPopover({
+	canViewProfile = true,
 	children,
 	...props
 }: UserNavigationPopoverProps) {
@@ -42,7 +45,7 @@ export function UserNavigationPopover({
 			<PopoverTrigger>{children}</PopoverTrigger>
 			<PopoverContent align="end" className="w-80">
 				<ul className="grid w-full gap-3">
-					{navLinks
+					{navLinks(canViewProfile)
 						.filter(({ visible }) => visible)
 						.map(component => (
 							<NavListItem
