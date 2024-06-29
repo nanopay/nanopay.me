@@ -1,20 +1,19 @@
 'use server'
 
-import { Client } from '@/services/client'
-import { handleAction } from '@/lib/handle-action'
+import { Client, signWithEmailAndPasswordSchema } from '@/services/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { safeAction } from '@/lib/safe-action'
+import { z } from 'zod'
+import { SITE_URL } from '@/constants'
 
-export const signWithPassword = handleAction(
-	async ({
-		email,
-		password,
-		next,
-	}: {
-		email: string
-		password: string
-		next?: string
-	}) => {
+export const signWithPassword = safeAction
+	.schema(
+		signWithEmailAndPasswordSchema.extend({
+			next: z.string().optional().nullable(),
+		}),
+	)
+	.action(async ({ parsedInput: { email, password, next } }) => {
 		try {
 			const client = new Client(cookies())
 			await client.auth.signInWithEmailAndPassword({
@@ -30,11 +29,20 @@ export const signWithPassword = handleAction(
 				throw error
 			}
 		}
-	},
-)
+	})
 
-export const signWithGithub = async ({ next }: { next?: string }) => {
-	const client = new Client(cookies())
-	const { url } = await client.auth.signInWithGithub({ next })
-	redirect(url)
-}
+export const signWithGithub = safeAction
+	.schema(z.object({ next: z.string().optional().nullable() }))
+	.action(async ({ parsedInput: { next } }) => {
+		const redirectTo = new URL(SITE_URL)
+		redirectTo.pathname = '/auth/callback'
+		if (next) {
+			redirectTo.searchParams.set('next', next)
+		}
+
+		const client = new Client(cookies())
+		const { url } = await client.auth.signInWithGithub({
+			redirectTo: redirectTo.toString(),
+		})
+		redirect(url)
+	})

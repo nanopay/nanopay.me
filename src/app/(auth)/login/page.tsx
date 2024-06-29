@@ -14,15 +14,12 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-import { useAction } from '@/hooks/useAction'
 import { useToast } from '@/hooks/useToast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signWithEmailAndPasswordSchema } from '@/services/client/auth/auth-schemas'
-
-interface AuthEmailPassword {
-	email: string
-	password: string
-}
+import { useAction } from 'next-safe-action/hooks'
+import { SignEmailAndPassword } from '@/services/client'
+import { getSafeActionError } from '@/lib/safe-action'
 
 interface Props {
 	searchParams: {
@@ -33,21 +30,18 @@ interface Props {
 export default function LoginPage({ searchParams: { next } }: Props) {
 	const { showError } = useToast()
 
-	const form = useForm<AuthEmailPassword>({
-		defaultValues: {
-			email: '',
-			password: '',
-		},
+	const form = useForm<SignEmailAndPassword>({
 		resolver: zodResolver(signWithEmailAndPasswordSchema),
 	})
 
-	const { execute: handleSignWithPassword } = useAction(
-		async (data: AuthEmailPassword) => {
+	const { executeAsync: handleSignWithPassword } = useAction(
+		async (data: SignEmailAndPassword) => {
 			return await signWithPassword({ ...data, next })
 		},
 		{
-			onError: error => {
-				showError(error.message)
+			onError: ({ error }) => {
+				const { message } = getSafeActionError(error)
+				showError(message)
 			},
 		},
 	)
