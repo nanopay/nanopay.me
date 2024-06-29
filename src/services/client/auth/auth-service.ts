@@ -1,6 +1,6 @@
-import { SITE_URL } from '@/constants'
 import { BaseService } from '../base-service'
 import { signWithEmailAndPasswordSchema } from './auth-schemas'
+import { z } from 'zod'
 
 export class AuthService extends BaseService {
 	async signUpWithEmailAndPassword({
@@ -40,20 +40,16 @@ export class AuthService extends BaseService {
 	}
 
 	async signInWithGithub({
-		next,
+		redirectTo,
 	}: {
-		next?: string
+		redirectTo?: string
 	}): Promise<{ url: string }> {
-		const redirectTo = new URL(SITE_URL)
-		redirectTo.pathname = '/auth/callback'
-		if (next) {
-			redirectTo.searchParams.set('next', next)
-		}
+		z.string().url().parse(redirectTo)
 
 		const { data, error } = await this.supabase.auth.signInWithOAuth({
 			provider: 'github',
 			options: {
-				redirectTo: redirectTo.toString(),
+				redirectTo: redirectTo,
 			},
 		})
 
