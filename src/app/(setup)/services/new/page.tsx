@@ -21,6 +21,8 @@ import {
 import { TextArea } from '@/components/TextArea'
 import { ServiceCreate } from '@/services/client'
 import { serviceCreateSchema } from '@/services/client/services/services-schema'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Link from 'next/link'
 
 export default function NewService() {
 	const { showError } = useToast()
@@ -47,84 +49,90 @@ export default function NewService() {
 	}
 
 	return (
-		<Form {...form}>
-			<form
-				className="flex h-screen w-full max-w-xl flex-col items-center space-y-6 border border-slate-200 bg-white px-16 pb-16 sm:h-auto sm:rounded-lg"
-				onSubmit={form.handleSubmit(onSubmit)}
-			>
-				<div className="mb-8 flex w-full items-center justify-center border-b border-slate-200 py-3">
-					<h3 className="text-slate-700">Create a new service</h3>
-				</div>
-
-				<ServiceAvatar
-					url={form.watch('avatar_url') || undefined}
-					onChange={url => {
-						form.setValue('avatar_url', url)
-					}}
-					onUploading={setIsUploading}
-				/>
-
-				<div className="flex w-full flex-col space-y-6 px-4 py-6 sm:px-8">
-					<div>
-						<div className="mb-2 flex items-center text-xs text-slate-600">
-							<InfoIcon className="mr-1 w-4" />
-							<div>
-								Use a name like:{' '}
-								<span className="font-semibold">my-service</span>
-								{' or '}
-								<span className="font-semibold">myservice2.com</span>
-							</div>
-						</div>
-						<FormField
-							name="name"
-							control={form.control}
-							render={({ field, fieldState }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											label="Name"
-											{...field}
-											onChange={e =>
-												field.onChange(sanitizeSlug(e.target.value))
-											}
-											invalid={fieldState.invalid}
-											className="capitalize"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+		<Card className="w-full max-w-xl">
+			<CardHeader className="mb-4 items-center border-b border-slate-200">
+				<CardTitle>Create a Service</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<Form {...form}>
+					<form
+						className="flex max-w-xl flex-col items-center space-y-2 pb-4 sm:px-16"
+						onSubmit={form.handleSubmit(onSubmit)}
+					>
+						<Link href="/test">Test</Link>
+						<ServiceAvatar
+							url={form.watch('avatar_url') || undefined}
+							onChange={url => {
+								form.setValue('avatar_url', url)
+							}}
+							onUploading={setIsUploading}
 						/>
-					</div>
 
-					<FormField
-						name="description"
-						control={form.control}
-						render={({ field, fieldState }) => (
-							<FormItem>
-								<FormControl>
-									<TextArea
-										label="Description"
-										{...field}
-										value={field.value || ''}
-										onChange={e => field.onChange(e.target.value.slice(0, 512))}
-										invalid={fieldState.invalid}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-				<div />
-				<Button
-					loading={form.formState.isSubmitting || isPending}
-					disabled={isUploading || !form.watch('name')}
-				>
-					Create Service
-				</Button>
-			</form>
-		</Form>
+						<div className="flex w-full flex-col space-y-6 px-4 py-4 sm:px-8">
+							<div>
+								<div className="mb-2 flex items-center text-xs text-slate-600">
+									<InfoIcon className="mr-1 w-4" />
+									<div>
+										Use a name like:{' '}
+										<span className="font-semibold">my-service</span>
+										{' or '}
+										<span className="font-semibold">myservice2.com</span>
+									</div>
+								</div>
+								<FormField
+									name="name"
+									control={form.control}
+									render={({ field, fieldState }) => (
+										<FormItem>
+											<FormControl>
+												<Input
+													label="Name"
+													{...field}
+													onChange={e =>
+														field.onChange(sanitizeSlug(e.target.value))
+													}
+													invalid={fieldState.invalid}
+													className="capitalize"
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+
+							<FormField
+								name="description"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<FormItem>
+										<FormControl>
+											<TextArea
+												label="Description"
+												{...field}
+												value={field.value || ''}
+												onChange={e =>
+													field.onChange(e.target.value.slice(0, 512))
+												}
+												invalid={fieldState.invalid}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div />
+						<Button
+							loading={form.formState.isSubmitting || isPending}
+							disabled={isUploading || !form.watch('name')}
+						>
+							Create Service
+						</Button>
+					</form>
+				</Form>
+			</CardContent>
+		</Card>
 	)
 }
 
