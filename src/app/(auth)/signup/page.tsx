@@ -6,13 +6,9 @@ import Image from 'next/image'
 import GithubSVG from '@/images/logos/github.svg'
 import { Button } from '@/components/Button'
 import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
-import { JSONSchemaType } from 'ajv'
-import { fullFormats } from 'ajv-formats/dist/formats'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
 import { signWithGithub } from '../login/actions'
-import { useTransition } from 'react'
 import { signUpWithPassword } from './actions'
 import {
 	Form,
@@ -21,24 +17,17 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { signWithEmailAndPasswordSchema } from '@/services/client/auth/auth-schemas'
 
 interface SignUpEmailPassword {
 	email: string
 	password: string
 }
 
-const schema: JSONSchemaType<SignUpEmailPassword> = {
-	type: 'object',
-	properties: {
-		email: { type: 'string', format: 'email', maxLength: 128 },
-		password: { type: 'string', minLength: 8, maxLength: 64 },
-	},
-	required: ['email', 'password'],
-}
-
 export default function SignUpPage() {
-	const [isPending, startTransition] = useTransition()
-
 	const next = useSearchParams().get('next') || undefined
 
 	const { showError } = useToast()
@@ -48,25 +37,15 @@ export default function SignUpPage() {
 			email: '',
 			password: '',
 		},
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(signWithEmailAndPasswordSchema),
 	})
 
-	const onSubmit = ({ email, password }: SignUpEmailPassword) => {
-		startTransition(async () => {
-			try {
-				await signUpWithPassword({ email, password })
-			} catch (error) {
-				showError(
-					'Error signing up',
-					error instanceof Error
-						? error.message
-						: 'Check the data or try again later.',
-				)
-			}
-		})
-	}
+	const { executeAsync: onSubmit } = useAction(signUpWithPassword, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError(message)
+		},
+	})
 
 	return (
 		<Form {...form}>
@@ -125,7 +104,7 @@ export default function SignUpPage() {
 					<Button
 						type="submit"
 						className="w-full"
-						loading={form.formState.isSubmitting || isPending}
+						loading={form.formState.isSubmitting}
 						disabled={!form.formState.isDirty}
 					>
 						Sign Up
