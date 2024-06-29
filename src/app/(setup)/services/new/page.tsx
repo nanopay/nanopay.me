@@ -59,7 +59,6 @@ export default function NewService() {
 						className="flex max-w-xl flex-col items-center space-y-2 pb-4 sm:px-16"
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
-						<Link href="/test">Test</Link>
 						<ServiceAvatar
 							url={form.watch('avatar_url') || undefined}
 							onChange={url => {
