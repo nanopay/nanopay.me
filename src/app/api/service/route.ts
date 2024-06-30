@@ -1,4 +1,3 @@
-import { retrieveApiKey } from '@/services/api-key'
 import { AdminClient } from '@/services/client'
 import { ServerRuntime } from 'next'
 import { NextRequest } from 'next/server'
@@ -16,9 +15,9 @@ export async function GET(req: NextRequest) {
 			)
 		}
 
-		const { service_id } = await retrieveApiKey(apiToken)
-
 		const client = new AdminClient()
+
+		const { service_id } = await client.apiKeys.get(apiToken)
 
 		const service = await client.services.get(service_id)
 

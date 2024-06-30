@@ -1,5 +1,4 @@
 import { SITE_URL } from '@/constants'
-import { retrieveApiKey } from '@/services/api-key'
 import { AdminClient } from '@/services/client'
 import { ServerRuntime } from 'next'
 import { NextRequest } from 'next/server'
@@ -28,7 +27,7 @@ export async function GET(
 			)
 		}
 
-		const { service_id } = await retrieveApiKey(apiToken)
+		const { service_id } = await client.apiKeys.get(apiToken)
 
 		const invoice = await client.invoices.get(invoiceId, service_id)
 

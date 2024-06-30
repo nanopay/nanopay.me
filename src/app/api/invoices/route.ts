@@ -4,7 +4,7 @@ import {
 	invoiceCreateSchema,
 	invoicePaginationSchema,
 } from '@/services/client/invoices/invoices-schemas'
-import { retrieveApiKey } from '@/services/api-key'
+
 import { ServerRuntime } from 'next/types'
 import { AdminClient, InvoicePagination } from '@/services/client'
 
@@ -29,9 +29,9 @@ export async function POST(req: NextRequest) {
 			)
 		}
 
-		const { service_id } = await retrieveApiKey(apiToken)
-
 		const client = new AdminClient()
+
+		const { service_id } = await client.apiKeys.get(apiToken)
 
 		const { id, pay_address, expires_at } = await client.invoices.create(
 			service_id,
@@ -95,9 +95,9 @@ export async function GET(
 			)
 		}
 
-		const { service_id } = await retrieveApiKey(apiToken)
-
 		const client = new AdminClient()
+
+		const { service_id } = await client.apiKeys.get(apiToken)
 
 		const invoices = await client.invoices.list(service_id, pagination)
 
