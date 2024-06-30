@@ -4,6 +4,7 @@ import { BaseService } from '../base-service'
 import { apiKeyCreateSchema, apiKeySchema } from './api-keys-schemas'
 import { ApiKey, ApiKeyCreate } from './api-keys-types'
 import { generateApiKey, verifyApiKeyWithChecksum } from './api-key-utis'
+import { serviceNameSchema } from '../services'
 
 export class ApiKeysService extends BaseService {
 	async create(
@@ -56,12 +57,14 @@ export class ApiKeysService extends BaseService {
 	}
 
 	async list(serviceIdOrName: string): Promise<ApiKey[]> {
-		const query = this.supabase.from('api_keys').select('*')
+		const query = this.supabase
+			.from('api_keys')
+			.select('*, service:services(name)')
 
 		if (checkUUID(serviceIdOrName)) {
 			query.eq('service_id', serviceIdOrName)
 		} else {
-			apiKeySchema.partial().parse({ name: serviceIdOrName })
+			serviceNameSchema.parse(serviceIdOrName)
 			query.eq('service.name', serviceIdOrName)
 		}
 
