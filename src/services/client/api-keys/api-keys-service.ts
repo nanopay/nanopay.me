@@ -33,7 +33,7 @@ export class ApiKeysService extends BaseService {
 	async get(apiKeyId: string): Promise<ApiKey> {
 		const { data, error } = await this.supabase
 			.from('api_keys')
-			.select('*, service:services(name)')
+			.select('*')
 			.eq('id', apiKeyId)
 			.single()
 
@@ -47,10 +47,7 @@ export class ApiKeysService extends BaseService {
 	}
 
 	async list(serviceIdOrName: string): Promise<ApiKey[]> {
-		this.logger('Fetching API keys')
-		const query = this.supabase
-			.from('api_keys')
-			.select('*, service:services(name)')
+		const query = this.supabase.from('api_keys').select('*')
 
 		if (checkUUID(serviceIdOrName)) {
 			query.eq('service_id', serviceIdOrName)
