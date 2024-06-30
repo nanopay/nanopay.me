@@ -23,25 +23,12 @@ export class InvoicesService extends BaseService {
 	}> {
 		invoiceCreateSchema.parse(data)
 
-		const query = this.supabase.from('services').select('id')
-
-		if (checkUUID(serviceNameOrId)) {
-			query.eq('id', serviceNameOrId)
-		} else {
-			serviceNameSchema.parse(serviceNameOrId)
-			query.eq('name', serviceNameOrId)
-		}
-
-		const { data: serviceData, error } = await query.single()
-
-		if (error) {
-			throw new Error(error.message)
-		}
+		const serviceId = await this.getIdFromServiceNameOrId(serviceNameOrId)
 
 		try {
 			const { id, pay_address, expires_at } =
 				await paymentGateway.createInvoice({
-					service_id: serviceData.id,
+					service_id: serviceId,
 					...data,
 				})
 
