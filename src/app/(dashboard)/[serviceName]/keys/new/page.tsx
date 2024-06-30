@@ -4,7 +4,11 @@ import { useForm } from 'react-hook-form'
 import Input from '@/components/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/useToast'
-import { ApiKeyCreate } from '@/services/client'
+import {
+	API_KEY_BYTES_LENGTH,
+	ApiKeyCreate,
+	apiKeyCreateSchema,
+} from '@/services/client'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import { sanitizeSlug } from '@/utils/url'
@@ -29,8 +33,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { API_KEY_BYTES_LENGTH } from '@/services/api-key/api-key-constants'
-import { apiKeyCreateSchema } from '@/services/client/api-keys/api-keys-schemas'
 
 const roboto = Roboto({
 	weight: '400',
