@@ -1,9 +1,9 @@
+import { z } from 'zod'
 import { checkUUID } from '@/utils/helpers'
 import { BaseService } from '../base-service'
 import { apiKeyCreateSchema, apiKeySchema } from './api-keys-schemas'
 import { ApiKey, ApiKeyCreate } from './api-keys-types'
-import { z } from 'zod'
-import { createApiKey } from '@/services/api-key'
+import { generateApiKey, verifyApiKeyWithChecksum } from './api-key-utis'
 
 export class ApiKeysService extends BaseService {
 	async create(
@@ -12,29 +12,38 @@ export class ApiKeysService extends BaseService {
 	): Promise<{ apiKey: string; checksum: string }> {
 		apiKeyCreateSchema.parse(data)
 
-		const isOwner = await this.isServiceOwner(serviceNameOrId)
-
-		if (!isOwner) {
-			throw new Error('Not authorized')
-		}
-
 		const serviceId = await this.getIdFromServiceNameOrId(serviceNameOrId)
 
-		const { apiKey, checksum } = await createApiKey({
+		const { apiKey, checksum } = generateApiKey()
+
+		const { error } = await this.supabase.from('api_keys').insert({
 			service_id: serviceId,
 			name: data.name,
 			description: data.description,
+			checksum: checksum,
 			scopes: data.scopes,
 		})
+
+		if (error) {
+			throw new Error(error.message)
+		}
 
 		return { apiKey, checksum }
 	}
 
-	async get(apiKeyId: string): Promise<ApiKey> {
+	async get(apiKey: string): Promise<ApiKey> {
+		z.string().uuid().parse(apiKey)
+
+		const { checksum, isValid } = verifyApiKeyWithChecksum(apiKey)
+
+		if (!isValid) {
+			throw new Error('Invalid API key')
+		}
+
 		const { data, error } = await this.supabase
 			.from('api_keys')
 			.select('*')
-			.eq('id', apiKeyId)
+			.eq('checksum', checksum)
 			.single()
 
 		if (error) {
