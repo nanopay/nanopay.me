@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
 import { createNewApiKey } from './actions'
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import {
 	Card,
 	CardContent,
@@ -33,6 +33,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 const roboto = Roboto({
 	weight: '400',
@@ -47,30 +49,28 @@ interface Props {
 
 export default function NewApiKey({ params }: Props) {
 	const { showError } = useToast()
-	const [isPending, startTransition] = useTransition()
 	const [apiKey, setApiKey] = useState<string | null>(null)
 
 	const form = useForm<ApiKeyCreate>({
 		resolver: zodResolver(apiKeyCreateSchema),
 	})
 
-	const onSubmit = async (values: ApiKeyCreate) => {
-		startTransition(async () => {
-			try {
-				const { apiKey } = await createNewApiKey(params.serviceName, {
-					name: values.name,
-					description: values.description,
-					scopes: ['*'],
-				})
-				setApiKey(apiKey)
-			} catch (error) {
-				showError(
-					'Could not create API Key',
-					error instanceof Error
-						? error.message
-						: 'Check your connection and try again',
-				)
-			}
+	const { executeAsync } = useAction(createNewApiKey, {
+		onSuccess: ({ data }) => {
+			if (!data) return
+			setApiKey(data.apiKey)
+		},
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Could not create API Key', message)
+		},
+	})
+
+	const onSubmit = async (fields: ApiKeyCreate) => {
+		await executeAsync({
+			name: fields.name,
+			description: fields.description,
+			serviceNameOrId: params.serviceName,
 		})
 	}
 
@@ -86,7 +86,7 @@ export default function NewApiKey({ params }: Props) {
 				<Form {...form}>
 					<form
 						className="w-full space-y-6"
-						onSubmit={form.handleSubmit(fields => onSubmit(fields))}
+						onSubmit={form.handleSubmit(onSubmit)}
 					>
 						<div className="flex w-full flex-col space-y-4">
 							<FormField
@@ -151,11 +151,8 @@ export default function NewApiKey({ params }: Props) {
 									serviceName={params.serviceName}
 								/>
 							) : (
-								<Button
-									type="submit"
-									loading={form.formState.isSubmitting || isPending}
-								>
-									Create Key
+								<Button type="submit" loading={form.formState.isSubmitting}>
+									Create API Key
 								</Button>
 							)}
 						</div>

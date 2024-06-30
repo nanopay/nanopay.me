@@ -1,19 +1,25 @@
 'use server'
 
-import { ApiKeyCreate, Client } from '@/services/client'
+import { safeAction } from '@/lib/safe-action'
+import {
+	Client,
+	apiKeyCreateSchema,
+	serviceNameSchema,
+} from '@/services/client'
 import { cookies } from 'next/headers'
 
-export const createNewApiKey = async (
-	serviceNameOrId: string,
-	data: ApiKeyCreate,
-) => {
-	const client = new Client(cookies())
+export const createNewApiKey = safeAction
+	.schema(apiKeyCreateSchema.extend({ serviceNameOrId: serviceNameSchema }))
+	.action(async ({ parsedInput }) => {
+		const client = new Client(cookies())
 
-	const { apiKey, checksum } = await client.apiKeys.create(serviceNameOrId, {
-		name: data.name,
-		description: data.description,
-		scopes: data.scopes,
+		const { apiKey, checksum } = await client.apiKeys.create(
+			parsedInput.serviceNameOrId,
+			{
+				name: parsedInput.name,
+				description: parsedInput.description,
+			},
+		)
+
+		return { apiKey, checksum }
 	})
-
-	return { apiKey, checksum }
-}
