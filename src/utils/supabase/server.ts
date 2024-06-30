@@ -1,8 +1,6 @@
-import 'server-only'
-
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { Database } from '@/types/database'
-import { cookies } from 'next/headers'
+import type { cookies } from 'next/headers'
 
 const supabaseUrl = process.env.SUPABASE_URL!
 const supabaseKey = process.env.SUPABASE_ANON_KEY!
