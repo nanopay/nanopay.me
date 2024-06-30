@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 export const apiKeyCreateSchema = z.object({
-	service_id: z.string().uuid(),
 	name: z
 		.string()
 		.min(2)
