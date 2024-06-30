@@ -22,7 +22,7 @@ export class ApiKeysService extends BaseService {
 			name: data.name,
 			description: data.description,
 			checksum: checksum,
-			scopes: data.scopes,
+			scopes: ['*'],
 		})
 
 		if (error) {

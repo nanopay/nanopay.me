@@ -7,7 +7,6 @@ export const apiKeyCreateSchema = z.object({
 		.max(40)
 		.regex(/^[a-zA-Z0-9-.]+$/),
 	description: z.string().max(512).nullable().optional(),
-	scopes: z.array(z.string()),
 })
 
 export const apiKeySchema = z.object({
