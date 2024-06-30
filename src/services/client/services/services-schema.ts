@@ -10,6 +10,13 @@ export const serviceNameSchema = z
 	.min(MIN_SERVICE_NAME_LENGTH)
 	.max(MAX_SERVICE_NAME_LENGTH)
 
+export const serviceIdSchema = z.string().uuid()
+
+export const serviceNameOrIdSchema = z.union([
+	serviceNameSchema,
+	serviceIdSchema,
+])
+
 export const serviceAvatarUrlSchema = z
 	.string()
 	.url()
