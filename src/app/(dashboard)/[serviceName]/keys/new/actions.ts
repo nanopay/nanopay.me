@@ -4,12 +4,12 @@ import { safeAction } from '@/lib/safe-action'
 import {
 	Client,
 	apiKeyCreateSchema,
-	serviceNameSchema,
+	serviceNameOrIdSchema,
 } from '@/services/client'
 import { cookies } from 'next/headers'
 
 export const createNewApiKey = safeAction
-	.schema(apiKeyCreateSchema.extend({ serviceNameOrId: serviceNameSchema }))
+	.schema(apiKeyCreateSchema.extend({ serviceNameOrId: serviceNameOrIdSchema }))
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
 
