@@ -3,15 +3,41 @@ import 'react-toastify/dist/ReactToastify.css'
 import { Open_Sans } from 'next/font/google'
 import NProgressBar from '@/components/NProgressBar'
 import { ToastContainer } from 'react-toastify'
+import { Metadata } from 'next'
 
 const openSans = Open_Sans({ subsets: ['latin'] })
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: {
 		default: 'Nano Pay | NanoPay.me',
 		template: '%s | NanoPay.me',
 	},
+	icons: {
+		icon: [
+			{ rel: 'icon', type: 'image/x-icon', url: '/favicon.ico' },
+			{
+				rel: 'icon',
+				type: 'image/png',
+				sizes: '32x32',
+				url: '/favicon-32x32.png',
+			},
+			{
+				rel: 'icon',
+				type: 'image/png',
+				sizes: '16x16',
+				url: '/favicon-16x16.png',
+			},
+			{
+				rel: 'icon',
+				type: 'image/png',
+				sizes: '192x192',
+				url: '/android-chrome-192x192.png',
+			},
+		],
+		apple: '/apple-touch-icon.png',
+	},
 	description: 'Pay and receive payments with Nano.',
+	manifest: '/site.webmanifest',
 }
 
 export default async function RootLayout({
