@@ -34,6 +34,7 @@
 		"clsx": "^2.1.0",
 		"focus-visible": "^5.2.0",
 		"framer-motion": "^6.5.1",
+		"input-otp": "^1.2.4",
 		"lucide-react": "^0.325.0",
 		"nanocurrency": "^2.5.0",
 		"next": "14.2.4",
