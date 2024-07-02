@@ -11,6 +11,7 @@ const authRoutes = [
 	'/magic-link',
 	'/verify-email',
 	'/forgot-password',
+	'/confirm-signup',
 	'/auth/callback',
 ]
 
