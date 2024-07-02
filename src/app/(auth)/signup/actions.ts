@@ -10,9 +10,14 @@ export const signUpWithPassword = safeAction
 	.schema(signWithEmailAndPasswordSchema)
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
-		await client.auth.signUpWithEmailAndPassword({
+		const { session } = await client.auth.signUpWithEmailAndPassword({
 			email: parsedInput.email,
 			password: parsedInput.password,
 		})
-		redirect(`/verify-email?email=${parsedInput.email}`)
+		if (session) {
+			// If session is returned, it means the sign up confirmation is not required
+			// The user is already signed in and can complete their profile
+			redirect(`/complete-profile`)
+		}
+		redirect(`/confirm-signup?email=${parsedInput.email}`)
 	})
