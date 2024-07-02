@@ -1,6 +1,7 @@
 import { BaseService } from '../base-service'
-import { signWithEmailAndPasswordSchema } from './auth-schemas'
+import { signWithEmailAndPasswordSchema, verifyOtpSchema } from './auth-schemas'
 import { z } from 'zod'
+import { VerifyOtp } from './auth-types'
 
 export class AuthService extends BaseService {
 	async signUpWithEmailAndPassword({
@@ -45,7 +46,6 @@ export class AuthService extends BaseService {
 		redirectTo?: string
 	}): Promise<{ url: string }> {
 		z.string().url().parse(redirectTo)
-
 		const { data, error } = await this.supabase.auth.signInWithOAuth({
 			provider: 'github',
 			options: {
@@ -67,7 +67,8 @@ export class AuthService extends BaseService {
 		}
 	}
 
-	async recoveryWithOtp(email: string, token: string) {
+	async recoveryWithOtp({ email, token }: VerifyOtp) {
+		verifyOtpSchema.parse({ email, token })
 		const { data, error } = await this.supabase.auth.verifyOtp({
 			email,
 			token,
@@ -79,7 +80,8 @@ export class AuthService extends BaseService {
 		return data
 	}
 
-	async verifySignUpWithOtp(email: string, token: string) {
+	async verifySignUpWithOtp({ email, token }: VerifyOtp) {
+		verifyOtpSchema.parse({ email, token })
 		const { data, error } = await this.supabase.auth.verifyOtp({
 			email,
 			token,
