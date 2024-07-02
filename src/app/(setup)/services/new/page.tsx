@@ -22,31 +22,24 @@ import { TextArea } from '@/components/TextArea'
 import { ServiceCreate } from '@/services/client'
 import { serviceCreateSchema } from '@/services/client/services/services-schema'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Link from 'next/link'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 export default function NewService() {
 	const { showError } = useToast()
 
 	const [isUploading, setIsUploading] = useState(false)
 
-	const [isPending, startTransition] = useTransition()
-
 	const form = useForm<ServiceCreate>({
 		resolver: zodResolver(serviceCreateSchema),
 	})
 
-	const onSubmit = async (data: ServiceCreate) => {
-		startTransition(async () => {
-			try {
-				await createService(data)
-			} catch (error) {
-				showError(
-					'Error creating service',
-					error instanceof Error ? error.message : 'Try again Later',
-				)
-			}
-		})
-	}
+	const { executeAsync: onSubmit } = useAction(createService, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Error creating service', message)
+		},
+	})
 
 	return (
 		<Card className="w-full max-w-xl">
@@ -123,7 +116,7 @@ export default function NewService() {
 						</div>
 						<div />
 						<Button
-							loading={form.formState.isSubmitting || isPending}
+							loading={form.formState.isSubmitting}
 							disabled={isUploading || !form.watch('name')}
 						>
 							Create Service

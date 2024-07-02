@@ -6,46 +6,45 @@ import {
 	STATIC_ASSETS_HOST,
 } from '@/constants'
 import { createPresignedUrl, moveObject } from '@/services/s3'
-import { ServiceCreate } from '@/services/client'
+import { serviceCreateSchema } from '@/services/client'
 import { checkUUID } from '@/utils/helpers'
 import { createClient, getUserId } from '@/utils/supabase/server'
-import { UUID, randomUUID } from 'crypto'
+import { randomUUID } from 'crypto'
 import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { safeAction } from '@/lib/safe-action'
 
-export const createService = async ({
-	name,
-	avatar_url,
-	description,
-}: ServiceCreate): Promise<UUID> => {
-	const userId = await getUserId(cookies())
+export const createService = safeAction
+	.schema(serviceCreateSchema)
+	.action(async ({ parsedInput: { name, avatar_url, description } }) => {
+		const userId = await getUserId(cookies())
 
-	const supabase = createClient(cookies())
+		const supabase = createClient(cookies())
 
-	const serviceId = randomUUID()
+		const serviceId = randomUUID()
 
-	if (avatar_url) {
-		avatar_url = await moveAvatar(avatar_url, userId, serviceId)
-	}
+		if (avatar_url) {
+			avatar_url = await moveAvatar(avatar_url, userId, serviceId)
+		}
 
-	const { error } = await supabase.from('services').insert({
-		id: serviceId,
-		user_id: userId,
-		name,
-		display_name: name,
-		avatar_url: avatar_url,
-		description,
+		const { error } = await supabase.from('services').insert({
+			id: serviceId,
+			user_id: userId,
+			name,
+			display_name: name,
+			avatar_url: avatar_url,
+			description,
+		})
+
+		if (error) {
+			throw new Error(error.message)
+		}
+
+		revalidateTag(`user-${userId}-services`)
+
+		redirect(`/${name}?new=true`)
 	})
-
-	if (error) {
-		throw new Error(error.message)
-	}
-
-	revalidateTag(`user-${userId}-services`)
-
-	redirect(`/${name}?new=true`)
-}
 
 export const createAvatarUploadPresignedUrl = async ({
 	type,
