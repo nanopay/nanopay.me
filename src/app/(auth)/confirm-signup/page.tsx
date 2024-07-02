@@ -60,13 +60,13 @@ export default function ConfirmSignUp({
 				form.setError(
 					'token',
 					{
-						message: 'O código inserido é inválido ou expirou.',
+						message: 'The code entered is invalid or has expired.',
 					},
 					{ shouldFocus: true },
 				)
 				return
 			}
-			showError('Erro ao verificar código', message)
+			showError('Error verifying code', message)
 		},
 	})
 
