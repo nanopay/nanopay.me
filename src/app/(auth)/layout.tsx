@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 					/>
 				</div>
 				<div className="z-10 sm:mt-10">
-					<Container className="shadow-nano/10 flex h-screen w-full flex-col justify-center rounded-xl bg-white p-16 sm:h-auto sm:max-w-lg sm:shadow-md">
+					<Container className="shadow-nano/10 flex h-screen w-full flex-col justify-center rounded-xl bg-white p-4 sm:h-auto sm:max-w-lg sm:p-16 sm:shadow-md">
 						<div className="mb-6">
 							<Link href="/" aria-label="Home">
 								<Logo theme="light" className="mx-auto h-12 w-auto" />
