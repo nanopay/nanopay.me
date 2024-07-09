@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import ImageCrop from './ImageCrop'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
-import clsx from 'clsx'
 import { AlertTriangleIcon, CameraIcon } from 'lucide-react'
 import Image from 'next/image'
+import { cn } from '@/lib/utils'
 
 interface ImageInputProps {
-	source?: string | null
+	src?: string | null
 	onChange?: (file: File) => void
 	isLoading?: boolean
 	isError?: boolean
@@ -14,10 +14,14 @@ interface ImageInputProps {
 	icon?: React.ReactNode
 	crop?: boolean
 	progress?: number
+	alt?: string
+	width?: number
+	height?: number
+	acceptTypes?: string[]
 }
 
 export function ImageInput({
-	source,
+	src,
 	onChange,
 	className,
 	isLoading,
@@ -25,8 +29,12 @@ export function ImageInput({
 	icon,
 	crop = false,
 	progress = 0,
+	width = 128,
+	height = 128,
+	alt = 'Input Image',
+	acceptTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
 }: ImageInputProps) {
-	const [imageSource, setImageSource] = useState<string | null>(source || null)
+	const [imageSource, setImageSource] = useState<string | null>(src || null)
 	const [imageToCrop, setImageToCrop] = useState<string | null>(null)
 	const [resetProgress, setResetProgress] = useState(0)
 	const [localProgress, setLocalProgress] = useState(0)
@@ -89,23 +97,27 @@ export function ImageInput({
 				type="file"
 				name="image"
 				onChange={onSelectedImage}
-				accept="image/png,image/jpeg,image/jpg,image/webp"
+				accept={acceptTypes.join(',')}
 			/>
 			<div
-				className={clsx(
-					'group relative h-32 w-32 cursor-pointer rounded-full bg-slate-200',
+				className={cn(
+					'group relative cursor-pointer rounded-full bg-slate-200',
 					progress ? '' : isError ? 'border-2 border-red-400' : '',
 					className,
 				)}
+				style={{
+					width: width,
+					height: height,
+				}}
 				onClick={handleInputClick}
 			>
 				{imageSource && (
 					<Image
 						src={imageSource}
-						alt=""
-						width={128}
-						height={128}
-						className={clsx(
+						alt={alt}
+						width={width}
+						height={height}
+						className={cn(
 							'h-full w-full rounded-full',
 							isLoading && 'animate-pulse',
 						)}
@@ -133,13 +145,19 @@ export function ImageInput({
 						/>
 					</div>
 				)}
-				<div className="absolute bottom-0 right-2 flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-slate-100 group-hover:bg-slate-200">
+				<div
+					className="absolute bottom-0 right-1 flex items-center justify-center rounded-full border border-slate-300 bg-slate-50 group-hover:bg-slate-200"
+					style={{
+						width: width / 3.33,
+						height: height / 3.33,
+					}}
+				>
 					{isLoading ? (
-						<div className="h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-slate-400"></div>
+						<div className="h-1/2 w-1/2 animate-spin rounded-full border-b-2 border-t-2 border-slate-400"></div>
 					) : isError ? (
-						<AlertTriangleIcon className="h-6 w-6 text-red-400" />
+						<AlertTriangleIcon className="h-2/3 w-2/3 text-red-400" />
 					) : (
-						icon || <CameraIcon className="h-5 w-5 text-slate-400" />
+						icon || <CameraIcon className="h-3/4 w-3/4 text-slate-400" />
 					)}
 				</div>
 			</div>
