@@ -2,9 +2,9 @@
 
 import { GlobeIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
-import { ServiceAvatar } from '@/components/ServiceAvatar'
 import { deleteService } from './actions'
 import { Service } from '@/services/client'
+import { ServiceAvatarEditable } from '@/components/ServiceAvatarEditable'
 
 export interface SettingsProps {
 	service: Service
@@ -19,7 +19,7 @@ export function Settings({ service }: SettingsProps) {
 						{/* Service Profile */}
 						<div className="flex items-center">
 							<div className="hidden sm:flex">
-								<ServiceAvatar
+								<ServiceAvatarEditable
 									id={service.id}
 									size={64}
 									src={service.avatar_url}
@@ -29,7 +29,7 @@ export function Settings({ service }: SettingsProps) {
 							<div>
 								<div className="flex items-center">
 									<div className="sm:hidden">
-										<ServiceAvatar
+										<ServiceAvatarEditable
 											id={service.id}
 											size={64}
 											src={service.avatar_url}
