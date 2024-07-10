@@ -5,7 +5,7 @@ import { getUserId } from '@/utils/supabase/server'
 import {
 	ALLOWED_IMAGE_TYPES,
 	MAX_IMAGE_SIZE,
-	STATIC_ASSETS_HOST,
+	STATIC_ASSETS_URL,
 } from '@/constants'
 import { revalidateTag } from 'next/cache'
 import { createPresignedUrl, moveObject } from '@/services/s3'
@@ -67,7 +67,7 @@ export const updateAvatar = async () => {
 
 	await moveObject(oldKey, newKey)
 
-	const avatarUrl = new URL(STATIC_ASSETS_HOST)
+	const avatarUrl = new URL(STATIC_ASSETS_URL)
 	avatarUrl.pathname = newKey
 	avatarUrl.searchParams.set('v', Date.now().toString())
 

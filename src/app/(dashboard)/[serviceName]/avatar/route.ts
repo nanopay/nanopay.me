@@ -1,4 +1,4 @@
-import { MAX_IMAGE_SIZE, STATIC_ASSETS_HOST } from '@/constants'
+import { MAX_IMAGE_SIZE, STATIC_ASSETS_URL } from '@/constants'
 import { Client } from '@/services/client'
 import { putObject } from '@/services/s3'
 import { ServerRuntime } from 'next'
@@ -70,7 +70,7 @@ export async function POST(
 
 		await putObject(key, file, file.type)
 
-		const url = new URL(STATIC_ASSETS_HOST)
+		const url = new URL(STATIC_ASSETS_URL)
 		url.pathname = key
 		url.searchParams.append('v', Date.now().toString())
 
