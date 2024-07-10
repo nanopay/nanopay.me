@@ -1,14 +1,12 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Input from '@/components/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/useToast'
-import ImageInput from '@/components/ImageInput'
 import { sanitizeSlug } from '@/utils/url'
-import { createAvatarUploadPresignedUrl, createService } from './actions'
-import { uploadObject } from '@/services/s3'
+import { createService } from './actions'
 import { InfoIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import {
@@ -52,13 +50,13 @@ export default function NewService() {
 						className="flex max-w-xl flex-col items-center space-y-2 pb-4 sm:px-16"
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
-						<ServiceAvatar
+						{/* <ServiceAvatar
 							url={form.watch('avatar_url') || undefined}
 							onChange={url => {
 								form.setValue('avatar_url', url)
 							}}
 							onUploading={setIsUploading}
-						/>
+						/> */}
 
 						<div className="flex w-full flex-col space-y-6 px-4 py-4 sm:px-8">
 							<div>
@@ -125,57 +123,5 @@ export default function NewService() {
 				</Form>
 			</CardContent>
 		</Card>
-	)
-}
-
-function ServiceAvatar({
-	url,
-	onChange,
-	onUploading,
-}: {
-	url?: string
-	onChange: (url: string) => void
-	onUploading: (bool: boolean) => void
-}) {
-	const [progress, setProgress] = useState(0)
-	const [isError, setIsError] = useState(false)
-	const [isPending, startTransition] = useTransition()
-	const { showError } = useToast()
-
-	const handleUploadAvatar = async (file: File) => {
-		startTransition(async () => {
-			try {
-				onUploading(true)
-
-				const { uploadUrl, getUrl } = await createAvatarUploadPresignedUrl({
-					type: file.type,
-					size: file.size,
-				})
-
-				await uploadObject(file, uploadUrl, setProgress)
-				onChange(getUrl)
-			} catch (error) {
-				setIsError(true)
-				showError(
-					'Error uploading avatar',
-					error instanceof Error
-						? error.message
-						: 'Check the data or try again later.',
-				)
-			} finally {
-				onUploading(false)
-			}
-		})
-	}
-
-	return (
-		<ImageInput
-			source={url}
-			crop={true}
-			onChange={handleUploadAvatar}
-			isLoading={isPending}
-			isError={isError}
-			progress={progress}
-		/>
 	)
 }
