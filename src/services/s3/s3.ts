@@ -5,6 +5,7 @@ import {
 	PutObjectCommand,
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { Readable } from 'stream'
 
 export type S3Fields = Record<string, string>
 
@@ -84,13 +85,18 @@ export const createPresignedUrl = async ({
 	return url
 }
 
-export const putObject = async (key: string, file: File): Promise<void> => {
+export const putObject = async (
+	key: string,
+	file: File | string | Uint8Array | Buffer | Readable,
+	ContentType?: string,
+): Promise<void> => {
 	const Key = sanitizeKey(key)
 	const command = new PutObjectCommand({
 		Bucket,
 		Key,
 		ACL: 'public-read',
 		Body: file,
+		ContentType,
 	})
 	await client.send(command)
 }
