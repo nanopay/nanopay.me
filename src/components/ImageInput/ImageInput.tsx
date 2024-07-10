@@ -5,6 +5,13 @@ import { AlertTriangleIcon, CameraIcon } from 'lucide-react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
+const ALLOWED_IMAGE_TYPES = [
+	'image/png',
+	'image/jpeg',
+	'image/jpg',
+	'image/webp',
+]
+
 interface ImageInputProps {
 	src?: string | null
 	onChange?: (file: File) => void
@@ -17,7 +24,6 @@ interface ImageInputProps {
 	alt?: string
 	width?: number
 	height?: number
-	acceptTypes?: string[]
 }
 
 export function ImageInput({
@@ -32,7 +38,6 @@ export function ImageInput({
 	width = 128,
 	height = 128,
 	alt = 'Input Image',
-	acceptTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
 }: ImageInputProps) {
 	const [imageSource, setImageSource] = useState<string | null>(src || null)
 	const [imageToCrop, setImageToCrop] = useState<string | null>(null)
@@ -97,7 +102,7 @@ export function ImageInput({
 				type="file"
 				name="image"
 				onChange={onSelectedImage}
-				accept={acceptTypes.join(',')}
+				accept={ALLOWED_IMAGE_TYPES.join(',')}
 			/>
 			<div
 				className={cn(

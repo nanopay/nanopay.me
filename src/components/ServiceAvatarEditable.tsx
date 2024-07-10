@@ -2,7 +2,6 @@
 
 import { useToast } from '@/hooks/useToast'
 import ImageInput from './ImageInput'
-import { ALLOWED_IMAGE_TYPES } from '@/constants'
 import { useServiceAvatarUploader } from '@/hooks/useUploader'
 
 export interface ServiceAvatarEditableProps {
@@ -40,7 +39,6 @@ export function ServiceAvatarEditable({
 			width={size}
 			height={size}
 			alt={alt}
-			acceptTypes={ALLOWED_IMAGE_TYPES}
 		/>
 	)
 }
