@@ -42,13 +42,13 @@ export const uploadFileWithXHR = async (
 	})
 }
 
-export type UploaderHookOptions = {
+export type UploaderOptions = {
 	onSuccess?: (url: string) => void
 	onError?: (message: string) => void
 	onUploading?: (bool: boolean) => void
 }
 
-const uploaderHook = (apiUrl: string, options: UploaderHookOptions = {}) => {
+export const useUploader = (apiUrl: string, options: UploaderOptions = {}) => {
 	const [isUploading, setIsUploading] = useState(false)
 	const [isError, setIsError] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
@@ -97,11 +97,11 @@ const uploaderHook = (apiUrl: string, options: UploaderHookOptions = {}) => {
 
 export const useServiceAvatarUploader = (
 	serviceNameOrId: string,
-	options: UploaderHookOptions,
+	options: UploaderOptions,
 ) => {
-	return uploaderHook(`/${serviceNameOrId}/avatar`, options)
+	return useUploader(`/${serviceNameOrId}/avatar`, options)
 }
 
-export const useUserAvatarUploader = (options: UploaderHookOptions) => {
-	return uploaderHook(`/profile/avatar`, options)
+export const useUserAvatarUploader = (options: UploaderOptions) => {
+	return useUploader(`/profile/avatar`, options)
 }
