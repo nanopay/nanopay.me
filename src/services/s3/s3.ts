@@ -12,6 +12,7 @@ const Bucket = process.env.S3_BUCKET as string
 
 const client = new S3Client({
 	endpoint: process.env.S3_ENDPOINT,
+	region: process.env.S3_REGION,
 	credentials: {
 		accessKeyId: process.env.S3_ACCESS_KEY_ID!,
 		secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
