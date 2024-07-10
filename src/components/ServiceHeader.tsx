@@ -1,8 +1,8 @@
 import { Button } from '@/components/Button'
-import { ServiceAvatar } from '@/components/ServiceAvatar'
 import { Service } from '@/services/client'
 import { GlobeIcon, PlusIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
+import { ServiceAvatarEditable } from './ServiceAvatarEditable'
 
 export default function ServiceHeader({ service }: { service: Service }) {
 	return (
@@ -13,9 +13,9 @@ export default function ServiceHeader({ service }: { service: Service }) {
 						{/* Service Profile */}
 						<div className="flex items-center">
 							<div className="hidden sm:flex">
-								<ServiceAvatar
+								<ServiceAvatarEditable
 									id={service.id}
-									size={54}
+									size={80}
 									src={service.avatar_url}
 									alt={service.display_name}
 								/>
@@ -23,9 +23,9 @@ export default function ServiceHeader({ service }: { service: Service }) {
 							<div>
 								<div className="flex items-center">
 									<div className="sm:hidden">
-										<ServiceAvatar
+										<ServiceAvatarEditable
 											id={service.id}
-											size={54}
+											size={64}
 											src={service.avatar_url}
 											alt={service.display_name}
 										/>
