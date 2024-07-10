@@ -12,7 +12,6 @@
 	"browserslist": "defaults, not ie <= 11",
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.478.0",
-		"@aws-sdk/s3-request-presigner": "^3.478.0",
 		"@emotion/react": "^11.10.6",
 		"@emotion/styled": "^11.10.6",
 		"@radix-ui/react-accordion": "^1.1.2",
