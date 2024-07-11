@@ -1,0 +1,64 @@
+import { revalidateTag } from 'next/cache'
+import { ZodError, z } from 'zod'
+
+const CACHE_TIME = 60 * 5 // 5 minutes
+const COIN_ID = 1567 // XNO
+
+export interface LatestPrice {
+	price: number
+	percent_change_24h: number
+}
+
+const quoteSchema = z.object({
+	price: z.number(),
+	percent_change_24h: z.number(),
+})
+
+export const getLatestPrice = async (
+	coinId: string | number = COIN_ID,
+	convert: string = 'USD',
+	revalidate = false,
+): Promise<LatestPrice> => {
+	await new Promise(resolve => setTimeout(resolve, 3000))
+
+	coinId = coinId.toString()
+
+	if (revalidate) {
+		revalidateTag(`price-${coinId}-${convert}`)
+	}
+
+	const url = `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${coinId}&convert=${convert}`
+
+	const response = await fetch(url, {
+		headers: {
+			'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY || '',
+			'Accept-Encoding': 'gzip,deflate,compress',
+			Accept: 'application/json',
+		},
+		next: {
+			revalidate: CACHE_TIME,
+			tags: [`price-${coinId}-${convert}`],
+		},
+	})
+
+	if (!response.ok) {
+		throw new Error(`coinmarketcap status error: ${response.statusText}`)
+	}
+
+	const body = await response.json()
+
+	try {
+		const { price, percent_change_24h } = quoteSchema.parse(
+			body?.data?.[coinId]?.quote?.[convert],
+		)
+		return {
+			price,
+			percent_change_24h,
+		}
+	} catch (error) {
+		if (error instanceof ZodError) {
+			console.error('Invalid response from coinmarketcap:', error.message)
+		}
+		throw new Error(`Invalid response from coinmarketcap`)
+	}
+}
