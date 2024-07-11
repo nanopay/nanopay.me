@@ -18,8 +18,8 @@ export class WebhooksService extends BaseService {
 
 		const serviceId = await this.getIdFromServiceNameOrId(serviceNameOrId)
 
-		const { error, data: hook } = await this.supabase
-			.from('hooks')
+		const { error, data: webhook } = await this.supabase
+			.from('webhooks')
 			.insert({
 				name: data.name,
 				description: data.description,
@@ -35,12 +35,12 @@ export class WebhooksService extends BaseService {
 			throw new Error(error.message)
 		}
 
-		return hook
+		return webhook
 	}
 
 	async get(webhookId: string): Promise<Webhook> {
 		const { data, error } = await this.supabase
-			.from('hooks')
+			.from('webhooks')
 			.select('*')
 			.eq('id', webhookId)
 			.single()
@@ -63,7 +63,7 @@ export class WebhooksService extends BaseService {
 
 	async list(serviceNameOrId: string): Promise<Webhook[]> {
 		const query = this.supabase
-			.from('hooks')
+			.from('webhooks')
 			.select('*, service:services(name)')
 
 		if (checkUUID(serviceNameOrId)) {
@@ -93,7 +93,7 @@ export class WebhooksService extends BaseService {
 	async update(webhookId: string, data: WebhookUpdate): Promise<void> {
 		webhookUpdateSchema.parse(data)
 		const { error } = await this.supabase
-			.from('hooks')
+			.from('webhooks')
 			.update({
 				name: data.name,
 				description: data.description,
@@ -115,7 +115,7 @@ export class WebhooksService extends BaseService {
 
 	async delete(webhookId: string): Promise<void> {
 		const { error } = await this.supabase
-			.from('hooks')
+			.from('webhooks')
 			.delete()
 			.eq('id', webhookId)
 		if (error) {

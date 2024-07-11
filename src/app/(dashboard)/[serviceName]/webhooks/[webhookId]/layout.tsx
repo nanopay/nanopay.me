@@ -11,18 +11,18 @@ export default function WebhookLayout({
 }) {
 	const pathname = usePathname()
 	const serviceName = useParams().serviceName as string
-	const webhookdId = useParams().webhookdId as string
+	const webhookId = useParams().webhookId as string
 
 	const tabs = [
 		{
 			label: 'Settings',
 			value: 'settings',
-			href: `/${serviceName}/webhooks/${webhookdId}/settings`,
+			href: `/${serviceName}/webhooks/${webhookId}/settings`,
 		},
 		{
 			label: 'Deliveries',
 			value: 'deliveries',
-			href: `/${serviceName}/webhooks/${webhookdId}/deliveries`,
+			href: `/${serviceName}/webhooks/${webhookId}/deliveries`,
 		},
 	]
 

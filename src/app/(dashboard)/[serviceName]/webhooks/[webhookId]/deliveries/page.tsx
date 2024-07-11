@@ -5,7 +5,7 @@ import { Client } from '@/services/client'
 interface Props {
 	params: {
 		serviceName: string
-		webhookdId: string
+		webhookId: string
 	}
 }
 
@@ -14,10 +14,10 @@ export const metadata = {
 }
 
 export default async function WebhookDeliveries({
-	params: { webhookdId },
+	params: { webhookId },
 }: Props) {
 	const client = new Client(cookies())
-	const deliveries = await client.webhooks.deliveries(webhookdId)
+	const deliveries = await client.webhooks.deliveries(webhookId)
 
 	return <WebhookDelivieries deliveries={deliveries} />
 }

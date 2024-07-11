@@ -38,30 +38,30 @@ export default async function Webhooks({
 			</header>
 			{webhooks?.length ? (
 				<ul role="list" className="space-y-2">
-					{webhooks?.map(hook => (
+					{webhooks?.map(webhook => (
 						<li
-							key={hook.id}
+							key={webhook.id}
 							className="relative rounded-md border border-slate-200 bg-white py-5 pl-4 pr-6 hover:bg-slate-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
 						>
 							<div className="flex items-center justify-between space-x-4">
 								{/* Service name and description */}
 								<div className="min-w-0 space-y-3">
 									<div className="flex items-center space-x-3">
-										{hook.active ? (
+										{webhook.active ? (
 											<ActivityDot status="active" />
 										) : (
 											<ActivityDot status="inactive" />
 										)}
-										<Link href={`/${serviceName}/webhooks/${hook.id}`}>
+										<Link href={`/${serviceName}/webhooks/${webhook.id}`}>
 											<h2 className="text-sm font-medium">
 												<span className="absolute inset-0" aria-hidden="true" />
-												{hook.name}
+												{webhook.name}
 											</h2>
 										</Link>
 									</div>
 									<p className="group relative flex items-center space-x-2.5">
 										<span className="text-xs font-medium text-slate-500">
-											{hook.url}
+											{webhook.url}
 										</span>
 									</p>
 								</div>
@@ -77,14 +77,17 @@ export default async function Webhooks({
 										<span aria-hidden="true">&middot;</span>
 										<span>
 											Created at{' '}
-											{new Date(hook.created_at).toLocaleDateString(undefined, {
-												month: 'short',
-												day: 'numeric',
-												year: 'numeric',
-											})}
+											{new Date(webhook.created_at).toLocaleDateString(
+												undefined,
+												{
+													month: 'short',
+													day: 'numeric',
+													year: 'numeric',
+												},
+											)}
 										</span>
 									</p>
-									{hook.event_types.map(eventType => (
+									{webhook.event_types.map(eventType => (
 										<p className="flex items-center space-x-1" key={eventType}>
 											<ArrowUpCircleIcon className="h-4 w-4 text-slate-400" />
 											<span className="text-xs font-semibold text-slate-500">
