@@ -125,7 +125,7 @@ export class WebhooksService extends BaseService {
 
 	async deliveries(webhookId: string): Promise<WebhookDelivery[]> {
 		const { data, error } = await this.supabase
-			.from('webhook_deliveries')
+			.from('webhooks_deliveries')
 			.select('*')
 			.eq('webhook_id', webhookId)
 			.order('created_at', { ascending: false })
@@ -136,7 +136,7 @@ export class WebhooksService extends BaseService {
 
 		return data.map(delivery => ({
 			id: delivery.id,
-			hook_id: delivery.hook_id,
+			webhook_id: delivery.webhook_id,
 			type: delivery.type as WebhookEventType,
 			created_at: delivery.created_at,
 			started_at: delivery.started_at,
@@ -144,10 +144,10 @@ export class WebhooksService extends BaseService {
 			url: delivery.url,
 			status_code: delivery.status_code,
 			redelivery: delivery.redelivery,
-			request_body: delivery.request_body,
 			success: delivery.success,
-			request_headers: delivery.request_headers,
-			response_headers: delivery.response_headers,
+			request_body: delivery.request_body as Record<string, string>,
+			request_headers: delivery.request_headers as Record<string, string>,
+			response_headers: delivery.response_headers as Record<string, string>,
 			response_body: delivery.response_body,
 		}))
 	}

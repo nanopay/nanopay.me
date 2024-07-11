@@ -54,7 +54,7 @@ export default async function ServiceDashboardPage({
 			name: 'Webhooks',
 			href: `/${service.name}/webhooks`,
 			icon: WebhookIcon,
-			amount: service.hooks_count,
+			amount: service.webhooks_count,
 			hrefLabel: 'View All',
 		},
 	]

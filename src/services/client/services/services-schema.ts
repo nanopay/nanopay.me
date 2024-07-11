@@ -66,7 +66,7 @@ export const serviceSchema = z.object({
 	contact_email: z.string().email().nullable(),
 	invoices_count: z.number().min(0),
 	api_keys_count: z.number().min(0),
-	hooks_count: z.number().min(0),
+	webhooks_count: z.number().min(0),
 	created_at: z.string(),
 })
 

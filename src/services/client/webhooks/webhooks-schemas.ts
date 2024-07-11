@@ -30,7 +30,7 @@ export const webhookUpdateSchema = webhookCreateSchema.partial()
 
 export const webhookDeliverySchema = z.object({
 	id: z.string().uuid(),
-	hook_id: z.string().uuid(),
+	webhook_id: z.string().uuid(),
 	type: webhookEventTypeSchema,
 	created_at: z.string(),
 	started_at: z.string(),
@@ -42,5 +42,5 @@ export const webhookDeliverySchema = z.object({
 	success: z.boolean(),
 	request_headers: z.object({}),
 	response_headers: z.object({}),
-	response_body: z.object({}),
+	response_body: z.string().nullable(),
 })

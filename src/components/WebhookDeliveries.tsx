@@ -4,16 +4,16 @@ import ActivityDot from './ActivityDot'
 import { ChevronRightIcon } from 'lucide-react'
 import { WebhookDelivery } from '@/services/client/webhooks/webhooks-types'
 
-interface HookDelivieriesProps {
-	deliveries: WebhookDelivery[]
-}
-
 const statusStyles = {
 	success: 'bg-green-100 text-green-800',
 	error: 'bg-red-100 text-red-800',
 }
 
-export default function HookDelivieries({ deliveries }: HookDelivieriesProps) {
+export function WebhookDelivieries({
+	deliveries,
+}: {
+	deliveries: WebhookDelivery[]
+}) {
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
@@ -25,7 +25,7 @@ export default function HookDelivieries({ deliveries }: HookDelivieriesProps) {
 					{deliveries?.map(delivery => (
 						<li key={delivery.id}>
 							<a
-								href={`/hook-deliveries/${delivery.id}`}
+								href={`/webhook-deliveries/${delivery.id}`}
 								className="block bg-white px-4 py-4 hover:bg-slate-100"
 							>
 								<span className="flex items-center space-x-4">

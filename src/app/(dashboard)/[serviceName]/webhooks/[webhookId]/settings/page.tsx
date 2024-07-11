@@ -5,7 +5,7 @@ import { Client } from '@/services/client'
 interface Props {
 	params: {
 		serviceName: string
-		hookId: string
+		webhookdId: string
 	}
 }
 
@@ -15,6 +15,6 @@ export const metadata = {
 
 export default async function Webhooks({ params }: Props) {
 	const client = new Client(cookies())
-	const webhook = await client.webhooks.get(params.hookId)
+	const webhook = await client.webhooks.get(params.webhookdId)
 	return <WebhookSettingsCard webhook={webhook} />
 }
