@@ -1,3 +1,5 @@
+'use client'
+
 import { Logo } from './Logo'
 import logoXno from '@/images/logos/nano-xno.svg'
 import Image from 'next/image'
@@ -13,7 +15,7 @@ import {
 import Countdown from 'react-countdown'
 import { convert, Unit } from 'nanocurrency'
 import { useEffect, useState } from 'react'
-import { PublicService } from '@/services/client'
+import { InvoicePublic } from '@/services/client'
 import Transactions from './Transactions'
 import { ServiceAvatar } from './ServiceAvatar'
 import {
@@ -33,61 +35,44 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from './ui/accordion'
-import { Payment } from '@/services/client'
+import { usePaymentsListener } from '@/hooks/usePaymentsListener'
 
-interface CheckoutProps {
-	invoiceId: string
-	title: string
-	description: string | null
-	address: string
-	amount: number
-	usd: number
-	expiresAt: Date
-	payments: Payment[]
-	service: PublicService
-	hasRedirectUrl: boolean
-}
-
-export default function Checkout({
-	invoiceId,
-	title,
-	description,
-	address,
-	amount,
-	usd,
-	payments,
-	expiresAt,
-	service,
-	hasRedirectUrl,
-}: CheckoutProps) {
+export default function Checkout({ invoice }: { invoice: InvoicePublic }) {
 	const [rendered, setRendered] = useState(false)
 
 	useEffect(() => {
 		setRendered(true)
 	}, [])
 
+	const {
+		isPaid,
+		isPartiallyPaid,
+		amountPaid,
+		payments,
+		amountMissing,
+		isExpired,
+	} = usePaymentsListener({
+		invoiceId: invoice.id,
+		price: invoice.price,
+		expires_at: invoice.expires_at,
+		initialPayments: invoice.payments,
+	})
+
 	const lastPayment = payments[payments.length - 1]
 
-	const amountPaid = payments.reduce((acc, curr) => acc + curr.amount, 0)
-
-	// if transactions amount sum is equal or greater than price, it's paid
-	const paid = amountPaid >= amount
-
-	const partiallyPaid = !paid && amountPaid > 0
-
-	const missingAmount = amount - amountPaid
-
-	const payURI = `nano:${address}?amount=${convert(missingAmount.toString(), {
-		from: Unit.Nano,
-		to: Unit.raw,
-	})}`
-
-	const isExpired =
-		!paid && new Date(expiresAt).getTime() - new Date().getTime() < 0
+	const payURI = `nano:${invoice.pay_address}?amount=${convert(
+		amountMissing.toString(),
+		{
+			from: Unit.Nano,
+			to: Unit.raw,
+		},
+	)}`
 
 	const handleRedirectToMerchant = () => {
-		redirectToMerchant(invoiceId)
+		redirectToMerchant(invoice.id)
 	}
+
+	const usd = 1
 
 	return (
 		<div className="flex w-full flex-col rounded-3xl shadow md:flex-row">
@@ -95,16 +80,20 @@ export default function Checkout({
 				<div className="hidden md:block">
 					<div className="mt-4 flex flex-col items-center gap-2 p-4 text-white">
 						<ServiceAvatar
-							id={service.id}
-							src={service.avatar_url}
-							alt={service.display_name}
+							id={invoice.service.id}
+							src={invoice.service.avatar_url}
+							alt={invoice.service.display_name}
 						/>
-						<h2 className="text-lg font-semibold">{service.display_name}</h2>
+						<h2 className="text-lg font-semibold">
+							{invoice.service.display_name}
+						</h2>
 					</div>
 					<div className="h-1/2 overflow-y-auto">
 						<div className="mt-8 p-4 text-white">
-							<h2 className="pb-2 font-semibold">{title}</h2>
-							<p className="mt-2 text-sm">{description || 'No description'}</p>
+							<h2 className="pb-2 font-semibold">{invoice.title}</h2>
+							<p className="mt-2 text-sm">
+								{invoice.description || 'No description'}
+							</p>
 						</div>
 					</div>
 				</div>
@@ -134,20 +123,20 @@ export default function Checkout({
 					<AccordionTrigger>
 						<div className="flex items-center gap-2 text-left">
 							<ServiceAvatar
-								alt={service.name}
-								id={service.id}
-								src={service.avatar_url}
+								alt={invoice.service.name}
+								id={invoice.service.id}
+								src={invoice.service.avatar_url}
 							/>
 							<div className="ml-2 w-full">
 								<h2 className="text-lg font-semibold leading-5">
-									{service.display_name}
+									{invoice.service.display_name}
 								</h2>
-								<p className="text-sm">{title}</p>
+								<p className="text-sm">{invoice.title}</p>
 							</div>
 						</div>
 					</AccordionTrigger>
 					<AccordionContent>
-						<p className="text-sm">{description || 'No description'}</p>
+						<p className="text-sm">{invoice.description || 'No description'}</p>
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>
@@ -220,7 +209,7 @@ export default function Checkout({
 								{amountPaid > 0 && (
 									<div className="mt-4 flex flex-col gap-1">
 										<Link
-											href={`mailto:${REFUND_EMAIL}?subject=Refund to Invoice #${invoiceId}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
+											href={`mailto:${REFUND_EMAIL}?subject=Refund to Invoice #${invoice.id}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
 										>
 											<Button
 												variant="ghost"
@@ -238,11 +227,11 @@ export default function Checkout({
 						<div className="sm:px-4">
 							<div className="flex justify-between border-y border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-slate-500">Invoice</div>
-								<div className="font-medium text-slate-900">#{invoiceId}</div>
+								<div className="font-medium text-slate-900">#{invoice.id}</div>
 							</div>
 							<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-slate-500">Expired At</div>
-								{formatDateTime(expiresAt.toDateString())}
+								{formatDateTime(invoice.expires_at)}
 							</div>
 
 							{payments.length && (
@@ -258,7 +247,7 @@ export default function Checkout({
 							)}
 						</div>
 					</>
-				) : paid ? (
+				) : isPaid ? (
 					<>
 						<div className="flex flex-1 items-center justify-center py-4">
 							<div className="flex flex-col items-center gap-2">
@@ -329,14 +318,14 @@ export default function Checkout({
 							</div>
 						</div>
 
-						{hasRedirectUrl && (
+						{invoice.has_redirect_url && (
 							<div className="flex justify-center py-4">
 								<Button
 									className="PayButton w-full sm:w-auto"
 									type="button"
 									onClick={handleRedirectToMerchant}
 								>
-									Continue to {service.name}
+									Continue to {invoice.service.name}
 									<ExternalLinkIcon className="ml-2 h-4 w-4" />
 								</Button>
 							</div>
@@ -345,7 +334,7 @@ export default function Checkout({
 						<div className="sm:px-4">
 							<div className="flex justify-between border-y border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-slate-500">Invoice</div>
-								<div className="font-medium text-slate-900">#{invoiceId}</div>
+								<div className="font-medium text-slate-900">#{invoice.id}</div>
 							</div>
 							<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
 								<div className="text-slate-500">Paid At</div>
@@ -365,15 +354,15 @@ export default function Checkout({
 					</>
 				) : (
 					<>
-						{partiallyPaid && (
+						{isPartiallyPaid && (
 							<div className="my-2 w-full rounded border border-yellow-300 bg-yellow-100 px-4 py-2 text-yellow-800">
 								<div className="flex items-center gap-2">
 									<AlertCircleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
 									<h3 className="font-semibold sm:text-lg">Partially Paid</h3>
 								</div>
 								<p className="mt-1 text-xs sm:text-sm">
-									You have paid Ӿ{amountPaid} of Ӿ{amount}. Pay the missing
-									amount Ӿ{missingAmount}
+									You have paid Ӿ{amountPaid} of Ӿ{invoice.price}. Pay the
+									missing amount Ӿ{amountMissing}
 								</p>
 							</div>
 						)}
@@ -392,7 +381,7 @@ export default function Checkout({
 									{/* Avoid hydration error by not rendering the countdown until the component is mounted */}
 									{rendered && (
 										<Countdown
-											date={expiresAt}
+											date={invoice.expires_at}
 											zeroPadTime={2}
 											renderer={props => (
 												<div className="font-medium text-slate-900">
@@ -418,7 +407,7 @@ export default function Checkout({
 								</div>
 								<div className="flex flex-1 flex-col items-center justify-center">
 									<div className="flex flex-col items-center justify-center gap-1 py-2 text-slate-800 sm:py-4">
-										{missingAmount.toString().length > 2 ? (
+										{amountMissing.toString().length > 2 ? (
 											<>
 												<Image
 													src={logoXno}
@@ -428,7 +417,7 @@ export default function Checkout({
 												/>
 												<div className="flex gap-1">
 													<div className="text-3xl font-semibold sm:text-2xl">
-														{missingAmount}
+														{amountMissing}
 													</div>
 												</div>
 											</>
@@ -441,7 +430,7 @@ export default function Checkout({
 													unoptimized
 												/>
 												<div className="text-3xl font-semibold sm:text-2xl">
-													{missingAmount}
+													{amountMissing}
 												</div>
 											</div>
 										)}
@@ -459,7 +448,7 @@ export default function Checkout({
 											{/* Avoid hydration error by not rendering the countdown until the component is mounted */}
 											{rendered && (
 												<Countdown
-													date={expiresAt}
+													date={invoice.expires_at}
 													zeroPadTime={2}
 													renderer={props => (
 														<div className="font-medium text-slate-900">
@@ -475,9 +464,9 @@ export default function Checkout({
 
 							<div className="mt-4 flex items-center justify-between gap-2 border-y border-dashed border-slate-200 py-2 text-sm text-slate-500">
 								<div>Send to:</div>
-								<div>{truncateAddress(address)}</div>
+								<div>{truncateAddress(invoice.pay_address)}</div>
 								<button
-									onClick={() => copyToClipboard(address)}
+									onClick={() => copyToClipboard(invoice.pay_address)}
 									className="focus:text-nano text-slate-400"
 								>
 									<CopyIcon className="h-4 w-4" />
@@ -487,7 +476,9 @@ export default function Checkout({
 							<div className="text-sm">
 								<div className="flex justify-between border-b border-dashed border-slate-200 py-2">
 									<div className="text-slate-500">Invoice</div>
-									<div className="font-medium text-slate-900">#{invoiceId}</div>
+									<div className="font-medium text-slate-900">
+										#{invoice.id}
+									</div>
 								</div>
 							</div>
 							<div className="mt-6 flex justify-center">

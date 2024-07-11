@@ -1,9 +1,9 @@
-import PayInvoice from './invoice'
 import NotFoundImage from '@/images/not-found.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { SUPPORT_EMAIL } from '@/constants'
 import { AdminClient } from '@/services/client'
+import Checkout from '@/components/Checkout'
 
 interface InvoicePageProps {
 	params: {
@@ -38,5 +38,9 @@ export default async function InvoicePage({
 		)
 	}
 
-	return <PayInvoice invoice={invoice} />
+	return (
+		<div className="mx-auto flex h-screen w-full max-w-4xl justify-center md:items-center">
+			<Checkout invoice={invoice} />
+		</div>
+	)
 }
