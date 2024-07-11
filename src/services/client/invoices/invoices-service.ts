@@ -125,7 +125,9 @@ export class InvoicesService extends BaseService {
 	): Promise<Invoice[]> {
 		const query = this.supabase
 			.from('invoices')
-			.select('*, service:services(name)')
+			.select(
+				'*, service:services(name), payments:payments(id, from, to, hash, amount, timestamp)',
+			)
 
 		if (checkUUID(serviceIdOrName)) {
 			query.eq('service_id', serviceIdOrName)
@@ -158,6 +160,7 @@ export class InvoicesService extends BaseService {
 			pay_address: invoice.pay_address as string,
 			received_amount: invoice.received_amount,
 			refunded_amount: invoice.refunded_amount,
+			payments: invoice.payments,
 		}))
 
 		return z.array(invoiceSchema).parse(invoices)
