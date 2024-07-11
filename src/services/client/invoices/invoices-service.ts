@@ -1,6 +1,10 @@
 import { paymentGateway } from '@/services/payment-gateway'
 import { BaseService } from '../base-service'
-import { invoiceCreateSchema, invoiceSchema } from './invoices-schemas'
+import {
+	invoiceCreateSchema,
+	invoicePublicSchema,
+	invoiceSchema,
+} from './invoices-schemas'
 import {
 	Invoice,
 	InvoiceCreate,
@@ -82,10 +86,10 @@ export class InvoicesService extends BaseService {
 	}
 
 	async getPublicInvoice(invoiceId: string): Promise<InvoicePublic | null> {
-		const { data: invoice, error } = await this.supabase
+		const { data, error } = await this.supabase
 			.from('invoices')
 			.select(
-				'*, service:services(id, name, display_name, avatar_url, description, website, contact_email), payments:payments(id, from, to, hash, amount, timestamp)',
+				'*, service:services(id, name, display_name, avatar_url, description, website, contact_email), payments(id, from, to, hash, amount, timestamp)',
 			)
 			.eq('id', invoiceId)
 			.single()
@@ -97,26 +101,28 @@ export class InvoicesService extends BaseService {
 			throw new Error(error.message)
 		}
 
-		if (!invoice.service) {
+		if (!data.service) {
 			throw new Error('Service not found')
 		}
 
-		return {
-			id: invoice.id,
-			title: invoice.title,
-			description: invoice.description,
-			price: invoice.price,
-			currency: invoice.currency,
-			status: invoice.status as InvoiceStatus,
-			created_at: invoice.created_at,
-			expires_at: invoice.expires_at,
-			pay_address: invoice.pay_address as string,
-			has_redirect_url: !!invoice.redirect_url,
-			received_amount: invoice.received_amount,
-			refunded_amount: invoice.refunded_amount,
-			service: invoice.service,
-			payments: invoice.payments,
+		const invoice = {
+			id: data.id,
+			title: data.title,
+			description: data.description,
+			price: data.price,
+			currency: data.currency,
+			status: data.status as InvoiceStatus,
+			created_at: data.created_at,
+			expires_at: data.expires_at,
+			pay_address: data.pay_address as string,
+			has_redirect_url: !!data.redirect_url,
+			received_amount: data.received_amount,
+			refunded_amount: data.refunded_amount,
+			service: data.service,
+			payments: data.payments,
 		}
+
+		return invoicePublicSchema.parse(invoice)
 	}
 
 	async list(
