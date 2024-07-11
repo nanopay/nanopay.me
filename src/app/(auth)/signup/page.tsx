@@ -21,6 +21,9 @@ import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signWithEmailAndPasswordSchema } from '@/services/client/auth/auth-schemas'
+import { Checkbox } from '@/components/ui/checkbox'
+import { useState } from 'react'
+import { CheckedState } from '@radix-ui/react-checkbox'
 
 interface SignUpEmailPassword {
 	email: string
@@ -31,6 +34,7 @@ export default function SignUpPage() {
 	const next = useSearchParams().get('next') || undefined
 
 	const { showError } = useToast()
+	const [acceptTerms, setAcceptTerms] = useState(false)
 
 	const form = useForm<SignUpEmailPassword>({
 		defaultValues: {
@@ -46,6 +50,10 @@ export default function SignUpPage() {
 			showError(message)
 		},
 	})
+
+	const handleAcceptTerms = (checked: CheckedState) => {
+		setAcceptTerms(checked === true)
+	}
 
 	return (
 		<Form {...form}>
@@ -101,11 +109,28 @@ export default function SignUpPage() {
 						)}
 					/>
 
+					<div className="flex select-none items-center gap-2 p-2">
+						<Checkbox
+							id="terms"
+							checked={acceptTerms}
+							onCheckedChange={handleAcceptTerms}
+						/>
+						<label
+							htmlFor="terms"
+							className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>
+							I agree to the{' '}
+							<Link href="/terms" target="_blank" className="text-nano">
+								terms of service
+							</Link>
+						</label>
+					</div>
+
 					<Button
 						type="submit"
 						className="w-full"
 						loading={form.formState.isSubmitting}
-						disabled={!form.formState.isDirty}
+						disabled={!form.formState.isDirty || !acceptTerms}
 					>
 						Sign Up
 					</Button>
