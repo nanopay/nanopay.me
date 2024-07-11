@@ -47,109 +47,6 @@ export type Database = {
 					},
 				]
 			}
-			hook_deliveries: {
-				Row: {
-					completed_at: string
-					created_at: string
-					hook_id: string
-					id: string
-					redelivery: boolean
-					request_body: Json
-					request_headers: Json
-					response_body: string | null
-					response_headers: Json
-					started_at: string
-					status_code: number
-					success: boolean
-					type: string
-					url: string
-				}
-				Insert: {
-					completed_at: string
-					created_at?: string
-					hook_id: string
-					id: string
-					redelivery?: boolean
-					request_body: Json
-					request_headers: Json
-					response_body?: string | null
-					response_headers: Json
-					started_at: string
-					status_code: number
-					success: boolean
-					type: string
-					url: string
-				}
-				Update: {
-					completed_at?: string
-					created_at?: string
-					hook_id?: string
-					id?: string
-					redelivery?: boolean
-					request_body?: Json
-					request_headers?: Json
-					response_body?: string | null
-					response_headers?: Json
-					started_at?: string
-					status_code?: number
-					success?: boolean
-					type?: string
-					url?: string
-				}
-				Relationships: [
-					{
-						foreignKeyName: 'hook_deliveries_hook_id_fkey'
-						columns: ['hook_id']
-						isOneToOne: false
-						referencedRelation: 'hooks'
-						referencedColumns: ['id']
-					},
-				]
-			}
-			hooks: {
-				Row: {
-					active: boolean
-					created_at: string
-					description: string | null
-					event_types: string[]
-					id: string
-					name: string
-					secret: string | null
-					service_id: string
-					url: string
-				}
-				Insert: {
-					active?: boolean
-					created_at?: string
-					description?: string | null
-					event_types: string[]
-					id?: string
-					name: string
-					secret?: string | null
-					service_id: string
-					url: string
-				}
-				Update: {
-					active?: boolean
-					created_at?: string
-					description?: string | null
-					event_types?: string[]
-					id?: string
-					name?: string
-					secret?: string | null
-					service_id?: string
-					url?: string
-				}
-				Relationships: [
-					{
-						foreignKeyName: 'hooks_service_id_fkey'
-						columns: ['service_id']
-						isOneToOne: false
-						referencedRelation: 'services'
-						referencedColumns: ['id']
-					},
-				]
-			}
 			invoices: {
 				Row: {
 					created_at: string
@@ -233,7 +130,7 @@ export type Database = {
 					created_at?: string
 					from: string
 					hash: string
-					id: string
+					id?: string
 					invoice_id: string
 					timestamp: number
 					to: string
@@ -256,13 +153,6 @@ export type Database = {
 						isOneToOne: false
 						referencedRelation: 'invoices'
 						referencedColumns: ['id']
-					},
-					{
-						foreignKeyName: 'payments_to_fkey'
-						columns: ['to']
-						isOneToOne: false
-						referencedRelation: 'invoices'
-						referencedColumns: ['pay_address']
 					},
 				]
 			}
@@ -321,11 +211,11 @@ export type Database = {
 					created_at: string
 					description: string | null
 					display_name: string
-					hooks_count: number
 					id: string
 					invoices_count: number
 					name: string
 					user_id: string
+					webhooks_count: number
 					website: string | null
 				}
 				Insert: {
@@ -335,11 +225,11 @@ export type Database = {
 					created_at?: string
 					description?: string | null
 					display_name?: string
-					hooks_count?: number
 					id?: string
 					invoices_count?: number
 					name: string
 					user_id?: string
+					webhooks_count?: number
 					website?: string | null
 				}
 				Update: {
@@ -349,11 +239,11 @@ export type Database = {
 					created_at?: string
 					description?: string | null
 					display_name?: string
-					hooks_count?: number
 					id?: string
 					invoices_count?: number
 					name?: string
 					user_id?: string
+					webhooks_count?: number
 					website?: string | null
 				}
 				Relationships: [
@@ -384,12 +274,139 @@ export type Database = {
 				}
 				Relationships: []
 			}
+			webhooks: {
+				Row: {
+					active: boolean
+					created_at: string
+					description: string | null
+					event_types: string[]
+					id: string
+					name: string
+					secret: string | null
+					service_id: string
+					url: string
+				}
+				Insert: {
+					active?: boolean
+					created_at?: string
+					description?: string | null
+					event_types: string[]
+					id?: string
+					name: string
+					secret?: string | null
+					service_id: string
+					url: string
+				}
+				Update: {
+					active?: boolean
+					created_at?: string
+					description?: string | null
+					event_types?: string[]
+					id?: string
+					name?: string
+					secret?: string | null
+					service_id?: string
+					url?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: 'hooks_service_id_fkey'
+						columns: ['service_id']
+						isOneToOne: false
+						referencedRelation: 'services'
+						referencedColumns: ['id']
+					},
+				]
+			}
+			webhooks_deliveries: {
+				Row: {
+					completed_at: string
+					created_at: string
+					id: string
+					redelivery: boolean
+					request_body: Json
+					request_headers: Json
+					response_body: string | null
+					response_headers: Json
+					started_at: string
+					status_code: number
+					success: boolean
+					type: string
+					url: string
+					webhook_id: string
+				}
+				Insert: {
+					completed_at: string
+					created_at?: string
+					id: string
+					redelivery?: boolean
+					request_body: Json
+					request_headers: Json
+					response_body?: string | null
+					response_headers: Json
+					started_at: string
+					status_code: number
+					success: boolean
+					type: string
+					url: string
+					webhook_id: string
+				}
+				Update: {
+					completed_at?: string
+					created_at?: string
+					id?: string
+					redelivery?: boolean
+					request_body?: Json
+					request_headers?: Json
+					response_body?: string | null
+					response_headers?: Json
+					started_at?: string
+					status_code?: number
+					success?: boolean
+					type?: string
+					url?: string
+					webhook_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: 'webhook_deliveries_webhook_id_fkey'
+						columns: ['webhook_id']
+						isOneToOne: false
+						referencedRelation: 'webhooks'
+						referencedColumns: ['id']
+					},
+				]
+			}
 		}
 		Views: {
 			[_ in never]: never
 		}
 		Functions: {
-			[_ in never]: never
+			is_invoice_owner:
+				| {
+						Args: {
+							invoice_id: string
+						}
+						Returns: boolean
+				  }
+				| {
+						Args: {
+							invoice_id: string
+						}
+						Returns: boolean
+				  }
+			is_service_owner: {
+				Args: {
+					service_id: string
+				}
+				Returns: boolean
+			}
+			is_webhook_owner: {
+				Args: {
+					webhook_id: string
+				}
+				Returns: boolean
+			}
 		}
 		Enums: {
 			[_ in never]: never
