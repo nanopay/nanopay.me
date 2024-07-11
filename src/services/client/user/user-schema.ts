@@ -20,7 +20,7 @@ export const userSchema = z.object({
 
 export const userCreateSchema = z.object({
 	name: z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH),
-	avatar_url: z.string().url().max(MAX_URL_LENGTH).nullable(),
+	avatar_url: z.string().url().max(MAX_URL_LENGTH).nullable().optional(),
 })
 
 export const userUpdateSchema = userCreateSchema.partial()
