@@ -1,59 +1,16 @@
 'use client'
 
 import Checkout from '@/components/Checkout'
-import { useEffect, useState } from 'react'
-import Pusher from 'pusher-js'
-import { InvoicePublic, Payment } from '@/services/client'
+import { InvoicePublic } from '@/services/client'
+import { usePaymentsListener } from '@/hooks/usePaymentsListener'
 
-interface PayInvoiceProps {
-	invoice: InvoicePublic
-}
-
-interface PaymentNotification {
-	payments: Payment[]
-	total_paid: number
-	missing: number
-}
-
-export default function PayInvoice({ invoice }: PayInvoiceProps) {
-	const [payments, setPayments] = useState<Payment[]>(invoice.payments)
-
-	useEffect(() => {
-		if (!invoice) return
-
-		const amountPaid = payments.reduce((acc, curr) => acc + curr.amount, 0)
-		const paid = amountPaid >= invoice.price
-		const timeLeft =
-			new Date(invoice.expires_at).getTime() - new Date().getTime()
-		const isExpired = !paid && timeLeft <= 0
-
-		if (paid || isExpired) return
-
-		Pusher.logToConsole = true
-		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
-			cluster: 'us2',
-		})
-		const channel = pusher.subscribe(invoice.id.toString())
-		channel.bind('invoice.paid', (data: PaymentNotification) => {
-			setPayments([...payments, ...data.payments])
-		})
-		channel.bind('invoice.partially_paid', (data: PaymentNotification) => {
-			setPayments([...payments, ...data.payments])
-		})
-
-		// auto unsubscribe when expires
-		setTimeout(() => {
-			channel.unbind_all()
-			channel.unsubscribe()
-		}, timeLeft)
-
-		return () => {
-			channel.unbind_all()
-			channel.unsubscribe()
-		}
-	}, [invoice, payments])
-
-	if (!invoice) return <div>Invoice not found</div>
+export default function PayInvoice({ invoice }: { invoice: InvoicePublic }) {
+	const { payments } = usePaymentsListener({
+		invoiceId: invoice.id.toString(),
+		price: invoice.price,
+		expires_at: invoice.expires_at,
+		initialPayments: invoice.payments,
+	})
 
 	return (
 		<div className="mx-auto flex h-screen w-full max-w-4xl justify-center md:items-center">
