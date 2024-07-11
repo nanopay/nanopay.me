@@ -3,7 +3,6 @@
 import { useToast } from '@/hooks/useToast'
 import { useForm } from 'react-hook-form'
 import Input from '@/components/Input'
-import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createUserProfile } from './actions'
 import { Button } from '@/components/Button'
@@ -16,6 +15,8 @@ import {
 } from '@/components/ui/form'
 import { UserCreate } from '@/services/client'
 import { userCreateSchema } from '@/services/client/user/user-schema'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 export interface CompleteProfileFormProps {
 	initialData: {
 		name?: string
@@ -25,8 +26,6 @@ export interface CompleteProfileFormProps {
 export default function CompleteProfileForm({
 	initialData,
 }: CompleteProfileFormProps) {
-	const [isPending, startTransition] = useTransition()
-
 	const { showError } = useToast()
 
 	const form = useForm<UserCreate>({
@@ -36,20 +35,12 @@ export default function CompleteProfileForm({
 		resolver: zodResolver(userCreateSchema),
 	})
 
-	const onSubmit = async ({ name, avatar_url }: UserCreate) => {
-		startTransition(async () => {
-			try {
-				await createUserProfile({ name, avatar_url })
-			} catch (error) {
-				showError(
-					'Error creating user profile',
-					error instanceof Error
-						? error.message
-						: 'Check the data or try again later.',
-				)
-			}
-		})
-	}
+	const { executeAsync: onSubmit } = useAction(createUserProfile, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Error creating user profile', message)
+		},
+	})
 
 	return (
 		<Form {...form}>
@@ -77,7 +68,7 @@ export default function CompleteProfileForm({
 				/>
 				<Button
 					type="submit"
-					loading={form.formState.isSubmitting || isPending}
+					loading={form.formState.isSubmitting}
 					disabled={!form.watch('name')}
 				>
 					Register
