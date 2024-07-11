@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { SUPPORT_EMAIL } from '@/constants'
 import { AdminClient } from '@/services/client'
 import Checkout from '@/components/Checkout'
-
+import { getLatestPrice } from '@/lib/coinmarketcap'
 interface InvoicePageProps {
 	params: {
 		invoiceId: string
@@ -16,6 +16,9 @@ export default async function InvoicePage({
 }: InvoicePageProps) {
 	const client = new AdminClient()
 	const invoice = await client.invoices.getPublicInvoice(invoiceId)
+	const { price: xnoToUsd } = await getLatestPrice().catch(() => ({
+		price: null,
+	}))
 
 	if (!invoice) {
 		return (
@@ -40,7 +43,7 @@ export default async function InvoicePage({
 
 	return (
 		<div className="mx-auto flex h-screen w-full max-w-4xl justify-center md:items-center">
-			<Checkout invoice={invoice} />
+			<Checkout invoice={invoice} xnoToUsd={xnoToUsd} />
 		</div>
 	)
 }

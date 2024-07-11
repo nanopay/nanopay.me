@@ -37,7 +37,13 @@ import {
 } from './ui/accordion'
 import { usePaymentsListener } from '@/hooks/usePaymentsListener'
 
-export default function Checkout({ invoice }: { invoice: InvoicePublic }) {
+export default function Checkout({
+	invoice,
+	xnoToUsd,
+}: {
+	invoice: InvoicePublic
+	xnoToUsd: number | null
+}) {
 	const [rendered, setRendered] = useState(false)
 
 	useEffect(() => {
@@ -72,7 +78,7 @@ export default function Checkout({ invoice }: { invoice: InvoicePublic }) {
 		redirectToMerchant(invoice.id)
 	}
 
-	const usd = 1
+	const priceUsd = xnoToUsd ? xnoToUsd * amountMissing : null
 
 	return (
 		<div className="flex w-full flex-col rounded-3xl shadow md:flex-row">
@@ -299,9 +305,9 @@ export default function Checkout({ invoice }: { invoice: InvoicePublic }) {
 								<h3 className="text-xl font-semibold text-slate-600">
 									Paid Ӿ{amountPaid}
 								</h3>
-								{usd && (
+								{priceUsd && (
 									<div className="text-sm leading-3 text-slate-500 sm:text-xs">
-										~ US${toFiatCurrency(usd)}
+										~ US${toFiatCurrency(priceUsd)}
 									</div>
 								)}
 								<div className="mt-4 flex flex-col gap-1">
@@ -434,9 +440,9 @@ export default function Checkout({ invoice }: { invoice: InvoicePublic }) {
 												</div>
 											</div>
 										)}
-										{usd && (
+										{priceUsd && (
 											<div className="text-sm leading-3 text-slate-500 sm:text-xs">
-												~ US${toFiatCurrency(usd)}
+												~ US${toFiatCurrency(priceUsd)}
 											</div>
 										)}
 									</div>
