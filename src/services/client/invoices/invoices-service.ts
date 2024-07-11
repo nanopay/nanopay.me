@@ -50,7 +50,7 @@ export class InvoicesService extends BaseService {
 	async get(invoiceId: string, serviceId?: string): Promise<Invoice | null> {
 		const query = this.supabase
 			.from('invoices')
-			.select('*, payments:payments(id, from, to, hash, amount, timestamp)')
+			.select('*, payments(id, from, to, hash, amount, timestamp)')
 			.eq('id', invoiceId)
 
 		if (serviceId) {
@@ -132,7 +132,7 @@ export class InvoicesService extends BaseService {
 		const query = this.supabase
 			.from('invoices')
 			.select(
-				'*, service:services(name), payments:payments(id, from, to, hash, amount, timestamp)',
+				'*, service:services(name), payments(id, from, to, hash, amount, timestamp)',
 			)
 
 		if (checkUUID(serviceIdOrName)) {
