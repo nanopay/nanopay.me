@@ -11,6 +11,10 @@ export const redirectToMerchant = async (invoiceId: string) => {
 		throw new Error('Invoice not found')
 	}
 
+	if (invoice.status !== 'paid') {
+		throw new Error('Invoice not paid')
+	}
+
 	if (!invoice.redirect_url) {
 		throw new Error('Redirect URL not found')
 	}
