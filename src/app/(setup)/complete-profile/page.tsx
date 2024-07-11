@@ -43,25 +43,17 @@ export default async function CompleteUserProfile() {
 	return (
 		<Card className="flex h-full w-full flex-1 flex-col overflow-hidden sm:h-auto sm:max-w-md">
 			<CardHeader className="mb-6 flex flex-col items-center border-b border-slate-200 py-4">
-				<div className="flex items-center gap-3">
-					<Logomark className="h-auto w-7" />
-					<CardTitle className="text-lg font-medium text-slate-600">
-						Complete your profile
-					</CardTitle>
-				</div>
-				<div>
-					<CardDescription>
-						Last step to complete your registration
-					</CardDescription>
-				</div>
+				<CardTitle className="text-lg font-medium text-slate-600">
+					Complete your profile
+				</CardTitle>
+				<CardDescription>
+					You are signed in as <b>{session.user.email}</b>
+				</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-1 flex-col items-center justify-center">
 				<CompleteProfileForm
 					initialData={{
-						email: session.user.email,
 						name: session.user.user_metadata.full_name,
-						avatar_url:
-							session.user.user_metadata.avatar_url || DEFAULT_AVATAR_URL,
 					}}
 				/>
 			</CardContent>
