@@ -4,8 +4,9 @@ import { createClient } from '@/utils/supabase/middleware'
 import { applySetCookie } from '@/utils/cookies'
 import { cookies } from 'next/headers'
 import { Client } from './services/client'
+import { pathToRegexp } from 'path-to-regexp'
 
-const authRoutes = [
+const AUTH_ROUTES = [
 	'/login',
 	'/signup',
 	'/magic-link',
@@ -15,15 +16,21 @@ const authRoutes = [
 	'/auth/callback',
 ]
 
-const publicRoutes = ['/invoices/:path*', ...authRoutes]
+const PUBLIC_ROUTES = ['/invoices/:id', ...AUTH_ROUTES]
+
+const routeMatch = (routes: string[], target: string): boolean => {
+	return routes.some(route => pathToRegexp(route).test(target))
+}
 
 export async function middleware(request: NextRequest) {
 	const nextUrl = request.nextUrl.clone()
+	const pathname = nextUrl.pathname
 
-	if (
-		publicRoutes.includes(nextUrl.pathname) &&
-		!authRoutes.includes(nextUrl.pathname)
-	) {
+	const isPublicRoute = routeMatch(PUBLIC_ROUTES, pathname)
+	const isAuthRoute = routeMatch(AUTH_ROUTES, pathname)
+	const isRootPath = pathname === '/'
+
+	if (isPublicRoute && !isAuthRoute) {
 		return NextResponse.next()
 	}
 
@@ -38,18 +45,18 @@ export async function middleware(request: NextRequest) {
 	const isAuthenticated = !!session
 
 	if (isAuthenticated) {
-		if (authRoutes.includes(nextUrl.pathname) || nextUrl.pathname === '/') {
+		if (isAuthRoute || isRootPath) {
 			// Redirect to the last service
 			const lastService = await getLastService()
 			nextUrl.pathname = lastService ? `/${lastService}` : '/services/new'
 		} else {
 			return response
 		}
-	} else if (nextUrl.pathname === '/') {
+	} else if (isRootPath) {
 		return response
 	} else {
-		if (!publicRoutes.includes(nextUrl.pathname)) {
-			nextUrl.searchParams.set(`next`, nextUrl.pathname)
+		if (!isPublicRoute) {
+			nextUrl.searchParams.set(`next`, pathname)
 			nextUrl.pathname = '/login'
 		} else {
 			return response
