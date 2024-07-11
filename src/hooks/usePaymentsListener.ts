@@ -26,6 +26,7 @@ export const usePaymentsListener = (props: PaymentListenerProps) => {
 	const isPaid = amountPaid >= props.price
 	const timeLeft = new Date(props.expires_at).getTime() - new Date().getTime()
 	const isExpired = timeLeft <= 0
+	const isPartiallyPaid = !isPaid && amountPaid > 0
 
 	useEffect(() => {
 		if (isPaid || isExpired) return
@@ -54,5 +55,12 @@ export const usePaymentsListener = (props: PaymentListenerProps) => {
 		}
 	}, [props, payments])
 
-	return { isPaid, amountPaid, payments, isExpired, amountMissing }
+	return {
+		isPaid,
+		isPartiallyPaid,
+		amountPaid,
+		payments,
+		isExpired,
+		amountMissing,
+	}
 }
