@@ -1,15 +1,9 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { fullFormats } from 'ajv-formats/dist/formats'
-import { JSONSchemaType } from 'ajv'
-
 import { Container } from '@/components/Container'
 import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
 import { useToast } from '@/hooks/useToast'
-import { INVOICE_MINIMUM_PRICE } from '@/constants'
-import { usePreferences } from '@/contexts/PreferencesProvider'
 import { Button } from '@/components/Button'
 import {
 	Form,
@@ -21,33 +15,9 @@ import {
 import { TextArea } from '@/components/TextArea'
 import { useTransition } from 'react'
 import { createInvoice } from './actions'
-import { InvoiceCreate } from '@/services/client'
-
-const schema: JSONSchemaType<InvoiceCreate> = {
-	type: 'object',
-	properties: {
-		title: {
-			type: 'string',
-			minLength: 2,
-			maxLength: 40,
-		},
-		description: { type: 'string', maxLength: 512, nullable: true },
-		price: { type: 'number', minimum: INVOICE_MINIMUM_PRICE },
-		recipient_address: {
-			type: 'string',
-			pattern: '^nano_[13456789abcdefghijkmnopqrstuwxyz]{60}$',
-		},
-		metadata: { type: 'object', nullable: true },
-		redirect_url: {
-			type: 'string',
-			format: 'uri',
-			maxLength: 512,
-			nullable: true,
-		},
-	},
-	required: ['title', 'price', 'recipient_address'],
-	additionalProperties: false,
-}
+import { InvoiceCreate, invoiceCreateSchema } from '@/services/client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { usePreferences } from '@/contexts/PreferencesProvider'
 
 export default function NewService({
 	params: { serviceName },
@@ -63,9 +33,7 @@ export default function NewService({
 	const { currentService } = usePreferences()
 
 	const form = useForm<InvoiceCreate>({
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(invoiceCreateSchema),
 	})
 
 	const onSubmit = async (fields: InvoiceCreate) => {
