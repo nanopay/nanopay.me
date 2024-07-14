@@ -63,7 +63,7 @@ export type Database = {
 					redirect_url: string | null
 					refunded_amount: number
 					service_id: string
-					status: string
+					status: Database['public']['Enums']['invoice_status']
 					title: string
 				}
 				Insert: {
@@ -81,7 +81,7 @@ export type Database = {
 					redirect_url?: string | null
 					refunded_amount?: number
 					service_id: string
-					status?: string
+					status?: Database['public']['Enums']['invoice_status']
 					title: string
 				}
 				Update: {
@@ -99,7 +99,7 @@ export type Database = {
 					redirect_url?: string | null
 					refunded_amount?: number
 					service_id?: string
-					status?: string
+					status?: Database['public']['Enums']['invoice_status']
 					title?: string
 				}
 				Relationships: [
@@ -407,9 +407,13 @@ export type Database = {
 				}
 				Returns: boolean
 			}
+			update_status_of_expired_invoices: {
+				Args: Record<PropertyKey, never>
+				Returns: undefined
+			}
 		}
 		Enums: {
-			[_ in never]: never
+			invoice_status: 'pending' | 'paid' | 'expired' | 'error'
 		}
 		CompositeTypes: {
 			[_ in never]: never
