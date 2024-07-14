@@ -3,9 +3,8 @@
 import Input from '@/components/Input'
 import { useUser } from '@/contexts/UserProvider'
 import { useToast } from '@/hooks/useToast'
-import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { UpdateUserProps, updateUser } from './actions'
+import { updateUser } from './actions'
 import { Button } from '@/components/Button'
 import {
 	Form,
@@ -14,10 +13,12 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-import { UserUpdate, userNameSchema } from '@/services/client'
+import { userNameSchema, UserUpdate } from '@/services/client'
 import { UserAvatarEditable } from '@/components/UserAvatarEditable'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 const schema = z.object({
 	name: userNameSchema,
@@ -28,29 +29,20 @@ export default function Profile() {
 
 	const { showError } = useToast()
 
-	const [isPending, startTransition] = useTransition()
-
-	const form = useForm<UpdateUserProps>({
+	const form = useForm<UserUpdate>({
 		defaultValues: {
 			name: user.name,
 		},
 		resolver: zodResolver(schema),
 	})
 
-	const onSubmit = async ({ name }: Partial<UserUpdate>) => {
-		startTransition(async () => {
-			try {
-				await updateUser({ name })
-			} catch (error) {
-				showError(
-					'Error updating user',
-					error instanceof Error
-						? error.message
-						: 'Check the data or try again later.',
-				)
-			}
-		})
-	}
+	const { executeAsync: onSubmit } = useAction(updateUser, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Error updating user', message)
+		},
+	})
+
 	return (
 		<Form {...form}>
 			<form
@@ -83,7 +75,7 @@ export default function Profile() {
 				</div>
 				<Button
 					type="submit"
-					loading={form.formState.isSubmitting || isPending}
+					loading={form.formState.isSubmitting}
 					disabled={!form.formState.isDirty}
 				>
 					Update

@@ -3,20 +3,17 @@
 import { cookies } from 'next/headers'
 import { getUserId } from '@/utils/supabase/server'
 import { revalidateTag } from 'next/cache'
-import { Client } from '@/services/client'
+import { Client, userUpdateSchema } from '@/services/client'
+import { safeAction } from '@/lib/safe-action'
 
-export interface UpdateUserProps {
-	name: string
-}
+export const updateUser = safeAction
+	.schema(userUpdateSchema)
+	.action(async ({ parsedInput }) => {
+		const userId = await getUserId(cookies())
 
-export const updateUser = async ({ name }: Partial<UpdateUserProps>) => {
-	const userId = await getUserId(cookies())
+		const client = new Client(cookies())
 
-	const client = new Client(cookies())
+		await client.user.updateProfile(parsedInput)
 
-	await client.user.updateProfile({
-		name,
+		revalidateTag(`user-${userId}`)
 	})
-
-	revalidateTag(`user-${userId}`)
-}
