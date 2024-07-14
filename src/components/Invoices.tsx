@@ -12,13 +12,8 @@ interface InvoicesProps {
 const statusStyles: Record<InvoiceStatus, string> = {
 	paid: 'bg-green-100 text-green-800',
 	pending: 'bg-yellow-100 text-yellow-800',
-	processing: 'bg-yellow-100 text-yellow-800',
-	paid_partial: 'bg-yellow-100 text-yellow-800',
-	expired: 'bg-slate-100 text-slate-800',
-	canceled: 'bg-slate-100 text-slate-800',
-	refunded: 'bg-slate-100 text-slate-800',
-	refunded_partial: 'bg-slate-100 text-slate-800',
-	error: 'bg-red-100 text-red-800',
+	expired: 'bg-red-100 text-red-800',
+	error: 'bg-red-600 text-white',
 }
 
 export default function Invoices({ invoices, serviceName }: InvoicesProps) {

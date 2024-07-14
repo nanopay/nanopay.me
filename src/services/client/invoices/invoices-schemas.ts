@@ -17,14 +17,9 @@ export const invoiceCreateSchema = z
 
 export const invoiceStatusSchema = z.enum([
 	'pending',
-	'processing',
 	'paid',
 	'expired',
-	'refunded',
-	'canceled',
 	'error',
-	'paid_partial',
-	'refunded_partial',
 ])
 
 export const paymentSchema = z.object({
@@ -47,17 +42,7 @@ export const invoiceSchema = z.object({
 	metadata: z.object({}).nullable(),
 	redirect_url: z.string().url().max(512).nullable(),
 	currency: z.string(),
-	status: z.enum([
-		'pending',
-		'processing',
-		'paid',
-		'expired',
-		'refunded',
-		'canceled',
-		'error',
-		'paid_partial',
-		'refunded_partial',
-	]),
+	status: invoiceStatusSchema,
 	expires_at: z.string(),
 	created_at: z.string(),
 	pay_address: z.string(),
