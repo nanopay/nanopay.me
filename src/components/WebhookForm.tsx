@@ -14,15 +14,14 @@ import { sanitizeSlug } from '@/utils/url'
 import Input from '@/components/Input'
 import { AlertCircle, InfoIcon } from 'lucide-react'
 import { UseFormProps, useForm } from 'react-hook-form'
-import { fullFormats } from 'ajv-formats/dist/formats'
-import { ajvResolver } from '@hookform/resolvers/ajv'
-import { JSONSchemaType } from 'ajv'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { TextArea } from './TextArea'
 import {
 	WebhookCreate,
 	WebhookEventType,
 } from '@/services/client/webhooks/webhooks-types'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { webhookCreateSchema } from '@/services/client'
 
 const eventTypes: WebhookEventType[] = [
 	'invoice.paid',
@@ -30,40 +29,6 @@ const eventTypes: WebhookEventType[] = [
 	'invoice.error',
 	'invoice.expired',
 ]
-
-const schema: JSONSchemaType<WebhookCreate> = {
-	type: 'object',
-	properties: {
-		name: {
-			type: 'string',
-			minLength: 2,
-			maxLength: 24,
-			pattern: '^[a-zA-Z0-9-.]+$',
-		},
-		description: { type: 'string', maxLength: 512, nullable: true },
-		url: {
-			type: 'string',
-			format: 'uri',
-			maxLength: 512,
-		},
-		event_types: {
-			type: 'array',
-			items: {
-				type: 'string',
-				enum: eventTypes,
-			},
-			minItems: 1,
-		},
-		secret: {
-			type: 'string',
-			minLength: 8,
-			maxLength: 256,
-			nullable: true,
-		},
-	},
-	required: ['name', 'url', 'event_types'],
-	additionalProperties: false,
-}
 
 export interface WebhookFormProps extends UseFormProps<WebhookCreate> {
 	onSubmit: (fields: WebhookCreate) => void
@@ -76,9 +41,7 @@ export function WebhookForm({
 	...props
 }: WebhookFormProps) {
 	const { ...form } = useForm<WebhookCreate>({
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(webhookCreateSchema),
 		...props,
 	})
 
