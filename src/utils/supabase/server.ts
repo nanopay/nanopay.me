@@ -34,6 +34,19 @@ export const getUserId = async (cookieStore: ReturnType<typeof cookies>) => {
 	return session.user.id
 }
 
+export const getUserEmail = async (cookieStore: ReturnType<typeof cookies>) => {
+	const supabase = createClient(cookieStore)
+
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
+
+	if (!session?.user?.email) {
+		throw new Error('No user email')
+	}
+	return session.user.email
+}
+
 export const isAuthenticated = async (
 	cookieStore: ReturnType<typeof cookies>,
 ) => {
