@@ -1,20 +1,24 @@
 'use server'
 
-import { Client } from '@/services/client'
-import { WebhookUpdate } from '@/services/client/webhooks/webhooks-types'
+import { safeAction } from '@/lib/safe-action'
+import { Client, webhookUpdateSchema } from '@/services/client'
 import { cookies } from 'next/headers'
+import { z } from 'zod'
 
-export const updateWebhook = async (
-	webhookId: string,
-	{ name, description, url, event_types, secret }: WebhookUpdate,
-) => {
-	const client = new Client(cookies())
+export const updateWebhook = safeAction
+	.schema(
+		webhookUpdateSchema.extend({
+			webhookId: z.string(),
+		}),
+	)
+	.action(async ({ parsedInput }) => {
+		const client = new Client(cookies())
 
-	await client.webhooks.update(webhookId, {
-		name,
-		description,
-		url,
-		event_types,
-		secret,
+		await client.webhooks.update(parsedInput.webhookId, {
+			name: parsedInput.name,
+			description: parsedInput.description,
+			url: parsedInput.url,
+			event_types: parsedInput.event_types,
+			secret: parsedInput.secret,
+		})
 	})
-}

@@ -14,21 +14,24 @@ import {
 	Webhook,
 	WebhookUpdate,
 } from '@/services/client/webhooks/webhooks-types'
+import { getSafeActionError } from '@/lib/safe-action'
+import { useAction } from 'next-safe-action/hooks'
 
 export function WebhookSettingsCard({ webhook }: { webhook: Webhook }) {
 	const { showError } = useToast()
 
-	const onSubmit = async (values: WebhookUpdate) => {
-		try {
-			await updateWebhook(webhook.id, values)
-		} catch (error) {
-			showError(
-				'Could not update webhook',
-				error instanceof Error
-					? error.message
-					: 'Check your connection and try again',
-			)
-		}
+	const { executeAsync: executeUpdateWebhook } = useAction(updateWebhook, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Could not update webhook', message)
+		},
+	})
+
+	const onSubmit = (values: WebhookUpdate) => {
+		executeUpdateWebhook({
+			webhookId: webhook.id,
+			...values,
+		})
 	}
 
 	return (
