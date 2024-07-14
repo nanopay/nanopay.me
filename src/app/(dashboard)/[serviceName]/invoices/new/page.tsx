@@ -13,21 +13,20 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
-import { useTransition } from 'react'
 import { createInvoice } from './actions'
 import { InvoiceCreate, invoiceCreateSchema } from '@/services/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { usePreferences } from '@/contexts/PreferencesProvider'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 export default function NewService({
-	params: { serviceName },
+	params,
 }: {
 	params: {
 		serviceName: string
 	}
 }) {
-	const [isPending, startTransition] = useTransition()
-
 	const { showError } = useToast()
 
 	const { currentService } = usePreferences()
@@ -36,23 +35,18 @@ export default function NewService({
 		resolver: zodResolver(invoiceCreateSchema),
 	})
 
-	const onSubmit = async (fields: InvoiceCreate) => {
-		startTransition(async () => {
-			try {
-				await createInvoice(serviceName, fields)
-			} catch (error) {
-				showError(
-					"Couldn't create invoice",
-					error instanceof Error
-						? error.message
-						: 'Check your connection and try again',
-				)
-			}
-		})
-	}
+	const { executeAsync } = useAction(createInvoice, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError("Couldn't create invoice", message)
+		},
+	})
 
-	if (!serviceName) {
-		return null
+	const onSubmit = async (fields: InvoiceCreate) => {
+		await executeAsync({
+			...fields,
+			serviceNameOrId: params.serviceName,
+		})
 	}
 
 	if (!currentService) {
@@ -173,10 +167,7 @@ export default function NewService({
 					/>
 				</div>
 
-				<Button
-					type="submit"
-					loading={form.formState.isSubmitting || isPending}
-				>
+				<Button type="submit" loading={form.formState.isSubmitting}>
 					Create Invoice
 				</Button>
 			</form>
