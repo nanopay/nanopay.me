@@ -5,12 +5,29 @@ import { Button } from '@/components/Button'
 import { deleteService } from './actions'
 import { Service } from '@/services/client'
 import { ServiceAvatarEditable } from '@/components/ServiceAvatarEditable'
+import { useAction } from 'next-safe-action/hooks'
+import { useToast } from '@/hooks/useToast'
+import { getSafeActionError } from '@/lib/safe-action'
 
 export interface SettingsProps {
 	service: Service
 }
 
 export function Settings({ service }: SettingsProps) {
+	const { showError } = useToast()
+
+	const { execute: executeDeleteService, isExecuting: isDeletingService } =
+		useAction(deleteService, {
+			onError: ({ error }) => {
+				const { message } = getSafeActionError(error)
+				showError(message)
+			},
+		})
+
+	const handleDeleteService = () => {
+		executeDeleteService(service.name)
+	}
+
 	return (
 		<header className="rounded-lg bg-white shadow">
 			<div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
@@ -70,7 +87,8 @@ export function Settings({ service }: SettingsProps) {
 						<Button
 							variant="destructive"
 							color="nano"
-							onClick={() => deleteService(service.name)}
+							onClick={handleDeleteService}
+							loading={isDeletingService}
 						>
 							<TrashIcon className="-ml-1 mr-2 h-4 w-4" aria-hidden="true" />
 							Delete
