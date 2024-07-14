@@ -2,13 +2,9 @@
 
 import Link from 'next/link'
 import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
-import { JSONSchemaType } from 'ajv'
-import { fullFormats } from 'ajv-formats/dist/formats'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
 import { resetPassword } from './actions'
-import { useTransition } from 'react'
 import { Button } from '@/components/Button'
 import {
 	Form,
@@ -17,47 +13,32 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 interface ResetEmailPassword {
 	email: string
 }
 
-const schema: JSONSchemaType<ResetEmailPassword> = {
-	type: 'object',
-	properties: {
-		email: { type: 'string', format: 'email', maxLength: 128 },
-	},
-	required: ['email'],
-}
+const schema = z.object({
+	email: z.string().email(),
+})
 
 export default function ForgotPasswordPage() {
-	const [isPending, startTransition] = useTransition()
-
 	const { showError } = useToast()
 
 	const form = useForm<ResetEmailPassword>({
-		defaultValues: {
-			email: '',
-		},
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(schema),
 	})
 
-	const onSubmit = ({ email }: ResetEmailPassword) => {
-		startTransition(async () => {
-			try {
-				await resetPassword(email)
-			} catch (error) {
-				showError(
-					'Error reseting passsword',
-					error instanceof Error
-						? error.message
-						: 'Check the email or try again later.',
-				)
-			}
-		})
-	}
+	const { executeAsync: onSubmit } = useAction(resetPassword, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Error reseting passsword', message)
+		},
+	})
 
 	return (
 		<div className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4">
@@ -86,7 +67,7 @@ export default function ForgotPasswordPage() {
 					<Button
 						type="submit"
 						className="w-full"
-						loading={form.formState.isSubmitting || isPending}
+						loading={form.formState.isSubmitting}
 						color="nano"
 						disabled={!form.formState.isDirty}
 					>
