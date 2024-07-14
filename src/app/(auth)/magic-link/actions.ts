@@ -1,11 +1,19 @@
 'use server'
 
+import { safeAction } from '@/lib/safe-action'
 import { Client } from '@/services/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 
-export const sendMagicLink = async (email: string) => {
-	const client = new Client(cookies())
-	await client.auth.sendMagicLink(email)
-	redirect(`/verify-email?email=${email}`)
-}
+const schema = z.object({
+	email: z.string().email(),
+})
+
+export const sendMagicLink = safeAction
+	.schema(schema)
+	.action(async ({ parsedInput }) => {
+		const client = new Client(cookies())
+		await client.auth.sendMagicLink(parsedInput.email)
+		redirect(`/verify-email?email=${parsedInput.email}`)
+	})

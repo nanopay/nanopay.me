@@ -2,12 +2,8 @@
 
 import Link from 'next/link'
 import Input from '@/components/Input'
-import { ajvResolver } from '@hookform/resolvers/ajv'
-import { JSONSchemaType } from 'ajv'
-import { fullFormats } from 'ajv-formats/dist/formats'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
-import { useTransition } from 'react'
 import { sendMagicLink } from './actions'
 import { Button } from '@/components/Button'
 import {
@@ -17,47 +13,31 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
-interface MagicEmail {
-	email: string
-}
-
-const schema: JSONSchemaType<MagicEmail> = {
-	type: 'object',
-	properties: {
-		email: { type: 'string', format: 'email', maxLength: 128 },
-	},
-	required: ['email'],
-}
+const schema = z.object({
+	email: z.string().email(),
+})
 
 export default function MagicLinkPage() {
-	const [isPending, startTransition] = useTransition()
-
 	const { showError } = useToast()
 
-	const form = useForm<MagicEmail>({
+	const form = useForm<z.infer<typeof schema>>({
 		defaultValues: {
 			email: '',
 		},
-		resolver: ajvResolver(schema, {
-			formats: fullFormats,
-		}),
+		resolver: zodResolver(schema),
 	})
 
-	const onSubmit = ({ email }: MagicEmail) => {
-		startTransition(async () => {
-			try {
-				await sendMagicLink(email)
-			} catch (error) {
-				showError(
-					'Error sending magic link',
-					error instanceof Error
-						? error.message
-						: 'Check the email or try again later.',
-				)
-			}
-		})
-	}
+	const { executeAsync: onSubmit } = useAction(sendMagicLink, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Error sending magic link', message)
+		},
+	})
 
 	return (
 		<div className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4">
@@ -86,7 +66,7 @@ export default function MagicLinkPage() {
 					<Button
 						type="submit"
 						className="w-full"
-						loading={form.formState.isSubmitting || isPending}
+						loading={form.formState.isSubmitting}
 						disabled={!form.formState.isDirty}
 					>
 						Send Magic Link
