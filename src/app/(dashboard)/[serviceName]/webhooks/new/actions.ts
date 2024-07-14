@@ -1,22 +1,26 @@
 'use server'
 
-import { Client } from '@/services/client'
+import { Client, webhookCreateSchema } from '@/services/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { WebhookCreate } from '@/services/client/webhooks/webhooks-types'
+import { safeAction } from '@/lib/safe-action'
+import { z } from 'zod'
 
-export const createWebhook = async (
-	serviceNameOrId: string,
-	{ name, description, url, event_types, secret }: WebhookCreate,
-) => {
-	const client = new Client(cookies())
-	const { id } = await client.webhooks.create(serviceNameOrId, {
-		name,
-		description,
-		url,
-		event_types,
-		secret,
+export const createWebhook = safeAction
+	.schema(
+		webhookCreateSchema.extend({
+			serviceNameOrId: z.string(),
+		}),
+	)
+	.action(async ({ parsedInput }) => {
+		const client = new Client(cookies())
+		const { id } = await client.webhooks.create(parsedInput.serviceNameOrId, {
+			name: parsedInput.name,
+			description: parsedInput.description,
+			url: parsedInput.url,
+			event_types: parsedInput.event_types,
+			secret: parsedInput.secret,
+		})
+
+		redirect(`/${parsedInput.serviceNameOrId}/webhooks/${id}/settings`)
 	})
-
-	redirect(`/${serviceNameOrId}/webhooks/${id}/settings`)
-}

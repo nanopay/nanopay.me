@@ -12,6 +12,8 @@ import {
 import { WebhookForm } from '@/components/WebhookForm'
 import { createWebhook } from './actions'
 import { WebhookCreate } from '@/services/client'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 export default function NewApiKey({
 	params: { serviceName },
@@ -22,17 +24,18 @@ export default function NewApiKey({
 }) {
 	const { showError } = useToast()
 
-	const onSubmit = async (values: WebhookCreate) => {
-		try {
-			await createWebhook(serviceName, values)
-		} catch (error) {
-			showError(
-				'Could not create webhook',
-				error instanceof Error
-					? error.message
-					: 'Check your connection and try again',
-			)
-		}
+	const { executeAsync: executeCreateWebhook } = useAction(createWebhook, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError('Could not create webhook', message)
+		},
+	})
+
+	const onSubmit = (values: WebhookCreate) => {
+		executeCreateWebhook({
+			serviceNameOrId: serviceName,
+			...values,
+		})
 	}
 
 	return (
