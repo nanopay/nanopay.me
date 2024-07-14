@@ -1,23 +1,27 @@
 'use server'
 
+import { safeAction } from '@/lib/safe-action'
 import { AdminClient } from '@/services/client'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 
-export const redirectToMerchant = async (invoiceId: string) => {
-	const client = new AdminClient()
-	const invoice = await client.invoices.get(invoiceId)
+export const redirectToMerchant = safeAction
+	.schema(z.string())
+	.action(async ({ parsedInput: invoiceId }) => {
+		const client = new AdminClient()
+		const invoice = await client.invoices.get(invoiceId)
 
-	if (!invoice) {
-		throw new Error('Invoice not found')
-	}
+		if (!invoice) {
+			throw new Error('Invoice not found')
+		}
 
-	if (invoice.status !== 'paid') {
-		throw new Error('Invoice not paid')
-	}
+		if (invoice.status !== 'paid') {
+			throw new Error('Invoice not paid')
+		}
 
-	if (!invoice.redirect_url) {
-		throw new Error('Redirect URL not found')
-	}
+		if (!invoice.redirect_url) {
+			throw new Error('Redirect URL not found')
+		}
 
-	redirect(invoice.redirect_url)
-}
+		redirect(invoice.redirect_url)
+	})

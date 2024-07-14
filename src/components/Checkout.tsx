@@ -36,6 +36,8 @@ import {
 	AccordionTrigger,
 } from './ui/accordion'
 import { usePaymentsListener } from '@/hooks/usePaymentsListener'
+import { useAction } from 'next-safe-action/hooks'
+import { getSafeActionError } from '@/lib/safe-action'
 
 export default function Checkout({
 	invoice,
@@ -74,8 +76,15 @@ export default function Checkout({
 		},
 	)}`
 
+	const { execute: executeRedirectToMechant } = useAction(redirectToMerchant, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			alert(`Error redirecting to merchant: ${message}`)
+		},
+	})
+
 	const handleRedirectToMerchant = () => {
-		redirectToMerchant(invoice.id)
+		executeRedirectToMechant(invoice.id)
 	}
 
 	const priceUsd = xnoToUsd ? xnoToUsd * amountMissing : null
