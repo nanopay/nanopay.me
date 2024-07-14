@@ -21,6 +21,10 @@ export async function GET(req: NextRequest) {
 
 		const service = await client.services.get(service_id)
 
+		if (!service) {
+			return Response.json({ message: 'Service not found' }, { status: 404 })
+		}
+
 		return Response.json(service)
 	} catch (error) {
 		const message = error instanceof Error ? error.message : 'Unknown error'

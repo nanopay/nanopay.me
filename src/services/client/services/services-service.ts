@@ -47,7 +47,7 @@ export class ServicesService extends BaseService {
 		return { id: service.id }
 	}
 
-	async get(serviceNameOrId: string): Promise<Service> {
+	async get(serviceNameOrId: string): Promise<Service | null> {
 		const query = this.supabase.from('services').select('*')
 		if (checkUUID(serviceNameOrId)) {
 			query.eq('id', serviceNameOrId)
@@ -57,6 +57,9 @@ export class ServicesService extends BaseService {
 		}
 		const { data, error } = await query.single()
 		if (error) {
+			if (error.code === 'PGRST116') {
+				return null
+			}
 			throw new Error(error.message)
 		}
 		return data

@@ -53,9 +53,20 @@ export async function POST(
 
 		const userId = await client.user.getUserId()
 
-		const { id, user_id: ownerId } = await client.services.get(serviceName)
+		const service = await client.services.get(serviceName)
 
-		if (userId !== ownerId) {
+		if (!service) {
+			return Response.json(
+				{
+					message: 'Service not found',
+				},
+				{
+					status: 404,
+				},
+			)
+		}
+
+		if (userId !== service.user_id) {
 			return Response.json(
 				{
 					message: 'Unauthorized',
@@ -66,7 +77,7 @@ export async function POST(
 			)
 		}
 
-		const key = `services/${id}/avatar.png`
+		const key = `services/${service.id}/avatar.png`
 
 		await putObject(key, file, file.type)
 
@@ -74,9 +85,9 @@ export async function POST(
 		url.pathname = key
 		url.searchParams.append('v', Date.now().toString())
 
-		await client.services.update(id, { avatar_url: url.toString() })
+		await client.services.update(service.id, { avatar_url: url.toString() })
 
-		revalidateTag(`service-${id}`)
+		revalidateTag(`service-${service.id}`)
 		revalidateTag(`service-${serviceName}`)
 		revalidateTag(`user-${userId}-services`)
 
