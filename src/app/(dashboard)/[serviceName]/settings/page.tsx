@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers'
 import { Settings } from './settings'
 import { Client } from '@/services/client'
+import { NotFoundCard } from '@/components/NotFoundCard'
+import { getUserEmail } from '@/utils/supabase/server'
 
 interface Params {
 	params: { serviceName: string }
@@ -14,7 +16,7 @@ const fetchData = async (serviceName: string) => {
 export async function generateMetadata({ params: { serviceName } }: Params) {
 	const service = await fetchData(serviceName)
 	return {
-		title: `Settings - ${service.name}`,
+		title: service ? `Settings - ${service.name}` : 'Not Found',
 	}
 }
 
@@ -22,6 +24,12 @@ export default async function ServiceSettingsPage({
 	params: { serviceName },
 }: Params) {
 	const service = await fetchData(serviceName)
+
+	const email = await getUserEmail(cookies())
+
+	if (!service) {
+		return <NotFoundCard path={`/${serviceName}`} forEmail={email} />
+	}
 
 	return (
 		<div className="w-full">

@@ -5,6 +5,8 @@ import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
 import { KeyRoundIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
 import { Client } from '@/services/client'
+import { getUserEmail } from '@/utils/supabase/server'
+import { NotFoundCard } from '@/components/NotFoundCard'
 
 interface Props {
 	params: { serviceName: string }
@@ -23,7 +25,7 @@ const fetchData = async (serviceName: string) => {
 export async function generateMetadata({ params: { serviceName } }: Props) {
 	const { service } = await fetchData(serviceName)
 	return {
-		title: service.name,
+		title: service ? service.name : 'Not Found',
 	}
 }
 
@@ -34,6 +36,12 @@ export default async function ServiceDashboardPage({
 	const isNew = searchParams.new ? true : false
 
 	const { service, invoices } = await fetchData(serviceName)
+
+	const email = await getUserEmail(cookies())
+
+	if (!service) {
+		return <NotFoundCard path={`/${serviceName}`} forEmail={email} />
+	}
 
 	const cards: DashCardProps[] = [
 		{
