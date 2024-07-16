@@ -25,7 +25,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DialogProps } from '@radix-ui/react-dialog'
 import Input from '@/components/Input'
 import { ServiceAvatar } from '@/components/ServiceAvatar'
@@ -152,9 +152,28 @@ export function DeleteServiceAlertModal({
 		execute(service.name)
 	}
 
+	const reset = () => {
+		setWantToDelete(false)
+		setUnderstandEffects(false)
+		setTypeConfirm('')
+	}
+
+	const handleResetOnClose = () => {
+		if (!props.modal) {
+			reset()
+		}
+	}
+
+	useEffect(() => {
+		reset()
+	}, [service])
+
 	return (
 		<Dialog modal {...props}>
-			<DialogContent className="divide-x-slate-200 gap-0 divide-y p-0">
+			<DialogContent
+				className="divide-x-slate-200 gap-0 divide-y p-0"
+				onAnimationEndCapture={handleResetOnClose}
+			>
 				<DialogHeader className="flex flex-row items-center justify-between px-4 py-2">
 					<DialogTitle>Delete your service?</DialogTitle>
 					<DialogClose>
@@ -214,6 +233,7 @@ export function DeleteServiceAlertModal({
 						</p>
 						<Input
 							invalid={typeConfirm !== service.name}
+							value={typeConfirm}
 							onChange={e => {
 								setTypeConfirm(e.target.value)
 							}}
