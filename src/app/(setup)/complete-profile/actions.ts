@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { DEFAULT_AVATAR_URL } from '@/constants'
-import { Client, userCreateSchema } from '@/services/client'
+import { Client, userCreateSchema } from '@/core/client'
 import { getUserId } from '@/utils/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { safeAction } from '@/lib/safe-action'

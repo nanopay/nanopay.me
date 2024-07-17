@@ -5,7 +5,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import { Service } from '@/services/client'
+import { Service } from '@/core/client'
 import { ServiceAvatar } from './ServiceAvatar'
 import { CheckIcon, PlusCircleIcon } from 'lucide-react'
 import { Button } from './Button'

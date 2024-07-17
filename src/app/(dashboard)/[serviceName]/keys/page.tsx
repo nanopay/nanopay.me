@@ -2,7 +2,7 @@ import { Button } from '@/components/Button'
 import { AlertTriangle, ChevronRightIcon, PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 import DeleteApiKeyButton from './delete'
 import { Metadata } from 'next'
 

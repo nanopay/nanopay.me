@@ -1,4 +1,4 @@
-import { Client, Service } from '@/services/client'
+import { Client, Service } from '@/core/client'
 import { getUserId } from '@/utils/supabase/server'
 import { unstable_cache } from 'next/cache'
 import { cookies } from 'next/headers'

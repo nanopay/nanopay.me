@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card'
 import { WebhookForm } from '@/components/WebhookForm'
 import { createWebhook } from './actions'
-import { WebhookCreate } from '@/services/client'
+import { WebhookCreate } from '@/core/client'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 

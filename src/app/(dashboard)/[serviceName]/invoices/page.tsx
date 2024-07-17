@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button'
 import Invoices from '@/components/Invoices'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 import { PlusIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'

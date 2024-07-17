@@ -2,7 +2,7 @@ import { formatDateTime } from '@/utils/others'
 import clsx from 'clsx'
 import ActivityDot from './ActivityDot'
 import { ChevronRightIcon } from 'lucide-react'
-import { WebhookDelivery } from '@/services/client/webhooks/webhooks-types'
+import { WebhookDelivery } from '@/core/client/webhooks/webhooks-types'
 
 const statusStyles = {
 	success: 'bg-green-100 text-green-800',

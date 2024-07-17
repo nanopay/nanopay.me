@@ -3,10 +3,10 @@ import { NextRequest } from 'next/server'
 import {
 	invoiceCreateSchema,
 	invoicePaginationSchema,
-} from '@/services/client/invoices/invoices-schemas'
+} from '@/core/client/invoices/invoices-schemas'
 
 import { ServerRuntime } from 'next/types'
-import { AdminClient, InvoicePagination } from '@/services/client'
+import { AdminClient, InvoicePagination } from '@/core/client'
 
 export const runtime: ServerRuntime = 'edge'
 

@@ -15,7 +15,7 @@ import {
 import Countdown from 'react-countdown'
 import { convert, Unit } from 'nanocurrency'
 import { useEffect, useState } from 'react'
-import { InvoicePublic } from '@/services/client'
+import { InvoicePublic } from '@/core/client'
 import Transactions from './Transactions'
 import { ServiceAvatar } from './ServiceAvatar'
 import {

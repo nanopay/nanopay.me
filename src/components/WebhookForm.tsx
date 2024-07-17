@@ -19,9 +19,9 @@ import { TextArea } from './TextArea'
 import {
 	WebhookCreate,
 	WebhookEventType,
-} from '@/services/client/webhooks/webhooks-types'
+} from '@/core/client/webhooks/webhooks-types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { webhookCreateSchema } from '@/services/client'
+import { webhookCreateSchema } from '@/core/client'
 
 const eventTypes: WebhookEventType[] = [
 	'invoice.paid',

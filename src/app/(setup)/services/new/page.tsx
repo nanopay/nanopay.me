@@ -16,8 +16,8 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-import { ServiceCreate } from '@/services/client'
-import { serviceCreateSchema } from '@/services/client/services/services-schema'
+import { ServiceCreate } from '@/core/client'
+import { serviceCreateSchema } from '@/core/client/services/services-schema'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'

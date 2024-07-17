@@ -1,6 +1,6 @@
 'use client'
 
-import { Service } from '@/services/client'
+import { Service } from '@/core/client'
 import { useParams } from 'next/navigation'
 import { createContext, useContext, useState } from 'react'
 

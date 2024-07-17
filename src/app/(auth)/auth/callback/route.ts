@@ -1,4 +1,4 @@
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 

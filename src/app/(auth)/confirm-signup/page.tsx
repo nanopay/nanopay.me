@@ -28,7 +28,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { VerifyOtp, verifyOtpSchema } from '@/services/client'
+import { VerifyOtp, verifyOtpSchema } from '@/core/client'
 import { verifySignUp } from './actions'
 
 interface Props {

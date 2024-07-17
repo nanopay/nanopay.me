@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { getUserId } from '@/utils/supabase/server'
 import { revalidateTag } from 'next/cache'
-import { Client, userUpdateSchema } from '@/services/client'
+import { Client, userUpdateSchema } from '@/core/client'
 import { safeAction } from '@/lib/safe-action'
 
 export const updateUser = safeAction

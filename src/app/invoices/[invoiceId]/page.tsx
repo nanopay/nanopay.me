@@ -2,7 +2,7 @@ import NotFoundImage from '@/images/not-found.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { SUPPORT_EMAIL } from '@/constants'
-import { AdminClient } from '@/services/client'
+import { AdminClient } from '@/core/client'
 import Checkout from '@/components/Checkout'
 import { getLatestPrice } from '@/lib/coinmarketcap'
 interface InvoicePageProps {

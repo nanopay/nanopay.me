@@ -1,7 +1,7 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { Client, webhookUpdateSchema } from '@/services/client'
+import { Client, webhookUpdateSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
 

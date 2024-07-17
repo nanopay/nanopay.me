@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ArrowUpCircleIcon, ChevronRightIcon, PlusIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { cookies } from 'next/headers'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 
 const fetchData = async (serviceName: string) => {
 	const client = new Client(cookies())

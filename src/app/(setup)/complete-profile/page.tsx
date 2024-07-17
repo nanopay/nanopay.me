@@ -11,7 +11,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { Logomark } from '@/components/Logo'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 
 async function checkUserProfileExists(): Promise<boolean> {
 	const client = new Client(cookies())

@@ -16,9 +16,9 @@ import {
 } from '@/components/ui/form'
 import { useToast } from '@/hooks/useToast'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signWithEmailAndPasswordSchema } from '@/services/client/auth/auth-schemas'
+import { signWithEmailAndPasswordSchema } from '@/core/client/auth/auth-schemas'
 import { useAction } from 'next-safe-action/hooks'
-import { SignEmailAndPassword } from '@/services/client'
+import { SignEmailAndPassword } from '@/core/client'
 import { getSafeActionError } from '@/lib/safe-action'
 
 interface Props {

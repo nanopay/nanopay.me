@@ -1,7 +1,7 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { Client, verifyOtpSchema } from '@/services/client'
+import { Client, verifyOtpSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'

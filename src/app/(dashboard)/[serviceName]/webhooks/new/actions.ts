@@ -1,6 +1,6 @@
 'use server'
 
-import { Client, webhookCreateSchema } from '@/services/client'
+import { Client, webhookCreateSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { safeAction } from '@/lib/safe-action'

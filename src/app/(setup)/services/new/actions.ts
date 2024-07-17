@@ -1,6 +1,6 @@
 'use server'
 
-import { serviceCreateSchema } from '@/services/client'
+import { serviceCreateSchema } from '@/core/client'
 import { createClient, getUserId } from '@/utils/supabase/server'
 import { randomUUID } from 'crypto'
 import { revalidateTag } from 'next/cache'

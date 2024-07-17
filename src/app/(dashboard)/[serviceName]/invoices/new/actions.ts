@@ -1,7 +1,7 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { Client, invoiceCreateSchema } from '@/services/client'
+import { Client, invoiceCreateSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'

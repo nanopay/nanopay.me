@@ -8,7 +8,7 @@ import {
 	API_KEY_BYTES_LENGTH,
 	ApiKeyCreate,
 	apiKeyCreateSchema,
-} from '@/services/client'
+} from '@/core/client'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
 import { sanitizeSlug } from '@/utils/url'

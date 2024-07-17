@@ -10,7 +10,7 @@ import {
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { Invoice } from '@/services/client'
+import { Invoice } from '@/core/client'
 import { SITE_URL } from '@/constants'
 
 export interface InvoiceCardProps extends React.HTMLAttributes<HTMLDivElement> {

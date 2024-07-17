@@ -1,7 +1,7 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 import { getUserId } from '@/utils/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'

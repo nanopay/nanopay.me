@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { deleteService } from './actions'
-import { Service } from '@/services/client'
+import { Service } from '@/core/client'
 import { ServiceAvatarEditable } from '@/components/ServiceAvatarEditable'
 import { useAction } from 'next-safe-action/hooks'
 import { useToast } from '@/hooks/useToast'

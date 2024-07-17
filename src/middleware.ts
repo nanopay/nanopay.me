@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/middleware'
 import { applySetCookie } from '@/utils/cookies'
 import { cookies } from 'next/headers'
-import { Client } from './services/client'
+import { Client } from './core/client'
 import { pathToRegexp } from 'path-to-regexp'
 
 const AUTH_ROUTES = [

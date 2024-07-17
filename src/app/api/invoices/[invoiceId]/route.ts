@@ -1,5 +1,5 @@
 import { SITE_URL } from '@/constants'
-import { AdminClient } from '@/services/client'
+import { AdminClient } from '@/core/client'
 import { ServerRuntime } from 'next'
 import { NextRequest } from 'next/server'
 

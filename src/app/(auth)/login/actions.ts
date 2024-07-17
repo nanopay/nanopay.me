@@ -1,6 +1,6 @@
 'use server'
 
-import { Client, signWithEmailAndPasswordSchema } from '@/services/client'
+import { Client, signWithEmailAndPasswordSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { safeAction } from '@/lib/safe-action'

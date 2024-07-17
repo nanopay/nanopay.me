@@ -1,5 +1,5 @@
 import { InvoiceCard } from '@/components/InvoiceCard'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
 import NotFoundImage from '@/images/not-found.svg'

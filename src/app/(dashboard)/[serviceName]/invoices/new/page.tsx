@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
 import { createInvoice } from './actions'
-import { InvoiceCreate, invoiceCreateSchema } from '@/services/client'
+import { InvoiceCreate, invoiceCreateSchema } from '@/core/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { usePreferences } from '@/contexts/PreferencesProvider'
 import { useAction } from 'next-safe-action/hooks'

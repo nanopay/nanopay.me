@@ -1,4 +1,4 @@
-import { Invoice, InvoiceStatus } from '@/services/client'
+import { Invoice, InvoiceStatus } from '@/core/client'
 import { formatDateTime } from '@/utils/others'
 import clsx from 'clsx'
 import { BanknoteIcon, ChevronRightIcon } from 'lucide-react'

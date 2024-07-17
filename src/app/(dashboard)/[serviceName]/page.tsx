@@ -4,7 +4,7 @@ import Invoices from '@/components/Invoices'
 import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
 import { KeyRoundIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 import { getUserEmail } from '@/utils/supabase/server'
 import { NotFoundCard } from '@/components/NotFoundCard'
 

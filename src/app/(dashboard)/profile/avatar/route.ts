@@ -1,5 +1,5 @@
 import { MAX_IMAGE_SIZE, STATIC_ASSETS_URL } from '@/constants'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 import { putObject } from '@/services/s3'
 import { ServerRuntime } from 'next'
 import { revalidateTag } from 'next/cache'

@@ -1,5 +1,5 @@
 import Fetcher from '@/lib/fetcher'
-import { InvoiceCreate } from '@/services/client/invoices/invoices-types'
+import { InvoiceCreate } from '@/core/client/invoices/invoices-types'
 
 export interface CreateInvoiceRequest extends InvoiceCreate {
 	service_id: string

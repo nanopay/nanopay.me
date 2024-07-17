@@ -13,7 +13,7 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-import { userNameSchema, UserUpdate } from '@/services/client'
+import { userNameSchema, UserUpdate } from '@/core/client'
 import { UserAvatarEditable } from '@/components/UserAvatarEditable'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'

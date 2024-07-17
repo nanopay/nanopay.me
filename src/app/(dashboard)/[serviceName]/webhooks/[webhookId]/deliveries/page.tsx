@@ -1,6 +1,6 @@
 import { WebhookDelivieries } from '@/components/WebhookDeliveries'
 import { cookies } from 'next/headers'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 
 interface Props {
 	params: {

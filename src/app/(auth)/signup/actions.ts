@@ -1,8 +1,8 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { Client } from '@/services/client'
-import { signWithEmailAndPasswordSchema } from '@/services/client'
+import { Client } from '@/core/client'
+import { signWithEmailAndPasswordSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 

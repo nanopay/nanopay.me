@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { WebhookSettingsCard } from './webhook-settings-card'
-import { Client } from '@/services/client'
+import { Client } from '@/core/client'
 
 interface Props {
 	params: {

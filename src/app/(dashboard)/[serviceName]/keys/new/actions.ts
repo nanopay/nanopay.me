@@ -5,7 +5,7 @@ import {
 	Client,
 	apiKeyCreateSchema,
 	serviceNameOrIdSchema,
-} from '@/services/client'
+} from '@/core/client'
 import { cookies } from 'next/headers'
 
 export const createNewApiKey = safeAction

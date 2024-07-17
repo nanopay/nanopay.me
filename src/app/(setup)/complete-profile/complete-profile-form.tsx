@@ -13,8 +13,8 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-import { UserCreate } from '@/services/client'
-import { userCreateSchema } from '@/services/client/user/user-schema'
+import { UserCreate } from '@/core/client'
+import { userCreateSchema } from '@/core/client/user/user-schema'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 export interface CompleteProfileFormProps {

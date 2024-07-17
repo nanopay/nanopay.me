@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Pusher from 'pusher-js'
-import { Payment } from '@/services/client'
+import { Payment } from '@/core/client'
 
 const PUSHER_KEY = process.env.NEXT_PUBLIC_PUSHER_KEY!
 const PUSHER_CLUSTER = 'us2'

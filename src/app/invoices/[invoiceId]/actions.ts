@@ -1,7 +1,7 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { AdminClient } from '@/services/client'
+import { AdminClient } from '@/core/client'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 

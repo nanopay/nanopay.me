@@ -10,10 +10,7 @@ import {
 } from '@/components/ui/card'
 import { WebhookForm } from '@/components/WebhookForm'
 import { updateWebhook } from './actions'
-import {
-	Webhook,
-	WebhookUpdate,
-} from '@/services/client/webhooks/webhooks-types'
+import { Webhook, WebhookUpdate } from '@/core/client/webhooks/webhooks-types'
 import { getSafeActionError } from '@/lib/safe-action'
 import { useAction } from 'next-safe-action/hooks'
 
