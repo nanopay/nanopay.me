@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button'
 import { Service } from '@/services/client'
-import { GlobeIcon, PlusIcon, SettingsIcon } from 'lucide-react'
+import { GlobeIcon, MailIcon, PlusIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { ServiceAvatarEditable } from './ServiceAvatarEditable'
 
@@ -50,10 +50,22 @@ export default function ServiceHeader({ service }: { service: Service }) {
 											</a>
 										</dd>
 									)}
-									{service.description && (
+									{service.contact_email ? (
 										<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
-											{service.description.slice(0, 60)}
-											{service.description.length > 60 && '...'}
+											<MailIcon
+												className="mr-1 h-5 w-5 flex-shrink-0"
+												aria-hidden="true"
+											/>
+											{service.contact_email.slice(0, 60)}
+											{service.contact_email.length > 60 && '...'}
+										</dd>
+									) : (
+										<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
+											<MailIcon
+												className="mr-1 h-5 w-5 flex-shrink-0"
+												aria-hidden="true"
+											/>
+											No contact email
 										</dd>
 									)}
 								</dl>

@@ -33,7 +33,6 @@ export class ServicesService extends BaseService {
 				name: data.name,
 				display_name: data.name,
 				avatar_url: data.avatar_url,
-				description: data.description,
 				website: data.website,
 				contact_email: data.contact_email,
 			})
@@ -91,7 +90,6 @@ export class ServicesService extends BaseService {
 			name: data.name,
 			display_name: data.display_name,
 			avatar_url: data.avatar_url,
-			description: data.description,
 			website: data.website,
 			contact_email: data.contact_email,
 		})

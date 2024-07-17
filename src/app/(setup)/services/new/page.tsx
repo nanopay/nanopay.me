@@ -16,7 +16,6 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-import { TextArea } from '@/components/TextArea'
 import { ServiceCreate } from '@/services/client'
 import { serviceCreateSchema } from '@/services/client/services/services-schema'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -50,61 +49,30 @@ export default function NewService() {
 						className="flex max-w-xl flex-col items-center space-y-2 pb-4 sm:px-16"
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
-						{/* <ServiceAvatar
-							url={form.watch('avatar_url') || undefined}
-							onChange={url => {
-								form.setValue('avatar_url', url)
-							}}
-							onUploading={setIsUploading}
-						/> */}
-
 						<div className="flex w-full flex-col space-y-6 px-4 py-4 sm:px-8">
-							<div>
-								<div className="mb-2 flex items-center text-xs text-slate-600">
-									<InfoIcon className="mr-1 w-4" />
-									<div>
-										Use a name like:{' '}
-										<span className="font-semibold">my-service</span>
-										{' or '}
-										<span className="font-semibold">myservice2.com</span>
-									</div>
+							<div className="mb-2 flex items-center text-xs text-slate-600">
+								<InfoIcon className="mr-1 w-4" />
+								<div>
+									Use a name like:{' '}
+									<span className="font-semibold">my-service</span>
+									{' or '}
+									<span className="font-semibold">myservice2.com</span>
 								</div>
-								<FormField
-									name="name"
-									control={form.control}
-									render={({ field, fieldState }) => (
-										<FormItem>
-											<FormControl>
-												<Input
-													label="Name"
-													{...field}
-													onChange={e =>
-														field.onChange(sanitizeSlug(e.target.value))
-													}
-													invalid={fieldState.invalid}
-													className="capitalize"
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
 							</div>
-
 							<FormField
-								name="description"
+								name="name"
 								control={form.control}
 								render={({ field, fieldState }) => (
 									<FormItem>
 										<FormControl>
-											<TextArea
-												label="Description"
+											<Input
+												label="Name"
 												{...field}
-												value={field.value || ''}
 												onChange={e =>
-													field.onChange(e.target.value.slice(0, 512))
+													field.onChange(sanitizeSlug(e.target.value))
 												}
 												invalid={fieldState.invalid}
+												className="capitalize"
 											/>
 										</FormControl>
 										<FormMessage />
