@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { SUPPORT_EMAIL } from '@/core/constants'
 import { AdminClient } from '@/core/client'
 import Checkout from '@/components/Checkout'
-import { getLatestPrice } from '@/lib/coinmarketcap'
+import { getLatestPrice } from '@/services/coinmarketcap'
 interface InvoicePageProps {
 	params: {
 		invoiceId: string
