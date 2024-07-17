@@ -38,6 +38,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import Link from 'next/link'
+import { MAX_SERVICE_NAME_LENGTH } from '@/core/constants'
 export interface SettingsProps {
 	service: Service
 }
@@ -70,7 +71,7 @@ export function Settings({ service }: SettingsProps) {
 					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
 						<div className="flex w-full items-center justify-between">
 							<p className="text-sm text-slate-600">
-								Please use 32 characters at maximum.
+								Please use {MAX_SERVICE_NAME_LENGTH} characters at maximum.
 							</p>
 							<Button
 								onClick={handleOpenDeleteServiceAlert}
