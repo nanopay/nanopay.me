@@ -20,7 +20,6 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -32,6 +31,7 @@ import { ServiceAvatar } from '@/components/ServiceAvatar'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
 	Card,
+	CardContent,
 	CardDescription,
 	CardFooter,
 	CardHeader,
@@ -60,24 +60,8 @@ export function Settings({ service }: SettingsProps) {
 							<div className="min-w-0 flex-1">
 								{/* Service Profile */}
 								<div className="flex items-center">
-									<div className="hidden sm:flex">
-										<ServiceAvatarEditable
-											id={service.id}
-											size={64}
-											src={service.avatar_url}
-											alt={service.display_name}
-										/>
-									</div>
 									<div>
 										<div className="flex items-center">
-											<div className="sm:hidden">
-												<ServiceAvatarEditable
-													id={service.id}
-													size={64}
-													src={service.avatar_url}
-													alt={service.display_name}
-												/>
-											</div>
 											<h1 className="ml-3 text-2xl font-bold leading-7 text-slate-900 sm:truncate sm:leading-9">
 												{service.name}
 											</h1>
@@ -111,6 +95,28 @@ export function Settings({ service }: SettingsProps) {
 						</div>
 					</div>
 				</header>
+				<Card className="w-full divide-y divide-slate-200 overflow-hidden border-slate-200">
+					<div className="flex items-center justify-between">
+						<CardHeader>
+							<CardTitle>Service Avatar</CardTitle>
+							<CardDescription>
+								This is your service's avatar. Click on the avatar to upload a
+								custom one from your files.
+							</CardDescription>
+						</CardHeader>
+						<CardContent className="p-4">
+							<ServiceAvatarEditable
+								id={service.id}
+								size={80}
+								src={service.avatar_url}
+								alt={service.display_name}
+							/>
+						</CardContent>
+					</div>
+					<CardFooter className="bg-slate-50 pt-6 text-sm text-slate-600">
+						An avatar is optional but strongly recommended.
+					</CardFooter>
+				</Card>
 				<Card className="w-full divide-y divide-red-200 overflow-hidden border-red-200">
 					<CardHeader>
 						<CardTitle>Delete Service</CardTitle>
