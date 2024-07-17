@@ -1,8 +1,9 @@
+import {
+	MAX_SERVICE_NAME_LENGTH,
+	MAX_URL_LENGTH,
+	MIN_SERVICE_NAME_LENGTH,
+} from '@/core/constants'
 import { z } from 'zod'
-
-const MIN_SERVICE_NAME_LENGTH = 3
-const MAX_SERVICE_NAME_LENGTH = 32
-const MAX_URL_LENGTH = 256
 
 export const serviceNameSchema = z
 	.string()
