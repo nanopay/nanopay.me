@@ -132,7 +132,7 @@ export class InvoicesService extends BaseService {
 		const query = this.supabase
 			.from('invoices')
 			.select(
-				'*, service:services(name), payments(id, from, to, hash, amount, timestamp)',
+				'*, service:services!inner(name), payments(id, from, to, hash, amount, timestamp)',
 			)
 
 		if (checkUUID(serviceIdOrName)) {

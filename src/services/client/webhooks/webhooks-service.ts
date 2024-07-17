@@ -8,6 +8,7 @@ import {
 	WebhookEventType,
 	WebhookUpdate,
 } from './webhooks-types'
+import { serviceNameSchema } from '../services'
 
 export class WebhooksService extends BaseService {
 	async create(
@@ -64,11 +65,12 @@ export class WebhooksService extends BaseService {
 	async list(serviceNameOrId: string): Promise<Webhook[]> {
 		const query = this.supabase
 			.from('webhooks')
-			.select('*, service:services(name)')
+			.select('*, service:services!inner(name)')
 
 		if (checkUUID(serviceNameOrId)) {
 			query.eq('service_id', serviceNameOrId)
 		} else {
+			serviceNameSchema.parse(serviceNameOrId)
 			query.eq('service.name', serviceNameOrId)
 		}
 

@@ -59,7 +59,7 @@ export class ApiKeysService extends BaseService {
 	async list(serviceIdOrName: string): Promise<ApiKey[]> {
 		const query = this.supabase
 			.from('api_keys')
-			.select('*, service:services(name)')
+			.select('*, service:services!inner(name)')
 
 		if (checkUUID(serviceIdOrName)) {
 			query.eq('service_id', serviceIdOrName)
