@@ -58,7 +58,7 @@ export function Settings({ service }: SettingsProps) {
 					<CardHeader>
 						<CardTitle>Service Name</CardTitle>
 						<CardDescription>
-							This is your service's visible name within NanoPay.me. For
+							This is your service&apos;s visible name within NanoPay.me. For
 							example, the name of your company, organization, project.
 						</CardDescription>
 					</CardHeader>
@@ -86,8 +86,8 @@ export function Settings({ service }: SettingsProps) {
 						<CardHeader>
 							<CardTitle>Service Avatar</CardTitle>
 							<CardDescription>
-								This is your service's avatar. Click on the avatar to upload a
-								custom one from your files.
+								This is your service&apos;s avatar. Click on the avatar to
+								upload a custom one from your files.
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="p-4">
@@ -107,8 +107,8 @@ export function Settings({ service }: SettingsProps) {
 					<CardHeader>
 						<CardTitle>Service Website</CardTitle>
 						<CardDescription>
-							This is your service's website URL. Your customers will be able to
-							see this in the invoices
+							This is your service&apos;s website URL. Your customers will be
+							able to see this in the invoices
 						</CardDescription>
 					</CardHeader>
 					<CardContent>
