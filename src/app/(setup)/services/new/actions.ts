@@ -10,7 +10,7 @@ import { safeAction } from '@/lib/safe-action'
 
 export const createService = safeAction
 	.schema(serviceCreateSchema)
-	.action(async ({ parsedInput: { name, avatar_url, description } }) => {
+	.action(async ({ parsedInput: { name, avatar_url } }) => {
 		const userId = await getUserId(cookies())
 
 		const supabase = createClient(cookies())
@@ -23,7 +23,6 @@ export const createService = safeAction
 			name,
 			display_name: name,
 			avatar_url: avatar_url,
-			description,
 		})
 
 		if (error) {
