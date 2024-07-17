@@ -1,8 +1,7 @@
 'use server'
 
-import { serviceCreateSchema } from '@/core/client'
-import { createClient, getUserId } from '@/lib/supabase/server'
-import { randomUUID } from 'crypto'
+import { Client, serviceCreateSchema } from '@/core/client'
+import { getUserId } from '@/lib/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -10,26 +9,14 @@ import { safeAction } from '@/lib/safe-action'
 
 export const createService = safeAction
 	.schema(serviceCreateSchema)
-	.action(async ({ parsedInput: { name, avatar_url } }) => {
+	.action(async ({ parsedInput }) => {
 		const userId = await getUserId(cookies())
 
-		const supabase = createClient(cookies())
+		const client = new Client(cookies())
 
-		const serviceId = randomUUID()
-
-		const { error } = await supabase.from('services').insert({
-			id: serviceId,
-			user_id: userId,
-			name,
-			display_name: name,
-			avatar_url: avatar_url,
-		})
-
-		if (error) {
-			throw new Error(error.message)
-		}
+		await client.services.create(parsedInput)
 
 		revalidateTag(`user-${userId}-services`)
 
-		redirect(`/${name}?new=true`)
+		redirect(`/${parsedInput.name}?new=true`)
 	})
