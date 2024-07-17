@@ -209,7 +209,6 @@ export type Database = {
 					avatar_url: string | null
 					contact_email: string | null
 					created_at: string
-					description: string | null
 					display_name: string
 					id: string
 					invoices_count: number
@@ -223,7 +222,6 @@ export type Database = {
 					avatar_url?: string | null
 					contact_email?: string | null
 					created_at?: string
-					description?: string | null
 					display_name?: string
 					id?: string
 					invoices_count?: number
@@ -237,7 +235,6 @@ export type Database = {
 					avatar_url?: string | null
 					contact_email?: string | null
 					created_at?: string
-					description?: string | null
 					display_name?: string
 					id?: string
 					invoices_count?: number
