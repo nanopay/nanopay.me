@@ -16,7 +16,7 @@ import {
 import { Nunito } from 'next/font/google'
 import clsx from 'clsx'
 import { AnimatedBackgroundIllustration } from './BackgroundIllustration'
-import { SUPPORT_EMAIL } from '@/constants'
+import { SUPPORT_EMAIL } from '@/core/constants'
 
 const nunito = Nunito({
 	weight: ['500'],

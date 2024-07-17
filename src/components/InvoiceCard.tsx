@@ -11,7 +11,7 @@ import Link from 'next/link'
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { Invoice } from '@/core/client'
-import { SITE_URL } from '@/constants'
+import { SITE_URL } from '@/core/constants'
 
 export interface InvoiceCardProps extends React.HTMLAttributes<HTMLDivElement> {
 	invoice: Invoice

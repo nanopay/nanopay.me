@@ -1,4 +1,4 @@
-import { getSiteUrl } from './utils/url'
+import { getSiteUrl } from '../utils/url'
 
 export const SITE_URL = getSiteUrl()
 

@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { safeAction } from '@/lib/safe-action'
 import { z } from 'zod'
-import { SITE_URL } from '@/constants'
+import { SITE_URL } from '@/core/constants'
 
 export const signWithPassword = safeAction
 	.schema(

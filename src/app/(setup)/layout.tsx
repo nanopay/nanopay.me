@@ -1,7 +1,7 @@
 import { BackgroundIllustration } from '@/components/BackgroundIllustration'
 import { Logomark } from '@/components/Logo'
 import { UserNavigationPopover } from '@/components/UserNavigationPopover'
-import { DEFAULT_AVATAR_URL } from '@/constants'
+import { DEFAULT_AVATAR_URL } from '@/core/constants'
 import { getCachedUser } from '@/lib/cache/user'
 import Image from 'next/image'
 

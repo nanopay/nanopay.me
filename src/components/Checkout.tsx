@@ -27,7 +27,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 import { Button } from './Button'
-import { REFUND_EMAIL, SITE_URL, SUPPORT_EMAIL } from '@/constants'
+import { REFUND_EMAIL, SITE_URL, SUPPORT_EMAIL } from '@/core/constants'
 import { redirectToMerchant } from '@/app/invoices/[invoiceId]/actions'
 import {
 	Accordion,

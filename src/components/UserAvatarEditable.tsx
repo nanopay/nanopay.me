@@ -2,7 +2,7 @@
 
 import { useToast } from '@/hooks/useToast'
 import ImageInput from './ImageInput'
-import { DEFAULT_AVATAR_URL } from '@/constants'
+import { DEFAULT_AVATAR_URL } from '@/core/constants'
 import { useUserAvatarUploader } from '@/hooks/useUploader'
 
 export interface ServiceAvatarEditableProps {

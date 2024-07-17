@@ -6,7 +6,7 @@ import { Logomark } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import xnoHeart from '@/images/xno-heart.svg'
 import QrCodeBorder from './QrCodeBorder'
-import { CONTACT_EMAIL } from '@/constants'
+import { CONTACT_EMAIL } from '@/core/constants'
 
 export function Footer() {
 	return (

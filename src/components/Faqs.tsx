@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { Container } from '@/components/Container'
-import { CONTACT_EMAIL } from '@/constants'
+import { CONTACT_EMAIL } from '@/core/constants'
 
 const faqs = [
 	[

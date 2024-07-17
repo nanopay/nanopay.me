@@ -1,4 +1,4 @@
-import { INVOICE_MINIMUM_PRICE } from '@/constants'
+import { INVOICE_MINIMUM_PRICE } from '@/core/constants'
 import { z } from 'zod'
 import { publicServiceSchema } from '../services/services-schema'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { SUPPORT_EMAIL } from '@/constants'
+import { SUPPORT_EMAIL } from '@/core/constants'
 import { RefreshCcwIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'

@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import CompleteProfileForm from './complete-profile-form'
 import { cookies } from 'next/headers'
-import { DEFAULT_AVATAR_URL } from '@/constants'
+import { DEFAULT_AVATAR_URL } from '@/core/constants'
 import { redirect } from 'next/navigation'
 import {
 	Card,

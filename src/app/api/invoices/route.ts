@@ -1,4 +1,4 @@
-import { SITE_URL } from '@/constants'
+import { SITE_URL } from '@/core/constants'
 import { NextRequest } from 'next/server'
 import {
 	invoiceCreateSchema,
