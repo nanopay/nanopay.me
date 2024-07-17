@@ -54,47 +54,33 @@ export function Settings({ service }: SettingsProps) {
 	return (
 		<>
 			<div className="flex flex-col space-y-8">
-				<header className="rounded-lg bg-white shadow">
-					<div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
-						<div className="py-6 md:flex md:items-center md:justify-between">
-							<div className="min-w-0 flex-1">
-								{/* Service Profile */}
-								<div className="flex items-center">
-									<div>
-										<div className="flex items-center">
-											<h1 className="ml-3 text-2xl font-bold leading-7 text-slate-900 sm:truncate sm:leading-9">
-												{service.name}
-											</h1>
-										</div>
-										<dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
-											<dt className="sr-only">Website</dt>
-											{service.website && (
-												<dd className="sm:mr-6">
-													<a
-														href={service.website}
-														className="hover:text-nano flex items-center truncate text-sm font-medium text-slate-500"
-													>
-														<GlobeIcon
-															className="mr-1 h-5 w-5 flex-shrink-0"
-															aria-hidden="true"
-														/>
-														{service.website}
-													</a>
-												</dd>
-											)}
-											{service.description && (
-												<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
-													{service.description.slice(0, 60)}
-													{service.description.length > 60 && '...'}
-												</dd>
-											)}
-										</dl>
-									</div>
-								</div>
-							</div>
+				<Card className="w-full overflow-hidden">
+					<CardHeader>
+						<CardTitle>Service Name</CardTitle>
+						<CardDescription>
+							This is your service's visible name within NanoPay.me. For
+							example, the name of your company, organization, project.
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<div className="w-full max-w-sm">
+							<Input value={service.display_name} />
 						</div>
-					</div>
-				</header>
+					</CardContent>
+					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
+						<div className="flex w-full items-center justify-between">
+							<p className="text-sm text-slate-600">
+								Please use 32 characters at maximum.
+							</p>
+							<Button
+								onClick={handleOpenDeleteServiceAlert}
+								className="font-semibold"
+							>
+								Save
+							</Button>
+						</div>
+					</CardFooter>
+				</Card>
 				<Card className="w-full divide-y divide-slate-200 overflow-hidden border-slate-200">
 					<div className="flex items-center justify-between">
 						<CardHeader>
@@ -113,8 +99,36 @@ export function Settings({ service }: SettingsProps) {
 							/>
 						</CardContent>
 					</div>
-					<CardFooter className="bg-slate-50 pt-6 text-sm text-slate-600">
+					<CardFooter className="bg-slate-100 pt-6 text-sm text-slate-600">
 						An avatar is optional but strongly recommended.
+					</CardFooter>
+				</Card>
+				<Card className="w-full overflow-hidden border-slate-200">
+					<CardHeader>
+						<CardTitle>Service Website</CardTitle>
+						<CardDescription>
+							This is your service's website URL. Your customers will be able to
+							see this in the invoices
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<div className="w-full max-w-sm">
+							<Input value={service.website || ''} />
+						</div>
+					</CardContent>
+					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
+						<div className="flex w-full items-center justify-between">
+							<p className="text-sm text-slate-600">
+								This is optional but strongly recommended if your service has a
+								website.
+							</p>
+							<Button
+								onClick={handleOpenDeleteServiceAlert}
+								className="font-semibold"
+							>
+								Save
+							</Button>
+						</div>
 					</CardFooter>
 				</Card>
 				<Card className="w-full divide-y divide-red-200 overflow-hidden border-red-200">
@@ -126,7 +140,7 @@ export function Settings({ service }: SettingsProps) {
 							continue with caution.
 						</CardDescription>
 					</CardHeader>
-					<CardFooter className="bg-red-50 pt-6">
+					<CardFooter className="bg-red-100 pt-6">
 						<div className="flex w-full items-center justify-between">
 							<p className="font-medium text-red-600">
 								To delete your account, visit{' '}
