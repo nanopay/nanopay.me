@@ -6,7 +6,7 @@ import { ApiKeysService } from './api-keys/api-keys-service'
 import { AuthService } from './auth/auth-service'
 import { ServicesService } from './services/services-service'
 import { UserService } from './user/user-service'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 export class Client {
 	readonly auth: AuthService

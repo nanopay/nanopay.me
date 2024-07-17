@@ -2,7 +2,7 @@
 
 import { safeAction } from '@/lib/safe-action'
 import { Client } from '@/core/client'
-import { getUserId } from '@/utils/supabase/server'
+import { getUserId } from '@/lib/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'

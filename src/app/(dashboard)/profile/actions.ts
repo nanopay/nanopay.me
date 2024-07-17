@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { getUserId } from '@/utils/supabase/server'
+import { getUserId } from '@/lib/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { Client, userUpdateSchema } from '@/core/client'
 import { safeAction } from '@/lib/safe-action'

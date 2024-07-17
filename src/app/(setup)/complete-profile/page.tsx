@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import CompleteProfileForm from './complete-profile-form'
 import { cookies } from 'next/headers'
 import { DEFAULT_AVATAR_URL } from '@/core/constants'

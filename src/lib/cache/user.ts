@@ -1,6 +1,6 @@
 import { DEFAULT_AVATAR_URL } from '@/core/constants'
 import { Client, User } from '@/core/client'
-import { getUserId } from '@/utils/supabase/server'
+import { getUserId } from '@/lib/supabase/server'
 import { unstable_cache } from 'next/cache'
 import { cookies } from 'next/headers'
 

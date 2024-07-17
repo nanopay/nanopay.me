@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createClient } from '@/utils/supabase/middleware'
+import { createClient } from '@/lib/supabase/middleware'
 import { applySetCookie } from '@/utils/cookies'
 import { cookies } from 'next/headers'
 import { Client } from './core/client'

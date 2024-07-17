@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { Settings } from './settings'
 import { Client } from '@/core/client'
 import { NotFoundCard } from '@/components/NotFoundCard'
-import { getUserEmail } from '@/utils/supabase/server'
+import { getUserEmail } from '@/lib/supabase/server'
 
 interface Params {
 	params: { serviceName: string }
