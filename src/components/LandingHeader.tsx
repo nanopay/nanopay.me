@@ -5,7 +5,7 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/cn'
 import { MenuIcon, XIcon } from 'lucide-react'
 import { useState } from 'react'
 

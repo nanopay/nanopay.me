@@ -9,7 +9,7 @@ import {
 } from './ui/card'
 import Link from 'next/link'
 import React from 'react'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/cn'
 import { Invoice } from '@/core/client'
 import { SITE_URL } from '@/core/constants'
 

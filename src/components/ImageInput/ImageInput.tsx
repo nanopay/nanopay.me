@@ -3,7 +3,7 @@ import ImageCrop from './ImageCrop'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import { AlertTriangleIcon, CameraIcon } from 'lucide-react'
 import Image from 'next/image'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/cn'
 
 const ALLOWED_IMAGE_TYPES = [
 	'image/png',

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/Button'
 import NotFoundImage from '@/images/not-found.svg'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/cn'
 
 export interface NotFoundCardProps
 	extends React.ComponentPropsWithoutRef<'div'> {

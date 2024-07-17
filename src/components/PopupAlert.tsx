@@ -3,7 +3,7 @@
 import { usePreferences } from '@/contexts/PreferencesProvider'
 import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/cn'
 
 export interface PopupAlertProps
 	extends React.ComponentPropsWithoutRef<typeof Alert> {
