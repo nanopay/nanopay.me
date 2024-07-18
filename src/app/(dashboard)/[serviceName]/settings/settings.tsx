@@ -132,6 +132,33 @@ export function Settings({ service }: SettingsProps) {
 						</div>
 					</CardFooter>
 				</Card>
+				<Card className="w-full overflow-hidden border-slate-200">
+					<CardHeader>
+						<CardTitle>Service Contact Email</CardTitle>
+						<CardDescription>
+							This is your service&apos;s contact email. Your customers will be
+							able to see this in the invoices
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<div className="w-full max-w-sm">
+							<Input value={service.contact_email || ''} />
+						</div>
+					</CardContent>
+					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
+						<div className="flex w-full items-center justify-between">
+							<p className="text-sm text-slate-600">
+								This is optional but strongly recommended.
+							</p>
+							<Button
+								onClick={handleOpenDeleteServiceAlert}
+								className="font-semibold"
+							>
+								Save
+							</Button>
+						</div>
+					</CardFooter>
+				</Card>
 				<Card className="w-full divide-y divide-red-200 overflow-hidden border-red-200">
 					<CardHeader>
 						<CardTitle>Delete Service</CardTitle>
