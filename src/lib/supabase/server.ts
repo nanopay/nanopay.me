@@ -40,6 +40,9 @@ export const getUserId = async (cookieStore: ReturnType<typeof cookies>) => {
 
 export const getUserEmail = async (cookieStore: ReturnType<typeof cookies>) => {
 	const { email } = await getSafeUser(cookieStore)
+	if (!email) {
+		throw new Error('No email found')
+	}
 	return email
 }
 
