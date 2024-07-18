@@ -14,7 +14,6 @@ export type Database = {
 					checksum: string
 					created_at: string
 					description: string | null
-					id: number
 					name: string
 					scopes: string[]
 					service_id: string
@@ -23,7 +22,6 @@ export type Database = {
 					checksum: string
 					created_at?: string
 					description?: string | null
-					id?: number
 					name: string
 					scopes: string[]
 					service_id: string
@@ -32,7 +30,6 @@ export type Database = {
 					checksum?: string
 					created_at?: string
 					description?: string | null
-					id?: number
 					name?: string
 					scopes?: string[]
 					service_id?: string
