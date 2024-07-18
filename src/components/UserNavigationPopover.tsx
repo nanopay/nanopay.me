@@ -16,10 +16,10 @@ interface NavLink {
 
 const navLinks = (canViewProfile: boolean): NavLink[] => [
 	{
-		title: 'Profile',
+		title: 'Account Settings',
 		icon: UserRoundIcon,
-		href: '/profile',
-		description: 'View and edit your profile',
+		href: '/account',
+		description: 'View and manage your account',
 		visible: canViewProfile,
 	},
 	{

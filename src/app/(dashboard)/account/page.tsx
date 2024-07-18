@@ -24,7 +24,7 @@ const schema = z.object({
 	name: userNameSchema,
 })
 
-export default function Profile() {
+export default function AccountSettings() {
 	const user = useUser()
 
 	const { showError } = useToast()

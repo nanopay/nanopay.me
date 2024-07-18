@@ -172,7 +172,7 @@ export function Settings({ service }: SettingsProps) {
 						<div className="flex w-full items-center justify-between">
 							<p className="font-medium text-red-600">
 								To delete your account, visit{' '}
-								<Link href="/profile" className="text-nano hover:underline">
+								<Link href="/account" className="text-nano hover:underline">
 									Account Settings.
 								</Link>
 							</p>

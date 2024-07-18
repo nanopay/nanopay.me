@@ -103,5 +103,5 @@ export const useServiceAvatarUploader = (
 }
 
 export const useUserAvatarUploader = (options: UploaderOptions) => {
-	return useUploader(`/profile/avatar`, options)
+	return useUploader(`/account/avatar`, options)
 }
