@@ -38,7 +38,7 @@ export default async function ApiKeys({
 				{apiKeys &&
 					apiKeys?.map(apiKey => (
 						<li
-							key={apiKey.id}
+							key={apiKey.checksum}
 							className="relative py-5 pl-4 pr-6 hover:bg-slate-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
 						>
 							<div className="flex items-center justify-between space-x-4">
@@ -86,7 +86,7 @@ export default async function ApiKeys({
 									</p>
 								</div>
 							</div>
-							<DeleteApiKeyButton apiKeyId={apiKey.id as any} />
+							<DeleteApiKeyButton checksum={apiKey.checksum} />
 						</li>
 					))}
 			</ul>

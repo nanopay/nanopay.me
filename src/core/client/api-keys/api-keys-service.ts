@@ -79,16 +79,16 @@ export class ApiKeysService extends BaseService {
 		return data || []
 	}
 
-	async update(apiKeyId: string, data: any): Promise<void> {
+	async update(checksum: string, data: any): Promise<void> {
 		throw new Error('Not implemented')
 	}
 
-	async delete(apiKeyId: string): Promise<void> {
+	async delete(checksum: string): Promise<void> {
 		const { error } = await this.supabase
 			.from('api_keys')
 			.delete()
-			.eq('id', apiKeyId)
-			.select('id')
+			.eq('checksum', checksum)
+			.select('checksum')
 			.single()
 
 		if (error) {

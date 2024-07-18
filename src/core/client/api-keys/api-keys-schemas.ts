@@ -10,7 +10,6 @@ export const apiKeyCreateSchema = z.object({
 })
 
 export const apiKeySchema = z.object({
-	id: z.number(),
 	service_id: z.string(),
 	name: z.string(),
 	description: z.string().nullable().optional(),

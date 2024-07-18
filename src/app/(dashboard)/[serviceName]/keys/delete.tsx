@@ -6,7 +6,7 @@ import { useAction } from 'next-safe-action/hooks'
 import { useToast } from '@/hooks/useToast'
 import { getSafeActionError } from '@/lib/safe-action'
 
-export default function DeleteApiKeyButton({ apiKeyId }: { apiKeyId: string }) {
+export default function DeleteApiKeyButton({ checksum }: { checksum: string }) {
 	const { showError } = useToast()
 
 	const { executeAsync, isExecuting } = useAction(deleteApiKey, {
@@ -19,7 +19,7 @@ export default function DeleteApiKeyButton({ apiKeyId }: { apiKeyId: string }) {
 	return (
 		<Button
 			onClick={async () => {
-				await executeAsync(apiKeyId)
+				await executeAsync(checksum)
 			}}
 			variant="destructive"
 			size="sm"
