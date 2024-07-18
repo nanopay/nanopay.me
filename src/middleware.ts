@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createClient } from '@/lib/supabase/middleware'
-import { applySetCookie } from '@/utils/cookies'
+import { updateSupabaseSessionForMiddleware } from '@/lib/supabase/supabase-middleware'
 import { cookies } from 'next/headers'
 import { Client } from './core/client'
 import { pathToRegexp } from 'path-to-regexp'
@@ -16,7 +15,7 @@ const AUTH_ROUTES = [
 	'/auth/callback',
 ]
 
-const PUBLIC_ROUTES = ['/invoices/:id', ...AUTH_ROUTES]
+const PUBLIC_ROUTES = ['/', '/invoices/:id', ...AUTH_ROUTES]
 
 const routeMatch = (routes: string[], target: string): boolean => {
 	return routes.some(route => pathToRegexp(route).test(target))
@@ -30,40 +29,22 @@ export async function middleware(request: NextRequest) {
 	const isAuthRoute = routeMatch(AUTH_ROUTES, pathname)
 	const isRootPath = pathname === '/'
 
-	if (isPublicRoute && !isAuthRoute) {
-		return NextResponse.next()
+	const { isAuthenticated } = await updateSupabaseSessionForMiddleware(request)
+
+	if (isAuthenticated && (isAuthRoute || isRootPath)) {
+		// Redirect to the last service
+		const lastService = await getLastService()
+		nextUrl.pathname = lastService ? `/${lastService}` : '/services/new'
+		return NextResponse.redirect(nextUrl)
 	}
 
-	const { supabase, response } = createClient(request)
-
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	applySetCookie(request, response)
-
-	const isAuthenticated = !!session
-
-	if (isAuthenticated) {
-		if (isAuthRoute || isRootPath) {
-			// Redirect to the last service
-			const lastService = await getLastService()
-			nextUrl.pathname = lastService ? `/${lastService}` : '/services/new'
-		} else {
-			return response
-		}
-	} else if (isRootPath) {
-		return response
-	} else {
-		if (!isPublicRoute) {
-			nextUrl.searchParams.set(`next`, pathname)
-			nextUrl.pathname = '/login'
-		} else {
-			return response
-		}
+	if (!isAuthenticated && !isPublicRoute) {
+		nextUrl.searchParams.set(`next`, pathname)
+		nextUrl.pathname = '/login'
+		return NextResponse.redirect(nextUrl)
 	}
 
-	return NextResponse.redirect(nextUrl)
+	return NextResponse.next()
 }
 
 export const config = {
@@ -73,10 +54,10 @@ export const config = {
 		 * - api (API routes)
 		 * - _next/static (static files)
 		 * - _next/image (image optimization files)
-		 * - favicon.ico (favicon file)
+		 * - Any file with an extension (e.g. .ico .js, .css, .png)
 		 */
 		{
-			source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
+			source: '/((?!api|static|.*\\..*|_next).*)',
 			missing: [
 				{ type: 'header', key: 'next-router-prefetch' },
 				{ type: 'header', key: 'purpose', value: 'prefetch' },
