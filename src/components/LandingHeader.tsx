@@ -44,7 +44,7 @@ export function LandingHeader({ ...props }: LandingHeaderProps) {
 							<NavLinks />
 						</div>
 					</div>
-					<div className="gap-4 sm:block">
+					<div className="hidden sm:block">
 						<Link href="/login">
 							<Button color="slate" className="p-5 text-lg" type="button">
 								Login
