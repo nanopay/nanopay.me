@@ -14,9 +14,9 @@ export const createService = safeAction
 
 		const client = new Client(cookies())
 
-		await client.services.create(parsedInput)
+		const { slug } = await client.services.create(parsedInput)
 
 		revalidateTag(`user-${userId}-services`)
 
-		redirect(`/${parsedInput.name}?new=true`)
+		redirect(`/${slug}?new=true`)
 	})
