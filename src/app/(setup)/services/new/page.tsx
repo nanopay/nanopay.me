@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import Input from '@/components/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/useToast'
-import { sanitizeSlug } from '@/utils/url'
 import { createService } from './actions'
 import { InfoIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
@@ -68,9 +67,6 @@ export default function NewService() {
 											<Input
 												label="Name"
 												{...field}
-												onChange={e =>
-													field.onChange(sanitizeSlug(e.target.value))
-												}
 												invalid={fieldState.invalid}
 												className="capitalize"
 											/>
