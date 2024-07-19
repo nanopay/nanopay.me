@@ -29,7 +29,8 @@ export async function middleware(request: NextRequest) {
 	const isAuthRoute = routeMatch(AUTH_ROUTES, pathname)
 	const isRootPath = pathname === '/'
 
-	const { isAuthenticated } = await updateSupabaseSessionForMiddleware(request)
+	const { isAuthenticated, supabaseResponse } =
+		await updateSupabaseSessionForMiddleware(request)
 
 	if (isAuthenticated && (isAuthRoute || isRootPath)) {
 		// Redirect to the last service
@@ -44,7 +45,7 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.redirect(nextUrl)
 	}
 
-	return NextResponse.next()
+	return supabaseResponse
 }
 
 export const config = {
