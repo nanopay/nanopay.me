@@ -1,7 +1,7 @@
 import { MAX_SLUG_LENGTH } from '@/core/constants'
 
-export const slugify = (text: string) => {
-	return text
+export const slugify = (str: string): string => {
+	return str
 		.normalize('NFD') // Normalize diacritics (accents).
 		.replace(/[\u0300-\u036f]/g, '') // Remove diacritics (accents).
 		.replace(/[_\.\s]+/g, '-') // Replace spaces, dots and underscores with dashes.
