@@ -8,7 +8,6 @@ import {
 } from './service-types'
 import {
 	serviceCreateSchema,
-	serviceNameSchema,
 	servicePaginationSchema,
 	serviceSchema,
 	serviceUpdateSchema,
@@ -54,8 +53,7 @@ export class ServicesService extends BaseService {
 		if (checkUUID(serviceIdOrSlug)) {
 			query.eq('id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrSlug)
-			query.eq('name', serviceIdOrSlug)
+			query.eq('slug', serviceIdOrSlug)
 		}
 		const { data, error } = await query.single()
 		if (error) {
@@ -99,8 +97,7 @@ export class ServicesService extends BaseService {
 		if (checkUUID(serviceIdOrSlug)) {
 			query.eq('id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrSlug)
-			query.eq('name', serviceIdOrSlug)
+			query.eq('slug', serviceIdOrSlug)
 		}
 		const { error } = await query
 		if (error) {
@@ -113,8 +110,7 @@ export class ServicesService extends BaseService {
 		if (checkUUID(serviceIdOrSlug)) {
 			query.eq('id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrSlug)
-			query.eq('name', serviceIdOrSlug)
+			query.eq('slug', serviceIdOrSlug)
 		}
 		const { error } = await query
 		if (error) {

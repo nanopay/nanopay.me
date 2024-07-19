@@ -14,7 +14,6 @@ import {
 } from './invoices-types'
 import { checkUUID } from '@/core/utils'
 import { z } from 'zod'
-import { serviceNameSchema } from '../services/services-schema'
 
 export class InvoicesService extends BaseService {
 	async create(
@@ -138,7 +137,6 @@ export class InvoicesService extends BaseService {
 		if (checkUUID(serviceIdOrSlug)) {
 			query.eq('service_id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrSlug)
 			query.eq('service.slug', serviceIdOrSlug)
 		}
 

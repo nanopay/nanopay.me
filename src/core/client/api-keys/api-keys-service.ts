@@ -4,7 +4,6 @@ import { BaseService } from '../base-service'
 import { apiKeyCreateSchema, apiKeySchema } from './api-keys-schemas'
 import { ApiKey, ApiKeyCreate } from './api-keys-types'
 import { generateApiKey, verifyApiKeyWithChecksum } from './api-key-utis'
-import { serviceNameSchema } from '../services'
 
 export class ApiKeysService extends BaseService {
 	async create(
@@ -64,7 +63,6 @@ export class ApiKeysService extends BaseService {
 		if (checkUUID(serviceIdOrSlug)) {
 			query.eq('service_id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrSlug)
 			query.eq('service.slug', serviceIdOrSlug)
 		}
 

@@ -8,7 +8,6 @@ import {
 	WebhookEventType,
 	WebhookUpdate,
 } from './webhooks-types'
-import { serviceNameSchema } from '../services'
 
 export class WebhooksService extends BaseService {
 	async create(
@@ -70,7 +69,6 @@ export class WebhooksService extends BaseService {
 		if (checkUUID(serviceIdOrSlug)) {
 			query.eq('service_id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrSlug)
 			query.eq('service.slug', serviceIdOrSlug)
 		}
 
