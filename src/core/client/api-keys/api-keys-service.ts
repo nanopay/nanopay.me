@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { checkUUID } from '@/utils/helpers'
+import { checkUUID } from '@/core/utils'
 import { BaseService } from '../base-service'
 import { apiKeyCreateSchema, apiKeySchema } from './api-keys-schemas'
 import { ApiKey, ApiKeyCreate } from './api-keys-types'

@@ -1,4 +1,4 @@
-import { checkUUID } from '@/utils/helpers'
+import { checkUUID } from '@/core/utils'
 import { BaseService } from '../base-service'
 import {
 	Service,

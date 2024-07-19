@@ -1,5 +1,5 @@
 import { Database } from '@/types/database'
-import { checkUUID } from '@/utils/helpers'
+import { checkUUID } from '@/core/utils'
 import { SupabaseClient } from '@supabase/supabase-js'
 
 export class BaseService {

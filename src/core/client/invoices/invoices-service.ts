@@ -12,7 +12,7 @@ import {
 	InvoiceStatus,
 	InvoicePublic,
 } from './invoices-types'
-import { checkUUID } from '@/utils/helpers'
+import { checkUUID } from '@/core/utils'
 import { z } from 'zod'
 import { serviceNameSchema } from '../services/services-schema'
 
