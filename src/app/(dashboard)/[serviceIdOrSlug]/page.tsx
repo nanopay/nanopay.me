@@ -88,7 +88,7 @@ export default async function ServiceDashboardPage({
 				<h2 className="mx-auto mb-2 max-w-7xl px-2 text-lg font-medium leading-6 text-slate-900">
 					Recent Invoices
 				</h2>
-				<Invoices invoices={invoices || []} serviceIdOrSlug={service.name} />
+				<Invoices invoices={invoices || []} serviceIdOrSlug={service.slug} />
 			</section>
 
 			{isNew && <Fireworks count={3} />}

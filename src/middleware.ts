@@ -34,8 +34,8 @@ export async function middleware(request: NextRequest) {
 
 	if (isAuthenticated && (isAuthRoute || isRootPath)) {
 		// Redirect to the last service
-		const lastService = await getLastService()
-		nextUrl.pathname = lastService ? `/${lastService}` : '/services/new'
+		const lastServiceSlug = await getLastServiceSlug()
+		nextUrl.pathname = lastServiceSlug ? `/${lastServiceSlug}` : '/services/new'
 		return NextResponse.redirect(nextUrl)
 	}
 
@@ -67,7 +67,7 @@ export const config = {
 	],
 }
 
-async function getLastService(): Promise<string | null> {
+async function getLastServiceSlug(): Promise<string | null> {
 	try {
 		const lastService = cookies().get('last_service')?.value
 
@@ -84,7 +84,7 @@ async function getLastService(): Promise<string | null> {
 			order_by: 'name',
 		})
 
-		return services[0]?.name || null
+		return services[0]?.slug || null
 	} catch (error) {
 		console.error('Error getting last service:', error)
 		return null

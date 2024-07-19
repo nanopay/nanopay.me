@@ -33,27 +33,27 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 	const serviceNavigation = [
 		{
 			name: 'Overview',
-			href: `/${currentService?.name}`,
+			href: `/${currentService?.slug}`,
 			current: pathname === '/[serviceIdOrSlug]',
 		},
 		{
 			name: 'Invoices',
-			href: `/${currentService?.name}/invoices`,
+			href: `/${currentService?.slug}/invoices`,
 			current: pathname === '/[serviceIdOrSlug]/invoices',
 		},
 		{
 			name: 'Webhooks',
-			href: `/${currentService?.name}/webhooks`,
+			href: `/${currentService?.slug}/webhooks`,
 			current: pathname === '/[serviceIdOrSlug]/webhooks',
 		},
 		{
 			name: 'API Keys',
-			href: `/${currentService?.name}/keys`,
+			href: `/${currentService?.slug}/keys`,
 			current: pathname === '/[serviceIdOrSlug]/keys',
 		},
 		{
 			name: 'Settings',
-			href: `/${currentService?.name}/settings`,
+			href: `/${currentService?.slug}/settings`,
 			current: pathname === '/[serviceIdOrSlug]/settings',
 		},
 	]
