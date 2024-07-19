@@ -26,8 +26,8 @@ const nextConfig = {
 	redirects: async () => [
 		{
 			source:
-				'/:serviceName((?!api).*)/webhooks/:webhookId((?!new$)[a-z0-9.-]+)',
-			destination: '/:serviceName/webhooks/:webhookId/settings',
+				'/:serviceIdOrSlug((?!api).*)/webhooks/:webhookId((?!new$)[a-z0-9.-]+)',
+			destination: '/:serviceIdOrSlug/webhooks/:webhookId/settings',
 			permanent: true,
 		},
 	],

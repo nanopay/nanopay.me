@@ -31,8 +31,8 @@ export const serviceCreateSchema = z.object({
 })
 
 export const serviceUpdateSchema = z.object({
-	name: serviceNameSchema.optional(),
-	display_name: serviceNameSchema.max(MAX_SERVICE_NAME_LENGTH).optional(),
+	slug: serviceNameSchema.optional(),
+	name: serviceNameSchema.max(MAX_SERVICE_NAME_LENGTH).optional(),
 	avatar_url: serviceAvatarUrlSchema.optional(),
 	website: z.string().url().max(MAX_URL_LENGTH).nullable().optional(),
 	contact_email: z.string().email().nullable().optional(),
@@ -40,8 +40,8 @@ export const serviceUpdateSchema = z.object({
 
 export const publicServiceSchema = z.object({
 	id: z.string().uuid(),
+	slug: serviceNameSchema,
 	name: serviceNameSchema,
-	display_name: serviceNameSchema,
 	avatar_url: serviceAvatarUrlSchema,
 	website: z.string().url().max(MAX_URL_LENGTH).nullable(),
 	contact_email: z.string().email().nullable(),
@@ -49,10 +49,10 @@ export const publicServiceSchema = z.object({
 
 export const serviceSchema = z.object({
 	id: z.string().uuid(),
+	slug: serviceNameSchema,
 	name: serviceNameSchema,
 	avatar_url: serviceAvatarUrlSchema,
 	user_id: z.string().uuid(),
-	display_name: serviceNameSchema,
 	website: z.string().url().max(MAX_URL_LENGTH).nullable(),
 	contact_email: z.string().email().nullable(),
 	invoices_count: z.number().min(0),

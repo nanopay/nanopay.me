@@ -12,12 +12,12 @@ import { serviceNameSchema } from '../services'
 
 export class WebhooksService extends BaseService {
 	async create(
-		serviceNameOrId: string,
+		serviceIdOrSlug: string,
 		data: WebhookCreate,
 	): Promise<{ id: string }> {
 		webhookCreateSchema.parse(data)
 
-		const serviceId = await this.getIdFromServiceNameOrId(serviceNameOrId)
+		const serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
 
 		const { error, data: webhook } = await this.supabase
 			.from('webhooks')
@@ -62,16 +62,16 @@ export class WebhooksService extends BaseService {
 		}
 	}
 
-	async list(serviceNameOrId: string): Promise<Webhook[]> {
+	async list(serviceIdOrSlug: string): Promise<Webhook[]> {
 		const query = this.supabase
 			.from('webhooks')
 			.select('*, service:services!inner(name)')
 
-		if (checkUUID(serviceNameOrId)) {
-			query.eq('service_id', serviceNameOrId)
+		if (checkUUID(serviceIdOrSlug)) {
+			query.eq('service_id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceNameOrId)
-			query.eq('service.name', serviceNameOrId)
+			serviceNameSchema.parse(serviceIdOrSlug)
+			query.eq('service.slug', serviceIdOrSlug)
 		}
 
 		const { data, error } = await query

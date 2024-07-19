@@ -16,10 +16,10 @@ import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 
 export default function NewApiKey({
-	params: { serviceName },
+	params: { serviceIdOrSlug },
 }: {
 	params: {
-		serviceName: string
+		serviceIdOrSlug: string
 	}
 }) {
 	const { showError } = useToast()
@@ -33,7 +33,7 @@ export default function NewApiKey({
 
 	const onSubmit = (values: WebhookCreate) => {
 		executeCreateWebhook({
-			serviceNameOrId: serviceName,
+			serviceIdOrSlug: serviceIdOrSlug,
 			...values,
 		})
 	}

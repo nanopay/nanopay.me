@@ -10,19 +10,19 @@ export default function WebhookLayout({
 	children: React.ReactNode
 }) {
 	const pathname = usePathname()
-	const serviceName = useParams().serviceName as string
+	const serviceIdOrSlug = useParams().serviceIdOrSlug as string
 	const webhookId = useParams().webhookId as string
 
 	const tabs = [
 		{
 			label: 'Settings',
 			value: 'settings',
-			href: `/${serviceName}/webhooks/${webhookId}/settings`,
+			href: `/${serviceIdOrSlug}/webhooks/${webhookId}/settings`,
 		},
 		{
 			label: 'Deliveries',
 			value: 'deliveries',
-			href: `/${serviceName}/webhooks/${webhookId}/deliveries`,
+			href: `/${serviceIdOrSlug}/webhooks/${webhookId}/deliveries`,
 		},
 	]
 

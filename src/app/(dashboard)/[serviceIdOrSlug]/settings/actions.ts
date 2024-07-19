@@ -10,14 +10,14 @@ import { z } from 'zod'
 
 export const deleteService = safeAction
 	.schema(z.string())
-	.action(async ({ parsedInput: serviceNameOrId }) => {
+	.action(async ({ parsedInput: serviceIdOrSlug }) => {
 		const userId = await getUserId(cookies())
 
 		const client = new Client(cookies())
 
-		await client.services.delete(serviceNameOrId)
+		await client.services.delete(serviceIdOrSlug)
 
-		revalidateTag(`service-${serviceNameOrId}`)
+		revalidateTag(`service-${serviceIdOrSlug}`)
 		revalidateTag(`user-${userId}-services`)
 
 		redirect('/')

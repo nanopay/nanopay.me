@@ -10,7 +10,7 @@ export const runtime: ServerRuntime = 'edge'
 
 export async function POST(
 	req: NextRequest,
-	{ params: { serviceName } }: { params: { serviceName: string } },
+	{ params: { serviceIdOrSlug } }: { params: { serviceIdOrSlug: string } },
 ) {
 	try {
 		const formData = await req.formData()
@@ -53,7 +53,7 @@ export async function POST(
 
 		const userId = await client.user.getUserId()
 
-		const service = await client.services.get(serviceName)
+		const service = await client.services.get(serviceIdOrSlug)
 
 		if (!service) {
 			return Response.json(
@@ -88,7 +88,7 @@ export async function POST(
 		await client.services.update(service.id, { avatar_url: url.toString() })
 
 		revalidateTag(`service-${service.id}`)
-		revalidateTag(`service-${serviceName}`)
+		revalidateTag(`service-${serviceIdOrSlug}`)
 		revalidateTag(`user-${userId}-services`)
 
 		return Response.json(

@@ -4,7 +4,7 @@ import { Client } from '@/core/client'
 
 interface Props {
 	params: {
-		serviceName: string
+		serviceIdOrSlug: string
 		webhookId: string
 	}
 }

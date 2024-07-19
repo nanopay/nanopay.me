@@ -9,12 +9,12 @@ import { z } from 'zod'
 export const createWebhook = safeAction
 	.schema(
 		webhookCreateSchema.extend({
-			serviceNameOrId: z.string(),
+			serviceIdOrSlug: z.string(),
 		}),
 	)
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
-		const { id } = await client.webhooks.create(parsedInput.serviceNameOrId, {
+		const { id } = await client.webhooks.create(parsedInput.serviceIdOrSlug, {
 			name: parsedInput.name,
 			description: parsedInput.description,
 			url: parsedInput.url,
@@ -22,5 +22,5 @@ export const createWebhook = safeAction
 			secret: parsedInput.secret,
 		})
 
-		redirect(`/${parsedInput.serviceNameOrId}/webhooks/${id}/settings`)
+		redirect(`/${parsedInput.serviceIdOrSlug}/webhooks/${id}/settings`)
 	})

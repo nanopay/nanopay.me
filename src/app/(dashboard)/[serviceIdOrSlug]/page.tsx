@@ -9,58 +9,58 @@ import { getUserEmail } from '@/lib/supabase/server'
 import { NotFoundCard } from '@/components/NotFoundCard'
 
 interface Props {
-	params: { serviceName: string }
+	params: { serviceIdOrSlug: string }
 	searchParams: { new?: 'true' }
 }
 
-const fetchData = async (serviceName: string) => {
+const fetchData = async (serviceIdOrSlug: string) => {
 	const client = new Client(cookies())
 	const [service, invoices] = await Promise.all([
-		client.services.get(serviceName),
-		client.invoices.list(serviceName),
+		client.services.get(serviceIdOrSlug),
+		client.invoices.list(serviceIdOrSlug),
 	])
 	return { service, invoices }
 }
 
-export async function generateMetadata({ params: { serviceName } }: Props) {
-	const { service } = await fetchData(serviceName)
+export async function generateMetadata({ params: { serviceIdOrSlug } }: Props) {
+	const { service } = await fetchData(serviceIdOrSlug)
 	return {
 		title: service ? service.name : 'Not Found',
 	}
 }
 
 export default async function ServiceDashboardPage({
-	params: { serviceName },
+	params: { serviceIdOrSlug },
 	searchParams,
 }: Props) {
 	const isNew = searchParams.new ? true : false
 
-	const { service, invoices } = await fetchData(serviceName)
+	const { service, invoices } = await fetchData(serviceIdOrSlug)
 
 	const email = await getUserEmail(cookies())
 
 	if (!service) {
-		return <NotFoundCard path={`/${serviceName}`} forEmail={email} />
+		return <NotFoundCard path={`/${serviceIdOrSlug}`} forEmail={email} />
 	}
 
 	const cards: DashCardProps[] = [
 		{
 			name: 'Invoices',
-			href: `/${service.name}/invoices`,
+			href: `/${service.slug}/invoices`,
 			icon: ReceiptIcon,
 			amount: service.invoices_count,
 			hrefLabel: 'View All',
 		},
 		{
 			name: 'API Keys',
-			href: `/${service.name}/keys`,
+			href: `/${service.slug}/keys`,
 			icon: KeyRoundIcon,
 			amount: service.api_keys_count,
 			hrefLabel: 'Manage Keys',
 		},
 		{
 			name: 'Webhooks',
-			href: `/${service.name}/webhooks`,
+			href: `/${service.slug}/webhooks`,
 			icon: WebhookIcon,
 			amount: service.webhooks_count,
 			hrefLabel: 'View All',
@@ -88,7 +88,7 @@ export default async function ServiceDashboardPage({
 				<h2 className="mx-auto mb-2 max-w-7xl px-2 text-lg font-medium leading-6 text-slate-900">
 					Recent Invoices
 				</h2>
-				<Invoices invoices={invoices || []} serviceName={service.name} />
+				<Invoices invoices={invoices || []} serviceIdOrSlug={service.name} />
 			</section>
 
 			{isNew && <Fireworks count={3} />}

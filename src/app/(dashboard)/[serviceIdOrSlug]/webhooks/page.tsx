@@ -5,9 +5,9 @@ import { Button } from '@/components/Button'
 import { cookies } from 'next/headers'
 import { Client } from '@/core/client'
 
-const fetchData = async (serviceName: string) => {
+const fetchData = async (serviceIdOrSlug: string) => {
 	const client = new Client(cookies())
-	return await client.webhooks.list(serviceName)
+	return await client.webhooks.list(serviceIdOrSlug)
 }
 
 export const metadata = {
@@ -15,20 +15,20 @@ export const metadata = {
 }
 
 export default async function Webhooks({
-	params: { serviceName },
+	params: { serviceIdOrSlug },
 }: {
 	params: {
-		serviceName: string
+		serviceIdOrSlug: string
 	}
 }) {
-	const webhooks = await fetchData(serviceName)
+	const webhooks = await fetchData(serviceIdOrSlug)
 
 	return (
 		<div className="w-full">
 			<header className="px-1 py-4">
 				<div className="flex items-center">
 					<h1 className="flex-1 text-lg font-medium">Webhooks</h1>
-					<Link href={`/${serviceName}/webhooks/new`}>
+					<Link href={`/${serviceIdOrSlug}/webhooks/new`}>
 						<Button color="nano" size="sm">
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
 							Create Webhook
@@ -52,7 +52,7 @@ export default async function Webhooks({
 										) : (
 											<ActivityDot status="inactive" />
 										)}
-										<Link href={`/${serviceName}/webhooks/${webhook.id}`}>
+										<Link href={`/${serviceIdOrSlug}/webhooks/${webhook.id}`}>
 											<h2 className="text-sm font-medium">
 												<span className="absolute inset-0" aria-hidden="true" />
 												{webhook.name}

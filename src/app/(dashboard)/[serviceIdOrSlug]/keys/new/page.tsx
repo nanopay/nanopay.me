@@ -43,7 +43,7 @@ const roboto = Roboto({
 
 interface Props {
 	params: {
-		serviceName: string
+		serviceIdOrSlug: string
 	}
 }
 
@@ -70,7 +70,7 @@ export default function NewApiKey({ params }: Props) {
 		await executeAsync({
 			name: fields.name,
 			description: fields.description,
-			serviceNameOrId: params.serviceName,
+			serviceIdOrSlug: params.serviceIdOrSlug,
 		})
 	}
 
@@ -148,7 +148,7 @@ export default function NewApiKey({ params }: Props) {
 							{!!apiKey ? (
 								<ApiKeyBanner
 									apiKey={apiKey}
-									serviceName={params.serviceName}
+									serviceIdOrSlug={params.serviceIdOrSlug}
 								/>
 							) : (
 								<Button type="submit" loading={form.formState.isSubmitting}>
@@ -165,10 +165,10 @@ export default function NewApiKey({ params }: Props) {
 
 function ApiKeyBanner({
 	apiKey,
-	serviceName,
+	serviceIdOrSlug,
 }: {
 	apiKey?: string
-	serviceName?: string
+	serviceIdOrSlug?: string
 }) {
 	const [copied, setCopied] = useState(false)
 
@@ -216,7 +216,7 @@ function ApiKeyBanner({
 				</ul>
 			</div>
 			<Button type="button" asChild>
-				<Link href={`/${serviceName}/keys`}>Done</Link>
+				<Link href={`/${serviceIdOrSlug}/keys`}>Done</Link>
 			</Button>
 		</div>
 	)

@@ -97,11 +97,9 @@ export default function Checkout({
 						<ServiceAvatar
 							id={invoice.service.id}
 							src={invoice.service.avatar_url}
-							alt={invoice.service.display_name}
+							alt={invoice.service.name}
 						/>
-						<h2 className="text-lg font-semibold">
-							{invoice.service.display_name}
-						</h2>
+						<h2 className="text-lg font-semibold">{invoice.service.name}</h2>
 					</div>
 					<div className="h-1/2 overflow-y-auto">
 						<div className="mt-8 p-4 text-white">
@@ -144,7 +142,7 @@ export default function Checkout({
 							/>
 							<div className="ml-2 w-full">
 								<h2 className="text-lg font-semibold leading-5">
-									{invoice.service.display_name}
+									{invoice.service.name}
 								</h2>
 								<p className="text-sm">{invoice.title}</p>
 							</div>

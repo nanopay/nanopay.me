@@ -24,19 +24,19 @@ export class BaseService {
 		return session.user.id
 	}
 
-	isServiceOwner = async (serviceNameOrId: string) => {
+	isServiceOwner = async (serviceIdOrSlug: string) => {
 		const userId = await this.getUserId()
-		const serviceOwnerId = await this.getServiceOwnerId(serviceNameOrId)
+		const serviceOwnerId = await this.getServiceOwnerId(serviceIdOrSlug)
 		return userId === serviceOwnerId
 	}
 
-	getServiceOwnerId = async (serviceNameOrId: string) => {
+	getServiceOwnerId = async (serviceIdOrSlug: string) => {
 		const query = this.supabase.from('services').select('user_id')
 
-		if (checkUUID(serviceNameOrId)) {
-			query.eq('id', serviceNameOrId)
+		if (checkUUID(serviceIdOrSlug)) {
+			query.eq('id', serviceIdOrSlug)
 		} else {
-			query.eq('name', serviceNameOrId)
+			query.eq('slug', serviceIdOrSlug)
 		}
 
 		const { data, error } = await query.single()
@@ -48,15 +48,15 @@ export class BaseService {
 		return data.user_id
 	}
 
-	getIdFromServiceNameOrId = async (serviceNameOrId: string) => {
-		if (checkUUID(serviceNameOrId)) {
-			return serviceNameOrId
+	getIdFromServiceIdOrSlug = async (serviceIdOrSlug: string) => {
+		if (checkUUID(serviceIdOrSlug)) {
+			return serviceIdOrSlug
 		}
 
 		const { data, error } = await this.supabase
 			.from('services')
 			.select('id')
-			.eq('name', serviceNameOrId)
+			.eq('slug', serviceIdOrSlug)
 			.single()
 
 		if (error) {

@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 interface InvoicesProps {
 	invoices: Invoice[]
-	serviceName?: string
+	serviceIdOrSlug?: string
 }
 
 const statusStyles: Record<InvoiceStatus, string> = {
@@ -16,7 +16,7 @@ const statusStyles: Record<InvoiceStatus, string> = {
 	error: 'bg-red-600 text-white',
 }
 
-export default function Invoices({ invoices, serviceName }: InvoicesProps) {
+export default function Invoices({ invoices, serviceIdOrSlug }: InvoicesProps) {
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
@@ -122,8 +122,8 @@ export default function Invoices({ invoices, serviceName }: InvoicesProps) {
 												<div className="flex">
 													<Link
 														href={
-															serviceName
-																? `/${serviceName}/invoices/${invoice.id}`
+															serviceIdOrSlug
+																? `/${serviceIdOrSlug}/invoices/${invoice.id}`
 																: `/invoices/${invoice.id}`
 														}
 														className="group inline-flex space-x-2 truncate text-sm"

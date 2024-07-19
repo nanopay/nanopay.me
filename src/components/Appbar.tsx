@@ -33,27 +33,27 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 		{
 			name: 'Overview',
 			href: `/${currentService?.name}`,
-			current: pathname === '/[serviceName]',
+			current: pathname === '/[serviceIdOrSlug]',
 		},
 		{
 			name: 'Invoices',
 			href: `/${currentService?.name}/invoices`,
-			current: pathname === '/[serviceName]/invoices',
+			current: pathname === '/[serviceIdOrSlug]/invoices',
 		},
 		{
 			name: 'Webhooks',
 			href: `/${currentService?.name}/webhooks`,
-			current: pathname === '/[serviceName]/webhooks',
+			current: pathname === '/[serviceIdOrSlug]/webhooks',
 		},
 		{
 			name: 'API Keys',
 			href: `/${currentService?.name}/keys`,
-			current: pathname === '/[serviceName]/keys',
+			current: pathname === '/[serviceIdOrSlug]/keys',
 		},
 		{
 			name: 'Settings',
 			href: `/${currentService?.name}/settings`,
-			current: pathname === '/[serviceName]/settings',
+			current: pathname === '/[serviceIdOrSlug]/settings',
 		},
 	]
 
@@ -77,17 +77,17 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 
 							<div className="flex gap-1 overflow-hidden">
 								<Link
-									href={`/${currentService.name}`}
+									href={`/${currentService.slug}`}
 									className="flex items-center gap-2 overflow-hidden text-base font-semibold text-slate-700"
 								>
 									<ServiceAvatar
 										id={currentService.id}
 										size={20}
 										src={currentService.avatar_url}
-										alt={currentService.display_name}
+										alt={currentService.name}
 										className="border-slate-300"
 									/>
-									<div className="truncate">{currentService.display_name}</div>
+									<div className="truncate">{currentService.name}</div>
 								</Link>
 								<ServicesNavigationMenu services={services}>
 									<Button

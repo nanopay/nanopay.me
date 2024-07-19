@@ -9,13 +9,13 @@ import { z } from 'zod'
 export const createInvoice = safeAction
 	.schema(
 		invoiceCreateSchema.extend({
-			serviceNameOrId: z.string(),
+			serviceIdOrSlug: z.string(),
 		}),
 	)
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
 
-		const { id } = await client.invoices.create(parsedInput.serviceNameOrId, {
+		const { id } = await client.invoices.create(parsedInput.serviceIdOrSlug, {
 			title: parsedInput.title,
 			description: parsedInput.description,
 			metadata: parsedInput.metadata,
@@ -24,5 +24,5 @@ export const createInvoice = safeAction
 			redirect_url: parsedInput.redirect_url,
 		})
 
-		redirect(`/${parsedInput.serviceNameOrId}/invoices/${id}`)
+		redirect(`/${parsedInput.serviceIdOrSlug}/invoices/${id}`)
 	})

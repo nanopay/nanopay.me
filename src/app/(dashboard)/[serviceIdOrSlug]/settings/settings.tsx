@@ -65,7 +65,7 @@ export function Settings({ service }: SettingsProps) {
 					</CardHeader>
 					<CardContent>
 						<div className="w-full max-w-sm">
-							<Input value={service.display_name} />
+							<Input value={service.name} />
 						</div>
 					</CardContent>
 					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
@@ -96,7 +96,7 @@ export function Settings({ service }: SettingsProps) {
 								id={service.id}
 								size={80}
 								src={service.avatar_url}
-								alt={service.display_name}
+								alt={service.name}
 							/>
 						</CardContent>
 					</div>
@@ -227,7 +227,7 @@ export function DeleteServiceAlertModal({
 	}
 
 	const handleDeleteService = () => {
-		execute(service.name)
+		execute(service.id)
 	}
 
 	const reset = () => {
@@ -271,9 +271,9 @@ export function DeleteServiceAlertModal({
 						id={service.id}
 						size={64}
 						src={service.avatar_url}
-						alt={service.display_name}
+						alt={service.name}
 					/>
-					<p className="mt-2 text-lg font-bold">{service.display_name}</p>
+					<p className="mt-2 text-lg font-bold">{service.name}</p>
 					<ul className="flex items-center space-x-2 divide-x divide-slate-200 p-4 text-sm text-slate-600">
 						<li className="flex flex-col items-center px-4">
 							<ReceiptIcon className="h-4 w-4" />
@@ -307,10 +307,10 @@ export function DeleteServiceAlertModal({
 					<div className="w-full p-4">
 						<p className="py-2 font-medium">
 							To confirm, type &quot;
-							<b>{service.name}</b>&quot; in the box below
+							<b>{service.slug}</b>&quot; in the box below
 						</p>
 						<Input
-							invalid={typeConfirm !== service.name}
+							invalid={typeConfirm !== service.slug}
 							value={typeConfirm}
 							onChange={e => {
 								setTypeConfirm(e.target.value)
@@ -325,7 +325,7 @@ export function DeleteServiceAlertModal({
 							loading={isExecuting}
 							onClick={handleDeleteService}
 							className="w-full"
-							disabled={typeConfirm !== service.name}
+							disabled={typeConfirm !== service.slug}
 						>
 							Delete this service
 						</Button>

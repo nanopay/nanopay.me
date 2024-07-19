@@ -17,7 +17,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 									id={service.id}
 									size={80}
 									src={service.avatar_url}
-									alt={service.display_name}
+									alt={service.name}
 								/>
 							</div>
 							<div>
@@ -27,7 +27,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 											id={service.id}
 											size={64}
 											src={service.avatar_url}
-											alt={service.display_name}
+											alt={service.name}
 										/>
 									</div>
 									<h1 className="ml-3 text-2xl font-bold leading-7 text-slate-900 sm:truncate sm:leading-9">
@@ -74,7 +74,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 					</div>
 					<div className="mt-6 flex space-x-3 md:ml-4 md:mt-0">
 						<Button variant="outline" color="nano" asChild>
-							<Link href={`/${service.name}/settings`}>
+							<Link href={`/${service.slug}/settings`}>
 								<SettingsIcon
 									className="-ml-1 mr-2 h-4 w-4"
 									aria-hidden="true"
@@ -82,7 +82,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 								Settings
 							</Link>
 						</Button>
-						<Link href={`/${service.name}/invoices/new`}>
+						<Link href={`/${service.slug}/invoices/new`}>
 							<Button color="nano">
 								<PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
 								Create Invoice

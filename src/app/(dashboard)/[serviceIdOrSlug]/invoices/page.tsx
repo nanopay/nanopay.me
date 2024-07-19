@@ -11,19 +11,21 @@ export const metadata: Metadata = {
 }
 
 interface Props {
-	params: { serviceName: string }
+	params: { serviceIdOrSlug: string }
 }
 
-export default async function InvoicesPage({ params: { serviceName } }: Props) {
+export default async function InvoicesPage({
+	params: { serviceIdOrSlug },
+}: Props) {
 	const client = new Client(cookies())
-	const invoices = await client.invoices.list(serviceName)
+	const invoices = await client.invoices.list(serviceIdOrSlug)
 
 	return (
 		<div className="w-full max-w-7xl">
 			<header className="px-1 py-4">
 				<div className="flex items-center">
 					<h1 className="flex-1 text-lg font-medium">Invoices</h1>
-					<Link href={`/${serviceName}/invoices/new`}>
+					<Link href={`/${serviceIdOrSlug}/invoices/new`}>
 						<Button color="nano" size="sm">
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
 							Create Invoice
@@ -31,7 +33,7 @@ export default async function InvoicesPage({ params: { serviceName } }: Props) {
 					</Link>
 				</div>
 			</header>
-			<Invoices invoices={invoices || []} serviceName={serviceName} />
+			<Invoices invoices={invoices || []} serviceIdOrSlug={serviceIdOrSlug} />
 		</div>
 	)
 }

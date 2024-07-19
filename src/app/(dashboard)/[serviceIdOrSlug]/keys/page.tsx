@@ -11,19 +11,19 @@ export const metadata: Metadata = {
 }
 
 export default async function ApiKeys({
-	params: { serviceName },
+	params: { serviceIdOrSlug },
 }: {
-	params: { serviceName: string }
+	params: { serviceIdOrSlug: string }
 }) {
 	const client = new Client(cookies())
-	const apiKeys = await client.apiKeys.list(serviceName)
+	const apiKeys = await client.apiKeys.list(serviceIdOrSlug)
 
 	return (
 		<div className="w-full">
 			<div className="border-b border-slate-200 pb-4 pl-4 pr-6 pt-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
 				<div className="flex items-center">
 					<h1 className="flex-1 text-lg font-medium">API Keys</h1>
-					<Link href={`/${serviceName}/keys/new`}>
+					<Link href={`/${serviceIdOrSlug}/keys/new`}>
 						<Button color="nano">
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
 							Create Key

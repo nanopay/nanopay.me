@@ -5,30 +5,32 @@ import { NotFoundCard } from '@/components/NotFoundCard'
 import { getUserEmail } from '@/lib/supabase/server'
 
 interface Params {
-	params: { serviceName: string }
+	params: { serviceIdOrSlug: string }
 }
 
-const fetchData = async (serviceName: string) => {
+const fetchData = async (serviceIdOrSlug: string) => {
 	const client = new Client(cookies())
-	return await client.services.get(serviceName)
+	return await client.services.get(serviceIdOrSlug)
 }
 
-export async function generateMetadata({ params: { serviceName } }: Params) {
-	const service = await fetchData(serviceName)
+export async function generateMetadata({
+	params: { serviceIdOrSlug },
+}: Params) {
+	const service = await fetchData(serviceIdOrSlug)
 	return {
 		title: service ? `Settings - ${service.name}` : 'Not Found',
 	}
 }
 
 export default async function ServiceSettingsPage({
-	params: { serviceName },
+	params: { serviceIdOrSlug },
 }: Params) {
-	const service = await fetchData(serviceName)
+	const service = await fetchData(serviceIdOrSlug)
 
 	const email = await getUserEmail(cookies())
 
 	if (!service) {
-		return <NotFoundCard path={`/${serviceName}`} forEmail={email} />
+		return <NotFoundCard path={`/${serviceIdOrSlug}`} forEmail={email} />
 	}
 
 	return (

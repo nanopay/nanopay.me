@@ -96,10 +96,10 @@ export const useUploader = (apiUrl: string, options: UploaderOptions = {}) => {
 }
 
 export const useServiceAvatarUploader = (
-	serviceNameOrId: string,
+	serviceIdOrSlug: string,
 	options: UploaderOptions,
 ) => {
-	return useUploader(`/${serviceNameOrId}/avatar`, options)
+	return useUploader(`/${serviceIdOrSlug}/avatar`, options)
 }
 
 export const useUserAvatarUploader = (options: UploaderOptions) => {

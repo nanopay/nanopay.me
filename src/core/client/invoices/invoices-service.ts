@@ -18,7 +18,7 @@ import { serviceNameSchema } from '../services/services-schema'
 
 export class InvoicesService extends BaseService {
 	async create(
-		serviceNameOrId: string,
+		serviceIdOrSlug: string,
 		data: InvoiceCreate,
 	): Promise<{
 		id: string
@@ -27,7 +27,7 @@ export class InvoicesService extends BaseService {
 	}> {
 		invoiceCreateSchema.parse(data)
 
-		const serviceId = await this.getIdFromServiceNameOrId(serviceNameOrId)
+		const serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
 
 		try {
 			const { id, pay_address, expires_at } =
@@ -89,7 +89,7 @@ export class InvoicesService extends BaseService {
 		const { data, error } = await this.supabase
 			.from('invoices')
 			.select(
-				'*, service:services(id, name, display_name, avatar_url, description, website, contact_email), payments(id, from, to, hash, amount, timestamp)',
+				'*, service:services(id, name, name, avatar_url, description, website, contact_email), payments(id, from, to, hash, amount, timestamp)',
 			)
 			.eq('id', invoiceId)
 			.single()
@@ -126,7 +126,7 @@ export class InvoicesService extends BaseService {
 	}
 
 	async list(
-		serviceIdOrName: string,
+		serviceIdOrSlug: string,
 		options?: InvoicePagination,
 	): Promise<Invoice[]> {
 		const query = this.supabase
@@ -135,11 +135,11 @@ export class InvoicesService extends BaseService {
 				'*, service:services!inner(name), payments(id, from, to, hash, amount, timestamp)',
 			)
 
-		if (checkUUID(serviceIdOrName)) {
-			query.eq('service_id', serviceIdOrName)
+		if (checkUUID(serviceIdOrSlug)) {
+			query.eq('service_id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrName)
-			query.eq('service.name', serviceIdOrName)
+			serviceNameSchema.parse(serviceIdOrSlug)
+			query.eq('service.slug', serviceIdOrSlug)
 		}
 
 		const offset = options?.offset || 0

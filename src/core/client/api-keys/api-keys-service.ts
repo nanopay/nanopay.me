@@ -8,12 +8,12 @@ import { serviceNameSchema } from '../services'
 
 export class ApiKeysService extends BaseService {
 	async create(
-		serviceNameOrId: string,
+		serviceIdOrSlug: string,
 		data: ApiKeyCreate,
 	): Promise<{ apiKey: string; checksum: string }> {
 		apiKeyCreateSchema.parse(data)
 
-		const serviceId = await this.getIdFromServiceNameOrId(serviceNameOrId)
+		const serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
 
 		const { apiKey, checksum } = generateApiKey()
 
@@ -56,16 +56,16 @@ export class ApiKeysService extends BaseService {
 		return data
 	}
 
-	async list(serviceIdOrName: string): Promise<ApiKey[]> {
+	async list(serviceIdOrSlug: string): Promise<ApiKey[]> {
 		const query = this.supabase
 			.from('api_keys')
 			.select('*, service:services!inner(name)')
 
-		if (checkUUID(serviceIdOrName)) {
-			query.eq('service_id', serviceIdOrName)
+		if (checkUUID(serviceIdOrSlug)) {
+			query.eq('service_id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceIdOrName)
-			query.eq('service.name', serviceIdOrName)
+			serviceNameSchema.parse(serviceIdOrSlug)
+			query.eq('service.slug', serviceIdOrSlug)
 		}
 
 		const { data, error } = await query

@@ -24,7 +24,7 @@ export default function NewService({
 	params,
 }: {
 	params: {
-		serviceName: string
+		serviceIdOrSlug: string
 	}
 }) {
 	const { showError } = useToast()
@@ -45,7 +45,7 @@ export default function NewService({
 	const onSubmit = async (fields: InvoiceCreate) => {
 		await executeAsync({
 			...fields,
-			serviceNameOrId: params.serviceName,
+			serviceIdOrSlug: params.serviceIdOrSlug,
 		})
 	}
 

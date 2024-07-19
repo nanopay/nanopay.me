@@ -14,6 +14,7 @@ import {
 	serviceUpdateSchema,
 } from './services-schema'
 import { z } from 'zod'
+import { sanitizeSlug } from '@/utils/url'
 
 export class ServicesService extends BaseService {
 	async create(data: ServiceCreate): Promise<{ id: string }> {
@@ -26,12 +27,14 @@ export class ServicesService extends BaseService {
 			throw new Error('User not found')
 		}
 
+		const slug = sanitizeSlug(data.name.replace(' ', '-'))
+
 		const { data: service, error } = await this.supabase
 			.from('services')
 			.insert({
 				user_id: userId,
+				slug,
 				name: data.name,
-				display_name: data.name,
 				avatar_url: data.avatar_url,
 				website: data.website,
 				contact_email: data.contact_email,
@@ -46,13 +49,13 @@ export class ServicesService extends BaseService {
 		return { id: service.id }
 	}
 
-	async get(serviceNameOrId: string): Promise<Service | null> {
+	async get(serviceIdOrSlug: string): Promise<Service | null> {
 		const query = this.supabase.from('services').select('*')
-		if (checkUUID(serviceNameOrId)) {
-			query.eq('id', serviceNameOrId)
+		if (checkUUID(serviceIdOrSlug)) {
+			query.eq('id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceNameOrId)
-			query.eq('name', serviceNameOrId)
+			serviceNameSchema.parse(serviceIdOrSlug)
+			query.eq('name', serviceIdOrSlug)
 		}
 		const { data, error } = await query.single()
 		if (error) {
@@ -84,20 +87,20 @@ export class ServicesService extends BaseService {
 		return data
 	}
 
-	async update(serviceNameOrId: string, data: ServiceUpdate): Promise<void> {
+	async update(serviceIdOrSlug: string, data: ServiceUpdate): Promise<void> {
 		serviceUpdateSchema.parse(data)
 		const query = this.supabase.from('services').update({
+			slug: data.slug,
 			name: data.name,
-			display_name: data.display_name,
 			avatar_url: data.avatar_url,
 			website: data.website,
 			contact_email: data.contact_email,
 		})
-		if (checkUUID(serviceNameOrId)) {
-			query.eq('id', serviceNameOrId)
+		if (checkUUID(serviceIdOrSlug)) {
+			query.eq('id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceNameOrId)
-			query.eq('name', serviceNameOrId)
+			serviceNameSchema.parse(serviceIdOrSlug)
+			query.eq('name', serviceIdOrSlug)
 		}
 		const { error } = await query
 		if (error) {
@@ -105,13 +108,13 @@ export class ServicesService extends BaseService {
 		}
 	}
 
-	async delete(serviceNameOrId: string): Promise<void> {
+	async delete(serviceIdOrSlug: string): Promise<void> {
 		const query = this.supabase.from('services').delete()
-		if (checkUUID(serviceNameOrId)) {
-			query.eq('id', serviceNameOrId)
+		if (checkUUID(serviceIdOrSlug)) {
+			query.eq('id', serviceIdOrSlug)
 		} else {
-			serviceNameSchema.parse(serviceNameOrId)
-			query.eq('name', serviceNameOrId)
+			serviceNameSchema.parse(serviceIdOrSlug)
+			query.eq('name', serviceIdOrSlug)
 		}
 		const { error } = await query
 		if (error) {

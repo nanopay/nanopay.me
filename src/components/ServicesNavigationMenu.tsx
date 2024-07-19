@@ -107,7 +107,7 @@ function ServicesList({
 	return (
 		<div className="grid gap-2">
 			{services.map(service => (
-				<Link href={`/${service.name}`} className="w-full" key={service.id}>
+				<Link href={`/${service.slug}`} className="w-full" key={service.id}>
 					<Button
 						variant="ghost"
 						key={service.id}
@@ -120,7 +120,7 @@ function ServicesList({
 							id={service.id}
 							size={24}
 							src={service.avatar_url}
-							alt={service.display_name}
+							alt={service.name}
 							className="border-slate-300"
 						/>
 						{service.name}

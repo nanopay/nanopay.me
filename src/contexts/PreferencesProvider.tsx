@@ -23,10 +23,10 @@ export const PreferencesProvider = ({
 }: PreferencesProviderProps) => {
 	const [showPreReleaseAlert, setShowPreReleaseAlert] = useState(true)
 
-	const serviceName = useParams()?.serviceName
+	const serviceIdOrSlug = useParams()?.serviceIdOrSlug
 
 	const currentService = services.find(
-		service => service.name === serviceName,
+		service => service.slug === serviceIdOrSlug,
 	) as Service | null
 
 	return (

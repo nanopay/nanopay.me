@@ -9,12 +9,12 @@ import {
 import { cookies } from 'next/headers'
 
 export const createNewApiKey = safeAction
-	.schema(apiKeyCreateSchema.extend({ serviceNameOrId: serviceNameOrIdSchema }))
+	.schema(apiKeyCreateSchema.extend({ serviceIdOrSlug: serviceNameOrIdSchema }))
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
 
 		const { apiKey, checksum } = await client.apiKeys.create(
-			parsedInput.serviceNameOrId,
+			parsedInput.serviceIdOrSlug,
 			{
 				name: parsedInput.name,
 				description: parsedInput.description,
