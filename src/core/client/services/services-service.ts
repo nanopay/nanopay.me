@@ -17,7 +17,7 @@ import { z } from 'zod'
 import { sanitizeSlug } from '@/utils/url'
 
 export class ServicesService extends BaseService {
-	async create(data: ServiceCreate): Promise<{ id: string }> {
+	async create(data: ServiceCreate): Promise<{ id: string; slug: string }> {
 		serviceCreateSchema.parse(data)
 
 		const { data: session } = await this.supabase.auth.getSession()
@@ -46,7 +46,7 @@ export class ServicesService extends BaseService {
 			throw new Error(error.message)
 		}
 
-		return { id: service.id }
+		return { id: service.id, slug }
 	}
 
 	async get(serviceIdOrSlug: string): Promise<Service | null> {
