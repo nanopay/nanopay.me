@@ -15,6 +15,7 @@ const links = [
 	['FAQs', '/#faqs'],
 	['API', '/#api'],
 	['Donate', '/#donate'],
+	['Github', 'https://github.com/nanopay/nanopay.me'],
 ]
 
 export function LandingHeader({ ...props }: LandingHeaderProps) {
