@@ -35,7 +35,6 @@
 */
 
 import { jwtVerify } from 'jose'
-import { JWTExpired } from 'jose/errors'
 import {
 	UserAppMetadata,
 	UserMetadata,
@@ -66,7 +65,8 @@ export class SupabaseSafeSession {
 		this.jwtSecret = new TextEncoder().encode(jwtSecret)
 	}
 
-	private async getTokens() {
+	private async getAccessToken() {
+		// Let Supabase get the session tokens and automatically refresh them if needed
 		const { data, error } = await this.supabase.auth.getSession()
 		if (error) {
 			return { error }
@@ -77,7 +77,6 @@ export class SupabaseSafeSession {
 
 		return {
 			access_token: data.session.access_token,
-			refresh_token: data.session.refresh_token,
 		}
 	}
 
@@ -102,39 +101,22 @@ export class SupabaseSafeSession {
 				error: null,
 			}
 		} catch (error) {
-			if (error instanceof JWTExpired) {
-				return { data: null, error: new AuthError('Access token expired') }
-			} else {
-				return { data: null, error: new AuthError('JWT verification failed') }
-			}
+			return { data: null, error: new AuthError('JWT verification failed') }
 		}
-	}
-
-	private async refreshAccessToken(
-		refresh_token: string,
-	): Promise<SupabaseSafeUserResponse> {
-		const { error } = await this.supabase.auth.refreshSession({ refresh_token })
-		if (error) {
-			return { data: null, error }
-		}
-		return this.getUser()
 	}
 
 	public async getUser(): Promise<SupabaseSafeUserResponse> {
-		const tokens = await this.getTokens()
+		const token = await this.getAccessToken()
 
-		if (tokens.error) {
-			return { data: null, error: tokens.error }
+		if (token.error) {
+			return { data: null, error: token.error }
 		}
 
 		const { data: userData, error } = await this.parseAccessToken(
-			tokens.access_token,
+			token.access_token,
 		)
 
 		if (error) {
-			if (error.message === 'Access token expired') {
-				return this.refreshAccessToken(tokens.refresh_token)
-			}
 			return { data: null, error }
 		}
 
