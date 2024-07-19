@@ -11,7 +11,6 @@ import {
 } from '@/core/client'
 import { Roboto } from 'next/font/google'
 import clsx from 'clsx'
-import { sanitizeSlug } from '@/utils/url'
 import { CopyCheckIcon, CopyIcon, InfoIcon, LockIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import Link from 'next/link'
@@ -35,6 +34,7 @@ import {
 } from '@/components/ui/card'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
+import { slugify } from '@/core/utils'
 
 const roboto = Roboto({
 	weight: '400',
@@ -106,9 +106,7 @@ export default function NewApiKey({ params }: Props) {
 											<Input
 												label="Name"
 												{...field}
-												onChange={e =>
-													field.onChange(sanitizeSlug(e.target.value))
-												}
+												onChange={e => field.onChange(slugify(e.target.value))}
 												invalid={fieldState.invalid}
 												disabled={
 													field.disabled || form.formState.isSubmitSuccessful

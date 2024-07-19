@@ -22,3 +22,5 @@ export const MAX_USER_NAME_LENGTH = 64
 
 export const MIN_SERVICE_NAME_LENGTH = 3
 export const MAX_SERVICE_NAME_LENGTH = 32
+
+export const MAX_SLUG_LENGTH = 48

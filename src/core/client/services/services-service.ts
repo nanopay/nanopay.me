@@ -14,7 +14,7 @@ import {
 	serviceUpdateSchema,
 } from './services-schema'
 import { z } from 'zod'
-import { sanitizeSlug } from '@/utils/url'
+import { slugify } from '../../utils'
 
 export class ServicesService extends BaseService {
 	async create(data: ServiceCreate): Promise<{ id: string; slug: string }> {
@@ -27,7 +27,7 @@ export class ServicesService extends BaseService {
 			throw new Error('User not found')
 		}
 
-		const slug = sanitizeSlug(data.name.replace(' ', '-'))
+		const slug = slugify(data.name)
 
 		const { data: service, error } = await this.supabase
 			.from('services')

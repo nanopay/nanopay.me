@@ -10,7 +10,6 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
-import { sanitizeSlug } from '@/utils/url'
 import Input from '@/components/Input'
 import { AlertCircle, InfoIcon } from 'lucide-react'
 import { UseFormProps, useForm } from 'react-hook-form'
@@ -22,6 +21,7 @@ import {
 } from '@/core/client/webhooks/webhooks-types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { webhookCreateSchema } from '@/core/client'
+import { slugify } from '@/core/utils'
 
 const eventTypes: WebhookEventType[] = [
 	'invoice.paid',
@@ -61,7 +61,7 @@ export function WebhookForm({
 								<Input
 									label="Name"
 									{...field}
-									onChange={e => field.onChange(sanitizeSlug(e.target.value))}
+									onChange={e => field.onChange(slugify(e.target.value))}
 									required
 									className="capitalize"
 									disabled={formDisabled}
