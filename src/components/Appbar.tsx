@@ -17,6 +17,7 @@ import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
 import { AnimatePresence, motion } from 'framer-motion'
 import { UserNavigationPopover } from './UserNavigationPopover'
 import { DEFAULT_AVATAR_URL } from '@/core/constants'
+import { current } from 'tailwindcss/colors'
 
 export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {
 	services: Service[]
@@ -67,7 +68,9 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 				)}
 			>
 				<div className="flex items-center gap-2 overflow-hidden">
-					<Logomark className="ml-2 hidden h-8 w-8 sm:block" />
+					<Link href={currentService ? `/${currentService.slug}` : '/'}>
+						<Logomark className="ml-2 hidden h-8 w-8 sm:block" />
+					</Link>
 
 					{currentService && (
 						<>
