@@ -88,7 +88,7 @@ export class InvoicesService extends BaseService {
 		const { data, error } = await this.supabase
 			.from('invoices')
 			.select(
-				'*, service:services(id, name, name, avatar_url, description, website, contact_email), payments(id, from, to, hash, amount, timestamp)',
+				'*, service:services(id, slug, name, avatar_url, website, contact_email), payments(id, from, to, hash, amount, timestamp)',
 			)
 			.eq('id', invoiceId)
 			.single()
