@@ -5,6 +5,7 @@ import { SUPPORT_EMAIL } from '@/core/constants'
 import { AdminClient } from '@/core/client'
 import Checkout from '@/components/Checkout'
 import { getLatestPrice } from '@/services/coinmarketcap'
+import { unstable_noStore } from 'next/cache'
 interface InvoicePageProps {
 	params: {
 		invoiceId: string
@@ -14,6 +15,8 @@ interface InvoicePageProps {
 export default async function InvoicePage({
 	params: { invoiceId },
 }: InvoicePageProps) {
+	unstable_noStore()
+
 	const client = new AdminClient()
 	const invoice = await client.invoices.getPublicInvoice(invoiceId)
 	const { price: xnoToUsd } = await getLatestPrice().catch(() => ({
