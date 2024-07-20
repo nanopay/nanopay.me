@@ -226,7 +226,7 @@ export default function Checkout({
 										>
 											<Button
 												variant="ghost"
-												className="PayButton w-full sm:w-auto"
+												className="PayButton w-full bg-slate-100 text-slate-600 sm:w-auto"
 											>
 												Refund Ӿ{amountPaid}
 												<ReceiptRefundIcon className="ml-2 h-4 w-4" />
