@@ -1,6 +1,7 @@
 {
 	"name": "nanopay-me",
 	"version": "0.0.0",
+	"author": "anarkrypto",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
