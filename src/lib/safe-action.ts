@@ -1,5 +1,5 @@
-import { Schema } from '@typeschema/main'
 import { createSafeActionClient } from 'next-safe-action'
+import { Schema } from 'next-safe-action/adapters/types'
 import { HookResult } from 'next-safe-action/hooks'
 
 export const safeAction = createSafeActionClient({
