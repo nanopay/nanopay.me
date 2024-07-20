@@ -312,7 +312,7 @@ export default function Checkout({
 								<h3 className="text-xl font-semibold text-slate-600">
 									Paid Ӿ{amountPaid}
 								</h3>
-								{priceUsd && (
+								{!!priceUsd && (
 									<div className="text-sm leading-3 text-slate-500 sm:text-xs">
 										~ US${toFiatCurrency(priceUsd)}
 									</div>
@@ -321,7 +321,7 @@ export default function Checkout({
 									<Link href={'#'}>
 										<Button
 											variant="ghost"
-											className="PayButton w-full sm:w-auto"
+											className="PayButton w-full bg-slate-200 text-slate-600 sm:w-auto"
 										>
 											Get Receipt
 											<ArrowDownToLine className="ml-2 h-4 w-4" />
