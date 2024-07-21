@@ -13,6 +13,15 @@ import { getSafeActionError } from '@/lib/safe-action'
 import { useAction } from 'next-safe-action/hooks'
 import { createDemoInvoice } from './actions'
 
+const defaultValues = {
+	title: 'Demo Invoice',
+	description: 'This is a demo invoice',
+	price: 0.01,
+	recipient_address:
+		'nano_1rixy1tbyf3rjqynmujbrpkmkxtcndm79ar9dhzebx115arsd7keb5zkzfp9',
+	redirect_url: 'https://nano.org',
+}
+
 export default function Demo() {
 	const { showError } = useToast()
 
@@ -32,7 +41,7 @@ export default function Demo() {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<InvoiceForm onSubmit={onSubmit} />
+				<InvoiceForm onSubmit={onSubmit} defaultValues={defaultValues} />
 			</CardContent>
 		</Card>
 	)
