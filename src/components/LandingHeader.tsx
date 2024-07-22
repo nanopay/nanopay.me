@@ -4,22 +4,12 @@ import Link from 'next/link'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
-import { NavLinks } from '@/components/NavLinks'
+import { links, NavLinks } from '@/components/NavLinks'
 import { cn } from '@/lib/cn'
 import { MenuIcon, XIcon } from 'lucide-react'
 import { useState } from 'react'
 
 interface LandingHeaderProps extends React.ComponentProps<'header'> {}
-
-const links = [
-	['FAQs', '/#faqs'],
-	['API', '/#api'],
-	[
-		'Donate',
-		'https://github.com/nanopay/nanopay.me?tab=readme-ov-file#donate-%D3%BF',
-	],
-	['Github', 'https://github.com/nanopay/nanopay.me'],
-]
 
 export function LandingHeader({ ...props }: LandingHeaderProps) {
 	const [isOpen, setIsOpen] = useState(false)
