@@ -38,6 +38,7 @@ import {
 import { usePaymentsListener } from '@/hooks/usePaymentsListener'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
+import { Drawer, DrawerContent } from './ui/drawer'
 
 export default function Checkout({
 	invoice,
@@ -47,6 +48,7 @@ export default function Checkout({
 	xnoToUsd: number | null
 }) {
 	const [rendered, setRendered] = useState(false)
+	const [openQrCode, setOpenQrCode] = useState(false)
 
 	useEffect(() => {
 		setRendered(true)
@@ -85,6 +87,10 @@ export default function Checkout({
 
 	const handleRedirectToMerchant = () => {
 		executeRedirectToMechant(invoice.id)
+	}
+
+	const handleOpenQrCode = () => {
+		setOpenQrCode(true)
 	}
 
 	const priceUsd = xnoToUsd ? xnoToUsd * amountMissing : null
@@ -380,12 +386,15 @@ export default function Checkout({
 							</div>
 						)}
 						<div className="my-2 flex items-center justify-between pb-2 md:hidden">
-							<div className="flex items-center gap-2 sm:hidden">
-								<QrCodeIcon className="h-5 w-5 text-slate-400" />
+							<button
+								className="flex items-center gap-2 sm:hidden"
+								onClick={handleOpenQrCode}
+							>
+								<QrCodeIcon className="h-5 w-5 text-slate-500" />
 								<div className="text-xs font-semibold text-slate-500">
-									Scan QR
+									QR Code
 								</div>
-							</div>
+							</button>
 							<div className="hidden sm:block" />
 							<div className="flex items-center justify-center gap-2 text-xs text-slate-500">
 								<div className="border-nano/40 border-t-nano h-4 w-4 animate-spin rounded-full border border-t-2" />
@@ -535,6 +544,13 @@ export default function Checkout({
 					</Link>
 				</footer>
 			</main>
+			<Drawer open={openQrCode} onOpenChange={setOpenQrCode}>
+				<DrawerContent>
+					<div className="flex justify-center py-10">
+						<QRCode value={payURI} className="w-2/3 rounded-xl" />
+					</div>
+				</DrawerContent>
+			</Drawer>
 		</div>
 	)
 }
