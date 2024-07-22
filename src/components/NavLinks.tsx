@@ -7,7 +7,10 @@ import { AnimatePresence, motion } from 'framer-motion'
 const links = [
 	['FAQs', '/#faqs'],
 	['API', '/#api'],
-	['Donate', '/#donate'],
+	[
+		'Donate',
+		'https://github.com/nanopay/nanopay.me?tab=readme-ov-file#donate-%D3%BF',
+	],
 	['Github', 'https://github.com/nanopay/nanopay.me'],
 ]
 
