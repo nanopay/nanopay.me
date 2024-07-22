@@ -3,8 +3,11 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/cn'
 
-const links = [
+export const links = [
+	['Demo', '/demo'],
 	['FAQs', '/#faqs'],
 	['API', '/#api'],
 	[
@@ -15,6 +18,8 @@ const links = [
 ]
 
 export function NavLinks() {
+	const pathname = usePathname()
+
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
 	return (
@@ -24,7 +29,10 @@ export function NavLinks() {
 					key={label}
 					href={href}
 					target={href.startsWith('http') ? '_blank' : undefined}
-					className="relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors delay-150 hover:text-slate-900"
+					className={cn(
+						'relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors delay-150 hover:text-slate-900',
+						pathname === href && 'bg-nano text-white',
+					)}
 					onMouseEnter={() => setHoveredIndex(index)}
 					onMouseLeave={() => setHoveredIndex(null)}
 				>
