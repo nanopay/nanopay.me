@@ -1,4 +1,4 @@
-import { PlayIcon } from 'lucide-react'
+import { LandingHeader } from '@/components/LandingHeader'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -11,15 +11,11 @@ export default async function DemoLayout({
 	children: React.ReactNode
 }) {
 	return (
-		<div className="relative flex flex-1 flex-col items-center justify-center px-4 pt-20">
-			<div
-				role="alert"
-				className="bg-nano absolute left-0 right-0 top-0 z-10 flex items-center justify-center p-4 text-white"
-			>
-				<PlayIcon size="24" />
-				<h1 className="ml-2 text-xl font-bold">NANOPAY DEMO</h1>
+		<>
+			<LandingHeader className="border-b border-slate-200 bg-white shadow-sm" />
+			<div className="relative flex flex-1 flex-col items-center justify-center p-4">
+				{children}
 			</div>
-			{children}
-		</div>
+		</>
 	)
 }
