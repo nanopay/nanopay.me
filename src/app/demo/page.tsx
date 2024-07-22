@@ -34,8 +34,13 @@ export default function Demo() {
 
 	return (
 		<Card className="w-full max-w-lg">
-			<CardHeader>
-				<CardTitle>New Invoice</CardTitle>
+			<CardHeader className="relative">
+				<CardTitle className="flex justify-between space-x-2">
+					New Invoice
+					<span className="w-fit rounded-full border border-yellow-600 px-3 py-1 text-base font-bold text-yellow-600">
+						DEMO
+					</span>
+				</CardTitle>
 				<CardDescription>
 					Create a new invoice for demonstration
 				</CardDescription>
