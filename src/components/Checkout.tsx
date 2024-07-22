@@ -264,7 +264,7 @@ export default function Checkout({
 								{formatDateTime(invoice.expires_at)}
 							</div>
 
-							{payments.length && (
+							{payments.length > 0 && (
 								<Transactions
 									transactions={payments.map(payment => {
 										return {
