@@ -17,10 +17,6 @@ export const toFiatCurrency = (amount: number, decimals = 2) => {
 	return `${unity},${decimal.padEnd(2, '0')}`
 }
 
-export const copyToClipboard = (text: string) => {
-	navigator.clipboard.writeText(text)
-}
-
 export const formatDate = (date: string | number) => {
 	const d = new Date(date)
 	return new Date(date).toLocaleDateString('en-US', {
@@ -52,5 +48,5 @@ export const formatDateTime = (date: string | number) => {
 }
 
 export const explorerUrl = (hash: string) => {
-	return `https://www.nanolooker.com/block/${hash}`
+	return `https://blocklattice.io/block/${hash}`
 }
