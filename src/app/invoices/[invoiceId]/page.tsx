@@ -6,6 +6,13 @@ import { AdminClient } from '@/core/client'
 import Checkout from '@/components/Checkout'
 import { getLatestPrice } from '@/services/coinmarketcap'
 import { unstable_noStore } from 'next/cache'
+import { Viewport } from 'next'
+import colors from 'tailwindcss/colors'
+
+export const viewport: Viewport = {
+	themeColor: colors.slate[800],
+}
+
 interface InvoicePageProps {
 	params: {
 		invoiceId: string
