@@ -95,6 +95,12 @@ export default function Checkout({
 
 	const priceUsd = xnoToUsd ? xnoToUsd * amountMissing : null
 
+	useEffect(() => {
+		if (isPaid) {
+			setOpenQrCode(false)
+		}
+	}, [isPaid])
+
 	return (
 		<div className="flex w-full flex-col rounded-3xl shadow md:flex-row">
 			<nav className="hidden w-72 flex-col items-center justify-between gap-16 border-r border-[#1e2c3d] bg-[#1e2c3d] px-4 py-2 sm:rounded-l-3xl md:flex">
