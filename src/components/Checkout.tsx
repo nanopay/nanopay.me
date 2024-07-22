@@ -150,7 +150,7 @@ export default function Checkout({
 				className="border-b border-slate-200 px-4 md:hidden"
 			>
 				<AccordionItem value="item-1">
-					<AccordionTrigger>
+					<AccordionTrigger className="!no-underline">
 						<div className="flex items-center gap-2 text-left">
 							<ServiceAvatar
 								alt={invoice.service.name}
