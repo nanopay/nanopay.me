@@ -6,12 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import QrCodeBorder from './QrCodeBorder'
 import QRCode from 'react-qr-code'
-import {
-	copyToClipboard,
-	formatDateTime,
-	toFiatCurrency,
-	truncateAddress,
-} from '@/utils/others'
+import { formatDateTime, toFiatCurrency, truncateAddress } from '@/utils/others'
 import Countdown from 'react-countdown'
 import { convert, Unit } from 'nanocurrency'
 import { useEffect, useState } from 'react'
@@ -21,6 +16,7 @@ import { ServiceAvatar } from './ServiceAvatar'
 import {
 	AlertCircleIcon,
 	ArrowDownToLine,
+	CopyCheckIcon,
 	CopyIcon,
 	ExternalLinkIcon,
 	QrCodeIcon,
@@ -49,6 +45,7 @@ export default function Checkout({
 }) {
 	const [rendered, setRendered] = useState(false)
 	const [openQrCode, setOpenQrCode] = useState(false)
+	const [addressCopied, setAddressCopied] = useState(false)
 
 	useEffect(() => {
 		setRendered(true)
@@ -91,6 +88,14 @@ export default function Checkout({
 
 	const handleOpenQrCode = () => {
 		setOpenQrCode(true)
+	}
+
+	const handleCopyAddress = () => {
+		navigator.clipboard.writeText(invoice.pay_address)
+		setAddressCopied(true)
+		setTimeout(() => {
+			setAddressCopied(false)
+		}, 2000)
 	}
 
 	const priceUsd = xnoToUsd ? xnoToUsd * amountMissing : null
@@ -493,11 +498,12 @@ export default function Checkout({
 							<div className="mt-4 flex items-center justify-between gap-2 border-y border-dashed border-slate-200 py-2 text-sm text-slate-500">
 								<div>Send to:</div>
 								<div>{truncateAddress(invoice.pay_address)}</div>
-								<button
-									onClick={() => copyToClipboard(invoice.pay_address)}
-									className="focus:text-nano text-slate-400"
-								>
-									<CopyIcon className="h-4 w-4" />
+								<button onClick={handleCopyAddress} className="hover:text-nano">
+									{addressCopied ? (
+										<CopyCheckIcon className="text-nano h-4 w-4" />
+									) : (
+										<CopyIcon className="h-4 w-4" />
+									)}
 								</button>
 							</div>
 
