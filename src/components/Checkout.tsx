@@ -140,8 +140,10 @@ export default function Checkout({
 				</div>
 			</nav>
 
-			<nav className="flex w-full justify-center bg-slate-700 px-4 py-2 md:hidden">
-				<Logo className="h-auto w-32" theme="dark" />
+			<nav className="flex w-full justify-center bg-slate-800 p-4 md:hidden">
+				<Link href="/">
+					<Logo className="h-auto w-36" theme="dark" />
+				</Link>
 			</nav>
 
 			<Accordion
