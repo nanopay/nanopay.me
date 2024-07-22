@@ -11,7 +11,7 @@ export default async function DemoLayout({
 	children: React.ReactNode
 }) {
 	return (
-		<div className="relative flex flex-1 flex-col items-center justify-center pt-20">
+		<div className="relative flex flex-1 flex-col items-center justify-center px-4 pt-20">
 			<div
 				role="alert"
 				className="bg-nano absolute left-0 right-0 top-0 z-10 flex items-center justify-center p-4 text-white"
