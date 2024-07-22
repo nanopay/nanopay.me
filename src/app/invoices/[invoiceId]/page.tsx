@@ -25,10 +25,13 @@ export default async function InvoicePage({
 	unstable_noStore()
 
 	const client = new AdminClient()
-	const invoice = await client.invoices.getPublicInvoice(invoiceId)
-	const { price: xnoToUsd } = await getLatestPrice().catch(() => ({
-		price: null,
-	}))
+
+	const [invoice, { price: xnoToUsd }] = await Promise.all([
+		client.invoices.getPublicInvoice(invoiceId),
+		getLatestPrice().catch(() => ({
+			price: null,
+		})),
+	])
 
 	if (!invoice) {
 		return (
