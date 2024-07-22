@@ -426,7 +426,7 @@ export default function Checkout({
 								</div>
 							</div>
 						</div>
-						<div className="py-4 sm:px-4">
+						<div className="flex-1 py-4 sm:px-4">
 							<div className="flex flex-1 flex-col md:flex-row">
 								<div className="hidden justify-center border-r border-slate-100 pr-12 md:flex">
 									<div className="relative flex w-40 flex-none items-center justify-center lg:w-48">
