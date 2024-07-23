@@ -17,7 +17,7 @@ export const links = [
 	['Github', 'https://github.com/nanopay/nanopay.me'],
 ]
 
-export function NavLinks() {
+export function NavLinks({ theme = 'light' }: { theme?: 'light' | 'dark' }) {
 	const pathname = usePathname()
 
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
@@ -30,7 +30,10 @@ export function NavLinks() {
 					href={href}
 					target={href.startsWith('http') ? '_blank' : undefined}
 					className={cn(
-						'relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors delay-150 hover:text-slate-900',
+						cn(
+							'relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm transition-colors delay-150 hover:text-slate-900',
+							theme === 'light' ? 'text-slate-800' : 'text-slate-200',
+						),
 						pathname === href && 'bg-nano text-white',
 					)}
 					onMouseEnter={() => setHoveredIndex(index)}
