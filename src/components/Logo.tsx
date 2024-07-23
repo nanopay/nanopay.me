@@ -1,4 +1,9 @@
-export function Logomark(props: React.ComponentProps<'svg'>) {
+interface LogoProps extends React.ComponentProps<'svg'> {
+	theme?: 'light' | 'dark'
+}
+
+export function Logomark({ theme = 'light', ...props }: LogoProps) {
+	const color = theme === 'light' ? '#334155' : '#fff'
 	return (
 		<svg
 			width="40"
@@ -15,23 +20,23 @@ export function Logomark(props: React.ComponentProps<'svg'>) {
 			/>
 			<path
 				d="M94.9668 93L21 1H49.4872L126.703 93H94.9668Z"
-				fill="#334155"
-				stroke="#334155"
+				fill={color}
+				stroke={color}
 			/>
 			<path
 				d="M80.7169 93L7 1H35.4872L112.703 93H80.7169Z"
-				fill="#334155"
-				stroke="#334155"
+				fill={color}
+				stroke={color}
 			/>
 			<path
 				d="M140.687 89.285V91.9805C140.687 93.0843 140.856 94.1845 141.192 95.2605L142.061 98.0467L142.749 100.249C143.204 101.708 143.97 103.106 145.02 104.389L217.403 192.939L243.391 192.855L169.809 98.967C168.567 97.3925 167.797 95.6419 167.551 93.8317C167.467 93.2161 167.444 92.5972 167.482 91.9794L167.675 88.8694L167.686 88.691C167.842 86.161 168.887 83.7037 170.719 81.5581L238.893 1.68549H215.403L144.009 81.1506C142.802 82.4942 141.904 83.9743 141.351 85.5318L141.334 85.5784C140.904 86.7884 140.687 88.0339 140.687 89.285Z"
-				fill="#334155"
-				stroke="#334155"
+				fill={color}
+				stroke={color}
 			/>
 			<path
 				d="M154.931 88.9743V91.6699C154.931 92.7737 155.1 93.8739 155.436 94.9498L156.305 97.736L156.992 99.9386C157.448 101.398 158.214 102.795 159.263 104.078L231.646 192.855H257L183.168 99.2499C181.926 97.6754 182.041 95.3312 181.795 93.5211C181.711 92.9055 181.688 92.2866 181.726 91.6688L181.919 88.5588L181.93 88.3804C182.086 85.8504 183.131 83.3931 184.962 81.2475L253.137 1.37488H229.647L158.253 80.84C157.046 82.1835 156.148 83.6636 155.594 85.2212L155.578 85.2678C155.148 86.4778 154.931 87.7233 154.931 88.9743Z"
-				fill="#334155"
-				stroke="#334155"
+				fill={color}
+				stroke={color}
 			/>
 			<path
 				d="M47.759 149.051L222.833 149.5L206.055 128.5L47.7907 127.5C41.882 127.483 37.0827 132.312 37.0827 138.276C37.0827 144.227 41.8626 149.051 47.759 149.051Z"
@@ -40,20 +45,16 @@ export function Logomark(props: React.ComponentProps<'svg'>) {
 			/>
 			<path
 				d="M13.4946 194.625L57.9746 150H86.4619L44.4807 194.625H13.4946Z"
-				fill="#334155"
-				stroke="#334155"
+				fill={color}
+				stroke={color}
 			/>
 			<path
 				d="M2 194.625L46.48 150H74.9672L32.9861 194.625H2Z"
-				fill="#334155"
-				stroke="#334155"
+				fill={color}
+				stroke={color}
 			/>
 		</svg>
 	)
-}
-
-interface LogoProps extends React.ComponentProps<'svg'> {
-	theme?: 'light' | 'dark'
 }
 
 export function Logo({ theme = 'light', ...props }: LogoProps) {
