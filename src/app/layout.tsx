@@ -1,9 +1,9 @@
 import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { Open_Sans } from 'next/font/google'
-import NProgressBar from '@/components/NProgressBar'
-import { ToastContainer } from 'react-toastify'
 import { Metadata } from 'next'
+import { ToastContainer } from 'react-toastify'
+import { LoadingIndicator } from '@/components/LoadingIndicator'
 
 const openSans = Open_Sans({ subsets: ['latin'] })
 
@@ -49,7 +49,7 @@ export default async function RootLayout({
 		<html lang="en">
 			<body className={openSans.className}>
 				<div className="flex min-h-screen flex-col">{children}</div>
-				<NProgressBar />
+				<LoadingIndicator />
 				<ToastContainer />
 			</body>
 		</html>
