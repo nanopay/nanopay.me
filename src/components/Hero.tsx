@@ -121,9 +121,9 @@ export function Hero() {
 								simple to use and no fees.
 							</p>
 							<p>
-								Serverless and scalable APIs, payment without login,
-								notification via webhook and much more! Create a merchant
-								account for free and get started now!
+								Instant payments without login, notification via webhook and
+								much more! Create a merchant account for free and get started
+								now!
 							</p>
 						</div>
 						<div
