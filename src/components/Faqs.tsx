@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { Container } from '@/components/Container'
 import { CONTACT_EMAIL } from '@/core/constants'
 
@@ -60,12 +58,12 @@ export function Faqs() {
 					</h2>
 					<p className="mt-2 text-lg text-slate-600">
 						If you have anything else you want to ask reach out to us at:{' '}
-						<Link
+						<a
 							href={`mailto:${CONTACT_EMAIL}`}
 							className="text-slate-900 underline"
 						>
 							{CONTACT_EMAIL}
-						</Link>
+						</a>
 						.
 					</p>
 				</div>

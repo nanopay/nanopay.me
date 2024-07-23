@@ -1,6 +1,5 @@
 import NotFoundImage from '@/images/not-found.svg'
 import Image from 'next/image'
-import Link from 'next/link'
 import { SUPPORT_EMAIL } from '@/core/constants'
 import { AdminClient } from '@/core/client'
 import Checkout from '@/components/Checkout'
@@ -47,7 +46,7 @@ export default async function InvoicePage({
 						The invoice you are looking for does not exist.
 					</p>
 					<div className="hover:text-nano mt-16 text-sm text-slate-500">
-						<Link href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</Link>
+						<a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
 					</div>
 				</div>
 			</div>

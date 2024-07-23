@@ -2,7 +2,6 @@
 
 import { SUPPORT_EMAIL } from '@/core/constants'
 import { RefreshCcwIcon } from 'lucide-react'
-import Link from 'next/link'
 import { useEffect } from 'react'
 
 export default function Error({
@@ -65,9 +64,9 @@ export default function Error({
 					Feel free to contact us if the problem presists:
 				</p>
 				<p className="mt-1 text-sm font-semibold text-slate-600 lg:text-base">
-					<Link href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-nano">
+					<a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-nano">
 						{SUPPORT_EMAIL}
-					</Link>
+					</a>
 				</p>
 			</div>
 		</div>

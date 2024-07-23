@@ -240,7 +240,7 @@ export default function Checkout({
 								</h3>
 								{amountPaid > 0 && (
 									<div className="mt-4 flex flex-col gap-1">
-										<Link
+										<a
 											href={`mailto:${REFUND_EMAIL}?subject=Refund to Invoice #${invoice.id}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
 										>
 											<Button
@@ -250,7 +250,7 @@ export default function Checkout({
 												Refund Ӿ{amountPaid}
 												<ReceiptRefundIcon className="ml-2 h-4 w-4" />
 											</Button>
-										</Link>
+										</a>
 									</div>
 								)}
 							</div>
@@ -518,12 +518,12 @@ export default function Checkout({
 								</div>
 							</div>
 							<div className="mt-6 flex justify-center">
-								<Link href={payURI}>
+								<a href={payURI}>
 									<Button className="PayButton w-full sm:w-auto">
 										Open Wallet
 										<ExternalLinkIcon className="ml-2 h-4 w-4" />
 									</Button>
-								</Link>
+								</a>
 							</div>
 
 							{payments.length > 0 && (
@@ -550,12 +550,12 @@ export default function Checkout({
 						Privacy Policy
 					</Link>
 					<div className="mx-2 text-slate-100">|</div>
-					<Link
+					<a
 						href={`mailto:${SUPPORT_EMAIL}`}
 						className="hover:text-nano flex-1"
 					>
 						{SUPPORT_EMAIL}
-					</Link>
+					</a>
 				</footer>
 			</main>
 			<Drawer open={openQrCode} onOpenChange={setOpenQrCode}>
