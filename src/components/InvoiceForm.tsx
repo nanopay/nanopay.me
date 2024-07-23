@@ -124,6 +124,7 @@ export function InvoiceForm({ onSubmit, ...props }: InvoiceFormProps) {
 					<Button
 						type="submit"
 						loading={form.formState.isSubmitting}
+						disabled={form.formState.isSubmitSuccessful}
 						className="w-[60%] text-lg"
 						size="lg"
 					>
