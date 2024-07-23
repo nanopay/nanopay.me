@@ -16,7 +16,7 @@ export function LoadingIndicator() {
 			setLoading(true)
 			push.apply(history, args)
 		}
-	}, [])
+	}, [router])
 
 	useEffect(() => {
 		if (loading) {
