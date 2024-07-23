@@ -53,7 +53,7 @@ export const usePaymentsListener = (props: PaymentListenerProps) => {
 			channel.unbind_all()
 			channel.unsubscribe()
 		}
-	}, [props, payments])
+	}, [props, payments, isPaid, isExpired, timeLeft])
 
 	return {
 		isPaid,
