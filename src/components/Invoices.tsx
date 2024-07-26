@@ -4,12 +4,6 @@ import clsx from 'clsx'
 import { BanknoteIcon, ChevronRightIcon } from 'lucide-react'
 import Link from 'next/link'
 
-interface InvoicesProps {
-	invoices: Invoice[]
-	serviceIdOrSlug?: string
-	showPagination?: boolean
-}
-
 const statusStyles: Record<InvoiceStatus, string> = {
 	paid: 'bg-green-100 text-green-800',
 	pending: 'bg-yellow-100 text-yellow-800',
@@ -17,11 +11,26 @@ const statusStyles: Record<InvoiceStatus, string> = {
 	error: 'bg-red-600 text-white',
 }
 
-export default function Invoices({
+interface InvoicesProps {
+	invoices: Invoice[]
+	count: number
+	offset: number
+	serviceIdOrSlug: string
+	showPagination?: boolean
+}
+
+export default async function Invoices({
 	invoices,
+	count,
+	offset,
 	serviceIdOrSlug,
 	showPagination = true,
 }: InvoicesProps) {
+	const from = offset + 1
+	const to = invoices.length + offset
+	const previousPage = from > 1 && Math.floor(from / 10)
+	const nextPage = to < count && Math.floor(to / 10) + 1
+
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
@@ -176,24 +185,28 @@ export default function Invoices({
 								>
 									<div className="hidden sm:block">
 										<p className="text-sm text-slate-700">
-											Showing <span className="font-medium">1</span> to{' '}
-											<span className="font-medium">10</span> of{' '}
-											<span className="font-medium">20</span> results
+											Showing <span className="font-medium">{from}</span> to{' '}
+											<span className="font-medium">{to}</span> of{' '}
+											<span className="font-medium">{count}</span> results
 										</p>
 									</div>
 									<div className="flex flex-1 justify-between gap-x-3 sm:justify-end">
-										<a
-											href="#"
-											className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-										>
-											Previous
-										</a>
-										<a
-											href="#"
-											className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-										>
-											Next
-										</a>
+										{previousPage && (
+											<Link
+												href={`?page=${previousPage}`}
+												className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
+											>
+												Previous
+											</Link>
+										)}
+										{nextPage && (
+											<Link
+												href={`?page=${nextPage}`}
+												className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
+											>
+												Next
+											</Link>
+										)}
 									</div>
 								</nav>
 							)}

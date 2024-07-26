@@ -102,8 +102,10 @@ export default async function ServiceDashboardPage({
 					</Link>
 				</div>
 				<Invoices
-					invoices={invoices || []}
+					invoices={invoices.invoices}
+					count={invoices.count}
 					serviceIdOrSlug={service.slug}
+					offset={0}
 					showPagination={false}
 				/>
 			</section>

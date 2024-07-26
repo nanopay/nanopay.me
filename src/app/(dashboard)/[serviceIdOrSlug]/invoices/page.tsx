@@ -12,13 +12,21 @@ export const metadata: Metadata = {
 
 interface Props {
 	params: { serviceIdOrSlug: string }
+	searchParams: { page?: string }
 }
 
 export default async function InvoicesPage({
 	params: { serviceIdOrSlug },
+	searchParams: { page },
 }: Props) {
+	const limit = 10
+	const offset = page ? parseInt(page) * limit - limit : 0
+
 	const client = new Client(cookies())
-	const invoices = await client.invoices.list(serviceIdOrSlug)
+	const { invoices, count } = await client.invoices.list(serviceIdOrSlug, {
+		offset,
+		limit,
+	})
 
 	return (
 		<div className="w-full max-w-7xl">
@@ -33,7 +41,12 @@ export default async function InvoicesPage({
 					</Link>
 				</div>
 			</header>
-			<Invoices invoices={invoices || []} serviceIdOrSlug={serviceIdOrSlug} />
+			<Invoices
+				invoices={invoices}
+				serviceIdOrSlug={serviceIdOrSlug}
+				count={count}
+				offset={offset}
+			/>
 		</div>
 	)
 }
