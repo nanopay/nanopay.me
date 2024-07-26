@@ -127,11 +127,12 @@ export class InvoicesService extends BaseService {
 	async list(
 		serviceIdOrSlug: string,
 		options?: InvoicePagination,
-	): Promise<Invoice[]> {
+	): Promise<{ invoices: Invoice[]; count: number }> {
 		const query = this.supabase
 			.from('invoices')
 			.select(
 				'*, service:services!inner(name), payments(id, from, to, hash, amount, timestamp)',
+				{ count: 'exact' },
 			)
 
 		if (checkUUID(serviceIdOrSlug)) {
@@ -173,6 +174,9 @@ export class InvoicesService extends BaseService {
 			payments: invoice.payments,
 		}))
 
-		return z.array(invoiceSchema).parse(invoices)
+		return {
+			invoices: z.array(invoiceSchema).parse(invoices),
+			count: z.number().parse(count),
+		}
 	}
 }
