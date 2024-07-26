@@ -99,9 +99,12 @@ export async function GET(
 
 		const { service_id } = await client.apiKeys.get(apiToken)
 
-		const invoices = await client.invoices.list(service_id, pagination)
+		const { invoices, count } = await client.invoices.list(
+			service_id,
+			pagination,
+		)
 
-		return Response.json(invoices)
+		return Response.json({ invoices, count })
 	} catch (error) {
 		const message = error instanceof Error ? error.message : 'Unknown error'
 		return Response.json({ message }, { status: 500 })
