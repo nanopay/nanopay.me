@@ -7,6 +7,7 @@ import Link from 'next/link'
 interface InvoicesProps {
 	invoices: Invoice[]
 	serviceIdOrSlug?: string
+	showPagination?: boolean
 }
 
 const statusStyles: Record<InvoiceStatus, string> = {
@@ -16,7 +17,11 @@ const statusStyles: Record<InvoiceStatus, string> = {
 	error: 'bg-red-600 text-white',
 }
 
-export default function Invoices({ invoices, serviceIdOrSlug }: InvoicesProps) {
+export default function Invoices({
+	invoices,
+	serviceIdOrSlug,
+	showPagination = true,
+}: InvoicesProps) {
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
@@ -164,32 +169,34 @@ export default function Invoices({ invoices, serviceIdOrSlug }: InvoicesProps) {
 								</tbody>
 							</table>
 							{/* Pagination */}
-							<nav
-								className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3 sm:px-6"
-								aria-label="Pagination"
-							>
-								<div className="hidden sm:block">
-									<p className="text-sm text-slate-700">
-										Showing <span className="font-medium">1</span> to{' '}
-										<span className="font-medium">10</span> of{' '}
-										<span className="font-medium">20</span> results
-									</p>
-								</div>
-								<div className="flex flex-1 justify-between gap-x-3 sm:justify-end">
-									<a
-										href="#"
-										className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-									>
-										Previous
-									</a>
-									<a
-										href="#"
-										className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-									>
-										Next
-									</a>
-								</div>
-							</nav>
+							{showPagination && (
+								<nav
+									className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3 sm:px-6"
+									aria-label="Pagination"
+								>
+									<div className="hidden sm:block">
+										<p className="text-sm text-slate-700">
+											Showing <span className="font-medium">1</span> to{' '}
+											<span className="font-medium">10</span> of{' '}
+											<span className="font-medium">20</span> results
+										</p>
+									</div>
+									<div className="flex flex-1 justify-between gap-x-3 sm:justify-end">
+										<a
+											href="#"
+											className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
+										>
+											Previous
+										</a>
+										<a
+											href="#"
+											className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
+										>
+											Next
+										</a>
+									</div>
+								</nav>
+							)}
 						</div>
 					</div>
 				</div>
