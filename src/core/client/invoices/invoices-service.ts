@@ -145,8 +145,8 @@ export class InvoicesService extends BaseService {
 		const order_by = options?.order_by || 'created_at'
 		const order = options?.order || 'desc'
 
-		const { data, error } = await query
-			.range(offset, offset + limit)
+		const { data, count, error } = await query
+			.range(offset, offset + limit - 1)
 			.order(order_by, {
 				ascending: order === 'asc',
 			})
