@@ -3,10 +3,12 @@ import { cookies } from 'next/headers'
 import Invoices from '@/components/Invoices'
 import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
-import { KeyRoundIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
+import { KeyRoundIcon, ListIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
 import { Client } from '@/core/client'
 import { getUserEmail } from '@/lib/supabase/server'
 import { NotFoundCard } from '@/components/NotFoundCard'
+import Link from 'next/link'
+import { Button } from '@/components/Button'
 
 interface Props {
 	params: { serviceIdOrSlug: string }
@@ -85,10 +87,25 @@ export default async function ServiceDashboardPage({
 			</section>
 
 			<section className="mt-8" aria-labelledby="service-invoices">
-				<h2 className="mx-auto mb-2 max-w-7xl px-2 text-lg font-medium leading-6 text-slate-900">
-					Recent Invoices
-				</h2>
-				<Invoices invoices={invoices || []} serviceIdOrSlug={service.slug} />
+				<div className="mb-2 flex w-full max-w-7xl items-center justify-between px-2">
+					<h2 className="text-lg font-medium leading-6 text-slate-900">
+						Recent Invoices
+					</h2>
+					<Link
+						href={`/${service.slug}/invoices`}
+						className="text-nano hover:underline"
+					>
+						<Button color="slate" size="sm" variant="outline">
+							<ListIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
+							View All Invoices
+						</Button>
+					</Link>
+				</div>
+				<Invoices
+					invoices={invoices || []}
+					serviceIdOrSlug={service.slug}
+					showPagination={false}
+				/>
 			</section>
 
 			{isNew && <Fireworks count={3} />}
