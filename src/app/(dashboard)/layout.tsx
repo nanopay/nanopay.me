@@ -28,7 +28,7 @@ export default async function DashboardLayout({
 	return (
 		<UserProvider user={user}>
 			<PreferencesProvider services={services}>
-				<div className="flex w-full flex-1 flex-col">
+				<div className="flex min-h-screen w-full flex-1 flex-col">
 					<Appbar services={services} />
 
 					<div className="mx-auto w-full max-w-7xl px-4 py-4 lg:px-6 xl:px-8">
@@ -41,9 +41,8 @@ export default async function DashboardLayout({
 					<main className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 pb-4 lg:px-6 xl:px-8">
 						{children}
 					</main>
-
-					<Footer />
 				</div>
+				<Footer />
 			</PreferencesProvider>
 		</UserProvider>
 	)
