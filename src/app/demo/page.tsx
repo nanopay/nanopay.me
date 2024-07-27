@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/useToast'
 import { getSafeActionError } from '@/lib/safe-action'
 import { useAction } from 'next-safe-action/hooks'
 import { createDemoInvoice } from './actions'
+import { useRouter } from 'next/navigation'
 
 const defaultValues = {
 	title: 'Demo Invoice',
@@ -24,8 +25,14 @@ const defaultValues = {
 
 export default function Demo() {
 	const { showError } = useToast()
+	const router = useRouter()
 
 	const { executeAsync: onSubmit } = useAction(createDemoInvoice, {
+		onSuccess: ({ data }) => {
+			if (data) {
+				router.push(`/invoices/${data.id}`)
+			}
+		},
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError("Couldn't create invoice", message)

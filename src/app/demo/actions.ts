@@ -2,7 +2,6 @@
 
 import { safeAction } from '@/lib/safe-action'
 import { AdminClient, invoiceCreateSchema } from '@/core/client'
-import { redirect } from 'next/navigation'
 
 const serviceIdOrSlug = 'demo-service'
 
@@ -20,5 +19,5 @@ export const createDemoInvoice = safeAction
 			redirect_url: parsedInput.redirect_url,
 		})
 
-		redirect(`/invoices/${id}`)
+		return { id }
 	})
