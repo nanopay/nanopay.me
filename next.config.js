@@ -16,11 +16,6 @@ const nextConfig = {
 				hostname: staticAssetsUrl.hostname,
 				pathname: '/**',
 			},
-			{
-				protocol: 'https',
-				hostname: 'avatar.vercel.sh',
-				pathname: '/**',
-			},
 		],
 	},
 	redirects: async () => [
