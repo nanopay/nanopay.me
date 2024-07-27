@@ -1,8 +1,11 @@
 'use client'
 
+import ReactDOMServer from 'react-dom/server'
 import { useToast } from '@/hooks/useToast'
 import ImageInput from './ImageInput'
 import { useServiceAvatarUploader } from '@/hooks/useUploader'
+import { ReactNode } from 'react'
+import { GradientAvatar } from './GradientAvatar'
 
 export interface ServiceAvatarEditableProps {
 	id: string
@@ -30,7 +33,7 @@ export function ServiceAvatarEditable({
 
 	return (
 		<ImageInput
-			src={src || `https://avatar.vercel.sh/${id}`}
+			src={src || encodeSvg(<GradientAvatar uid={id} size={size} />)}
 			crop={true}
 			onChange={upload}
 			isLoading={isUploading}
@@ -40,5 +43,12 @@ export function ServiceAvatarEditable({
 			height={size}
 			alt={alt}
 		/>
+	)
+}
+
+export function encodeSvg(reactElement: ReactNode): string {
+	return (
+		'data:image/svg+xml,' +
+		encodeURIComponent(ReactDOMServer.renderToStaticMarkup(reactElement as any))
 	)
 }
