@@ -31,8 +31,10 @@ export function NavLinks({ theme = 'light' }: { theme?: 'light' | 'dark' }) {
 					target={href.startsWith('http') ? '_blank' : undefined}
 					className={cn(
 						cn(
-							'relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm transition-colors delay-150 hover:text-slate-900',
-							theme === 'light' ? 'text-slate-800' : 'text-slate-200',
+							'relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm transition-colors delay-150',
+							theme === 'light'
+								? 'text-slate-800 hover:text-slate-900'
+								: 'text-slate-300 hover:text-slate-200',
 						),
 						pathname === href && 'bg-nano text-white',
 					)}
