@@ -13,7 +13,7 @@ export default async function LandingPage() {
 				<Features />
 				<Faqs />
 			</main>
-			<Footer />
+			<Footer theme="dark" />
 		</>
 	)
 }

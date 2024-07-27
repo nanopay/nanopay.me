@@ -42,7 +42,7 @@ export default async function DashboardLayout({
 						{children}
 					</main>
 				</div>
-				<Footer />
+				<Footer theme="light" />
 			</PreferencesProvider>
 		</UserProvider>
 	)
