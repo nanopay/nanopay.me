@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 		],
 		apple: '/apple-touch-icon.png',
 	},
-	description: 'Pay and receive payments with Nano.',
+	description: 'Send and receive payments with Nano.',
 	manifest: '/site.webmanifest',
 }
 

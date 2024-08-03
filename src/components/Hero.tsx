@@ -117,13 +117,13 @@ export function Hero() {
 						</h1>
 						<div className="mt-6 flex flex-col gap-4 text-lg text-slate-600">
 							<p>
-								NanoPay.me is a payment gateway for Nano (XNO). Open source,
-								simple to use and no fees.
+								NanoPay.me is a payment gateway for Nano (XNO). 
+								It's open-source, simple to use, and has no fees.
 							</p>
 							<p>
-								Instant payments without login, notification via webhook and
-								much more! Create a merchant account for free and get started
-								now!
+								Enjoy instant payments without login, 
+								notifications via webhook, 
+								and much more! Create a free merchant account and get started now!
 							</p>
 						</div>
 						<div

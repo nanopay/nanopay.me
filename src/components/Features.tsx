@@ -5,9 +5,9 @@ import Image from 'next/image'
 
 const features = [
 	{
-		name: 'Easy and instantly payments',
+		name: 'Easy and instant payments',
 		description:
-			'Share the payment link and start receiving Nano payments instantly. No registration required to your customers.',
+			'Share the payment link and start receiving Nano payments instantly. No registration is required for your customers.',
 		icon: ZapIcon,
 	},
 	{
@@ -19,7 +19,7 @@ const features = [
 	{
 		name: 'API',
 		description:
-			'Integrate NanoPay.me with your services and start creating invoices programatically for your customers.',
+			'Integrate NanoPay.me with your services and start creating invoices programmatically for your customers.',
 		icon: CloudCogIcon,
 	},
 ]
