@@ -75,7 +75,7 @@ export default async function ServiceDashboardPage({
 
 			<section className="mt-8" aria-labelledby="service-overview">
 				<div className="mx-auto max-w-7xl">
-					<h2 className="mb-2 px-2 text-lg font-medium leading-6 text-slate-900">
+					<h2 className="mb-2 text-lg font-medium leading-6 text-slate-900">
 						Overview
 					</h2>
 					<div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -87,7 +87,7 @@ export default async function ServiceDashboardPage({
 			</section>
 
 			<section className="mt-8" aria-labelledby="service-invoices">
-				<div className="mb-2 flex w-full max-w-7xl items-center justify-between px-2">
+				<div className="mb-2 flex w-full max-w-7xl items-center justify-between">
 					<h2 className="text-lg font-medium leading-6 text-slate-900">
 						Recent Invoices
 					</h2>
@@ -106,7 +106,7 @@ export default async function ServiceDashboardPage({
 					count={invoices.count}
 					serviceIdOrSlug={service.slug}
 					offset={0}
-					showPagination={false}
+					showPagination={invoices.count === 0}
 				/>
 			</section>
 
