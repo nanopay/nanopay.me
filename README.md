@@ -74,3 +74,5 @@ If you find this library useful and want to support its development please consi
 **nano_3dqh8z8ncswmf7151gryu7mqpwbw4f68hi7d8g433omtuabfi438etyyp9ik**
 
 <kbd><img src="https://i.ibb.co/Gs6yhv2/nano-wallet-js-qr-code.png" width="200px" height="200px" /></kbd>
+
+test 2
