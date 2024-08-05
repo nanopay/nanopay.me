@@ -6,7 +6,7 @@ const faqs = [
 		{
 			question: 'Is there any fee or limit?',
 			answer:
-				'Like Nano, we have no fees. But due to our scarce resources, we are temporarily limiting it to 100 invoices per day. With the development of new non-custodial strategies and the help of funders we will be able to increase these limits.',
+				'Like Nano, we have no fees. However, due to our limited resources, we are temporarily limiting our service to 100 invoices per day. With the development of new non-custodial strategies and support from funders, we will be able to increase these limits.',
 		},
 		{
 			question: 'Which wallets are supported?',
@@ -18,25 +18,25 @@ const faqs = [
 		{
 			question: 'Is this custodial?',
 			answer:
-				"Yes and no... well, to ensure that different customers don't send Nano to the same address, a new account is created for each invoice. However, as soon as the transaction is detected, we send it to the merchant's wallet, taking less than ~2 seconds. In addition, we are looking for non-custodial solutions such as non-hardened key derivations.",
+				"Yes and no... To ensure that different customers don't send Nano to the same address, a new account is created for each invoice. However, as soon as the transaction is detected, we send it to the merchant's wallet in less than ~2 seconds. Additionally, we are exploring non-custodial solutions such as non-hardened key derivations.",
 		},
 
 		{
 			question: 'Where is NanoPay.me based?',
 			answer:
-				'On internet! NanoPay.me is not a company, but a completely free and open source community project with no headquarters.',
+				'On the internet! NanoPay.me is not a company, but a completely free and open-source community project with no headquarters.',
 		},
 	],
 	[
 		{
 			question: 'Do my customers need sign in?',
 			answer:
-				'We do not require any form of identification from your customers. By default we only save the wallet address used for sending. Each merchant is responsible for associating invoices with their customers, through invoice metadata or with their own backend.',
+				'We do not require any form of identification from your customers. By default, we only save the wallet address used for sending. Each merchant is responsible for associating invoices with their customers through invoice metadata or with their own backend.',
 		},
 		{
 			question: 'How to contribute?',
 			answer:
-				'You can help maintain the project by making donations, contributing code, auditing and sharing with your friends!.',
+				'You can help maintain the project by making donations, contributing code, auditing, and sharing it with your friends!',
 		},
 	],
 ]
@@ -57,7 +57,7 @@ export function Faqs() {
 						Frequently asked questions
 					</h2>
 					<p className="mt-2 text-lg text-slate-600">
-						If you have anything else you want to ask reach out to us at:{' '}
+						If you have any other questions, reach out to us at:{' '}
 						<a
 							href={`mailto:${CONTACT_EMAIL}`}
 							className="text-slate-900 underline"
