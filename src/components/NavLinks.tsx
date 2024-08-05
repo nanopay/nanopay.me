@@ -5,16 +5,14 @@ import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/cn'
+import { DONATE_URL, GITHUB_URL } from '@/core/constants'
 
 export const links = [
 	['Demo', '/demo'],
 	['FAQs', '/#faqs'],
 	['API', '/#api'],
-	[
-		'Donate',
-		'https://github.com/nanopay/nanopay.me?tab=readme-ov-file#donate-%D3%BF',
-	],
-	['Github', 'https://github.com/nanopay/nanopay.me'],
+	['Donate', DONATE_URL],
+	['Github', GITHUB_URL],
 ]
 
 export function NavLinks({ theme = 'light' }: { theme?: 'light' | 'dark' }) {

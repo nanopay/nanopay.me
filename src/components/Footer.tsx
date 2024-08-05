@@ -6,7 +6,7 @@ import { Logomark } from '@/components/Logo'
 import { NavLinks } from '@/components/NavLinks'
 import xnoHeart from '@/images/xno-heart.svg'
 import QrCodeBorder from './QrCodeBorder'
-import { CONTACT_EMAIL } from '@/core/constants'
+import { CONTACT_EMAIL, DONATE_URL } from '@/core/constants'
 import { cn } from '@/lib/cn'
 
 export function Footer({
@@ -47,7 +47,7 @@ export function Footer({
 						</div>
 						<div className="ml-8 lg:w-64">
 							<p className="text-base font-semibold text-slate-800 dark:text-slate-200">
-								<Link href="#">
+								<Link href={DONATE_URL}>
 									<span className="absolute inset-0 sm:rounded-2xl" />
 									Donate with Nano
 								</Link>
