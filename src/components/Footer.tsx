@@ -33,7 +33,7 @@ export function Footer({
 							/>
 							<div className="ml-4">
 								<p className="text-base font-semibold">NanoPay.me</p>
-								<p className="text-sm">Send and receive payments with Nano.</p>
+								<p className="text-sm">Pay and get paid with Nano.</p>
 							</div>
 						</div>
 						<nav className="mt-11 flex gap-8">
