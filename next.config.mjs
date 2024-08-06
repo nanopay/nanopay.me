@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 
+import remarkGfm from 'remark-gfm'
+import createMDX from '@next/mdx'
+
 const staticAssetsUrl = new URL(process.env.NEXT_PUBLIC_STATIC_ASSETS_URL)
 
 const nextConfig = {
 	reactStrictMode: true,
+	pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
 	images: {
 		remotePatterns: [
 			{
@@ -28,4 +32,12 @@ const nextConfig = {
 	],
 }
 
-module.exports = nextConfig
+const withMDX = createMDX({
+	// Add markdown plugins here, as desired
+	options: {
+		remarkPlugins: [remarkGfm],
+		// rehypePlugins: [],
+	},
+})
+
+export default withMDX(nextConfig)
