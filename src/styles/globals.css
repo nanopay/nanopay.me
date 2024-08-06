@@ -225,3 +225,46 @@ body {
 #nprogress .spinner {
 	display: none !important;
 }
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+	position: relative;
+}
+
+.prose h1:hover::before,
+.prose h2:hover::before,
+.prose h3:hover::before,
+.prose h4:hover::before {
+	content: '#';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	left: -1em;
+	color: #0f172a;
+	opacity: 0;
+	font-weight: normal;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.prose h1:hover::before {
+	font-size: 0.7em;
+}
+.prose h2:hover::before {
+	font-size: 0.75em;
+}
+.prose h3:hover::before {
+	font-size: 0.8em;
+}
+.prose h4:hover::before {
+	font-size: 0.85em;
+}
+
+.prose h1:hover::before,
+.prose h2:hover::before,
+.prose h3:hover::before,
+.prose h4:hover::before {
+	opacity: 0.7;
+}
