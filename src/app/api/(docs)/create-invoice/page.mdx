@@ -1,0 +1,52 @@
+## Create Invoice
+
+Create a new invoice.
+
+```http
+POST /invoices
+```
+
+#### Request Body
+
+| Field               | Type   | Required | Description                                                              |
+| ------------------- | ------ | -------- | ------------------------------------------------------------------------ |
+| `title`             | string | Required | The title of the invoice                                                 |
+| `description`       | string | Optional | A detailed description of the invoice                                    |
+| `price`             | number | Required | The total amount of the invoice in Nano (1 for Nano, 80 for 80 Nano etc) |
+| `recipient_address` | string | Required | The Nano address where you will receive the amount                       |
+| `metadata`          | object | Optional | Additional custom data for the invoice in JSON format                    |
+| `redirect_url`      | string | Optional | The URL to redirect the user to after successful payment                 |
+
+#### Example Request
+
+```json
+{
+	"title": "Consulting Services",
+	"description": "Strategic planning and market analysis",
+	"price": 20,
+	"recipient_address": "nano_1a2b3c4d5e6f7g8h9i0j...",
+	"metadata": {
+		"client": "TechStart Inc",
+		"project": "Q3 Strategy"
+	},
+	"redirect_url": "https://example.com/purchase-successful"
+}
+```
+
+#### Response
+
+```json
+{
+	"id": "a5cf-p3sfa",
+	"expires_at": "2024-10-15T18:00:00Z",
+	"title": "Consulting Services",
+	"pay_currency": "XNO",
+	"pay_address": "nano_1a2b3c4d5e6f7g8h9i0j...",
+	"pay_amount": 20,
+	"pay_url": `https://nanopay.me/invoices/a5cf-p3sfa`
+}
+```
+
+Note that the `pay_address` and `pay_url` are unique to each invoice and should be used to receive payments.
+
+After we receive the payment, we automatically send the funds to the `recipient_address` specified in the request.
