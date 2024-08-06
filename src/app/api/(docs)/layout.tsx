@@ -76,14 +76,14 @@ function ApiDocsSidebar() {
 									Create Invoice
 								</Link>
 								<Link
-									href="/api/create-invoice"
+									href="/api/get-invoice"
 									className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-md px-3 py-2 text-slate-100 transition-all"
 									prefetch={false}
 								>
 									Get Invoice
 								</Link>
 								<Link
-									href="/api/create-invoice"
+									href="/api/list-invoices"
 									className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-md px-3 py-2 text-slate-100 transition-all"
 									prefetch={false}
 								>
