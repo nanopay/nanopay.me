@@ -1,0 +1,42 @@
+# NanoPay.me API Documentation
+
+## Introduction
+
+Welcome to the NanoPay.me API documentation. We provide a REST API to access perform basic merchant operations.
+
+## Base URL
+
+```
+https://api.nanopay.me
+```
+
+## Authentication
+
+The NanoPay.me uses API keys for authentication. You'll need to include your API key in the `Authorization` header of each request.
+
+API keys are unique identifiers that are used to authenticate your requests to the NanoPay.me API. You can manage your API keys in the tab **API Keys** of your service.
+
+```bash
+curl -X GET 'https://api.nanopay.me/invoices/a5cf-p3sfa' \
+-H 'Authorization: Bearer your_access_token_here' \
+-H 'Content-Type: application/json'
+```
+
+## Endpoints
+
+The NanoPay.me API provides the following endpoints:
+
+- [Create Invoice](/api/get-invoice)
+- [Get Invoice](/api/get-invoice)
+- [List Invoices](/api/list-invoices)
+- [Get Service](/api/get-service)
+
+## Error Responses
+
+| Status Code | Description                             |
+| ----------- | --------------------------------------- |
+| 400         | Bad Request - Invalid parameters        |
+| 401         | Unauthorized - Authentication failed    |
+| 404         | Not Found - Resource does not exist     |
+| 429         | Too Many Requests - Rate limit exceeded |
+| 500         | Internal Server Error                   |
