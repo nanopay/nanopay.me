@@ -93,6 +93,7 @@ const config = {
 		require('tailwindcss-animate'),
 		require('tailwind-scrollbar'),
 		require('tailwindcss-safe-area'),
+		require('@tailwindcss/typography'),
 	],
 } satisfies Config
 
