@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 
-import remarkGfm from 'remark-gfm'
 import createMDX from '@next/mdx'
+import remarkGfm from 'remark-gfm'
+import rehypeSlug from 'rehype-slug'
 
 const staticAssetsUrl = new URL(process.env.NEXT_PUBLIC_STATIC_ASSETS_URL)
 
@@ -33,10 +34,9 @@ const nextConfig = {
 }
 
 const withMDX = createMDX({
-	// Add markdown plugins here, as desired
 	options: {
 		remarkPlugins: [remarkGfm],
-		// rehypePlugins: [],
+		rehypePlugins: [rehypeSlug],
 	},
 })
 
