@@ -10,7 +10,7 @@ import { DONATE_URL, GITHUB_URL } from '@/core/constants'
 export const links = [
 	['Demo', '/demo'],
 	['FAQs', '/#faqs'],
-	['API', '/#api'],
+	['API', '/api'],
 	['Donate', DONATE_URL],
 	['Github', GITHUB_URL],
 ]
