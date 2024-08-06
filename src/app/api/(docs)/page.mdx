@@ -1,3 +1,5 @@
+import { BASE_API_URL } from '@/core/constants'
+
 # NanoPay.me API Documentation
 
 ## Introduction
@@ -6,9 +8,11 @@ Welcome to the NanoPay.me API documentation. We provide a REST API to access per
 
 ## Base URL
 
-```
-https://api.nanopay.me
-```
+<pre>
+	<code>
+		<b>{BASE_API_URL}</b>
+	</code>
+</pre>
 
 ## Authentication
 
@@ -16,11 +20,13 @@ The NanoPay.me uses API keys for authentication. You'll need to include your API
 
 API keys are unique identifiers that are used to authenticate your requests to the NanoPay.me API. You can manage your API keys in the tab **API Keys** of your service.
 
-```bash
-curl -X GET 'https://api.nanopay.me/invoices/a5cf-p3sfa' \
--H 'Authorization: Bearer your_access_token_here' \
--H 'Content-Type: application/json'
-```
+<pre>
+	<code style={{ lineHeight: '.8em' }}>
+		curl -X GET '{BASE_API_URL}/invoices/a5cf-p3sfa' \ <br />
+		-H 'Authorization: Bearer <b>your_access_token_here</b>' \ <br />
+		-H 'Content-Type: application/json'
+	</code>
+</pre>
 
 ## Endpoints
 
