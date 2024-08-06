@@ -62,5 +62,4 @@ export const invoicePaginationSchema = z.object({
 	limit: z.number().min(1).max(20).optional(),
 	offset: z.number().min(0).optional(),
 	order: z.enum(['asc', 'desc']).optional(),
-	order_by: z.enum(['name', 'created_at']).optional(),
 })

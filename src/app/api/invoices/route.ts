@@ -77,7 +77,6 @@ export async function GET(
 			limit: searchParams.limit || 10,
 			offset: searchParams.offset || 0,
 			order: searchParams.order || 'desc',
-			order_by: searchParams.order_by || 'created_at',
 		}
 
 		const parse = invoicePaginationSchema.safeParse(pagination)
