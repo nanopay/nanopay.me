@@ -1,27 +1,24 @@
+import { LinkIcon } from 'lucide-react'
 import type { MDXComponents } from 'mdx/types'
 import { ReactNode } from 'react'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	return {
-		h1: ({ children, ...props }) => (
-			<HeadingLink id={props.id}>
-				<h1 {...props}>{children}</h1>
-			</HeadingLink>
-		),
+		h1: ({ children, ...props }) => <h1 {...props}>{children}</h1>,
 		h2: ({ children, ...props }) => (
-			<HeadingLink id={props.id}>
-				<h2 {...props}>{children}</h2>
-			</HeadingLink>
+			<h2 {...props}>
+				<HeadingLink id={props.id}>{children}</HeadingLink>
+			</h2>
 		),
 		h3: ({ children, ...props }) => (
-			<HeadingLink id={props.id}>
-				<h3 {...props}>{children}</h3>
-			</HeadingLink>
+			<h3 {...props}>
+				<HeadingLink id={props.id}>{children}</HeadingLink>
+			</h3>
 		),
 		h4: ({ children, ...props }) => (
-			<HeadingLink id={props.id}>
-				<h4 {...props}>{children}</h4>
-			</HeadingLink>
+			<h4 {...props}>
+				<HeadingLink id={props.id}>{children}</HeadingLink>
+			</h4>
 		),
 		...components,
 	}
@@ -29,8 +26,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
 function HeadingLink({ id, children }: { id?: string; children: ReactNode }) {
 	return (
-		<a href={`#${id}`} className="no-underline">
+		<a
+			href={`#${id}`}
+			className="border-dotted border-slate-600 no-underline hover:border-b-2"
+		>
 			{children}
+			<LinkIcon
+				size={16}
+				className="ml-2 inline-block text-slate-600 "
+				aria-hidden="true"
+			/>
 		</a>
 	)
 }
