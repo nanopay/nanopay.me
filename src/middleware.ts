@@ -4,6 +4,7 @@ import { updateSupabaseSessionForMiddleware } from '@/lib/supabase/supabase-midd
 import { cookies } from 'next/headers'
 import { Client } from './core/client'
 import { pathToRegexp } from 'path-to-regexp'
+import { BASE_API_URL } from './core/constants'
 
 const AUTH_ROUTES = [
 	'/login',
@@ -24,6 +25,14 @@ const routeMatch = (routes: string[], target: string): boolean => {
 export async function middleware(request: NextRequest) {
 	const nextUrl = request.nextUrl.clone()
 	const pathname = nextUrl.pathname
+
+	// Rewrite API url (like api.nanopay.me) to /api
+	const host = request.headers.get('host')
+	const isAPIRoute = new URL(BASE_API_URL).host === host
+	if (isAPIRoute) {
+		nextUrl.pathname = `/api${pathname}`
+		return NextResponse.rewrite(nextUrl)
+	}
 
 	const isPublicRoute = routeMatch(PUBLIC_ROUTES, pathname)
 	const isAuthRoute = routeMatch(AUTH_ROUTES, pathname)
