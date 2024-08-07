@@ -2,8 +2,7 @@ import { getSiteUrl } from '../utils/url'
 
 export const SITE_URL = getSiteUrl()
 
-export const BASE_API_URL =
-	process.env.NEXT_PUBLIC_BASE_API_URL || `${SITE_URL}/api`
+export const BASE_API_URL = process.env.CUSTOM_API_DOMAIN || `${SITE_URL}/api`
 
 export const CONTACT_EMAIL = 'hello@nanopay.me'
 export const SUPPORT_EMAIL = 'support@nanopay.me'

@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
 	// Rewrite API url (like api.nanopay.me) to /api
 	const host = request.headers.get('host')
-	const isAPIRoute = new URL(BASE_API_URL).host === host
+	const isAPIRoute = process.env.CUSTOM_API_DOMAIN === host
 	if (isAPIRoute) {
 		nextUrl.pathname = `/api${pathname}`
 		return NextResponse.rewrite(nextUrl)
