@@ -32,8 +32,6 @@ export class ApiKeysService extends BaseService {
 	}
 
 	async get(apiKey: string): Promise<ApiKey> {
-		z.string().uuid().parse(apiKey)
-
 		const { checksum, isValid } = verifyApiKeyWithChecksum(apiKey)
 
 		if (!isValid) {
