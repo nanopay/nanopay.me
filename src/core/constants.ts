@@ -2,7 +2,9 @@ import { getSiteUrl } from '../utils/url'
 
 export const SITE_URL = getSiteUrl()
 
-export const BASE_API_URL = process.env.CUSTOM_API_DOMAIN || `${SITE_URL}/api`
+export const BASE_API_URL = process.env.CUSTOM_API_DOMAIN
+	? `https://${process.env.CUSTOM_API_DOMAIN}`
+	: `${SITE_URL}/api`
 
 export const CONTACT_EMAIL = 'hello@nanopay.me'
 export const SUPPORT_EMAIL = 'support@nanopay.me'
@@ -31,3 +33,4 @@ export const DONATE_URL =
 	'https://github.com/nanopay/nanopay.me?tab=readme-ov-file#donate-%D3%BF'
 
 export const GITHUB_URL = 'https://github.com/nanopay/nanopay.me'
+export const X_URL = 'https://x.com/nanopay_me'
