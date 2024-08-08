@@ -1,6 +1,7 @@
 import { LinkIcon } from 'lucide-react'
 import type { MDXComponents } from 'mdx/types'
 import { ReactNode } from 'react'
+import { cn } from './lib/cn'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	return {
@@ -20,6 +21,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 				<HeadingLink id={props.id}>{children}</HeadingLink>
 			</h4>
 		),
+		table: ({ children, ...props }) => (
+			<ScrollableContainer>
+				<table
+					{...props}
+					className={cn('whitespace-nowrap sm:whitespace-normal')}
+				>
+					{children}
+				</table>
+			</ScrollableContainer>
+		),
 		...components,
 	}
 }
@@ -38,4 +49,8 @@ function HeadingLink({ id, children }: { id?: string; children: ReactNode }) {
 			/>
 		</a>
 	)
+}
+
+function ScrollableContainer({ children }: { children: ReactNode }) {
+	return <div className="overflow-x-auto">{children}</div>
 }
