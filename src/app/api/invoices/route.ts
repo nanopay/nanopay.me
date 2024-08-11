@@ -98,7 +98,13 @@ export async function GET(req: NextRequest) {
 			pagination,
 		)
 
-		return Response.json({ invoices, count })
+		return Response.json({
+			invoices,
+			total: count,
+			limit: pagination.offset,
+			offset: pagination.offset,
+			order: pagination.order,
+		})
 	} catch (error) {
 		const message = error instanceof Error ? error.message : 'Unknown error'
 		return Response.json({ message }, { status: 500 })
