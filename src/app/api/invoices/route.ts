@@ -64,15 +64,10 @@ export async function POST(req: NextRequest) {
 	}
 }
 
-export async function GET(
-	req: NextRequest,
-	{
-		searchParams,
-	}: {
-		searchParams: InvoicePagination
-	},
-) {
+export async function GET(req: NextRequest) {
 	try {
+		const searchParams = req.nextUrl.searchParams as InvoicePagination
+
 		const pagination: InvoicePagination = {
 			limit: searchParams.limit || 10,
 			offset: searchParams.offset || 0,
