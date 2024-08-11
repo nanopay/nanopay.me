@@ -44,7 +44,7 @@ export function ApiDocsMobileHeader() {
 			</div>
 			{isOpen && (
 				<div className="flex-1 overflow-auto py-2">
-					<ApiDocsNavbar />
+					<ApiDocsNavbar onClick={handleToggleMenu} />
 				</div>
 			)}
 		</header>

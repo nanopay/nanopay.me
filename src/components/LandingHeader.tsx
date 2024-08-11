@@ -80,7 +80,11 @@ export function LandingHeader({ ...props }: LandingHeaderProps) {
 							</Link>
 							<div className="flex flex-col divide-y divide-slate-200">
 								{links.map(([label, href]) => (
-									<Link key={label} href={href}>
+									<Link
+										key={label}
+										href={href}
+										onClick={() => href.includes('#') && handleToggleMenu()}
+									>
 										<Button
 											className="flex h-12 w-full justify-start text-lg"
 											variant="link"

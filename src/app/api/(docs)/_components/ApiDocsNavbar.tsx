@@ -13,13 +13,14 @@ import {
 	LayoutGridIcon,
 } from 'lucide-react'
 
-export function ApiDocsNavbar() {
+export function ApiDocsNavbar({ onClick }: { onClick?: () => void }) {
 	return (
 		<nav className="grid flex-1 gap-1 overflow-auto px-2 py-2 text-lg font-medium md:text-sm lg:px-4">
 			<Link
 				href="/api#introduction"
 				className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-slate-100 transition-all"
 				prefetch={false}
+				onClick={onClick}
 			>
 				<BookIcon className="h-4 w-4" />
 				Introduction
@@ -28,6 +29,7 @@ export function ApiDocsNavbar() {
 				href="/api#authentication"
 				className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-slate-100 transition-all"
 				prefetch={false}
+				onClick={onClick}
 			>
 				<LayersIcon className="h-4 w-4" />
 				Authentication
@@ -43,28 +45,28 @@ export function ApiDocsNavbar() {
 						<Link
 							href="/api/create-invoice"
 							className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-md px-3 py-2 text-slate-100 transition-all"
-							prefetch={false}
+							onClick={onClick}
 						>
 							Create Invoice
 						</Link>
 						<Link
 							href="/api/get-invoice"
 							className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-md px-3 py-2 text-slate-100 transition-all"
-							prefetch={false}
+							onClick={onClick}
 						>
 							Get Invoice
 						</Link>
 						<Link
 							href="/api/list-invoices"
 							className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-md px-3 py-2 text-slate-100 transition-all"
-							prefetch={false}
+							onClick={onClick}
 						>
 							List Invoices
 						</Link>
 						<Link
 							href="/api/get-service"
 							className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-md px-3 py-2 text-slate-100 transition-all"
-							prefetch={false}
+							onClick={onClick}
 						>
 							Get Service
 						</Link>
