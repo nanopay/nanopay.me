@@ -71,6 +71,7 @@ export function ApiDocsNavbar({ onClick }: { onClick?: () => void }) {
 					<div className="-mx-3 grid gap-1 rounded-md bg-slate-800 p-3">
 						{endpoints.map(endpoint => (
 							<Link
+								key={endpoint.href}
 								href={endpoint.href}
 								className={cn(
 									'flex items-center gap-3 rounded-md px-3 py-2 text-slate-100 transition-all',
