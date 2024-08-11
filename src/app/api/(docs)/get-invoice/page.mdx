@@ -46,3 +46,12 @@ GET /invoices/{id}
 	]
 }
 ```
+
+#### Invoices Statuses
+
+| Status    | Description                                           |
+| --------- | ----------------------------------------------------- |
+| `pending` | The invoice has been created but not yet paid.        |
+| `paid`    | The invoice has been paid and is considered complete. |
+| `expired` | The invoice has expired and is no longer valid.       |
+| `error`   | There was an error processing the invoice.            |
