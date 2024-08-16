@@ -1,8 +1,13 @@
 import { cookies } from 'next/headers'
-import { ServiceSettings } from './service-settings'
 import { Client } from '@/core/client'
 import { NotFoundCard } from '@/components/NotFoundCard'
 import { getUserEmail } from '@/lib/supabase/server'
+
+import ServiceWebsiteCard from './settings-cards/ServiceWebsiteCard'
+import ServiceContactEmailCard from './settings-cards/ServiceContactEmailCard'
+import ServiceAvatarCard from './settings-cards/ServiceAvatar'
+import ServiceNameCard from './settings-cards/ServiceNameCard'
+import ServiceDeleteCard from './settings-cards/ServiceDeleteCard'
 
 interface Params {
 	params: { serviceIdOrSlug: string }
@@ -35,7 +40,24 @@ export default async function ServiceSettingsPage({
 
 	return (
 		<div className="w-full">
-			<ServiceSettings service={service} />
+			<div className="flex flex-col space-y-8">
+				<ServiceNameCard serviceId={service.id} value={service.name} />
+
+				<ServiceAvatarCard
+					serviceId={service.id}
+					serviceName={service.name}
+					value={service.avatar_url}
+				/>
+
+				<ServiceContactEmailCard
+					serviceId={service.id}
+					value={service.contact_email}
+				/>
+
+				<ServiceWebsiteCard serviceId={service.id} value={service.website} />
+
+				<ServiceDeleteCard service={service} />
+			</div>
 		</div>
 	)
 }
