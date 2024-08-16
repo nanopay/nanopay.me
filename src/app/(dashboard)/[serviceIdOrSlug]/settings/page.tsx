@@ -3,11 +3,11 @@ import { Client } from '@/core/client'
 import { NotFoundCard } from '@/components/NotFoundCard'
 import { getUserEmail } from '@/lib/supabase/server'
 
-import ServiceWebsiteCard from './settings-cards/ServiceWebsiteCard'
-import ServiceContactEmailCard from './settings-cards/ServiceContactEmailCard'
-import ServiceAvatarCard from './settings-cards/ServiceAvatar'
-import ServiceNameCard from './settings-cards/ServiceNameCard'
-import ServiceDeleteCard from './settings-cards/ServiceDeleteCard'
+import ServiceWebsiteCard from './_components/ServiceWebsiteCard'
+import ServiceContactEmailCard from './_components/ServiceContactEmailCard'
+import ServiceAvatarCard from './_components/ServiceAvatar'
+import ServiceNameCard from './_components/ServiceNameCard'
+import ServiceDeleteCard from './_components/ServiceDeleteCard'
 
 interface Params {
 	params: { serviceIdOrSlug: string }
