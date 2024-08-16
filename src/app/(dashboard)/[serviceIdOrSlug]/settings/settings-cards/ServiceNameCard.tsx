@@ -80,7 +80,11 @@ export default function ServiceNameCard({
 								render={({ field, fieldState }) => (
 									<FormItem>
 										<FormControl>
-											<Input {...field} invalid={fieldState.invalid} />
+											<Input
+												{...field}
+												invalid={fieldState.invalid}
+												placeholder="My Service Name"
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
