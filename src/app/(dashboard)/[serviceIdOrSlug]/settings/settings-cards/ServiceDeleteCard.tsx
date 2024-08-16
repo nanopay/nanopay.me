@@ -11,7 +11,7 @@ import { cn } from '@/lib/cn'
 import { TrashIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
-import { DeleteServiceAlertModal } from '../settings'
+import { DeleteServiceAlertModal } from '../service-settings'
 
 export default function ServiceDeleteCard({
 	service,

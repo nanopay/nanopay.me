@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { Settings } from './settings'
+import { Settings } from './service-settings'
 import { Client } from '@/core/client'
 import { NotFoundCard } from '@/components/NotFoundCard'
 import { getUserEmail } from '@/lib/supabase/server'
