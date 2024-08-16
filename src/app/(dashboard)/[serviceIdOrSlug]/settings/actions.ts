@@ -1,7 +1,7 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { Client } from '@/core/client'
+import { Client, serviceUpdateSchema } from '@/core/client'
 import { getUserId } from '@/lib/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
@@ -21,4 +21,17 @@ export const deleteService = safeAction
 		revalidateTag(`user-${userId}-services`)
 
 		redirect('/')
+	})
+
+export const updateService = safeAction
+	.schema(serviceUpdateSchema.extend({ serviceIdOrSlug: z.string() }))
+	.action(async ({ parsedInput: { serviceIdOrSlug, ...data } }) => {
+		const userId = await getUserId(cookies())
+
+		const client = new Client(cookies())
+
+		await client.services.update(serviceIdOrSlug, data)
+
+		revalidateTag(`service-${serviceIdOrSlug}`)
+		revalidateTag(`user-${userId}-services`)
 	})
