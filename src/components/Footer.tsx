@@ -73,13 +73,13 @@ export function Footer({
 						</div>
 					</div>
 				</div>
-				<div className="flex flex-col items-center border-t border-slate-200 py-8 text-base text-slate-800 md:flex-row-reverse md:justify-between md:pt-6 dark:border-slate-700 dark:text-slate-400">
+				<div className="text-sla flex flex-col items-center border-t border-slate-200 py-8 text-sm text-slate-600 md:flex-row-reverse md:justify-between md:py-6 dark:border-slate-700 dark:text-slate-400">
 					<a href={`mailto:${CONTACT_EMAIL}`} className="hover:underline">
 						{CONTACT_EMAIL}
 					</a>
 					<p className="mt-6 flex md:mt-0">
-						<Logomark className="mr-2 h-auto w-5" theme={theme} /> &copy;{' '}
-						{new Date().getFullYear()}
+						<Logomark className="mr-1.5 h-5 w-auto" theme={theme} />
+						<span className="h-5">&copy; {new Date().getFullYear()}</span>
 					</p>
 				</div>
 			</Container>
