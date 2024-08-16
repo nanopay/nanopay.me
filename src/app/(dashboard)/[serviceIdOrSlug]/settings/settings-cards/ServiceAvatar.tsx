@@ -1,3 +1,5 @@
+'use client'
+
 import { ServiceAvatarEditable } from '@/components/ServiceAvatarEditable'
 import {
 	Card,
