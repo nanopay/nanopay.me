@@ -21,44 +21,52 @@ export const serviceNameOrIdSchema = z.union([
 	serviceIdSchema,
 ])
 
+export const serviceWebsiteSchema = z
+	.string()
+	.url()
+	.max(MAX_URL_LENGTH)
+	.nullable()
+
 export const serviceAvatarUrlSchema = z
 	.string()
 	.url()
 	.max(MAX_URL_LENGTH)
 	.nullable()
 
+export const serviceContactEmailSchema = z.string().email().nullable()
+
 export const serviceCreateSchema = z.object({
 	name: z.string().min(MIN_SERVICE_NAME_LENGTH).max(MAX_SERVICE_NAME_LENGTH),
 	avatar_url: serviceAvatarUrlSchema.optional(),
-	website: z.string().url().max(MAX_URL_LENGTH).nullable().optional(),
-	contact_email: z.string().email().nullable().optional(),
+	website: serviceWebsiteSchema.optional(),
+	contact_email: serviceContactEmailSchema.optional(),
 })
 
 export const serviceUpdateSchema = z.object({
 	slug: serviceNameSchema.optional(),
 	name: serviceNameSchema.max(MAX_SERVICE_NAME_LENGTH).optional(),
 	avatar_url: serviceAvatarUrlSchema.optional(),
-	website: z.string().url().max(MAX_URL_LENGTH).nullable().optional(),
-	contact_email: z.string().email().nullable().optional(),
+	website: serviceWebsiteSchema.optional(),
+	contact_email: serviceContactEmailSchema.optional(),
 })
 
 export const publicServiceSchema = z.object({
-	id: z.string().uuid(),
+	id: serviceIdSchema,
 	slug: serviceNameSchema,
 	name: serviceNameSchema,
 	avatar_url: serviceAvatarUrlSchema,
-	website: z.string().url().max(MAX_URL_LENGTH).nullable(),
-	contact_email: z.string().email().nullable(),
+	website: serviceWebsiteSchema,
+	contact_email: serviceContactEmailSchema,
 })
 
 export const serviceSchema = z.object({
-	id: z.string().uuid(),
+	id: serviceIdSchema,
 	slug: serviceNameSchema,
 	name: serviceNameSchema,
 	avatar_url: serviceAvatarUrlSchema,
 	user_id: z.string().uuid(),
-	website: z.string().url().max(MAX_URL_LENGTH).nullable(),
-	contact_email: z.string().email().nullable(),
+	website: serviceWebsiteSchema,
+	contact_email: serviceContactEmailSchema,
 	invoices_count: z.number().min(0),
 	api_keys_count: z.number().min(0),
 	webhooks_count: z.number().min(0),
