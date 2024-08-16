@@ -13,6 +13,7 @@ import {
 import { Service, serviceWebsiteSchema } from '@/core/client'
 import { cn } from '@/lib/cn'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { GlobeIcon } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -24,6 +25,7 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
+import { ensureHttpOrHttps } from '@/utils/url'
 
 const schema = z.object({ website: serviceWebsiteSchema })
 
@@ -84,6 +86,7 @@ export default function ServiceWebsiteCard({
 												invalid={fieldState.invalid}
 												value={field.value || ''}
 												placeholder="https://example.com"
+												icon={<WebsiteIcon url={field.value} />}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -111,5 +114,23 @@ export default function ServiceWebsiteCard({
 				</Card>
 			</form>
 		</Form>
+	)
+}
+
+function WebsiteIcon({ url }: { url: string | null }) {
+	const safeUrl = url ? ensureHttpOrHttps(url) : ''
+	const isValidURL = URL.canParse(safeUrl)
+
+	const size = 24
+
+	return url && isValidURL ? (
+		<img
+			src={`https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${safeUrl}&size=${size}`}
+			width={size}
+			height={size}
+			alt="Website icon"
+		/>
+	) : (
+		<GlobeIcon size={size} />
 	)
 }
