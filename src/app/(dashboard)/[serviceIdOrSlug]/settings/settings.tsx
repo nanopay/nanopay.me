@@ -2,17 +2,14 @@
 
 import {
 	AlertTriangleIcon,
-	GlobeIcon,
 	KeyRoundIcon,
 	ReceiptIcon,
-	TrashIcon,
 	WebhookIcon,
 	XIcon,
 } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { deleteService } from './actions'
 import { Service } from '@/core/client'
-import { ServiceAvatarEditable } from '@/components/ServiceAvatarEditable'
 import { useAction } from 'next-safe-action/hooks'
 import { useToast } from '@/hooks/useToast'
 import { getSafeActionError } from '@/lib/safe-action'
@@ -29,170 +26,36 @@ import { DialogProps } from '@radix-ui/react-dialog'
 import Input from '@/components/Input'
 import { ServiceAvatar } from '@/components/ServiceAvatar'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
-import Link from 'next/link'
-import { MAX_SERVICE_NAME_LENGTH } from '@/core/constants'
+import ServiceWebsiteCard from './settings-cards/ServiceWebsiteCard'
+import ServiceContactEmailCard from './settings-cards/ServiceContactEmailCard'
+import ServiceAvatarCard from './settings-cards/ServiceAvatar'
+import ServiceNameCard from './settings-cards/ServiceNameCard'
+import ServiceDeleteCard from './settings-cards/ServiceDeleteCard'
 export interface SettingsProps {
 	service: Service
 }
 
 export function Settings({ service }: SettingsProps) {
-	const { showError } = useToast()
-
-	const [openDeleteServiceAlert, setOpenDeleteServiceAlert] = useState(false)
-
-	const handleOpenDeleteServiceAlert = () => {
-		setOpenDeleteServiceAlert(true)
-	}
-
 	return (
 		<>
 			<div className="flex flex-col space-y-8">
-				<Card className="w-full overflow-hidden">
-					<CardHeader>
-						<CardTitle>Service Name</CardTitle>
-						<CardDescription>
-							This is your service&apos;s visible name within NanoPay.me. For
-							example, the name of your company, organization, project.
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-						<div className="w-full max-w-sm">
-							<Input value={service.name} />
-						</div>
-					</CardContent>
-					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
-						<div className="flex w-full items-center justify-between">
-							<p className="text-sm text-slate-600">
-								Please use {MAX_SERVICE_NAME_LENGTH} characters at maximum.
-							</p>
-							<Button
-								onClick={handleOpenDeleteServiceAlert}
-								className="font-semibold"
-							>
-								Save
-							</Button>
-						</div>
-					</CardFooter>
-				</Card>
-				<Card className="w-full divide-y divide-slate-200 overflow-hidden border-slate-200">
-					<div className="flex items-center justify-between">
-						<CardHeader>
-							<CardTitle>Service Avatar</CardTitle>
-							<CardDescription>
-								This is your service&apos;s avatar. Click on the avatar to
-								upload a custom one from your files.
-							</CardDescription>
-						</CardHeader>
-						<CardContent className="p-4">
-							<ServiceAvatarEditable
-								id={service.id}
-								size={80}
-								src={service.avatar_url}
-								alt={service.name}
-							/>
-						</CardContent>
-					</div>
-					<CardFooter className="bg-slate-100 pt-6 text-sm text-slate-600">
-						An avatar is optional but strongly recommended.
-					</CardFooter>
-				</Card>
-				<Card className="w-full overflow-hidden border-slate-200">
-					<CardHeader>
-						<CardTitle>Service Website</CardTitle>
-						<CardDescription>
-							This is your service&apos;s website URL. Your customers will be
-							able to see this in the invoices
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-						<div className="w-full max-w-sm">
-							<Input value={service.website || ''} />
-						</div>
-					</CardContent>
-					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
-						<div className="flex w-full items-center justify-between">
-							<p className="text-sm text-slate-600">
-								This is optional but strongly recommended if your service has a
-								website.
-							</p>
-							<Button
-								onClick={handleOpenDeleteServiceAlert}
-								className="font-semibold"
-							>
-								Save
-							</Button>
-						</div>
-					</CardFooter>
-				</Card>
-				<Card className="w-full overflow-hidden border-slate-200">
-					<CardHeader>
-						<CardTitle>Service Contact Email</CardTitle>
-						<CardDescription>
-							This is your service&apos;s contact email. Your customers will be
-							able to see this in the invoices
-						</CardDescription>
-					</CardHeader>
-					<CardContent>
-						<div className="w-full max-w-sm">
-							<Input value={service.contact_email || ''} />
-						</div>
-					</CardContent>
-					<CardFooter className="border-t border-slate-200 bg-slate-100 pt-6">
-						<div className="flex w-full items-center justify-between">
-							<p className="text-sm text-slate-600">
-								This is optional but strongly recommended.
-							</p>
-							<Button
-								onClick={handleOpenDeleteServiceAlert}
-								className="font-semibold"
-							>
-								Save
-							</Button>
-						</div>
-					</CardFooter>
-				</Card>
-				<Card className="w-full divide-y divide-red-200 overflow-hidden border-red-200">
-					<CardHeader>
-						<CardTitle>Delete Service</CardTitle>
-						<CardDescription>
-							Permanently remove your service and all of its contents from the
-							NanoPay.me platform. This action is not reversible — please
-							continue with caution.
-						</CardDescription>
-					</CardHeader>
-					<CardFooter className="bg-red-100 pt-6">
-						<div className="flex w-full items-center justify-between">
-							<p className="font-medium text-red-600">
-								To delete your account, visit{' '}
-								<Link href="/account" className="text-nano hover:underline">
-									Account Settings.
-								</Link>
-							</p>
-							<Button
-								variant="destructive"
-								onClick={handleOpenDeleteServiceAlert}
-								className="font-semibold"
-							>
-								<TrashIcon className="-ml-1 mr-2 h-4 w-4" aria-hidden="true" />
-								Delete Service
-							</Button>
-						</div>
-					</CardFooter>
-				</Card>
+				<ServiceNameCard serviceId={service.id} value={service.name} />
+
+				<ServiceAvatarCard
+					serviceId={service.id}
+					serviceName={service.name}
+					value={service.avatar_url}
+				/>
+
+				<ServiceContactEmailCard
+					serviceId={service.id}
+					value={service.contact_email}
+				/>
+
+				<ServiceWebsiteCard serviceId={service.id} value={service.website} />
+
+				<ServiceDeleteCard service={service} />
 			</div>
-			<DeleteServiceAlertModal
-				service={service}
-				open={openDeleteServiceAlert}
-				onOpenChange={setOpenDeleteServiceAlert}
-			/>
 		</>
 	)
 }
