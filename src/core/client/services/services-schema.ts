@@ -7,8 +7,12 @@ import { z } from 'zod'
 
 export const serviceNameSchema = z
 	.string()
-	.min(MIN_SERVICE_NAME_LENGTH)
-	.max(MAX_SERVICE_NAME_LENGTH)
+	.min(MIN_SERVICE_NAME_LENGTH, {
+		message: `Name must contain at least ${MIN_SERVICE_NAME_LENGTH} character(s)`,
+	})
+	.max(MAX_SERVICE_NAME_LENGTH, {
+		message: `Name must contain at most ${MAX_SERVICE_NAME_LENGTH} character(s)`,
+	})
 
 export const serviceIdSchema = z.string().uuid()
 
