@@ -7,10 +7,14 @@ export interface InputProps
 	invalid?: boolean
 	startAnimationHelpText?: boolean
 	containerClassName?: string
+	icon?: React.ReactNode
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ id: _id, label, invalid = false, containerClassName, ...props }, ref) => {
+	(
+		{ id: _id, label, invalid = false, containerClassName, icon, ...props },
+		ref,
+	) => {
 		const reactId = useId()
 		const id = _id || reactId
 		return (
@@ -39,6 +43,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
 						// Additional classes
 						props.className,
+
+						!!icon && 'pl-14',
 					)}
 					placeholder={props.placeholder || ''}
 					ref={ref}
@@ -71,6 +77,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 				>
 					{label}
 				</label>
+				{!!icon && (
+					<div className="peer-focus:border-primary absolute left-0 top-0 flex h-full w-12 items-center justify-center rounded-l-md border-r border-slate-200 text-slate-400 peer-focus:border-r-2">
+						{icon}
+					</div>
+				)}
 			</div>
 		)
 	},
