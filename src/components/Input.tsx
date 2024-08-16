@@ -23,10 +23,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 						'peer h-full w-full rounded-md border border-slate-200 border-t-transparent bg-transparent p-3 font-sans text-sm font-normal text-slate-700 outline outline-0 transition-all',
 
 						// Placeholder styles
-						'placeholder:opacity-0 placeholder-shown:border placeholder-shown:border-slate-200 placeholder-shown:border-t-slate-200',
+						'placeholder-shown:border placeholder-shown:border-slate-200 placeholder-shown:border-t-slate-200',
+						label && 'placeholder:opacity-0 ',
 
 						// Focus styles
-						'focus:border-primary focus:border-2 focus:border-t-transparent focus:outline-0 focus:placeholder:opacity-100',
+						'focus:border-primary focus:border-2 focus:border-t-transparent focus:outline-0',
+						label && 'focus:placeholder:opacity-100',
 
 						// Disabled styles
 						'disabled:!bg-muted disabled:!cursor-not-allowed disabled:!border-0',
