@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { Settings } from './service-settings'
+import { ServiceSettings } from './service-settings'
 import { Client } from '@/core/client'
 import { NotFoundCard } from '@/components/NotFoundCard'
 import { getUserEmail } from '@/lib/supabase/server'
@@ -35,7 +35,7 @@ export default async function ServiceSettingsPage({
 
 	return (
 		<div className="w-full">
-			<Settings service={service} />
+			<ServiceSettings service={service} />
 		</div>
 	)
 }

@@ -6,11 +6,8 @@ import ServiceContactEmailCard from './settings-cards/ServiceContactEmailCard'
 import ServiceAvatarCard from './settings-cards/ServiceAvatar'
 import ServiceNameCard from './settings-cards/ServiceNameCard'
 import ServiceDeleteCard from './settings-cards/ServiceDeleteCard'
-export interface SettingsProps {
-	service: Service
-}
 
-export function Settings({ service }: SettingsProps) {
+export function ServiceSettings({ service }: { service: Service }) {
 	return (
 		<>
 			<div className="flex flex-col space-y-8">
