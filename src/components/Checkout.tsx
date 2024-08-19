@@ -129,14 +129,14 @@ export default function Checkout({
 				</div>
 
 				<div className="w-48 p-4">
-					<a
+					<Link
 						href={SITE_URL}
 						target="_blank"
 						className="flex flex-col text-slate-200"
 					>
 						<span className="text-xs font-semibold">Powered by</span>
 						<Logo className="h-auto w-full" theme="dark" />
-					</a>
+					</Link>
 				</div>
 			</nav>
 
@@ -337,7 +337,10 @@ export default function Checkout({
 									</div>
 								)}
 								<div className="mt-4 flex flex-col gap-1">
-									<Link href={'#'}>
+									<Link
+										href={`/invoices/${invoice.id}/receipt`}
+										target="_blank"
+									>
 										<Button
 											variant="ghost"
 											className="PayButton w-full bg-slate-200 text-slate-600 sm:w-auto"
