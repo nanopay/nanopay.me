@@ -16,7 +16,13 @@ const AUTH_ROUTES = [
 	'/auth/callback',
 ]
 
-const PUBLIC_ROUTES = ['/', '/invoices/:id', '/demo', ...AUTH_ROUTES]
+const PUBLIC_ROUTES = [
+	'/',
+	'/invoices/:id',
+	'/invoices/:id/receipt',
+	'/demo',
+	...AUTH_ROUTES,
+]
 
 const routeMatch = (routes: string[], target: string): boolean => {
 	return routes.some(route => pathToRegexp(route).test(target))
