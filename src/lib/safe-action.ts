@@ -10,7 +10,7 @@ export const safeAction = createSafeActionClient({
 			message = error.message
 		}
 
-		return message
+		throw new Error(message)
 	},
 })
 
