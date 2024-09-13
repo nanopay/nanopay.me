@@ -13,9 +13,14 @@ export interface CreateInvoiceResponse {
 
 class PaymentGateway {
 	client: Fetcher
+	url: string
 
 	constructor() {
-		this.client = new Fetcher(process.env.PAYMENT_GATEWAY_URL!)
+		this.url = process.env.PAYMENT_GATEWAY_URL!
+		if (URL.canParse(this.url)) {
+			throw new Error('PAYMENT_GATEWAY_URL must be a valid URL')
+		}
+		this.client = new Fetcher(this.url)
 	}
 
 	getErrorMessage(error: any): string {
@@ -32,6 +37,14 @@ class PaymentGateway {
 				Authorization: `Bearer ${process.env.PAYMENT_GATEWAY_AUTH_TOKEN!}`,
 			},
 		})
+	}
+
+	buildPaymentsWebsocketUrl = (invoiceId: string) => {
+		const url = new URL(
+			this.url.replace('ws://', 'http://').replace('wss://', 'https://'),
+		)
+		url.pathname = `/invoices/${invoiceId}/payments`
+		return url.toString()
 	}
 }
 
