@@ -17,7 +17,7 @@ class PaymentGateway {
 
 	constructor() {
 		this.url = process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_URL!
-		if (URL.canParse(this.url)) {
+		if (!URL.canParse(this.url)) {
 			throw new Error('NEXT_PUBLIC_PAYMENT_GATEWAY_URL must be a valid URL')
 		}
 		this.client = new Fetcher(this.url)
