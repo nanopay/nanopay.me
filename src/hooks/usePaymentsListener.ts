@@ -28,7 +28,7 @@ export const usePaymentsListener = ({
 		(acc, curr) => safeDecimalAdd(acc, curr.amount),
 		0,
 	)
-	const amountMissing = price - amountPaid
+	const amountMissing = Math.max(price - amountPaid, 0)
 	const isPaid = amountPaid >= price
 	const timeLeft = new Date(expiresAt).getTime() - new Date().getTime()
 	const isExpired = !isPaid && timeLeft <= 0
