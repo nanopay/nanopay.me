@@ -24,3 +24,9 @@ export const getSiteUrl = () => {
 
 	return new URL(url).origin
 }
+
+export const buildPayInvoiceUrl = (invoiceId: string) => {
+	const url = new URL(getSiteUrl())
+	url.pathname = `/invoices/${invoiceId}`
+	return url.toString()
+}

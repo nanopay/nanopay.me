@@ -1,7 +1,7 @@
-import { SITE_URL } from '@/core/constants'
 import { AdminClient } from '@/core/client'
 import { ServerRuntime } from 'next'
 import { NextRequest } from 'next/server'
+import { buildPayInvoiceUrl } from '@/utils/url'
 
 export const runtime: ServerRuntime = 'edge'
 
@@ -47,7 +47,7 @@ export async function GET(
 			status: invoice.status,
 			received_amount: invoice.received_amount,
 			refunded_amount: invoice.refunded_amount,
-			pay_url: `${SITE_URL}/invoices/${invoice.id}`,
+			pay_url: buildPayInvoiceUrl(invoice.id),
 			redirect_url: invoice.redirect_url,
 			metadata: invoice.metadata,
 			recipient_address: invoice.recipient_address,

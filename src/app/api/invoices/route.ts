@@ -1,4 +1,3 @@
-import { SITE_URL } from '@/core/constants'
 import { NextRequest } from 'next/server'
 import {
 	invoiceCreateSchema,
@@ -7,6 +6,7 @@ import {
 
 import { ServerRuntime } from 'next/types'
 import { AdminClient, InvoicePagination } from '@/core/client'
+import { buildPayInvoiceUrl } from '@/utils/url'
 
 export const runtime: ServerRuntime = 'edge'
 
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 			pay_currency: 'XNO',
 			pay_address,
 			pay_amount: body.price,
-			pay_url: `${SITE_URL}/invoices/${id}`,
+			pay_url: buildPayInvoiceUrl(body.id),
 			// TODO: Implement invoices limit / remaining / reset
 			// invoices_limit: 100,
 			// invoices_remaining: 99,
