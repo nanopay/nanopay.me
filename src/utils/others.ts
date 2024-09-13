@@ -50,3 +50,20 @@ export const formatDateTime = (date: string | number) => {
 export const explorerUrl = (hash: string) => {
 	return `https://blocklattice.io/block/${hash}`
 }
+
+export const safeDecimalAdd = (...numbers: number[]): number => {
+	// Find the maximum number of decimal places
+	const maxDecimalPlaces = Math.max(
+		...numbers.map(n => {
+			const decimals = n.toString().split('.')[1]
+			return decimals ? decimals.length : 0
+		}),
+	)
+
+	// Multiply each number by 10^maxDecimalPlaces to convert to integers
+	const factor = Math.pow(10, maxDecimalPlaces)
+	const intSum = numbers.reduce((sum, n) => sum + Math.round(n * factor), 0)
+
+	// Divide the result by 10^maxDecimalPlaces to get back to a decimal
+	return intSum / factor
+}

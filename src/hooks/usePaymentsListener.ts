@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { paymentSchema } from '@/core/client'
 import { z } from 'zod'
 import { paymentGateway } from '@/services/payment-gateway'
+import { safeDecimalAdd } from '@/utils/others'
 
 const paymentNotificationSchema = paymentSchema.omit({ id: true })
 
@@ -23,7 +24,10 @@ export const usePaymentsListener = ({
 	const [payments, setPayments] =
 		useState<PaymentNotification[]>(initialPayments)
 
-	const amountPaid = payments.reduce((acc, curr) => acc + curr.amount, 0)
+	const amountPaid = payments.reduce(
+		(acc, curr) => safeDecimalAdd(acc, curr.amount),
+		0,
+	)
 	const amountMissing = price - amountPaid
 	const isPaid = amountPaid >= price
 	const timeLeft = new Date(expiresAt).getTime() - new Date().getTime()
