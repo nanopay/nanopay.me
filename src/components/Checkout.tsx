@@ -35,6 +35,7 @@ import { usePaymentsListener } from '@/hooks/usePaymentsListener'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 import { Drawer, DrawerContent } from './ui/drawer'
+import BigNumber from 'bignumber.js'
 
 export default function Checkout({
 	invoice,
@@ -98,7 +99,9 @@ export default function Checkout({
 		}, 2000)
 	}
 
-	const priceUsd = xnoToUsd ? xnoToUsd * amountMissing : null
+	const priceUsd = xnoToUsd
+		? BigNumber(xnoToUsd).multipliedBy(amountMissing).toNumber()
+		: null
 
 	useEffect(() => {
 		if (isPaid) {
