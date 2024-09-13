@@ -61,7 +61,7 @@ export default function Checkout({
 	} = usePaymentsListener({
 		invoiceId: invoice.id,
 		price: invoice.price,
-		expires_at: invoice.expires_at,
+		expiresAt: invoice.expires_at,
 		initialPayments: invoice.payments,
 	})
 

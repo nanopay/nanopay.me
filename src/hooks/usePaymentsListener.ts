@@ -1,59 +1,89 @@
-import { useEffect, useState } from 'react'
-import Pusher from 'pusher-js'
-import { Payment } from '@/core/client'
+import { useEffect, useState, useRef } from 'react'
+import { paymentSchema } from '@/core/client'
+import { z } from 'zod'
+import { paymentGateway } from '@/services/payment-gateway'
 
-const PUSHER_KEY = process.env.NEXT_PUBLIC_PUSHER_KEY!
-const PUSHER_CLUSTER = 'us2'
+const paymentNotificationSchema = paymentSchema.omit({ id: true })
 
-interface PaymentNotification {
-	payments: Payment[]
-	total_paid: number
-	missing: number
-}
+type PaymentNotification = z.infer<typeof paymentNotificationSchema>
 
 interface PaymentListenerProps {
 	invoiceId: string
 	price: number
-	expires_at: string
-	initialPayments: Payment[]
+	expiresAt: string
+	initialPayments: PaymentNotification[]
 }
 
-export const usePaymentsListener = (props: PaymentListenerProps) => {
-	const [payments, setPayments] = useState<Payment[]>(props.initialPayments)
+export const usePaymentsListener = ({
+	invoiceId,
+	price,
+	expiresAt,
+	initialPayments,
+}: PaymentListenerProps) => {
+	const [payments, setPayments] =
+		useState<PaymentNotification[]>(initialPayments)
 
 	const amountPaid = payments.reduce((acc, curr) => acc + curr.amount, 0)
-	const amountMissing = props.price - amountPaid
-	const isPaid = amountPaid >= props.price
-	const timeLeft = new Date(props.expires_at).getTime() - new Date().getTime()
+	const amountMissing = price - amountPaid
+	const isPaid = amountPaid >= price
+	const timeLeft = new Date(expiresAt).getTime() - new Date().getTime()
 	const isExpired = !isPaid && timeLeft <= 0
 	const isPartiallyPaid = !isPaid && amountPaid > 0
 
+	const socketRef = useRef<WebSocket | null>(null)
+
 	useEffect(() => {
-		if (isPaid || isExpired) return
+		if (isPaid || isExpired || socketRef.current) return
 
-		Pusher.logToConsole = true
-		const pusher = new Pusher(PUSHER_KEY, {
-			cluster: PUSHER_CLUSTER,
-		})
-		const channel = pusher.subscribe(props.invoiceId)
-		channel.bind('invoice.paid', (data: PaymentNotification) => {
-			setPayments([...payments, ...data.payments])
-		})
-		channel.bind('invoice.partially_paid', (data: PaymentNotification) => {
-			setPayments([...payments, ...data.payments])
-		})
+		const websocketUrl = paymentGateway.buildPaymentsWebsocketUrl(invoiceId)
+		socketRef.current = new WebSocket(websocketUrl)
 
-		// auto unsubscribe when expires
-		setTimeout(() => {
-			channel.unbind_all()
-			channel.unsubscribe()
+		socketRef.current.onopen = () => {
+			console.info('WebSocket connected')
+		}
+
+		socketRef.current.onmessage = event => {
+			try {
+				const data = paymentNotificationSchema.parse(JSON.parse(event.data))
+				setPayments(prevPayments => {
+					// Prevent duplicates
+					if (prevPayments.some(p => p.hash === data.hash)) {
+						return prevPayments
+					}
+					return [...prevPayments, data]
+				})
+			} catch (error) {
+				console.error('Error parsing WebSocket message:', error)
+			}
+		}
+
+		socketRef.current.onerror = error => {
+			console.error('WebSocket error:', error)
+		}
+
+		socketRef.current.onclose = () => {
+			console.info('WebSocket connection closed')
+		}
+
+		// Auto-unsubscribe when the invoice expires
+		const timeoutId = setTimeout(() => {
+			if (
+				socketRef.current &&
+				socketRef.current.readyState === WebSocket.OPEN
+			) {
+				socketRef.current.close()
+			}
 		}, timeLeft)
 
+		// Clean up WebSocket on component unmount or when the invoice expires
 		return () => {
-			channel.unbind_all()
-			channel.unsubscribe()
+			clearTimeout(timeoutId)
+			if (socketRef.current?.readyState === WebSocket.OPEN) {
+				socketRef.current.close()
+				socketRef.current = null
+			}
 		}
-	}, [props, payments, isPaid, isExpired, timeLeft])
+	}, [invoiceId, isPaid, isExpired, socketRef.current])
 
 	return {
 		isPaid,
