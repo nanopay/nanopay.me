@@ -4,7 +4,6 @@ import { updateSupabaseSessionForMiddleware } from '@/lib/supabase/supabase-midd
 import { cookies } from 'next/headers'
 import { Client } from './core/client'
 import { pathToRegexp } from 'path-to-regexp'
-import { BASE_API_URL } from './core/constants'
 
 const AUTH_ROUTES = [
 	'/login',
@@ -25,7 +24,7 @@ const PUBLIC_ROUTES = [
 ]
 
 const routeMatch = (routes: string[], target: string): boolean => {
-	return routes.some(route => pathToRegexp(route).test(target))
+	return routes.some(route => pathToRegexp(route).regexp.test(target))
 }
 
 export async function middleware(request: NextRequest) {
