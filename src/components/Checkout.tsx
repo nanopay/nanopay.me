@@ -189,63 +189,7 @@ export default function Checkout({
 					<>
 						<div className="flex flex-1 items-center justify-center py-4">
 							<div className="flex flex-col items-center gap-2">
-								<svg
-									width="115px"
-									height="115px"
-									viewBox="0 0 133 133"
-									version="1.1"
-									xmlns="http://www.w3.org/2000/svg"
-									xmlnsXlink="http://www.w3.org/1999/xlink"
-								>
-									<g
-										id="x-group"
-										stroke="none"
-										strokeWidth="1"
-										fill="none"
-										fillRule="evenodd"
-									>
-										<circle
-											id="filled-circle"
-											fill="#be123c"
-											cx="66.5"
-											cy="66.5"
-											r="54.5"
-										/>
-										<circle
-											id="white-circle"
-											fill="#FFFFFF"
-											cx="66.5"
-											cy="66.5"
-											r="55.5"
-										/>
-										<circle
-											id="outline"
-											stroke="#be123c"
-											strokeWidth="4"
-											cx="66.5"
-											cy="66.5"
-											r="54.5"
-										/>
-										<line
-											id="x-line-1"
-											stroke="#FFFFFF"
-											strokeWidth="5.5"
-											x1="41"
-											y1="41"
-											x2="92"
-											y2="92"
-										/>
-										<line
-											id="x-line-2"
-											stroke="#FFFFFF"
-											strokeWidth="5.5"
-											x1="41"
-											y1="92"
-											x2="92"
-											y2="41"
-										/>
-									</g>
-								</svg>
+								<ErrorIcon />
 								<h3 className="text-xl font-semibold text-slate-600">
 									{isExpired ? 'Expired' : 'Max payments reached'}
 								</h3>
@@ -296,51 +240,7 @@ export default function Checkout({
 					<>
 						<div className="flex flex-1 items-center justify-center py-4">
 							<div className="flex flex-col items-center gap-2">
-								<svg
-									width="115px"
-									height="115px"
-									viewBox="0 0 133 133"
-									version="1.1"
-									xmlns="http://www.w3.org/2000/svg"
-									xmlnsXlink="http://www.w3.org/1999/xlink"
-								>
-									<g
-										id="check-group"
-										stroke="none"
-										strokeWidth="1"
-										fill="none"
-										fillRule="evenodd"
-									>
-										<circle
-											id="filled-circle"
-											fill="#07b481"
-											cx="66.5"
-											cy="66.5"
-											r="54.5"
-										/>
-										<circle
-											id="white-circle"
-											fill="#FFFFFF"
-											cx="66.5"
-											cy="66.5"
-											r="55.5"
-										/>
-										<circle
-											id="outline"
-											stroke="#07b481"
-											strokeWidth="4"
-											cx="66.5"
-											cy="66.5"
-											r="54.5"
-										/>
-										<polyline
-											id="check"
-											stroke="#FFFFFF"
-											strokeWidth="5.5"
-											points="41 70 56 85 92 49"
-										/>
-									</g>
-								</svg>
+								<SuccessIcon />
 								<h3 className="text-xl font-semibold text-slate-600">
 									Paid Ӿ{amountPaid}
 								</h3>
@@ -601,6 +501,108 @@ function ReceiptRefundIcon(props: React.SVGProps<SVGSVGElement>) {
 				strokeLinejoin="round"
 				d="M8.25 9.75h4.875a2.625 2.625 0 0 1 0 5.25H12M8.25 9.75 10.5 7.5M8.25 9.75 10.5 12m9-7.243V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185Z"
 			/>
+		</svg>
+	)
+}
+
+function SuccessIcon(props: React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			width="115px"
+			height="115px"
+			viewBox="0 0 133 133"
+			version="1.1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlnsXlink="http://www.w3.org/1999/xlink"
+			{...props}
+		>
+			<g
+				id="check-group"
+				stroke="none"
+				strokeWidth="1"
+				fill="none"
+				fillRule="evenodd"
+			>
+				<circle
+					id="filled-circle"
+					fill="#07b481"
+					cx="66.5"
+					cy="66.5"
+					r="54.5"
+				/>
+				<circle id="white-circle" fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5" />
+				<circle
+					id="outline"
+					stroke="#07b481"
+					strokeWidth="4"
+					cx="66.5"
+					cy="66.5"
+					r="54.5"
+				/>
+				<polyline
+					id="check"
+					stroke="#FFFFFF"
+					strokeWidth="5.5"
+					points="41 70 56 85 92 49"
+				/>
+			</g>
+		</svg>
+	)
+}
+
+function ErrorIcon(props: React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			width="115px"
+			height="115px"
+			viewBox="0 0 133 133"
+			version="1.1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlnsXlink="http://www.w3.org/1999/xlink"
+			{...props}
+		>
+			<g
+				id="x-group"
+				stroke="none"
+				strokeWidth="1"
+				fill="none"
+				fillRule="evenodd"
+			>
+				<circle
+					id="filled-circle"
+					fill="#be123c"
+					cx="66.5"
+					cy="66.5"
+					r="54.5"
+				/>
+				<circle id="white-circle" fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5" />
+				<circle
+					id="outline"
+					stroke="#be123c"
+					strokeWidth="4"
+					cx="66.5"
+					cy="66.5"
+					r="54.5"
+				/>
+				<line
+					id="x-line-1"
+					stroke="#FFFFFF"
+					strokeWidth="5.5"
+					x1="41"
+					y1="41"
+					x2="92"
+					y2="92"
+				/>
+				<line
+					id="x-line-2"
+					stroke="#FFFFFF"
+					strokeWidth="5.5"
+					x1="41"
+					y1="92"
+					x2="92"
+					y2="41"
+				/>
+			</g>
 		</svg>
 	)
 }
