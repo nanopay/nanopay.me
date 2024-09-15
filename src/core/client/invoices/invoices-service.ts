@@ -2,6 +2,7 @@ import { paymentGateway } from '@/services/payment-gateway'
 import { BaseService } from '../base-service'
 import {
 	invoiceCreateSchema,
+	invoicePaginationSchema,
 	invoicePublicSchema,
 	invoiceSchema,
 } from './invoices-schemas'
@@ -127,7 +128,12 @@ export class InvoicesService extends BaseService {
 	async list(
 		serviceIdOrSlug: string,
 		options?: InvoicePagination,
-	): Promise<{ invoices: Invoice[]; count: number }> {
+	): Promise<{
+		invoices: Invoice[]
+		count: number
+	}> {
+		invoicePaginationSchema.parse(options)
+
 		const query = this.supabase
 			.from('invoices')
 			.select(
