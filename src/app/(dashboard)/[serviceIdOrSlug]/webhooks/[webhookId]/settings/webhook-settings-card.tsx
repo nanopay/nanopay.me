@@ -24,8 +24,8 @@ export function WebhookSettingsCard({ webhook }: { webhook: Webhook }) {
 		},
 	})
 
-	const onSubmit = (values: WebhookUpdate) => {
-		executeUpdateWebhook({
+	const onSubmit = async (values: WebhookUpdate) => {
+		await executeUpdateWebhook({
 			webhookId: webhook.id,
 			...values,
 		})
