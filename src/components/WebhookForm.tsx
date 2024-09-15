@@ -154,16 +154,34 @@ export function WebhookForm({
 					name="secret"
 					control={form.control}
 					render={({ field }) => (
-						<FormItem>
+						<FormItem className="py-4">
 							<FormControl>
-								<Input
-									label="Secret (optional)"
-									{...field}
-									value={field.value ?? ''}
-									onChange={e => field.onChange(e.target.value.slice(0, 512))}
-									disabled
-								/>
+								<div className="flex items-center gap-2">
+									<div className="w-full">
+										<Input
+											label="Secret (optional)"
+											{...field}
+											value={field.value ?? ''}
+											onChange={e =>
+												field.onChange(e.target.value.slice(0, 512))
+											}
+										/>
+									</div>
+									<Button
+										type="button"
+										variant="outline"
+										color="slate"
+										className="h-14"
+										onClick={() => field.onChange(crypto.randomUUID())}
+									>
+										Random
+									</Button>
+								</div>
 							</FormControl>
+							<FormDescription className="flex items-center text-xs text-slate-600">
+								<InfoIcon className="mr-1 w-4" />
+								The secret is used to sign the webhook payload.
+							</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -171,14 +189,17 @@ export function WebhookForm({
 
 				{form.formState.dirtyFields.url && <WebhookAlert />}
 
-				<Button
-					type="submit"
-					loading={form.formState.isSubmitting}
-					disabled={buttonDisabled}
-					className="mt-2"
-				>
-					{buttonTitle}
-				</Button>
+				<div className="flex justify-center">
+					<Button
+						type="submit"
+						loading={form.formState.isSubmitting}
+						disabled={buttonDisabled}
+						className="mt-2 text-lg"
+						size="lg"
+					>
+						{buttonTitle}
+					</Button>
+				</div>
 			</form>
 		</Form>
 	)
@@ -196,7 +217,7 @@ function WebhookAlert() {
 						webhook
 					</li>
 					<li>
-						If your webhook does not respond with a valid code within 15
+						If your webhook does not respond with a valid status code within 15
 						seconds, we cancel the request. We do not implement retries
 						currently.
 					</li>

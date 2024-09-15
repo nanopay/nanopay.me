@@ -46,6 +46,7 @@ export function WebhookSettingsCard({ webhook }: { webhook: Webhook }) {
 						description: webhook.description,
 						event_types: webhook.event_types,
 						url: webhook.url,
+						secret: webhook.secret,
 					}}
 					onSubmit={onSubmit}
 					buttonTitle="Update Webhook"
