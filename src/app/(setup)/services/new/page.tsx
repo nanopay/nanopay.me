@@ -6,7 +6,6 @@ import Input from '@/components/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/hooks/useToast'
 import { createService } from './actions'
-import { InfoIcon } from 'lucide-react'
 import { Button } from '@/components/Button'
 import {
 	Form,
@@ -49,15 +48,6 @@ export default function NewService() {
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
 						<div className="flex w-full flex-col space-y-6 px-4 py-4 sm:px-8">
-							<div className="mb-2 flex items-center text-xs text-slate-600">
-								<InfoIcon className="mr-1 w-4" />
-								<div>
-									Use a name like:{' '}
-									<span className="font-semibold">my-service</span>
-									{' or '}
-									<span className="font-semibold">myservice2.com</span>
-								</div>
-							</div>
 							<FormField
 								name="name"
 								control={form.control}
@@ -65,7 +55,7 @@ export default function NewService() {
 									<FormItem>
 										<FormControl>
 											<Input
-												label="Name"
+												label="Service Name"
 												{...field}
 												invalid={fieldState.invalid}
 												className="capitalize"
