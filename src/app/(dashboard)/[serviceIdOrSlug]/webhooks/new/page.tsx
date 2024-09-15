@@ -15,7 +15,7 @@ import { WebhookCreate } from '@/core/client'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 
-export default function NewApiKey({
+export default function NewWebhookPage({
 	params: { serviceIdOrSlug },
 }: {
 	params: {
@@ -31,8 +31,8 @@ export default function NewApiKey({
 		},
 	})
 
-	const onSubmit = (values: WebhookCreate) => {
-		executeCreateWebhook({
+	const onSubmit = async (values: WebhookCreate) => {
+		await executeCreateWebhook({
 			serviceIdOrSlug: serviceIdOrSlug,
 			...values,
 		})
