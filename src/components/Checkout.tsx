@@ -23,7 +23,12 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 import { Button } from './Button'
-import { REFUND_EMAIL, SITE_URL, SUPPORT_EMAIL } from '@/core/constants'
+import {
+	MAX_PAYMENTS_PER_INVOICE,
+	REFUND_EMAIL,
+	SITE_URL,
+	SUPPORT_EMAIL,
+} from '@/core/constants'
 import { redirectToMerchant } from '@/app/invoices/[invoiceId]/actions'
 import {
 	Accordion,
@@ -65,6 +70,9 @@ export default function Checkout({
 		expiresAt: invoice.expires_at,
 		initialPayments: invoice.payments,
 	})
+
+	const maxPaymentsReached =
+		payments.length >= MAX_PAYMENTS_PER_INVOICE && !isPaid
 
 	const lastPayment = payments[payments.length - 1]
 
@@ -177,7 +185,7 @@ export default function Checkout({
 			</Accordion>
 
 			<main className="flex flex-1 flex-col rounded-r-3xl bg-white px-4 py-2">
-				{isExpired ? (
+				{isExpired || maxPaymentsReached ? (
 					<>
 						<div className="flex flex-1 items-center justify-center py-4">
 							<div className="flex flex-col items-center gap-2">
@@ -239,7 +247,7 @@ export default function Checkout({
 									</g>
 								</svg>
 								<h3 className="text-xl font-semibold text-slate-600">
-									Expired
+									{isExpired ? 'Expired' : 'Max payments reached'}
 								</h3>
 								{amountPaid > 0 && (
 									<div className="mt-4 flex flex-col gap-1">
@@ -264,10 +272,12 @@ export default function Checkout({
 								<div className="text-slate-500">Invoice</div>
 								<div className="font-medium text-slate-900">#{invoice.id}</div>
 							</div>
-							<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
-								<div className="text-slate-500">Expired At</div>
-								{formatDateTime(invoice.expires_at)}
-							</div>
+							{isExpired && (
+								<div className="flex justify-between border-b border-dashed border-slate-200 py-2 text-sm">
+									<div className="text-slate-500">Expired At</div>
+									{formatDateTime(invoice.expires_at)}
+								</div>
+							)}
 
 							{payments.length > 0 && (
 								<Transactions

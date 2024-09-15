@@ -1,3 +1,5 @@
+// TODO: some of this constants is not part of core, move them
+
 import { getSiteUrl } from '../utils/url'
 
 export const SITE_URL = getSiteUrl()
@@ -12,6 +14,7 @@ export const REFUND_EMAIL = 'refund@nanopay.me'
 
 export const INVOICE_MINIMUM_PRICE = 0.0001 // 0.0001 NANO
 export const INVOICE_MAX_PRICE = 1000000 // 1 million NANO
+export const MAX_PAYMENTS_PER_INVOICE = 10
 
 export const STATIC_ASSETS_URL = process.env.NEXT_PUBLIC_STATIC_ASSETS_URL!
 
