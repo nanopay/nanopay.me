@@ -21,7 +21,6 @@ import {
 } from '@/core/client/webhooks/webhooks-types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { webhookCreateSchema } from '@/core/client'
-import { slugify } from '@/core/utils'
 
 const eventTypes: WebhookEventType[] = [
 	'invoice.paid',
@@ -61,7 +60,6 @@ export function WebhookForm({
 								<Input
 									label="Name"
 									{...field}
-									onChange={e => field.onChange(slugify(e.target.value))}
 									required
 									className="capitalize"
 									disabled={formDisabled}
