@@ -20,7 +20,7 @@ export const createUserProfile = safeAction
 			avatar_url: parsedInput.avatar_url || DEFAULT_AVATAR_URL,
 		})
 
-		revalidateTag(`user-${userId}-profile`)
+		revalidateTag(`user-${userId}`)
 
 		redirect('/')
 	})
