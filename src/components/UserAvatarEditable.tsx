@@ -9,6 +9,7 @@ export interface ServiceAvatarEditableProps {
 	src?: string | null
 	size?: number
 	alt?: string
+	isLoading?: boolean
 	onChange?: (url: string) => void
 	onUploading?: (bool: boolean) => void
 }
@@ -17,6 +18,7 @@ export function UserAvatarEditable({
 	src,
 	size = 98,
 	alt = 'User Avatar',
+	isLoading,
 	onChange,
 	onUploading,
 }: ServiceAvatarEditableProps) {
@@ -33,7 +35,7 @@ export function UserAvatarEditable({
 			src={src || DEFAULT_AVATAR_URL}
 			crop={true}
 			onChange={upload}
-			isLoading={isUploading}
+			isLoading={isUploading || isLoading}
 			isError={isError}
 			progress={progress}
 			width={size}
