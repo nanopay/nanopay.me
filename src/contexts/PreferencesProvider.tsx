@@ -7,6 +7,7 @@ import { createContext, useContext, useState } from 'react'
 interface PreferencesContextValues {
 	showPreReleaseAlert: boolean
 	setShowPreReleaseAlert: (value: boolean) => void
+	services: Service[]
 	currentService: Service | null
 }
 
@@ -34,6 +35,7 @@ export const PreferencesProvider = ({
 			value={{
 				showPreReleaseAlert,
 				setShowPreReleaseAlert,
+				services,
 				currentService,
 			}}
 		>
