@@ -132,7 +132,9 @@ export class InvoicesService extends BaseService {
 		invoices: Invoice[]
 		count: number
 	}> {
-		invoicePaginationSchema.parse(options)
+		if (options) {
+			invoicePaginationSchema.parse(options)
+		}
 
 		const query = this.supabase
 			.from('invoices')
