@@ -21,10 +21,6 @@ export default async function DashboardLayout({
 		redirect('/complete-profile')
 	}
 
-	if (services.length === 0) {
-		redirect('/services/new')
-	}
-
 	return (
 		<UserProvider user={user}>
 			<PreferencesProvider services={services}>
