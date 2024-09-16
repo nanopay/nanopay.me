@@ -3,8 +3,10 @@ import { ServicesService } from './services/services-service'
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database'
 import { ApiKeysService } from './api-keys'
+import { UsersAdminService } from './users/users-service'
 export class AdminClient {
 	readonly services: ServicesService
+	readonly users: UsersAdminService
 	readonly invoices: InvoicesService
 	readonly apiKeys: ApiKeysService
 
@@ -16,6 +18,7 @@ export class AdminClient {
 		)
 
 		this.services = new ServicesService(supabase)
+		this.users = new UsersAdminService(supabase)
 		this.invoices = new InvoicesService(supabase)
 		this.apiKeys = new ApiKeysService(supabase)
 	}

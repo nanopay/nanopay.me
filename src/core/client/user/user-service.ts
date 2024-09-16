@@ -53,6 +53,4 @@ export class UserService extends BaseService {
 			throw new Error(error.message)
 		}
 	}
-
-	async delete(): Promise<void> {}
 }
