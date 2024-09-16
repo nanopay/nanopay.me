@@ -17,7 +17,6 @@ import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
 import { AnimatePresence, motion } from 'framer-motion'
 import { UserNavigationPopover } from './UserNavigationPopover'
 import { DEFAULT_AVATAR_URL } from '@/core/constants'
-import { current } from 'tailwindcss/colors'
 
 export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {
 	services: Service[]
