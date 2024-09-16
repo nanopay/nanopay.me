@@ -24,10 +24,10 @@ export async function getCachedUser(): Promise<User | null> {
 				created_at: data.created_at,
 			}
 		},
-		[`user-${userId}-profile`],
+		[`user-${userId}`],
 		{
 			revalidate: false,
-			tags: [`user-${userId}-profile`],
+			tags: [`user-${userId}`],
 		},
 	)()
 }
