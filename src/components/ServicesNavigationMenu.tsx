@@ -42,7 +42,7 @@ export function ServicesNavigationMenu({
 					<DrawerHeader className="flex items-center justify-between gap-4">
 						<DrawerTitle>Services</DrawerTitle>
 						<CardDescription className="rounded-full bg-slate-100 px-2 font-semibold text-slate-600">
-							1 of 1
+							{services.length} of {services.length}
 						</CardDescription>
 					</DrawerHeader>
 					<div className="pb-safe-offset-4 flex min-h-48 flex-col justify-between gap-4 px-4 pt-2">
