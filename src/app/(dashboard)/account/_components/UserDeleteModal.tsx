@@ -152,19 +152,8 @@ export function UserDeleteModal({ ...props }: DialogProps) {
 					</div>
 				)}
 				<DialogFooter className="bg-slate-100 p-4">
-					{(services.length > 0 && (
-						<DialogClose asChild>
-							<Button
-								variant="outline"
-								className="hover:bg-nano/10 hover:border-nano/40 w-full font-semibold"
-								color="slate"
-								size="lg"
-							>
-								Cancel
-							</Button>
-						</DialogClose>
-					)) ||
-						(understandEffects && (
+					<div className="w-full space-y-2">
+						{(understandEffects && (
 							<Button
 								variant="destructive"
 								loading={isExecuting}
@@ -175,23 +164,35 @@ export function UserDeleteModal({ ...props }: DialogProps) {
 								Delete this account
 							</Button>
 						)) ||
-						(wantToDelete && (
+							(wantToDelete && (
+								<Button
+									variant="destructive"
+									onClick={handleUnderstandEffects}
+									className="w-full"
+								>
+									I have read and understand these effects
+								</Button>
+							)) ||
+							(services.length === 0 && (
+								<Button
+									variant="destructive"
+									onClick={handleWantToDelete}
+									className="w-full"
+								>
+									I want delete my account
+								</Button>
+							))}
+						<DialogClose asChild>
 							<Button
-								variant="destructive"
-								onClick={handleUnderstandEffects}
-								className="w-full"
+								variant="outline"
+								className="hover:bg-nano/10 hover:border-nano/40 w-full font-semibold"
+								color="slate"
+								size="lg"
 							>
-								I have read and understand these effects
+								Cancel
 							</Button>
-						)) || (
-							<Button
-								variant="destructive"
-								onClick={handleWantToDelete}
-								className="w-full"
-							>
-								I want delete my account
-							</Button>
-						)}
+						</DialogClose>
+					</div>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
