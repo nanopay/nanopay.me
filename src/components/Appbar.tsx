@@ -57,12 +57,15 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 		},
 	]
 
+	const isAccountSetingsPage = pathname === '/account'
+
 	return (
 		<>
 			<header
 				{...props}
 				className={cn(
 					'supports-[backdrop-filter]:bg-background/60 flex w-full items-center justify-between gap-8 bg-white/50 px-4 pt-4 backdrop-blur sm:px-6 lg:px-8',
+					!currentService && 'border-b border-slate-200 pb-4',
 					props.className,
 				)}
 			>
@@ -71,13 +74,13 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 						<Logomark className="ml-2 hidden h-8 w-8 sm:block" />
 					</Link>
 
-					{currentService && (
-						<>
-							<div className="hidden sm:block">
-								<SlashIcon />
-							</div>
+					<>
+						<div className="hidden sm:block">
+							<SlashIcon />
+						</div>
 
-							<div className="flex gap-1 overflow-hidden">
+						<div className="flex gap-1 overflow-hidden">
+							{currentService && (
 								<Link
 									href={`/${currentService.slug}`}
 									className="flex items-center gap-2 overflow-hidden text-base font-semibold text-slate-700"
@@ -91,19 +94,24 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 									/>
 									<div className="truncate">{currentService.name}</div>
 								</Link>
-								<ServicesNavigationMenu services={services}>
-									<Button
-										variant="ghost"
-										size="icon"
-										type="button"
-										className="h-8 w-7 active:outline-none"
-									>
-										<ChevronsUpDownIcon className="h-6 w-4 text-slate-500" />
-									</Button>
-								</ServicesNavigationMenu>
-							</div>
-						</>
-					)}
+							)}
+							{isAccountSetingsPage && (
+								<div className="flex items-center text-base font-semibold text-slate-700">
+									Account Settings
+								</div>
+							)}
+							<ServicesNavigationMenu services={services}>
+								<Button
+									variant="ghost"
+									size="icon"
+									type="button"
+									className="h-8 w-7 active:outline-none"
+								>
+									<ChevronsUpDownIcon className="h-6 w-4 text-slate-500" />
+								</Button>
+							</ServicesNavigationMenu>
+						</div>
+					</>
 				</div>
 
 				<div className="flex items-center gap-x-4 lg:gap-x-6">
@@ -127,46 +135,48 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 					</UserNavigationPopover>
 				</div>
 			</header>
-			<nav className="supports-[backdrop-filter]:bg-background/60 sticky top-0 z-20 flex items-center gap-x-4 border-b border-slate-200 bg-white/50 px-4 backdrop-blur sm:gap-x-6 sm:px-6 lg:px-8">
-				<Tabs value={pathname}>
-					<TabsList className="gap-2">
-						{serviceNavigation.map(item => (
-							<TabsTrigger
-								value={item.href}
-								key={item.href}
-								className="group px-0 py-1"
-							>
-								<Link
+			{currentService && (
+				<nav className="supports-[backdrop-filter]:bg-background/60 sticky top-0 z-20 flex items-center gap-x-4 border-b border-slate-200 bg-white/50 px-4 backdrop-blur sm:gap-x-6 sm:px-6 lg:px-8">
+					<Tabs value={pathname}>
+						<TabsList className="gap-2">
+							{serviceNavigation.map(item => (
+								<TabsTrigger
+									value={item.href}
 									key={item.href}
-									href={item.href}
-									className="relative rounded-md px-3 py-2 text-sm transition-colors delay-150"
-									onMouseEnter={() => setHoveredLink(item.href)}
-									onMouseLeave={() => setHoveredLink(null)}
+									className="group px-0 py-1"
 								>
-									<AnimatePresence>
-										{hoveredLink === item.href && (
-											<motion.span
-												className="absolute inset-0 rounded-lg bg-slate-100"
-												layoutId="hoverBackground"
-												initial={{ opacity: 0 }}
-												animate={{
-													opacity: 1,
-													transition: { duration: 0.1 },
-												}}
-												exit={{
-													opacity: 0,
-													transition: { duration: 0.1, delay: 0.1 },
-												}}
-											/>
-										)}
-									</AnimatePresence>
-									<span className="relative z-10">{item.name}</span>
-								</Link>
-							</TabsTrigger>
-						))}
-					</TabsList>
-				</Tabs>
-			</nav>
+									<Link
+										key={item.href}
+										href={item.href}
+										className="relative rounded-md px-3 py-2 text-sm transition-colors delay-150"
+										onMouseEnter={() => setHoveredLink(item.href)}
+										onMouseLeave={() => setHoveredLink(null)}
+									>
+										<AnimatePresence>
+											{hoveredLink === item.href && (
+												<motion.span
+													className="absolute inset-0 rounded-lg bg-slate-100"
+													layoutId="hoverBackground"
+													initial={{ opacity: 0 }}
+													animate={{
+														opacity: 1,
+														transition: { duration: 0.1 },
+													}}
+													exit={{
+														opacity: 0,
+														transition: { duration: 0.1, delay: 0.1 },
+													}}
+												/>
+											)}
+										</AnimatePresence>
+										<span className="relative z-10">{item.name}</span>
+									</Link>
+								</TabsTrigger>
+							))}
+						</TabsList>
+					</Tabs>
+				</nav>
+			)}
 		</>
 	)
 }
