@@ -90,7 +90,10 @@ export function UserDeleteModal({ ...props }: DialogProps) {
 					{services.length > 0 ? (
 						<ul className="flex w-full flex-col divide-y divide-slate-200 overflow-hidden rounded-md border border-slate-200 bg-white text-sm text-slate-700">
 							{services.map(service => (
-								<li className="flex flex-row items-center gap-4 p-4">
+								<li
+									key={service.id}
+									className="flex flex-row items-center gap-4 p-4"
+								>
 									<ServiceAvatar
 										id={service.id}
 										size={24}
