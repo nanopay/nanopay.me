@@ -133,7 +133,7 @@ export function ImageInput({
 						value={localProgress}
 						strokeWidth={2}
 						styles={buildStyles({
-							trailColor: '#cbd5e1',
+							trailColor: '#e2e8f0',
 							pathColor: '#64748b',
 						})}
 					/>
@@ -145,7 +145,7 @@ export function ImageInput({
 							strokeWidth={2}
 							styles={buildStyles({
 								trailColor: '#64748b',
-								pathColor: '#cbd5e1',
+								pathColor: '#e2e8f0',
 							})}
 						/>
 					</div>
