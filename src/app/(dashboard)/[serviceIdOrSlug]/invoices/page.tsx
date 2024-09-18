@@ -20,7 +20,8 @@ export default async function InvoicesPage({
 	searchParams: { page },
 }: Props) {
 	const limit = 10
-	const offset = page ? parseInt(page) * limit - limit : 0
+	const pageNumber = (page && parseInt(page)) || 1
+	const offset = (pageNumber - 1) * limit
 
 	const client = new Client(cookies())
 	const { invoices, count } = await client.invoices.list(serviceIdOrSlug, {
@@ -32,7 +33,7 @@ export default async function InvoicesPage({
 		<div className="w-full max-w-7xl">
 			<header className="px-1 py-4">
 				<div className="flex items-center">
-					<h1 className="flex-1 text-lg font-medium">Invoices</h1>
+					<h1 className="flex-1 text-xl font-semibold">Invoices</h1>
 					<Link href={`/${serviceIdOrSlug}/invoices/new`}>
 						<Button color="nano" size="sm">
 							<PlusIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
@@ -45,6 +46,7 @@ export default async function InvoicesPage({
 				invoices={invoices}
 				serviceIdOrSlug={serviceIdOrSlug}
 				count={count}
+				limit={limit}
 				offset={offset}
 			/>
 		</div>

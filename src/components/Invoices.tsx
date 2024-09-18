@@ -3,6 +3,9 @@ import { formatDateTime } from '@/utils/others'
 import clsx from 'clsx'
 import { BanknoteIcon, ChevronRightIcon } from 'lucide-react'
 import Link from 'next/link'
+import { NavPagination, NavPaginationMobile } from './NavPagination'
+import EmptySvg from '@/images/empty.svg'
+import Image from 'next/image'
 
 const statusStyles: Record<InvoiceStatus, string> = {
 	paid: 'bg-green-100 text-green-800',
@@ -15,6 +18,7 @@ interface InvoicesProps {
 	invoices: Invoice[]
 	count: number
 	offset: number
+	limit: number
 	serviceIdOrSlug: string
 	showPagination?: boolean
 }
@@ -23,94 +27,65 @@ export default async function Invoices({
 	invoices,
 	count,
 	offset,
+	limit,
 	serviceIdOrSlug,
 	showPagination = true,
 }: InvoicesProps) {
 	const from = invoices.length > 0 ? offset + 1 : 0
 	const to = invoices.length + offset
-	const previousPage = from > 1 && Math.floor(from / 10)
-	const nextPage = to < count && Math.floor(to / 10) + 1
+
+	if (count === 0) {
+		return (
+			<div className="border-slate flex flex-col items-center justify-center gap-3 rounded-md border bg-white px-4 py-6">
+				<p className="text-xl font-bold text-slate-700">No Invoice Found</p>
+				<Image src={EmptySvg} alt="Empty" className="h-48" />
+			</div>
+		)
+	}
 
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
 			<div className="divide-y divide-slate-200 overflow-hidden rounded-lg border border-slate-200 sm:hidden">
-				{count > 0 && (
-					<ul
-						role="list"
-						className="mt-2 divide-y divide-slate-200 overflow-hidden shadow sm:hidden"
-					>
-						{invoices?.map(invoice => (
-							<li key={invoice.id}>
-								<a
-									href={`/invoices/${invoice.id}`}
-									className="block bg-white px-4 py-4 hover:bg-slate-100"
-								>
-									<span className="flex items-center space-x-4">
-										<span className="flex flex-1 space-x-2 truncate">
-											<BanknoteIcon
-												className="h-5 w-5 flex-shrink-0 text-slate-400"
-												aria-hidden="true"
-											/>
-											<span className="flex flex-col truncate text-sm text-slate-500">
-												<span className="truncate">{invoice.title}</span>
-												<span>
-													<span className="font-medium text-slate-900">
-														{invoice.price}
-													</span>{' '}
-													{invoice.currency}
-												</span>
-												<time dateTime={invoice.created_at}>
-													{formatDateTime(invoice.created_at)}
-												</time>
-											</span>
-										</span>
-										<ChevronRightIcon
+				<ul
+					role="list"
+					className="mt-2 divide-y divide-slate-200 overflow-hidden shadow sm:hidden"
+				>
+					{invoices?.map(invoice => (
+						<li key={invoice.id}>
+							<a
+								href={`/invoices/${invoice.id}`}
+								className="block bg-white px-4 py-4 hover:bg-slate-100"
+							>
+								<span className="flex items-center space-x-4">
+									<span className="flex flex-1 space-x-2 truncate">
+										<BanknoteIcon
 											className="h-5 w-5 flex-shrink-0 text-slate-400"
 											aria-hidden="true"
 										/>
+										<span className="flex flex-col truncate text-sm text-slate-500">
+											<span className="truncate">{invoice.title}</span>
+											<span>
+												<span className="font-medium text-slate-900">
+													{invoice.price}
+												</span>{' '}
+												{invoice.currency}
+											</span>
+											<time dateTime={invoice.created_at}>
+												{formatDateTime(invoice.created_at)}
+											</time>
+										</span>
 									</span>
-								</a>
-							</li>
-						))}
-					</ul>
-				)}
-
-				{count > 0 ? (
-					<nav
-						className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3"
-						aria-label="Pagination"
-					>
-						<div className="flex flex-1 justify-between">
-							{previousPage ? (
-								<a
-									href="#"
-									className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-100"
-								>
-									Previous
-								</a>
-							) : (
-								<div />
-							)}
-							{nextPage ? (
-								<a
-									href="#"
-									className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-100"
-								>
-									Next
-								</a>
-							) : (
-								<div />
-							)}
-						</div>
-					</nav>
-				) : (
-					<div className="flex items-center justify-center bg-white px-4 py-3">
-						<p className="text-sm text-slate-700">
-							<span className="font-medium">No results</span>
-						</p>
-					</div>
-				)}
+									<ChevronRightIcon
+										className="h-5 w-5 flex-shrink-0 text-slate-400"
+										aria-hidden="true"
+									/>
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+				<NavPaginationMobile count={count} from={from} to={to} limit={limit} />
 			</div>
 
 			{/* Activity table (small breakpoint and up) */}
@@ -195,44 +170,13 @@ export default async function Invoices({
 									))}
 								</tbody>
 							</table>
-							{/* Pagination */}
 							{showPagination && (
-								<nav
-									className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3 sm:px-6"
-									aria-label="Pagination"
-								>
-									<div className="hidden sm:block">
-										{count > 0 ? (
-											<p className="text-sm text-slate-700">
-												Showing <span className="font-medium">{from}</span> to{' '}
-												<span className="font-medium">{to}</span> of{' '}
-												<span className="font-medium">{count}</span> results
-											</p>
-										) : (
-											<p className="text-sm text-slate-700">
-												<span className="font-medium">No results</span>
-											</p>
-										)}
-									</div>
-									<div className="flex flex-1 justify-between gap-x-3 sm:justify-end">
-										{previousPage && (
-											<Link
-												href={`?page=${previousPage}`}
-												className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-											>
-												Previous
-											</Link>
-										)}
-										{nextPage && (
-											<Link
-												href={`?page=${nextPage}`}
-												className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-											>
-												Next
-											</Link>
-										)}
-									</div>
-								</nav>
+								<NavPagination
+									count={count}
+									from={from}
+									to={to}
+									limit={limit}
+								/>
 							)}
 						</div>
 					</div>
