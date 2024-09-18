@@ -9,17 +9,23 @@ import { getUserEmail } from '@/lib/supabase/server'
 import { NotFoundCard } from '@/components/NotFoundCard'
 import Link from 'next/link'
 import { Button } from '@/components/Button'
+import { DEFAULT_INVOICES_PAGINATION_LIMIT } from '@/core/constants'
 
 interface Props {
 	params: { serviceIdOrSlug: string }
 	searchParams: { new?: 'true' }
 }
 
+const invoicesLimit = DEFAULT_INVOICES_PAGINATION_LIMIT
+
 const fetchData = async (serviceIdOrSlug: string) => {
 	const client = new Client(cookies())
 	const [service, invoices] = await Promise.all([
 		client.services.get(serviceIdOrSlug),
-		client.invoices.list(serviceIdOrSlug),
+		client.invoices.list(serviceIdOrSlug, {
+			offset: 0,
+			limit: invoicesLimit,
+		}),
 	])
 	return { service, invoices }
 }
@@ -106,7 +112,7 @@ export default async function ServiceDashboardPage({
 					count={invoices.count}
 					serviceIdOrSlug={service.slug}
 					offset={0}
-					showPagination={invoices.count === 0}
+					limit={invoicesLimit}
 				/>
 			</section>
 

@@ -15,6 +15,7 @@ import {
 } from './invoices-types'
 import { checkUUID } from '@/core/utils'
 import { z } from 'zod'
+import { DEFAULT_INVOICES_PAGINATION_LIMIT } from '@/core/constants'
 
 export class InvoicesService extends BaseService {
 	async create(
@@ -150,7 +151,7 @@ export class InvoicesService extends BaseService {
 		}
 
 		const offset = options?.offset || 0
-		const limit = options?.limit || 10
+		const limit = options?.limit || DEFAULT_INVOICES_PAGINATION_LIMIT
 		const order = options?.order || 'desc'
 
 		const { data, count, error } = await query

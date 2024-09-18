@@ -32,6 +32,8 @@ export const MAX_SERVICE_NAME_LENGTH = 32
 
 export const MAX_SLUG_LENGTH = 48
 
+export const DEFAULT_INVOICES_PAGINATION_LIMIT = 10
+
 export const DONATE_URL =
 	'https://github.com/nanopay/nanopay.me?tab=readme-ov-file#donate-%D3%BF'
 

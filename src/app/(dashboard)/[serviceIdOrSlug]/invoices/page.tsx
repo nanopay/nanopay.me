@@ -1,6 +1,7 @@
 import { Button } from '@/components/Button'
 import Invoices from '@/components/Invoices'
 import { Client } from '@/core/client'
+import { DEFAULT_INVOICES_PAGINATION_LIMIT } from '@/core/constants'
 import { PlusIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
@@ -19,7 +20,7 @@ export default async function InvoicesPage({
 	params: { serviceIdOrSlug },
 	searchParams: { page },
 }: Props) {
-	const limit = 10
+	const limit = DEFAULT_INVOICES_PAGINATION_LIMIT
 	const pageNumber = (page && parseInt(page)) || 1
 	const offset = (pageNumber - 1) * limit
 
