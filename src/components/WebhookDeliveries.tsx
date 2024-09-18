@@ -1,8 +1,13 @@
+'use client'
+
 import { formatDateTime } from '@/utils/others'
 import clsx from 'clsx'
 import ActivityDot from './ActivityDot'
 import { ChevronRightIcon } from 'lucide-react'
 import { WebhookDelivery } from '@/core/client/webhooks/webhooks-types'
+import { NavPagination, NavPaginationMobile } from './NavPagination'
+import { WebhookDeliveryDrawer } from './WebhookDeliveryDrawer'
+import { useState } from 'react'
 
 const statusStyles = {
 	success: 'bg-green-100 text-green-800',
@@ -14,66 +19,53 @@ export function WebhookDelivieries({
 }: {
 	deliveries: WebhookDelivery[]
 }) {
+	const [activeWebhookDelivery, setActiveWebhookDelivery] =
+		useState<WebhookDelivery | null>(null)
+
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
 			<div className="shadow sm:hidden">
 				<ul
 					role="list"
-					className="mt-2 divide-y divide-slate-200 overflow-hidden shadow sm:hidden"
+					className="mt-2 divide-y divide-slate-200 overflow-hidden rounded-md shadow sm:hidden"
 				>
 					{deliveries?.map(delivery => (
-						<li key={delivery.id}>
-							<a
-								href={`/webhook-deliveries/${delivery.id}`}
-								className="block bg-white px-4 py-4 hover:bg-slate-100"
-							>
-								<span className="flex items-center space-x-4">
-									<span className="flex flex-1 space-x-2 truncate">
-										<ActivityDot
-											status={delivery.success ? 'active' : 'error'}
-										/>
-										<span className="flex flex-col truncate text-sm font-semibold text-slate-600">
-											<span>{delivery.type}</span>
-											<span>
-												<span className="truncate text-slate-600">
-													{delivery.url}
-												</span>
+						<li
+							key={delivery.id}
+							className="cursor-pointer bg-white px-4 py-4 hover:bg-slate-100"
+							onClick={() => setActiveWebhookDelivery(delivery)}
+						>
+							<span className="flex items-center space-x-4">
+								<span className="flex flex-1 space-x-2 truncate">
+									<ActivityDot status={delivery.success ? 'active' : 'error'} />
+									<span className="flex flex-col truncate text-sm font-semibold text-slate-600">
+										<span>{delivery.type}</span>
+										<span>
+											<span className="truncate text-slate-600">
+												{delivery.url}
 											</span>
-											<time dateTime={delivery.completed_at}>
-												{formatDateTime(delivery.completed_at)}
-											</time>
 										</span>
+										<time dateTime={delivery.completed_at}>
+											{formatDateTime(delivery.completed_at)}
+										</time>
 									</span>
-									<ChevronRightIcon
-										className="h-5 w-5 flex-shrink-0 text-slate-400"
-										aria-hidden="true"
-									/>
 								</span>
-							</a>
+								<ChevronRightIcon
+									className="h-5 w-5 flex-shrink-0 text-slate-400"
+									aria-hidden="true"
+								/>
+							</span>
 						</li>
 					))}
 				</ul>
 
-				<nav
-					className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3"
-					aria-label="Pagination"
-				>
-					<div className="flex flex-1 justify-between">
-						<a
-							href="#"
-							className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-100"
-						>
-							Previous
-						</a>
-						<a
-							href="#"
-							className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-100"
-						>
-							Next
-						</a>
-					</div>
-				</nav>
+				<NavPaginationMobile
+					count={deliveries.length}
+					from={0}
+					to={deliveries.length}
+					limit={deliveries.length}
+				/>
 			</div>
 
 			{/* Activity table (small breakpoint and up) */}
@@ -112,7 +104,11 @@ export function WebhookDelivieries({
 								</thead>
 								<tbody className="divide-y divide-slate-200 bg-white">
 									{deliveries?.map(delivery => (
-										<tr key={delivery.id} className="bg-white">
+										<tr
+											key={delivery.id}
+											className="hover:bg-primary/20 cursor-pointer bg-white"
+											onClick={() => setActiveWebhookDelivery(delivery)}
+										>
 											<td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-slate-900">
 												<div className="flex items-center space-x-2">
 													<ActivityDot
@@ -149,37 +145,21 @@ export function WebhookDelivieries({
 									))}
 								</tbody>
 							</table>
-							{/* Pagination */}
-							<nav
-								className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3 sm:px-6"
-								aria-label="Pagination"
-							>
-								<div className="hidden sm:block">
-									<p className="text-sm text-slate-700">
-										Showing <span className="font-medium">1</span> to{' '}
-										<span className="font-medium">10</span> of{' '}
-										<span className="font-medium">20</span> results
-									</p>
-								</div>
-								<div className="flex flex-1 justify-between gap-x-3 sm:justify-end">
-									<a
-										href="#"
-										className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-									>
-										Previous
-									</a>
-									<a
-										href="#"
-										className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:ring-slate-400"
-									>
-										Next
-									</a>
-								</div>
-							</nav>
+							<NavPagination
+								count={deliveries.length}
+								from={0}
+								to={deliveries.length}
+								limit={deliveries.length}
+							/>
 						</div>
 					</div>
 				</div>
 			</div>
+			<WebhookDeliveryDrawer
+				open={!!activeWebhookDelivery}
+				onOpenChange={bool => !bool && setActiveWebhookDelivery(null)}
+				delivery={activeWebhookDelivery}
+			/>
 		</>
 	)
 }
