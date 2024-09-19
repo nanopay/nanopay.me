@@ -1,5 +1,9 @@
+import { z } from 'zod'
 import { BaseService } from '../base-service'
-import { notificationPaginationSchema } from './notifications-schemas'
+import {
+	notificationPaginationSchema,
+	notificationSchema,
+} from './notifications-schemas'
 import {
 	Notification,
 	NotificationInvoiceData,
@@ -11,7 +15,10 @@ export class NotificationsService extends BaseService {
 	async list(
 		serviceIdOrSlug: string,
 		options: NotificationPagination,
-	): Promise<Notification[]> {
+	): Promise<{
+		notifications: Notification[]
+		count: number
+	}> {
 		if (options) {
 			notificationPaginationSchema.parse(options)
 		}
@@ -22,7 +29,7 @@ export class NotificationsService extends BaseService {
 
 		const serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
 
-		const { data, error } = await this.supabase
+		const { data, count, error } = await this.supabase
 			.from('notifications')
 			.select(
 				`
@@ -60,6 +67,7 @@ export class NotificationsService extends BaseService {
               )
             )
           `,
+				{ count: 'exact' },
 			)
 			.eq('service_id', serviceId)
 			.order('created_at', {
@@ -71,7 +79,7 @@ export class NotificationsService extends BaseService {
 			throw new Error(error.message)
 		}
 
-		return data.map(notification => {
+		const notifications = data.map(notification => {
 			const service = notification.service
 			if (!service) {
 				// Just for typescript, it cannot really be null
@@ -128,5 +136,10 @@ export class NotificationsService extends BaseService {
 				data,
 			} as Notification
 		})
+
+		return {
+			notifications: notificationSchema.array().parse(notifications),
+			count: z.number().parse(count),
+		}
 	}
 }
