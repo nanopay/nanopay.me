@@ -7,6 +7,7 @@ import { AuthService } from './auth/auth-service'
 import { ServicesService } from './services/services-service'
 import { UserService } from './user/user-service'
 import { createClient } from '@/lib/supabase/server'
+import { NotificationsService } from './notifications/notifications-service'
 
 export class Client {
 	readonly auth: AuthService
@@ -15,6 +16,7 @@ export class Client {
 	readonly invoices: InvoicesService
 	readonly webhooks: WebhooksService
 	readonly apiKeys: ApiKeysService
+	readonly notifications: NotificationsService
 
 	constructor(cookies: ReturnType<typeof nextCookies>) {
 		const supabase = createClient(cookies)
@@ -24,5 +26,6 @@ export class Client {
 		this.invoices = new InvoicesService(supabase)
 		this.webhooks = new WebhooksService(supabase)
 		this.apiKeys = new ApiKeysService(supabase)
+		this.notifications = new NotificationsService(supabase)
 	}
 }
