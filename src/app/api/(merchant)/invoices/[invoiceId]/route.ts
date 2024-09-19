@@ -29,6 +29,8 @@ export async function GET(
 
 		const { service_id } = await client.apiKeys.get(apiToken)
 
+		// TODO: if fails parsing apiKeys service_id, return 401
+
 		const invoice = await client.invoices.get(invoiceId, service_id)
 
 		if (!invoice) {
