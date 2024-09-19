@@ -11,10 +11,11 @@ export const notificationTypeSchema = z.enum([
 
 export const notificationInvoiceDataSchema = z.object({
 	id: invoiceSchema.shape.id,
+	title: invoiceSchema.shape.title,
+	description: invoiceSchema.shape.description,
 	status: invoiceSchema.shape.status,
 	price: invoiceSchema.shape.price,
 	currency: invoiceSchema.shape.currency,
-	description: invoiceSchema.shape.description,
 })
 
 export const notificationWebhookDataSchema = z.object({
@@ -56,3 +57,9 @@ export const notificationWebhookSchema = notificationBaseSchema.extend({
 export const notificationSchema = notificationWebhookSchema.or(
 	notificationInvoiceSchema,
 )
+
+export const notificationPaginationSchema = z.object({
+	limit: z.number().min(1).max(20).optional().nullable(),
+	offset: z.number().min(0).optional().nullable(),
+	order: z.enum(['asc', 'desc']).optional().nullable(),
+})

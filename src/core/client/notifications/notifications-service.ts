@@ -1,17 +1,24 @@
 import { BaseService } from '../base-service'
+import { notificationPaginationSchema } from './notifications-schemas'
 import {
 	Notification,
 	NotificationInvoiceData,
+	NotificationPagination,
 	NotificationWebhookData,
 } from './notifications-types'
 
 export class NotificationsService extends BaseService {
 	async list(
 		serviceIdOrSlug: string,
-		page = 1,
-		pageSize = 10,
+		options: NotificationPagination,
 	): Promise<Notification[]> {
-		const offset = (page - 1) * pageSize
+		if (options) {
+			notificationPaginationSchema.parse(options)
+		}
+
+		const offset = options?.offset || 0
+		const limit = options?.limit || 10
+		const order = options?.order || 'desc'
 
 		const serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
 
@@ -32,10 +39,11 @@ export class NotificationsService extends BaseService {
               type,
               invoice:invoices(
                id,
+			   title,
+			   description,
                status,
                price,
-               currency,
-               description
+               currency
               ),
               webhook_delivery:webhooks_deliveries (
                 id,
@@ -54,8 +62,10 @@ export class NotificationsService extends BaseService {
           `,
 			)
 			.eq('service_id', serviceId)
-			.order('created_at', { ascending: false })
-			.range(offset, offset + pageSize - 1)
+			.order('created_at', {
+				ascending: order === 'asc',
+			})
+			.range(offset, offset + limit - 1)
 
 		if (error) {
 			throw new Error(error.message)
@@ -96,10 +106,11 @@ export class NotificationsService extends BaseService {
 				}
 				data = {
 					id: event.invoice.id,
+					title: event.invoice.title,
+					description: event.invoice.description,
 					status: event.invoice.status,
 					price: event.invoice.price,
 					currency: event.invoice.currency,
-					description: event.invoice.description,
 				}
 			}
 
