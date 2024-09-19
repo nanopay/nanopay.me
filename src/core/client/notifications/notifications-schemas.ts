@@ -34,7 +34,7 @@ export const notificationWebhookDataSchema = z.object({
 
 export const notificationBaseSchema = z.object({
 	id: z.string().uuid(),
-	createdAt: z.string().datetime(),
+	createdAt: z.string(),
 	read: z.boolean(),
 	archived: z.boolean(),
 	service: z.object({
