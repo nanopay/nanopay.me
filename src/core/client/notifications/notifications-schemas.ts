@@ -58,7 +58,7 @@ export const notificationSchema = notificationWebhookSchema.or(
 	notificationInvoiceSchema,
 )
 
-export const notificationPaginationSchema = z.object({
+export const notificationsOptionsSchema = z.object({
 	limit: z.number().min(1).max(20).optional().nullable(),
 	offset: z.number().min(0).optional().nullable(),
 	order: z.enum(['asc', 'desc']).optional().nullable(),

@@ -2,7 +2,7 @@ import { z } from 'zod'
 import {
 	notificationInvoiceDataSchema,
 	notificationInvoiceSchema,
-	notificationPaginationSchema,
+	notificationsOptionsSchema,
 	notificationSchema,
 	notificationTypeSchema,
 	notificationWebhookDataSchema,
@@ -25,6 +25,4 @@ export type NotificationWebhook = z.infer<typeof notificationWebhookSchema>
 
 export type Notification = z.infer<typeof notificationSchema>
 
-export type NotificationPagination = z.infer<
-	typeof notificationPaginationSchema
->
+export type NotificationsOptions = z.infer<typeof notificationsOptionsSchema>

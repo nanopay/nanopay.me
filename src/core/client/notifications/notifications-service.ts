@@ -1,26 +1,26 @@
 import { z } from 'zod'
 import { BaseService } from '../base-service'
 import {
-	notificationPaginationSchema,
+	notificationsOptionsSchema,
 	notificationSchema,
 } from './notifications-schemas'
 import {
 	Notification,
 	NotificationInvoiceData,
-	NotificationPagination,
+	NotificationsOptions,
 	NotificationWebhookData,
 } from './notifications-types'
 
 export class NotificationsService extends BaseService {
 	async list(
 		serviceIdOrSlug: string,
-		options: NotificationPagination,
+		options: NotificationsOptions,
 	): Promise<{
 		notifications: Notification[]
 		count: number
 	}> {
 		if (options) {
-			notificationPaginationSchema.parse(options)
+			notificationsOptionsSchema.parse(options)
 		}
 
 		const offset = options?.offset || 0
