@@ -17,6 +17,7 @@ import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
 import { AnimatePresence, motion } from 'framer-motion'
 import { UserNavigationPopover } from './UserNavigationPopover'
 import { DEFAULT_AVATAR_URL } from '@/core/constants'
+import { NotificationsPopover } from './NotificationsPopover'
 
 export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {
 	services: Service[]
@@ -115,14 +116,22 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 				</div>
 
 				<div className="flex items-center gap-x-4 lg:gap-x-6">
-					<Button
-						type="button"
-						variant="outline"
-						className="hover:text-nano -m-2.5 aspect-square h-8 w-8 rounded-full border-slate-300 p-0 text-slate-500 sm:h-9 sm:w-9"
-					>
-						<span className="sr-only">View notifications</span>
-						<BellIcon className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-					</Button>
+					{!!currentService && (
+						<NotificationsPopover serviceId={currentService.id}>
+							<Button
+								variant="ghost"
+								size="icon"
+								className={cn(
+									'hover:text-nano hover:bg-slate hover:border-nano/30 relative h-8 w-8 rounded-full border border-slate-200 p-0 text-slate-500 sm:h-9 sm:w-9',
+									'data-[state=open]:text-nano data-[state=open]:border-nano/30 data-[state=open]:bg-slate-100',
+								)}
+								aria-label="View notifications"
+							>
+								<BellIcon className="h-5 w-5" />
+								<span className="bg-primary absolute right-0 top-0 h-2.5 w-2.5 rounded-full" />
+							</Button>
+						</NotificationsPopover>
+					)}
 
 					<UserNavigationPopover>
 						<Image
