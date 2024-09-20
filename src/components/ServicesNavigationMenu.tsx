@@ -23,16 +23,14 @@ import clsx from 'clsx'
 import { CardDescription } from './ui/card'
 
 export interface ServicesNavigationMenuProps {
-	services: Service[]
 	children: React.ReactNode
 }
 
 export function ServicesNavigationMenu({
-	services,
 	children,
 }: ServicesNavigationMenuProps) {
 	const { isMobile } = useScreenObserver()
-	const { currentService } = usePreferences()
+	const { currentService, services } = usePreferences()
 
 	if (isMobile) {
 		return (

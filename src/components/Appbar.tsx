@@ -10,7 +10,6 @@ import { ChevronsUpDownIcon } from 'lucide-react'
 import { ServiceAvatar } from './ServiceAvatar'
 import { ServicesNavigationMenu } from './ServicesNavigationMenu'
 import { Button } from './Button'
-import { Service } from '@/core/client'
 import { cn } from '@/lib/cn'
 import { usePathname } from 'next/navigation'
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
@@ -19,11 +18,9 @@ import { UserNavigationPopover } from './UserNavigationPopover'
 import { DEFAULT_AVATAR_URL } from '@/core/constants'
 import { NotificationsPopoverButton } from './NotificationsPopoverButton'
 
-export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {
-	services: Service[]
-}
+export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {}
 
-export default function Appbar({ services, ...props }: AppbarProps) {
+export default function Appbar({ ...props }: AppbarProps) {
 	const user = useUser()
 	const { currentService } = usePreferences()
 	const [hoveredLink, setHoveredLink] = useState<string | null>(null)
@@ -101,7 +98,7 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 									Account Settings
 								</div>
 							)}
-							<ServicesNavigationMenu services={services}>
+							<ServicesNavigationMenu key={currentService?.id}>
 								<Button
 									variant="ghost"
 									size="icon"

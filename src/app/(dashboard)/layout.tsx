@@ -25,7 +25,7 @@ export default async function DashboardLayout({
 		<UserProvider user={user}>
 			<PreferencesProvider services={services}>
 				<div className="flex min-h-screen w-full flex-1 flex-col">
-					<Appbar services={services} />
+					<Appbar />
 
 					<div className="mx-auto w-full max-w-7xl px-4 py-4 lg:px-6 xl:px-8">
 						<PopupAlert
