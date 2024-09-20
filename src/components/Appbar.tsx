@@ -117,7 +117,10 @@ export default function Appbar({ services, ...props }: AppbarProps) {
 
 				<div className="flex items-center gap-x-4 lg:gap-x-6">
 					{!!currentService && (
-						<NotificationsPopoverButton serviceId={currentService.id} />
+						<NotificationsPopoverButton
+							key={currentService.id}
+							serviceId={currentService.id}
+						/>
 					)}
 
 					<UserNavigationPopover>
