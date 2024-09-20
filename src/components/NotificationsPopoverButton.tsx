@@ -1,6 +1,11 @@
 'use client'
 
-import { AlertTriangleIcon, CheckCircleIcon, LucideProps } from 'lucide-react'
+import {
+	AlertTriangleIcon,
+	BellIcon,
+	CheckCircleIcon,
+	LucideProps,
+} from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import {
 	Popover,
@@ -21,19 +26,34 @@ import { cn } from '@/lib/cn'
 import { TimeAgo } from './TimeAgo'
 import { Button } from './Button'
 
-export function NotificationsPopover({
+export function NotificationsPopoverButton({
 	serviceId,
-	children,
 }: {
 	serviceId: string
-	children: React.ReactNode
 }) {
 	const { data, count, loading, error, hasMore, loadMore } =
 		useNotifications(serviceId)
 
+	const hasNotifications = !!count
+
 	return (
 		<Popover>
-			<PopoverTrigger asChild>{children}</PopoverTrigger>
+			<PopoverTrigger asChild>
+				<Button
+					variant="ghost"
+					size="icon"
+					className={cn(
+						'hover:text-nano hover:bg-slate hover:border-nano/30 relative h-8 w-8 rounded-full border border-slate-200 p-0 text-slate-500 sm:h-9 sm:w-9',
+						'data-[state=open]:text-nano data-[state=open]:border-nano/30 data-[state=open]:bg-slate-100',
+					)}
+					aria-label="View notifications"
+				>
+					<BellIcon className="h-5 w-5" />
+					{hasNotifications && (
+						<span className="bg-primary absolute right-0 top-0 h-2.5 w-2.5 rounded-full" />
+					)}
+				</Button>
+			</PopoverTrigger>
 			<PopoverContent className="w-96 p-0" side="bottom" align="end">
 				<Card className="border-none shadow-none">
 					<CardHeader className="p-0">
@@ -58,7 +78,7 @@ export function NotificationsPopover({
 										loadMore={loadMore}
 										loader={<NotificationItemSkeleton />}
 										endMessage={
-											data.length > 0 ? (
+											hasNotifications ? (
 												<NotificationEndMessage />
 											) : (
 												<NotificationEmptyMessage />
@@ -92,7 +112,7 @@ export function NotificationsPopover({
 						</Tabs>
 					</CardHeader>
 					<CardFooter className="p-4">
-						{data.length > 0 && (
+						{hasNotifications && (
 							<Button color="slate" variant="outline" className="w-full">
 								Archive All
 							</Button>
