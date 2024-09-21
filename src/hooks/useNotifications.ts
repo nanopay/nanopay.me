@@ -1,7 +1,7 @@
 import { useAction } from 'next-safe-action/hooks'
 import { useInfiniteQuery } from './useInfiniteQuery'
 import { useState } from 'react'
-import { getNotifications } from '@/app/(dashboard)/actions'
+import { getNotifications as getNotificationsAction } from '@/app/(dashboard)/actions'
 
 export const useNotifications = (
 	serviceId: string,
@@ -12,16 +12,16 @@ export const useNotifications = (
 	},
 ) => {
 	const [count, setCount] = useState<number | null>(null)
-	const { executeAsync } = useAction(getNotifications)
+	const { executeAsync: getNotifications } = useAction(getNotificationsAction)
 
 	const initialPage = options?.initialPage || 1
 	const pageSize = options?.pageSize || 10
 	const status = options?.status || 'inbox'
 
-	const { data, loading, error, hasMore, loadMore } = useInfiniteQuery(
+	const { data, loading, error, hasMore, loadMore, refresh } = useInfiniteQuery(
 		async (page, pageSize) => {
 			const offset = (page - 1) * pageSize
-			const result = await executeAsync({
+			const result = await getNotifications({
 				serviceId,
 				options: {
 					offset,
@@ -36,5 +36,5 @@ export const useNotifications = (
 		{ initialPage, pageSize, countTotal: count || undefined },
 	)
 
-	return { data, count, loading, error, hasMore, loadMore }
+	return { data, count, loading, error, hasMore, loadMore, refresh }
 }

@@ -12,6 +12,7 @@ export interface UseInfiniteQueryResult<T> {
 	error: Error | null
 	hasMore: boolean
 	loadMore: () => Promise<void>
+	refresh: () => void
 }
 
 export type FetchFunction<T> = (page: number, pageSize: number) => Promise<T[]>
@@ -63,5 +64,14 @@ export const useInfiniteQuery = <T>(
 		loadMore()
 	}, [])
 
-	return { data, loading, error, hasMore, loadMore }
+	const refresh = useCallback(() => {
+		setData([])
+		setPage(initialPage)
+		setHasMore(true)
+		setLoading(false)
+		setError(null)
+		loadMore()
+	}, [initialPage])
+
+	return { data, loading, error, hasMore, loadMore, refresh }
 }
