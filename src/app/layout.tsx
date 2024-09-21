@@ -5,6 +5,8 @@ import { Metadata } from 'next'
 import { ToastContainer } from 'react-toastify'
 import { LoadingIndicator } from '@/components/LoadingIndicator'
 
+export const runtime = 'edge'
+
 const openSans = Open_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

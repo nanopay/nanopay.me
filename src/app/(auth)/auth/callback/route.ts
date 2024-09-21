@@ -1,6 +1,8 @@
 import { Client } from '@/core/client'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+
+export const runtime = 'edge'
 
 export async function GET(request: NextRequest) {
 	const requestUrl = new URL(request.url)
@@ -8,7 +10,7 @@ export async function GET(request: NextRequest) {
 	const next = requestUrl.searchParams.get('next')
 
 	if (!code) {
-		return NextResponse.json(
+		return Response.json(
 			{
 				error: 'code is missing',
 			},
@@ -24,5 +26,5 @@ export async function GET(request: NextRequest) {
 	const redirectTo = new URL(requestUrl.origin)
 	redirectTo.pathname = next || '/'
 
-	return NextResponse.redirect(redirectTo.toString())
+	return Response.redirect(redirectTo.toString())
 }
