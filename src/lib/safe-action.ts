@@ -1,9 +1,8 @@
-import { createSafeActionClient } from 'next-safe-action'
+import { createSafeActionClient, SafeActionResult } from 'next-safe-action'
 import { Schema } from 'next-safe-action/adapters/types'
-import { HookResult } from 'next-safe-action/hooks'
 
 export const safeAction = createSafeActionClient({
-	async handleReturnedServerError(error) {
+	async handleServerError(error) {
 		let message = 'Erro desconhecido'
 
 		if (error instanceof Error) {
@@ -16,7 +15,6 @@ export const safeAction = createSafeActionClient({
 
 export type SafeActionErrorType =
 	| 'serverError'
-	| 'fetchError'
 	| 'validationErrors'
 	| 'bindArgsValidationErrors'
 	| 'unknownError'
@@ -34,18 +32,12 @@ export const getSafeActionError = <
 	CBAVE,
 	Data,
 >(
-	error: Omit<HookResult<ServerError, S, BAS, CVE, CBAVE, Data>, 'data'>,
+	error: Omit<SafeActionResult<ServerError, S, BAS, CVE, CBAVE, Data>, 'data'>,
 ): UseActionError => {
 	if (error.serverError) {
 		return {
 			type: 'serverError',
 			message: error.serverError as string,
-		}
-	}
-	if (error.fetchError) {
-		return {
-			type: 'fetchError',
-			message: error.fetchError,
 		}
 	}
 	if (error.validationErrors) {
