@@ -113,8 +113,18 @@ export function NotificationsPopoverButton({
 								{inbox.count}
 							</Badge>
 						</TabsTrigger>
-						<TabsTrigger value="archive">Archive</TabsTrigger>
-						<TabsTrigger value="other">Others</TabsTrigger>
+						<TabsTrigger
+							value="archive"
+							className="py-3 data-[state=active]:font-semibold"
+						>
+							Archive
+						</TabsTrigger>
+						<TabsTrigger
+							value="other"
+							className="py-3 data-[state=active]:font-semibold"
+						>
+							Others
+						</TabsTrigger>
 					</TabsList>
 					<TabsContent
 						value="inbox"
@@ -173,7 +183,7 @@ export function NotificationsPopoverButton({
 							))}
 						</InfiniteScroll>
 					</TabsContent>
-					<TabsContent value="other" className="px-4 py-2">
+					<TabsContent value="other" className="relative m-0 h-[480px] px-0">
 						<NotificationEmptyMessage status="other" />
 					</TabsContent>
 				</Tabs>
