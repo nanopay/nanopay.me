@@ -26,6 +26,7 @@ export class NotificationsService extends BaseService {
 		const offset = options?.offset || 0
 		const limit = options?.limit || 10
 		const order = options?.order || 'desc'
+		const status = options?.status || 'inbox'
 
 		const serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
 
@@ -70,6 +71,7 @@ export class NotificationsService extends BaseService {
 				{ count: 'exact' },
 			)
 			.eq('service_id', serviceId)
+			.eq('archived', status === 'archived')
 			.order('created_at', {
 				ascending: order === 'asc',
 			})

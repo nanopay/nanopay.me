@@ -3,12 +3,20 @@ import { useInfiniteQuery } from './useInfiniteQuery'
 import { useState } from 'react'
 import { getNotifications } from '@/app/(dashboard)/actions'
 
-export const useNotifications = (serviceId: string) => {
+export const useNotifications = (
+	serviceId: string,
+	options?: {
+		initialPage?: number
+		pageSize?: number
+		status: 'inbox' | 'archived'
+	},
+) => {
 	const [count, setCount] = useState<number | null>(null)
 	const { executeAsync } = useAction(getNotifications)
 
-	const initialPage = 1
-	const pageSize = 10
+	const initialPage = options?.initialPage || 1
+	const pageSize = options?.pageSize || 10
+	const status = options?.status || 'inbox'
 
 	const { data, loading, error, hasMore, loadMore } = useInfiniteQuery(
 		async (page, pageSize) => {
@@ -18,6 +26,7 @@ export const useNotifications = (serviceId: string) => {
 				options: {
 					offset,
 					limit: pageSize,
+					status,
 				},
 			})
 			if (!result?.data) return []

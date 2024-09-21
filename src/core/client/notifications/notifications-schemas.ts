@@ -62,4 +62,5 @@ export const notificationsOptionsSchema = z.object({
 	limit: z.number().min(1).max(20).optional().nullable(),
 	offset: z.number().min(0).optional().nullable(),
 	order: z.enum(['asc', 'desc']).optional().nullable(),
+	status: z.enum(['inbox', 'archived']).optional().nullable(),
 })
