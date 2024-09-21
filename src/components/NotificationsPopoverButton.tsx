@@ -87,7 +87,7 @@ export function NotificationsPopoverButton({
 									<NotificationEmptyMessage status="inbox" />
 								)
 							}
-							className="scrollbar-thin"
+							className="scrollbar-thin overscroll-none"
 						>
 							{inbox.data.map(notification => (
 								<NotificationItem
@@ -118,7 +118,7 @@ export function NotificationsPopoverButton({
 									<NotificationEmptyMessage status="archived" />
 								)
 							}
-							className="scrollbar-thin"
+							className="scrollbar-thin overscroll-none"
 						>
 							{archived.data.map(notification => (
 								<NotificationItem
