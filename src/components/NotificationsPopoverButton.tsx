@@ -125,11 +125,7 @@ export function NotificationsPopoverButton({
 							loadMore={inbox.loadMore}
 							loader={<NotificationItemSkeleton />}
 							endMessage={
-								hasNotifications ? (
-									<NotificationEndMessage />
-								) : (
-									<NotificationEmptyMessage status="inbox" />
-								)
+								!hasNotifications && <NotificationEmptyMessage status="inbox" />
 							}
 							className="scrollbar-thin overscroll-none"
 						>
@@ -163,9 +159,7 @@ export function NotificationsPopoverButton({
 							loadMore={archived.loadMore}
 							loader={<NotificationItemSkeleton />}
 							endMessage={
-								archived.data.length > 0 ? (
-									<NotificationEndMessage />
-								) : (
+								archived.data.length === 0 && (
 									<NotificationEmptyMessage status="archived" />
 								)
 							}
@@ -322,17 +316,6 @@ function NotificationItemSkeleton() {
 			<div className="flex-shrink-0">
 				<div className="h-2 w-2 animate-pulse rounded-full bg-slate-200" />
 			</div>
-		</div>
-	)
-}
-
-function NotificationEndMessage() {
-	return (
-		<div className="flex items-center justify-center p-4 text-xs text-slate-500 dark:text-slate-400">
-			<p>
-				<span className="font-semibold">Yay! </span>
-				You have seen it all
-			</p>
 		</div>
 	)
 }
