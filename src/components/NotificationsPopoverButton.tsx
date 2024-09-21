@@ -154,7 +154,7 @@ const buildNotificationMessage = (
 		case 'INVOICE_EXPIRED':
 			return (
 				<span>
-					Invoice expirose:{' '}
+					Invoice expired:{' '}
 					<b className="font-semibold">
 						{(data as NotificationInvoiceData).title}
 					</b>
