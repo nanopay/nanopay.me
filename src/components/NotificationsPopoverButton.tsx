@@ -25,16 +25,21 @@ import {
 import { cn } from '@/lib/cn'
 import { TimeAgo } from './TimeAgo'
 import { Button } from './Button'
+import { useState } from 'react'
 
 export function NotificationsPopoverButton({
 	serviceId,
 }: {
 	serviceId: string
 }) {
-	const { data, count, loading, error, hasMore, loadMore } =
-		useNotifications(serviceId)
+	const inbox = useNotifications(serviceId, {
+		status: 'inbox',
+	})
+	const archived = useNotifications(serviceId, {
+		status: 'archived',
+	})
 
-	const hasNotifications = !!count
+	const hasNotifications = !!inbox.count
 
 	return (
 		<Popover>
@@ -65,7 +70,7 @@ export function NotificationsPopoverButton({
 								>
 									Inbox{' '}
 									<Badge className="ml-2 text-xs" variant="secondary">
-										{count}
+										{inbox.count}
 									</Badge>
 								</TabsTrigger>
 								<TabsTrigger value="archive">Archive</TabsTrigger>
@@ -74,19 +79,19 @@ export function NotificationsPopoverButton({
 							<TabsContent value="inbox" className="m-0 p-0">
 								<CardContent className="h-[480px] px-0 py-2">
 									<InfiniteScroll
-										hasMore={hasMore}
-										loadMore={loadMore}
+										hasMore={inbox.hasMore}
+										loadMore={inbox.loadMore}
 										loader={<NotificationItemSkeleton />}
 										endMessage={
 											hasNotifications ? (
 												<NotificationEndMessage />
 											) : (
-												<NotificationEmptyMessage />
+												<NotificationEmptyMessage status="inbox" />
 											)
 										}
 										className="scrollbar-thin"
 									>
-										{data.map(notification => (
+										{inbox.data.map(notification => (
 											<NotificationItem
 												key={notification.id}
 												notification={notification}
@@ -97,9 +102,26 @@ export function NotificationsPopoverButton({
 							</TabsContent>
 							<TabsContent value="archive">
 								<CardContent className="px-4 py-2">
-									<p className="text-sm text-slate-500 dark:text-slate-400">
-										No archived notifications.
-									</p>
+									<InfiniteScroll
+										hasMore={archived.hasMore}
+										loadMore={archived.loadMore}
+										loader={<NotificationItemSkeleton />}
+										endMessage={
+											archived.data.length > 0 ? (
+												<NotificationEndMessage />
+											) : (
+												<NotificationEmptyMessage status="archived" />
+											)
+										}
+										className="scrollbar-thin"
+									>
+										{archived.data.map(notification => (
+											<NotificationItem
+												key={notification.id}
+												notification={notification}
+											/>
+										))}
+									</InfiniteScroll>
 								</CardContent>
 							</TabsContent>
 							<TabsContent value="comments">
@@ -258,10 +280,18 @@ function NotificationEndMessage() {
 	)
 }
 
-function NotificationEmptyMessage() {
+function NotificationEmptyMessage({
+	status,
+}: {
+	status: 'inbox' | 'archived'
+}) {
 	return (
 		<div className="flex items-center justify-center p-4 text-xs text-slate-500 dark:text-slate-400">
-			<p className="mt-8 text-lg font-semibold">No notifications yet.</p>
+			<p className="mt-8 text-lg font-semibold">
+				{status === 'inbox'
+					? 'No notifications yet.'
+					: 'No archived notifications.'}
+			</p>
 		</div>
 	)
 }
