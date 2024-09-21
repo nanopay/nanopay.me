@@ -144,4 +144,30 @@ export class NotificationsService extends BaseService {
 			count: z.number().parse(count),
 		}
 	}
+
+	async archive(notificationId: string): Promise<void> {
+		const { error } = await this.supabase
+			.from('notifications')
+			.update({ archived: true })
+			.eq('id', notificationId)
+			.select()
+			.single()
+
+		if (error) {
+			throw new Error(error.message)
+		}
+	}
+
+	async archiveAll(serviceIdOrSlug: string): Promise<void> {
+		const serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
+		const { error } = await this.supabase
+			.from('notifications')
+			.update({ archived: true })
+			.eq('service_id', serviceId)
+			.eq('archived', false)
+
+		if (error) {
+			throw new Error(error.message)
+		}
+	}
 }

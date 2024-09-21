@@ -2,6 +2,7 @@
 
 import {
 	AlertTriangleIcon,
+	ArchiveIcon,
 	BellIcon,
 	CheckCircleIcon,
 	LucideProps,
@@ -24,12 +25,22 @@ import {
 import { cn } from '@/lib/cn'
 import { TimeAgo } from './TimeAgo'
 import { Button } from './Button'
+import { useAction } from 'next-safe-action/hooks'
+import {
+	archiveNotification as archiveNotificationAction,
+	archiveAllNotifications as archiveAllNotificationsAction,
+} from '@/app/(dashboard)/actions'
+import { useToast } from '@/hooks/useToast'
+import { getSafeActionError } from '@/lib/safe-action'
+import { useState } from 'react'
 
 export function NotificationsPopoverButton({
 	serviceId,
 }: {
 	serviceId: string
 }) {
+	const { showError } = useToast()
+
 	const inbox = useNotifications(serviceId, {
 		status: 'inbox',
 	})
@@ -37,7 +48,40 @@ export function NotificationsPopoverButton({
 		status: 'archived',
 	})
 
+	const [removedNotificationsIds, setRemovedNotificationsIds] = useState<
+		string[]
+	>([])
+
+	const { execute: archiveAllNotifications, isExecuting: isArchivingAll } =
+		useAction(archiveAllNotificationsAction, {
+			onSuccess: () => {
+				inbox.refresh()
+			},
+			onError: ({ error }) => {
+				setRemovedNotificationsIds([])
+				const { message } = getSafeActionError(error)
+				showError(message)
+			},
+		})
+
+	const { execute: archiveNotification } = useAction(
+		archiveNotificationAction,
+		{
+			onExecute: ({ input }) => {
+				setRemovedNotificationsIds(prev => [...prev, input.notificationId])
+			},
+			onError: ({ error, input }) => {
+				setRemovedNotificationsIds(prev => [...prev, input.notificationId])
+				const { message } = getSafeActionError(error)
+				showError(message)
+			},
+		},
+	)
+
 	const hasNotifications = !!inbox.count
+	const inboxNotifications = inbox.data.filter(
+		notification => !removedNotificationsIds.includes(notification.id),
+	)
 
 	return (
 		<Popover>
@@ -89,10 +133,15 @@ export function NotificationsPopoverButton({
 							}
 							className="scrollbar-thin overscroll-none"
 						>
-							{inbox.data.map(notification => (
+							{inboxNotifications.map(notification => (
 								<NotificationItem
 									key={notification.id}
 									notification={notification}
+									onArchive={() =>
+										archiveNotification({
+											notificationId: notification.id,
+										})
+									}
 								/>
 							))}
 						</InfiniteScroll>
@@ -101,12 +150,14 @@ export function NotificationsPopoverButton({
 								color="slate"
 								variant="outline"
 								className="absolute bottom-0 h-14 w-full rounded-t-none"
+								loading={isArchivingAll || inbox.loading}
+								onClick={() => archiveAllNotifications({ serviceId })}
 							>
 								Archive All
 							</Button>
 						)}
 					</TabsContent>
-					<TabsContent value="archive" className="px-4 py-2">
+					<TabsContent value="archive" className="relative m-0 h-[480px] px-0">
 						<InfiniteScroll
 							hasMore={archived.hasMore}
 							loadMore={archived.loadMore}
@@ -223,13 +274,19 @@ const NotificationIcon = ({
 	}
 }
 
-function NotificationItem({ notification }: { notification: Notification }) {
+function NotificationItem({
+	notification,
+	onArchive,
+}: {
+	notification: Notification
+	onArchive?: () => void
+}) {
 	const message = buildNotificationMessage(notification.type, notification.data)
 
 	return (
 		<div
 			key={notification.id}
-			className="flex cursor-pointer items-start gap-4 border-b p-4 last:border-b-0 hover:bg-slate-100"
+			className="group flex cursor-pointer items-start gap-4 border-b p-4 last:border-b-0 hover:bg-slate-100"
 		>
 			<NotificationIcon type={notification.type} className="h-5 w-5" />
 			<div className="flex-1 space-y-1">
@@ -238,8 +295,17 @@ function NotificationItem({ notification }: { notification: Notification }) {
 					<TimeAgo dateTime={notification.createdAt} />
 				</p>
 			</div>
-			<div className="flex-shrink-0">
+			<div className="flex items-center justify-center gap-2">
 				<div className="bg-nano h-2 w-2 rounded-full" />
+				{!notification.archived && (
+					<Button
+						variant="ghost"
+						onClick={onArchive}
+						className="h-8 w-0 rounded-full p-1 transition-all duration-300 group-hover:w-8"
+					>
+						<ArchiveIcon className="h-4 w-4" />
+					</Button>
+				)}
 			</div>
 		</div>
 	)

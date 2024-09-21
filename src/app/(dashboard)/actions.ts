@@ -6,13 +6,13 @@ import { safeAction } from '@/lib/safe-action'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
 
-const getNotificationsSchema = z.object({
-	serviceId: z.string(),
-	options: notificationsOptionsSchema,
-})
-
 export const getNotifications = safeAction
-	.schema(getNotificationsSchema)
+	.schema(
+		z.object({
+			serviceId: z.string(),
+			options: notificationsOptionsSchema,
+		}),
+	)
 	.action(async ({ parsedInput: { serviceId, options } }) => {
 		const client = new Client(cookies())
 
@@ -25,4 +25,18 @@ export const getNotifications = safeAction
 			notifications,
 			count,
 		}
+	})
+
+export const archiveNotification = safeAction
+	.schema(z.object({ notificationId: z.string().uuid() }))
+	.action(async ({ parsedInput: { notificationId } }) => {
+		const client = new Client(cookies())
+		await client.notifications.archive(notificationId)
+	})
+
+export const archiveAllNotifications = safeAction
+	.schema(z.object({ serviceId: z.string().uuid() }))
+	.action(async ({ parsedInput: { serviceId } }) => {
+		const client = new Client(cookies())
+		await client.notifications.archiveAll(serviceId)
 	})
