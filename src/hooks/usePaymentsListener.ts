@@ -34,52 +34,49 @@ export const usePaymentsListener = ({
 	)
 	const isPaid = amountPaid >= price
 	const timeLeft = new Date(expiresAt).getTime() - new Date().getTime()
-	const isExpired = !isPaid && timeLeft <= 0
 	const isPartiallyPaid = !isPaid && amountPaid > 0
+
+	const [isExpired, setIsExpired] = useState(!isPaid && timeLeft <= 0)
 
 	const socketRef = useRef<WebSocket | null>(null)
 
 	useEffect(() => {
-		if (isPaid || isExpired || socketRef.current) return
+		if (isPaid || isExpired) return
 
-		const websocketUrl = paymentGateway.buildPaymentsWebsocketUrl(invoiceId)
-		socketRef.current = new WebSocket(websocketUrl)
+		if (!socketRef.current) {
+			const websocketUrl = paymentGateway.buildPaymentsWebsocketUrl(invoiceId)
+			socketRef.current = new WebSocket(websocketUrl)
 
-		socketRef.current.onopen = () => {
-			console.info('WebSocket connected')
-		}
+			socketRef.current.onopen = () => {
+				console.info('WebSocket connected')
+			}
 
-		socketRef.current.onmessage = event => {
-			try {
-				const data = paymentNotificationSchema.parse(JSON.parse(event.data))
-				setPayments(prevPayments => {
-					// Prevent duplicates
-					if (prevPayments.some(p => p.hash === data.hash)) {
-						return prevPayments
-					}
-					return [...prevPayments, data]
-				})
-			} catch (error) {
-				console.error('Error parsing WebSocket message:', error)
+			socketRef.current.onmessage = event => {
+				try {
+					const data = paymentNotificationSchema.parse(JSON.parse(event.data))
+					setPayments(prevPayments => {
+						// Prevent duplicates
+						if (prevPayments.some(p => p.hash === data.hash)) {
+							return prevPayments
+						}
+						return [...prevPayments, data]
+					})
+				} catch (error) {
+					console.error('Error parsing WebSocket message:', error)
+				}
+			}
+
+			socketRef.current.onerror = error => {
+				console.error('WebSocket error:', error)
+			}
+
+			socketRef.current.onclose = () => {
+				console.info('WebSocket connection closed')
 			}
 		}
 
-		socketRef.current.onerror = error => {
-			console.error('WebSocket error:', error)
-		}
-
-		socketRef.current.onclose = () => {
-			console.info('WebSocket connection closed')
-		}
-
-		// Auto-unsubscribe when the invoice expires
 		const timeoutId = setTimeout(() => {
-			if (
-				socketRef.current &&
-				socketRef.current.readyState === WebSocket.OPEN
-			) {
-				socketRef.current.close()
-			}
+			setIsExpired(true)
 		}, timeLeft)
 
 		// Clean up WebSocket on component unmount or when the invoice expires
