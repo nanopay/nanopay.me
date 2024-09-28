@@ -18,7 +18,7 @@ export function ApiDocsMobileHeader() {
 		<header className="sticky left-0 top-0 w-full bg-slate-900 p-4 md:hidden">
 			<div className="relative flex items-center justify-between gap-16">
 				<Link
-					href="/api"
+					href="/docs/api"
 					aria-label="Home"
 					className="flex items-center text-white"
 				>

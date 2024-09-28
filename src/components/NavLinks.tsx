@@ -10,8 +10,8 @@ import { DONATE_URL } from '@/core/constants'
 export const links = [
 	['Demo', '/demo'],
 	['FAQs', '/#faqs'],
-	['API', '/api'],
-	['Donate', DONATE_URL],
+	['API', '/docs/api'],
+	['Sponsors', '/sponsors'],
 ]
 
 export function NavLinks({ theme = 'light' }: { theme?: 'light' | 'dark' }) {
