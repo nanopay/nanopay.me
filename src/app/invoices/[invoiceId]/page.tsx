@@ -54,7 +54,7 @@ export default async function InvoicePage({
 	}
 
 	return (
-		<div className="mx-auto flex h-screen w-full max-w-4xl justify-center md:items-center">
+		<div className="mx-auto flex h-screen w-full max-w-3xl justify-center md:items-center">
 			<Checkout invoice={invoice} xnoToUsd={xnoToUsd} />
 		</div>
 	)
