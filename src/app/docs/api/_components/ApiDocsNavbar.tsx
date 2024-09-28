@@ -20,20 +20,20 @@ import { cn } from '@/lib/cn'
 const endpoints: { title: string; href: string }[] = [
 	{
 		title: 'Create Invoice',
-		href: '/api/create-invoice',
+		href: '/docs/api/create-invoice',
 	},
 	{
 		title: 'Get Invoice',
-		href: '/api/get-invoice',
+		href: '/docs/api/get-invoice',
 	},
 
 	{
 		title: 'List Invoices',
-		href: '/api/list-invoices',
+		href: '/docs/api/list-invoices',
 	},
 	{
 		title: 'Get Serivce',
-		href: '/api/get-service',
+		href: '/docs/api/get-service',
 	},
 ]
 
