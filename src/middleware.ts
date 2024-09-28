@@ -20,6 +20,9 @@ const PUBLIC_ROUTES = [
 	'/invoices/:id',
 	'/invoices/:id/receipt',
 	'/demo',
+	'/sponsors',
+	'/docs/api',
+	'/docs/api/*path',
 	...AUTH_ROUTES,
 ]
 
