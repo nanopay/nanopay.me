@@ -26,16 +26,19 @@ import { getSafeActionError } from '@/lib/safe-action'
 import { redirectToMerchant } from '../app/invoices/[invoiceId]/actions'
 import { cn } from '@/lib/cn'
 import { Drawer, DrawerContent } from './ui/drawer'
+import Fireworks from './Fireworks'
 
 export function InvoicePayCard({
 	invoice,
 	xnoToUsd,
 	autoRedirectOnPay = false,
+	fireworks = false,
 	...props
 }: React.ComponentPropsWithoutRef<'div'> & {
 	invoice: InvoicePublic
 	xnoToUsd: number | null
 	autoRedirectOnPay?: boolean
+	fireworks?: boolean
 }) {
 	const {
 		isPaid,
@@ -55,6 +58,7 @@ export function InvoicePayCard({
 	const [rendered, setRendered] = useState(false)
 	const [addressCopied, setAddressCopied] = useState(false)
 	const [autoRedirectAt, setAutoRedirectAt] = useState<number | null>(null)
+	const [showFireworks, setShowFireworks] = useState(false)
 
 	const handleOpenQrCode = () => {
 		setOpenQrCode(true)
@@ -108,9 +112,12 @@ export function InvoicePayCard({
 			setOpenQrCode(false)
 			if (invoice.status !== 'paid' && autoRedirectOnPay) {
 				handleAutoRedirect()
+				if (fireworks) {
+					setShowFireworks(true)
+				}
 			}
 		}
-	}, [isPaid])
+	}, [isPaid, autoRedirectOnPay, invoice.status, fireworks])
 
 	const handleRedirectToMerchant = () => {
 		executeRedirectToMechant(invoice.id)
@@ -403,6 +410,7 @@ export function InvoicePayCard({
 					</div>
 				</DrawerContent>
 			</Drawer>
+			{showFireworks && <Fireworks count={3} />}
 		</div>
 	)
 }
