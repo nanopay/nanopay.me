@@ -16,11 +16,9 @@ import {
 	QrCodeIcon,
 } from 'lucide-react'
 import { convert, Unit } from 'nanocurrency'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Countdown from 'react-countdown'
 import QRCode from 'react-qr-code'
-import logoXno from '@/images/logos/nano-xno.svg'
 import BigNumber from 'bignumber.js'
 import Link from 'next/link'
 import { useAction } from 'next-safe-action/hooks'
@@ -32,10 +30,12 @@ import { Drawer, DrawerContent } from './ui/drawer'
 export function InvoicePayCard({
 	invoice,
 	xnoToUsd,
+	autoRedirectOnPay = false,
 	...props
 }: React.ComponentPropsWithoutRef<'div'> & {
 	invoice: InvoicePublic
 	xnoToUsd: number | null
+	autoRedirectOnPay?: boolean
 }) {
 	const {
 		isPaid,
@@ -54,6 +54,7 @@ export function InvoicePayCard({
 	const [openQrCode, setOpenQrCode] = useState(false)
 	const [rendered, setRendered] = useState(false)
 	const [addressCopied, setAddressCopied] = useState(false)
+	const [autoRedirectAt, setAutoRedirectAt] = useState<number | null>(null)
 
 	const handleOpenQrCode = () => {
 		setOpenQrCode(true)
@@ -91,6 +92,13 @@ export function InvoicePayCard({
 		},
 	})
 
+	const handleAutoRedirect = () => {
+		setAutoRedirectAt(Date.now() + 5000)
+		setTimeout(() => {
+			executeRedirectToMechant(invoice.id)
+		}, 5000)
+	}
+
 	useEffect(() => {
 		setRendered(true)
 	}, [])
@@ -98,6 +106,9 @@ export function InvoicePayCard({
 	useEffect(() => {
 		if (isPaid) {
 			setOpenQrCode(false)
+			if (invoice.status !== 'paid' && autoRedirectOnPay) {
+				handleAutoRedirect()
+			}
 		}
 	}, [isPaid])
 
@@ -193,14 +204,35 @@ export function InvoicePayCard({
 
 					{invoice.has_redirect_url && (
 						<div className="flex justify-center py-4">
-							<Button
-								className="PayButton w-full sm:w-auto"
-								type="button"
-								onClick={handleRedirectToMerchant}
-							>
-								Continue to {invoice.service.name}
-								<ExternalLinkIcon className="ml-2 h-4 w-4" />
-							</Button>
+							{autoRedirectAt ? (
+								<Button
+									className="PayButton w-full sm:w-auto"
+									type="button"
+									onClick={handleRedirectToMerchant}
+								>
+									<span className="mr-1">Redirecting in</span>
+									<Countdown
+										date={autoRedirectAt}
+										zeroPadTime={2}
+										renderer={props => (
+											<div className="font-medium text-white">
+												{props.minutes}:
+												{props.seconds.toString().padStart(2, '0')}
+											</div>
+										)}
+									/>
+									<ExternalLinkIcon className="ml-2 h-3 w-3" />
+								</Button>
+							) : (
+								<Button
+									className="PayButton w-full sm:w-auto"
+									type="button"
+									onClick={handleRedirectToMerchant}
+								>
+									Continue to {invoice.service.name}
+									<ExternalLinkIcon className="ml-2 h-4 w-4" />
+								</Button>
+							)}
 						</div>
 					)}
 
