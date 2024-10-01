@@ -369,6 +369,44 @@ export type Database = {
 				}
 				Relationships: []
 			}
+			sponsors: {
+				Row: {
+					amount: number
+					avatar_url: string | null
+					created_at: string
+					id: string
+					invoice_id: string
+					message: string | null
+					name: string
+				}
+				Insert: {
+					amount: number
+					avatar_url?: string | null
+					created_at?: string
+					id?: string
+					invoice_id: string
+					message?: string | null
+					name: string
+				}
+				Update: {
+					amount?: number
+					avatar_url?: string | null
+					created_at?: string
+					id?: string
+					invoice_id?: string
+					message?: string | null
+					name?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: 'sponsors_invoice_id_fkey'
+						columns: ['invoice_id']
+						isOneToOne: false
+						referencedRelation: 'invoices'
+						referencedColumns: ['id']
+					},
+				]
+			}
 			webhooks: {
 				Row: {
 					active: boolean

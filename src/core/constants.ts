@@ -34,6 +34,10 @@ export const MAX_SLUG_LENGTH = 48
 
 export const DEFAULT_INVOICES_PAGINATION_LIMIT = 10
 
+export const MIN_SPONSOR_AMOUNT = 10
+export const SPONSOR_RECIPIENT_ADDRESS =
+	'nano_3dqh8z8ncswmf7151gryu7mqpwbw4f68hi7d8g433omtuabfi438etyyp9ik'
+
 export const DONATE_URL =
 	'https://github.com/nanopay/nanopay.me?tab=readme-ov-file#donate-%D3%BF'
 
