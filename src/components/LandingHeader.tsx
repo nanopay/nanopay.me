@@ -31,7 +31,7 @@ export function LandingHeader({ ...props }: LandingHeaderProps) {
 				<Container className="relative flex h-16 items-center justify-between">
 					<div className="relative flex items-center gap-16">
 						<Link href="/" aria-label="Home">
-							<Logo className="h-auto w-40 sm:w-48" />
+							<Logo className="h-auto w-40" />
 						</Link>
 						<div className="hidden lg:flex lg:gap-10">
 							<NavLinks />
