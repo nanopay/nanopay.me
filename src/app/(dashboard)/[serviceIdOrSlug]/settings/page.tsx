@@ -5,7 +5,7 @@ import { getUserEmail } from '@/lib/supabase/server'
 
 import ServiceWebsiteCard from './_components/ServiceWebsiteCard'
 import ServiceContactEmailCard from './_components/ServiceContactEmailCard'
-import ServiceAvatarCard from './_components/ServiceAvatar'
+import ServiceAvatarCard from './_components/ServiceAvatarCard'
 import ServiceNameCard from './_components/ServiceNameCard'
 import ServiceDeleteCard from './_components/ServiceDeleteCard'
 
