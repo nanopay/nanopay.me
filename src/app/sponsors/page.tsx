@@ -36,8 +36,8 @@ export default async function SponsorPage() {
 
 	return (
 		<>
-			<div className="flex h-full w-full max-w-7xl rounded-lg pb-10 md:gap-4 lg:gap-8">
-				<div className="flex flex-1 flex-col md:w-1/2">
+			<div className="flex h-full w-full max-w-7xl pb-10 md:gap-4 lg:gap-8">
+				<div className="flex w-full flex-1 flex-col md:w-1/2">
 					<Card className="mb-4">
 						<CardHeader className="pb-4">
 							<CardTitle>Beta Release</CardTitle>

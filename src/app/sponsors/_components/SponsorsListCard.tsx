@@ -8,11 +8,11 @@ export function SponsorshipsListCard({
 	sponsors: Omit<Sponsorship, 'created_at' | 'invoice'>[]
 }) {
 	return (
-		<Card className="!flex !flex-1 !flex-col !overflow-hidden">
+		<Card className="flex w-full flex-1 flex-col overflow-hidden">
 			<CardHeader>
 				<CardTitle>Our Sponsors</CardTitle>
 			</CardHeader>
-			<CardContent className="scrollbar-thin divide-y divide-slate-100 overflow-y-auto overscroll-none">
+			<CardContent className="scrollbar-thin w-full divide-y divide-slate-100 overflow-y-auto overflow-x-hidden">
 				{sponsors.map(sponsor => (
 					<div
 						key={sponsor.id}
@@ -31,8 +31,8 @@ export function SponsorshipsListCard({
 								className="duration-300 group-hover:scale-125"
 							/>
 						)}
-						<div className="w-full">
-							<div className="flex justify-between">
+						<div className="w-full overflow-hidden">
+							<div className="flex w-full justify-between">
 								<h3 className="group-hover:text-primary text-[15px] font-semibold leading-5 transition-colors duration-300">
 									{sponsor.name}
 								</h3>
@@ -40,7 +40,7 @@ export function SponsorshipsListCard({
 									Ӿ{sponsor.amount}
 								</p>
 							</div>
-							<p className="pr-16 text-[13px] leading-4 text-slate-500">
+							<p className="overflow-wrap w-full break-words pr-16 text-[13px] leading-4 text-slate-500">
 								{sponsor.message}
 							</p>
 						</div>
