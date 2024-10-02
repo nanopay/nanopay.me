@@ -1,12 +1,11 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useAction } from 'next-safe-action/hooks'
 import { createSponsor } from '../actions'
 import { useToast } from '@/hooks/useToast'
 import { getSafeActionError } from '@/lib/safe-action'
 import Input from '@/components/Input'
-import { ImageIcon, PlusCircleIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { SponsorCreate } from '@/core/client/sponsors/sponsors-types'
 import {
@@ -36,6 +35,8 @@ import {
 import { Button } from '@/components/Button'
 import Link from 'next/link'
 import { DONATE_URL, MIN_SPONSOR_AMOUNT } from '@/core/constants'
+import ImageInput from '@/components/ImageInput'
+import { useUploader } from '@/hooks/useUploader'
 
 const amountSuggestions = [
 	{
@@ -65,7 +66,6 @@ const amountSuggestions = [
 ]
 
 export function SponsorCard() {
-	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [showCustomAmountInput, setShowCustomAmountInput] = useState(false)
 
 	const form = useForm<SponsorCreate>({
@@ -96,21 +96,6 @@ export function SponsorCard() {
 			message,
 			amount,
 		})
-	}
-
-	const handleAvatarClick = () => {
-		fileInputRef.current?.click()
-	}
-
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0]
-		if (file) {
-			const reader = new FileReader()
-			reader.onloadend = () => {
-				form.setValue('avatar_url', reader.result as string)
-			}
-			reader.readAsDataURL(file)
-		}
 	}
 
 	const isAmountSponsored = form.watch('amount') >= MIN_SPONSOR_AMOUNT
@@ -188,30 +173,16 @@ export function SponsorCard() {
 											render={({ field }) => (
 												<FormItem>
 													<FormControl>
-														<>
-															{field.value ? (
-																<img
-																	src={field.value}
-																	alt="Avatar"
-																	className="h-14 w-14 cursor-pointer rounded-full object-cover"
-																/>
-															) : (
-																<div
-																	className="group relative flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-slate-100"
-																	onClick={handleAvatarClick}
-																>
-																	<ImageIcon className="group-hover:text-primary h-8 w-8 text-slate-500" />
-																	<PlusCircleIcon className="group-hover:bg-primary absolute bottom-0.5 right-0 h-4 w-4 rounded-full bg-slate-400 text-white" />
-																</div>
-															)}
-															<input
-																type="file"
-																ref={fileInputRef}
-																className="hidden"
-																accept="image/*"
-																onChange={handleFileChange}
-															/>
-														</>
+														<SponsorAvatar
+															src={field.value}
+															onChange={value => {
+																field.onChange(value)
+																form.clearErrors('avatar_url')
+															}}
+															onError={message => {
+																form.setError('avatar_url', { message })
+															}}
+														/>
 													</FormControl>
 													<FormMessage />
 												</FormItem>
@@ -290,5 +261,37 @@ export function SponsorCard() {
 				</Card>
 			</form>
 		</Form>
+	)
+}
+
+function SponsorAvatar({
+	src,
+	onChange,
+	onError,
+}: {
+	src?: string | null
+	onChange: (url: string) => void
+	onError?: (message: string) => void
+}) {
+	const { upload, isUploading, progress, isError } = useUploader(
+		`/sponsors/avatar`,
+		{
+			onSuccess: onChange,
+			onError: onError,
+		},
+	)
+
+	return (
+		<ImageInput
+			src={src}
+			crop={true}
+			onChange={upload}
+			isLoading={isUploading}
+			isError={isError}
+			progress={progress}
+			width={56}
+			height={56}
+			alt={'Avatar'}
+		/>
 	)
 }
