@@ -21,8 +21,6 @@ export interface ImageCropProps {
 	onCancel?: () => void
 }
 
-type SliderProps = React.ComponentProps<typeof Slider>
-
 export default function ImageCrop({
 	source,
 	type,
