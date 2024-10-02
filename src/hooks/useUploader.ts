@@ -66,10 +66,10 @@ export const useUploader = (apiUrl: string, options: UploaderOptions = {}) => {
 			reset()
 			setIsUploading(true)
 			try {
-				await uploadFileWithXHR(image, apiUrl, setProgress)
+				const { url } = await uploadFileWithXHR(image, apiUrl, setProgress)
 				setIsSuccess(true)
 				if (options.onSuccess) {
-					options.onSuccess(apiUrl)
+					options.onSuccess(url)
 				}
 				if (options.onUploading) {
 					options.onUploading(true)
