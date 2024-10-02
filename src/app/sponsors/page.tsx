@@ -20,12 +20,16 @@ import { SponsorCard } from './_components/SponsorCard'
 import { SponsorshipsListCard } from './_components/SponsorsListCard'
 import { AdminClient } from '@/core/client'
 import { unstable_noStore } from 'next/cache'
+import initialSponsors from './initial-sponsors.json'
 
 export default async function SponsorPage() {
 	unstable_noStore()
 
 	const client = new AdminClient()
-	const sponsors = await client.sponsors.list()
+	const sponsors = [
+		...(await client.sponsors.list()),
+		...initialSponsors.reverse(),
+	]
 	const accumulated = sponsors.reduce((acc, sponsor) => acc + sponsor.amount, 0)
 	const goal = 2000
 	const accumulatedPercentage = (accumulated / goal) * 100
@@ -49,7 +53,12 @@ export default async function SponsorPage() {
 									<span className="font-semibold">Ӿ{goal}</span>
 								</p>
 								<div className="w-full rounded-full bg-slate-200">
-									<div className="h-2 w-[40%] rounded-full  bg-gradient-to-r from-pink-400/60 to-[#4A90E2]"></div>
+									<div
+										className="h-2 rounded-full  bg-gradient-to-r from-pink-400/60 to-[#4A90E2]"
+										style={{
+											width: `${accumulatedPercentage}%`,
+										}}
+									></div>
 								</div>
 							</div>
 						</CardFooter>

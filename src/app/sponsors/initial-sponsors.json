@@ -1,0 +1,37 @@
+[
+	{
+		"id": "eb8020eb-3077-4684-a4e6-994a6b0cbf09",
+		"name": "James Coxon",
+		"avatar_url": "https://static.nanopay.me/sponsors/initial/jamescoxon.png",
+		"amount": 600,
+		"message": "Hi all, the community dev fund round result update is now on Reddit: https://reddit.com/r/nanocurrency/s/XO5lOPH8mt"
+	},
+	{
+		"id": "31c3d05f-c3a5-4cf9-958b-2b3e2bb2edf5",
+		"name": "Steban",
+		"avatar_url": "https://static.nanopay.me/sponsors/initial/steban.png",
+		"amount": 100,
+		"message": "Great job on this. Here’s a chunk of the Million Nano Homepage Community Fund."
+	},
+	{
+		"id": "9e73721b-3c91-4f51-a79c-fd02c9c85b70",
+		"name": "Vini Barbosa",
+		"avatar_url": "https://static.nanopay.me/sponsors/initial/vinibarbosa.png",
+		"amount": 10,
+		"message": ""
+	},
+	{
+		"id": "8362855f-870d-4de4-ac86-72bdecfbae4f",
+		"name": "Ash",
+		"avatar_url": "https://static.nanopay.me/sponsors/initial/ash.png",
+		"amount": 10,
+		"message": ""
+	},
+	{
+		"id": "1e4d1d0b-1039-493c-beba-9d017e254f2b",
+		"name": "Immi Flex",
+		"avatar_url": "https://static.nanopay.me/sponsors/initial/immiflex.png",
+		"amount": 10,
+		"message": ""
+	}
+]

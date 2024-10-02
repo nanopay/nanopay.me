@@ -5,7 +5,7 @@ import { Sponsorship } from '@/core/client/sponsors/sponsors-types'
 export function SponsorshipsListCard({
 	sponsors,
 }: {
-	sponsors: Sponsorship[]
+	sponsors: Omit<Sponsorship, 'created_at' | 'invoice'>[]
 }) {
 	return (
 		<Card className="!flex !flex-1 !flex-col !overflow-hidden">
