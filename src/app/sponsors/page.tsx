@@ -80,20 +80,7 @@ export default async function SponsorPage() {
 						</Button>
 					</DrawerTrigger>
 					<DrawerContent>
-						<DrawerHeader>
-							<DrawerTitle>Sponsor Our Project</DrawerTitle>
-							<DrawerDescription>
-								Support us by becoming a sponsor
-							</DrawerDescription>
-						</DrawerHeader>
-						<div className="p-4">
-							<SponsorCard />
-						</div>
-						<DrawerFooter>
-							<DrawerClose asChild>
-								<Button variant="outline">Cancel</Button>
-							</DrawerClose>
-						</DrawerFooter>
+						<SponsorCard className="border-none" />
 					</DrawerContent>
 				</Drawer>
 			</div>
