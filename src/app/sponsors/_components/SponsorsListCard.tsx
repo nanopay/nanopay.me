@@ -33,14 +33,16 @@ export function SponsorshipsListCard({
 						)}
 						<div className="w-full">
 							<div className="flex justify-between">
-								<h3 className="group-hover:text-primary font-semibold transition-colors duration-300">
+								<h3 className="group-hover:text-primary text-[15px] font-semibold leading-5 transition-colors duration-300">
 									{sponsor.name}
 								</h3>
-								<p className="text-sm font-semibold text-slate-600">
+								<p className="w-16 text-right text-sm font-semibold leading-5 text-slate-600">
 									Ӿ{sponsor.amount}
 								</p>
 							</div>
-							<p className="text-sm text-slate-500">{sponsor.message}</p>
+							<p className="pr-16 text-[13px] leading-4 text-slate-500">
+								{sponsor.message}
+							</p>
 						</div>
 					</div>
 				))}
