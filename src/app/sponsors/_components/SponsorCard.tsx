@@ -37,6 +37,7 @@ import Link from 'next/link'
 import { DONATE_URL, MIN_SPONSOR_AMOUNT } from '@/core/constants'
 import ImageInput from '@/components/ImageInput'
 import { useUploader } from '@/hooks/useUploader'
+import { cn } from '@/lib/cn'
 
 const amountSuggestions = [
 	{
@@ -65,7 +66,7 @@ const amountSuggestions = [
 	},
 ]
 
-export function SponsorCard() {
+export function SponsorCard({ ...props }: React.ComponentProps<typeof Card>) {
 	const [showCustomAmountInput, setShowCustomAmountInput] = useState(false)
 
 	const form = useForm<SponsorCreate>({
@@ -106,7 +107,7 @@ export function SponsorCard() {
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="w-full max-w-[500px]"
 			>
-				<Card className="h-fit w-full">
+				<Card {...props} className={cn('h-fit w-full', props.className)}>
 					<CardHeader>
 						<CardTitle>Sponsor NanoPay</CardTitle>
 						<CardDescription>
