@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import ImageCrop from './ImageCrop'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
-import { AlertTriangleIcon, CameraIcon } from 'lucide-react'
+import { AlertTriangleIcon, CameraIcon, ImageIcon } from 'lucide-react'
 import Image from 'next/image'
 import { cn } from '@/lib/cn'
 
@@ -116,7 +116,7 @@ export function ImageInput({
 				}}
 				onClick={handleInputClick}
 			>
-				{imageSource && (
+				{imageSource ? (
 					<Image
 						src={imageSource}
 						alt={alt}
@@ -127,6 +127,10 @@ export function ImageInput({
 							isLoading && 'animate-pulse',
 						)}
 					/>
+				) : (
+					<div className="flex h-full w-full items-center justify-center">
+						<ImageIcon className="h-2/3 w-2/3 text-slate-500" />
+					</div>
 				)}
 				<div className="absolute inset-0 -m-0.5">
 					<CircularProgressbar
