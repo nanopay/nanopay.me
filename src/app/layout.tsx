@@ -50,7 +50,7 @@ export default async function RootLayout({
 	return (
 		<html lang="en">
 			<body className={openSans.className}>
-				<div className="flex min-h-screen flex-col">{children}</div>
+				<div className="flex flex-col">{children}</div>
 				<LoadingIndicator />
 				<ToastContainer />
 			</body>
