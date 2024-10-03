@@ -27,6 +27,7 @@ import { redirectToMerchant } from '../app/invoices/[invoiceId]/actions'
 import { cn } from '@/lib/cn'
 import { Drawer, DrawerContent } from './ui/drawer'
 import Fireworks from './Fireworks'
+import { Skeleton } from './ui/skeleton'
 
 export function InvoicePayCard({
 	invoice,
@@ -47,6 +48,8 @@ export function InvoicePayCard({
 		payments,
 		amountMissing,
 		isExpired,
+		isListening,
+		isError,
 	} = usePaymentsListener({
 		invoiceId: invoice.id,
 		price: invoice.price,
@@ -264,6 +267,8 @@ export function InvoicePayCard({
 						/>
 					</div>
 				</>
+			) : !isListening ? (
+				<PayCardSkeleton className="shadow-none" />
 			) : (
 				<>
 					{isPartiallyPaid && (
@@ -411,6 +416,43 @@ export function InvoicePayCard({
 				</DrawerContent>
 			</Drawer>
 			{showFireworks && <Fireworks count={3} />}
+		</div>
+	)
+}
+
+function PayCardSkeleton({ ...props }: React.ComponentPropsWithoutRef<'div'>) {
+	return (
+		<div
+			{...props}
+			className={cn(
+				'mx-auto w-full max-w-md rounded-lg bg-white p-6 shadow-md',
+				props.className,
+			)}
+		>
+			<div className="space-y-6">
+				{/* QR Code Skeleton */}
+				<div className="flex items-center justify-between">
+					<Skeleton className="bg-primary/20 h-4 w-16" />
+					<Skeleton className="bg-primary/20 h-4 w-24" />
+				</div>
+
+				{/* Central Loading Indicator */}
+				<div className="flex h-24 items-center justify-center">
+					<div className="border-primary/30 border-t-primary/60 h-12 w-12 animate-spin rounded-full border-4 border-t-4" />
+				</div>
+
+				{/* Send To Skeleton */}
+				<div className="space-y-2">
+					<Skeleton className="bg-primary/20 h-4 w-16" />
+					<div className="flex items-center space-x-2">
+						<Skeleton className="bg-primary/20 h-6 w-48" />
+						<Skeleton className="bg-primary/20 h-6 w-6" />
+					</div>
+				</div>
+
+				{/* Open Wallet Button Skeleton */}
+				<Skeleton className="bg-primary/20 h-10 w-full rounded-md" />
+			</div>
 		</div>
 	)
 }
