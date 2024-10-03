@@ -6,16 +6,7 @@ import {
 	CardDescription,
 	CardFooter,
 } from '@/components/ui/card'
-import {
-	Drawer,
-	DrawerTrigger,
-	DrawerContent,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerClose,
-} from '@/components/ui/drawer'
+import { Drawer, DrawerTrigger, DrawerContent } from '@/components/ui/drawer'
 import { SponsorCard } from './_components/SponsorCard'
 import { SponsorshipsListCard } from './_components/SponsorsListCard'
 import { AdminClient } from '@/core/client'
