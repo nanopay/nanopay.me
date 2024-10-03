@@ -80,15 +80,12 @@ export function SponsorCard({ ...props }: React.ComponentProps<typeof Card>) {
 
 	const { showError } = useToast()
 
-	const { executeAsync: create, isExecuting: isCreating } = useAction(
-		createSponsor,
-		{
-			onError: ({ error }) => {
-				const { message } = getSafeActionError(error)
-				showError(message)
-			},
+	const { executeAsync: create } = useAction(createSponsor, {
+		onError: ({ error }) => {
+			const { message } = getSafeActionError(error)
+			showError(message)
 		},
-	)
+	})
 
 	const onSubmit = ({ name, avatar_url, message, amount }: SponsorCreate) => {
 		create({
@@ -253,7 +250,9 @@ export function SponsorCard({ ...props }: React.ComponentProps<typeof Card>) {
 						<Button
 							type="submit"
 							className="w-full bg-gradient-to-br from-[#4A90E2] to-pink-400/60 font-bold hover:bg-[#357ABD]"
-							loading={isCreating}
+							loading={
+								form.formState.isSubmitting || form.formState.isSubmitSuccessful
+							}
 							disabled={form.getValues('amount') < MIN_SPONSOR_AMOUNT}
 						>
 							Ӿ Sponsor
