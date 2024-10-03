@@ -3,9 +3,16 @@
 import { Button } from '@/components/Button'
 import QrCodeBorder from '@/components/QrCodeBorder'
 import Transactions from '@/components/Transactions'
-import { InvoicePublic } from '@/core/client'
-import { MAX_PAYMENTS_PER_INVOICE, REFUND_EMAIL } from '@/core/constants'
-import { usePaymentsListener } from '@/hooks/usePaymentsListener'
+import { InvoicePublic, Payment } from '@/core/client'
+import {
+	MAX_PAYMENTS_PER_INVOICE,
+	REFUND_EMAIL,
+	SUPPORT_EMAIL,
+} from '@/core/constants'
+import {
+	PaymentNotification,
+	usePaymentsListener,
+} from '@/hooks/usePaymentsListener'
 import { formatDateTime, toFiatCurrency, truncateAddress } from '@/utils/others'
 import {
 	AlertCircleIcon,
@@ -49,7 +56,7 @@ export function InvoicePayCard({
 		amountMissing,
 		isExpired,
 		isListening,
-		isError,
+		isError: listenerError,
 	} = usePaymentsListener({
 		invoiceId: invoice.id,
 		price: invoice.price,
@@ -134,57 +141,15 @@ export function InvoicePayCard({
 				props.className,
 			)}
 		>
-			{isExpired || maxPaymentsReached ? (
-				<>
-					<div className="flex flex-1 items-center justify-center py-4">
-						<div className="flex flex-col items-center gap-2">
-							<ErrorIcon />
-							<h3 className="text-xl font-semibold text-slate-600">
-								{isExpired ? 'Expired' : 'Max payments reached'}
-							</h3>
-							{amountPaid > 0 && (
-								<div className="mt-4 flex flex-col gap-1">
-									<a
-										href={`mailto:${REFUND_EMAIL}?subject=Refund to Invoice #${invoice.id}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
-									>
-										<Button
-											variant="ghost"
-											className="PayButton w-full bg-slate-100 text-slate-600 sm:w-auto"
-										>
-											Refund Ӿ{amountPaid}
-											<ReceiptRefundIcon className="ml-2 h-4 w-4" />
-										</Button>
-									</a>
-								</div>
-							)}
-						</div>
-					</div>
-
-					<div className="divide-y divide-dashed divide-slate-200 border-t border-dashed border-slate-200 sm:px-4">
-						<div className="flex justify-between py-2 text-sm">
-							<div className="text-slate-500">Invoice</div>
-							<div className="font-medium text-slate-900">#{invoice.id}</div>
-						</div>
-						{isExpired && (
-							<div className="flex justify-between py-2 text-sm">
-								<div className="text-slate-500">Expired At</div>
-								{formatDateTime(invoice.expires_at)}
-							</div>
-						)}
-
-						{payments.length > 0 && (
-							<Transactions
-								transactions={payments.map(payment => {
-									return {
-										amount: payment.amount,
-										hash: payment.hash,
-										timestamp: payment.timestamp,
-									}
-								})}
-							/>
-						)}
-					</div>
-				</>
+			{isExpired || maxPaymentsReached || listenerError ? (
+				<InvoicePayCardError
+					invoice={invoice}
+					amountPaid={amountPaid}
+					payments={payments}
+					isExpired={isExpired}
+					maxPaymentsReached={maxPaymentsReached}
+					listenerError={listenerError}
+				/>
 			) : isPaid ? (
 				<>
 					<div className="flex flex-1 items-center justify-center py-4">
@@ -268,7 +233,7 @@ export function InvoicePayCard({
 					</div>
 				</>
 			) : !isListening ? (
-				<PayCardSkeleton className="shadow-none" />
+				<InvoicePayCardSkeleton className="shadow-none" />
 			) : (
 				<>
 					{isPartiallyPaid && (
@@ -420,7 +385,107 @@ export function InvoicePayCard({
 	)
 }
 
-function PayCardSkeleton({ ...props }: React.ComponentPropsWithoutRef<'div'>) {
+function InvoicePayCardError({
+	invoice,
+	amountPaid,
+	payments,
+	isExpired,
+	maxPaymentsReached,
+	listenerError,
+	...props
+}: {
+	invoice: InvoicePublic
+	amountPaid: number
+	payments: PaymentNotification[]
+	isExpired: boolean
+	maxPaymentsReached: boolean
+	listenerError: boolean
+} & React.ComponentPropsWithoutRef<'div'>) {
+	return (
+		<>
+			<div
+				{...props}
+				className={cn(
+					'flex flex-1 items-center justify-center py-4',
+					props.className,
+				)}
+			>
+				<div className="flex flex-col items-center gap-2">
+					<ErrorIcon />
+					<h3 className="text-xl font-semibold text-slate-600">
+						{(isExpired && 'Expired') ||
+							(maxPaymentsReached && 'Max Payments Reached') ||
+							(listenerError && 'Error Listening Payments')}
+					</h3>
+					{amountPaid > 0 && (
+						<div className="mt-4 flex flex-col gap-1">
+							<a
+								href={`mailto:${REFUND_EMAIL}?subject=Refund to Invoice #${invoice.id}&body=Please refund me the amount of Ӿ${amountPaid} to the following address: <YOUR_ADDRESS_HERE>`}
+							>
+								<Button
+									variant="ghost"
+									className="PayButton w-full bg-slate-100 text-slate-600 sm:w-auto"
+								>
+									Refund Ӿ{amountPaid}
+									<ReceiptRefundIcon className="ml-2 h-4 w-4" />
+								</Button>
+							</a>
+						</div>
+					)}
+
+					{listenerError && (
+						<div className="mt-4 flex flex-col items-center gap-1">
+							<div className="mb-4">
+								<p>Please, reload the page and try again.</p>
+								<p>If the problem persists, contact support.</p>
+							</div>
+
+							<a
+								href={`mailto:${SUPPORT_EMAIL}?subject=Error Listening Payments for Invoice #${invoice.id}&body=I'm having trouble paying the invoice #${invoice.id}. Please help me!`}
+							>
+								<Button
+									variant="ghost"
+									className="PayButton w-full bg-slate-100 text-slate-600 sm:w-auto"
+								>
+									Support
+								</Button>
+							</a>
+						</div>
+					)}
+				</div>
+			</div>
+
+			<div className="divide-y divide-dashed divide-slate-200 border-t border-dashed border-slate-200 sm:px-4">
+				<div className="flex justify-between py-2 text-sm">
+					<div className="text-slate-500">Invoice</div>
+					<div className="font-medium text-slate-900">#{invoice.id}</div>
+				</div>
+				{isExpired && (
+					<div className="flex justify-between py-2 text-sm">
+						<div className="text-slate-500">Expired At</div>
+						{formatDateTime(invoice.expires_at)}
+					</div>
+				)}
+
+				{payments.length > 0 && (
+					<Transactions
+						transactions={payments.map(payment => {
+							return {
+								amount: payment.amount,
+								hash: payment.hash,
+								timestamp: payment.timestamp,
+							}
+						})}
+					/>
+				)}
+			</div>
+		</>
+	)
+}
+
+function InvoicePayCardSkeleton({
+	...props
+}: React.ComponentPropsWithoutRef<'div'>) {
 	return (
 		<div
 			{...props}
