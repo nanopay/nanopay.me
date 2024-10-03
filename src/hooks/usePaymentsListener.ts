@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { paymentSchema } from '@/core/client'
 import { z } from 'zod'
 import { paymentGateway } from '@/services/payment-gateway'
@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js'
 
 const paymentNotificationSchema = paymentSchema.omit({ id: true })
 
-type PaymentNotification = z.infer<typeof paymentNotificationSchema>
+export type PaymentNotification = z.infer<typeof paymentNotificationSchema>
 
 interface PaymentListenerProps {
 	invoiceId: string
@@ -21,6 +21,7 @@ export const usePaymentsListener = ({
 	expiresAt,
 	initialPayments,
 }: PaymentListenerProps) => {
+	const [websocket, setWebsocket] = useState<WebSocket | null>(null)
 	const [isListening, setIsListening] = useState(false)
 	const [isError, setIsError] = useState(false)
 
@@ -41,59 +42,72 @@ export const usePaymentsListener = ({
 
 	const [isExpired, setIsExpired] = useState(!isPaid && timeLeft <= 0)
 
-	const socketRef = useRef<WebSocket | null>(null)
+	const connect = () => {
+		const websocketUrl = paymentGateway.buildPaymentsWebsocketUrl(invoiceId)
+		const websocket = new WebSocket(websocketUrl)
+
+		setWebsocket(websocket)
+
+		websocket.onopen = () => {
+			console.info('WebSocket connected')
+			setIsError(false)
+			setIsListening(true)
+		}
+
+		websocket.onmessage = event => {
+			try {
+				const data = paymentNotificationSchema.parse(JSON.parse(event.data))
+				setPayments(prevPayments => {
+					// Prevent duplicates
+					if (prevPayments.some(p => p.hash === data.hash)) {
+						return prevPayments
+					}
+					return [...prevPayments, data]
+				})
+			} catch (error) {
+				console.error('Error parsing WebSocket message:', error)
+			}
+		}
+
+		websocket.onerror = error => {
+			setIsError(true)
+			setWebsocket(null)
+			console.error('WebSocket error:', error)
+		}
+
+		websocket.onclose = () => {
+			console.info('WebSocket connection closed')
+			setIsListening(false)
+			setWebsocket(null)
+		}
+	}
 
 	useEffect(() => {
 		if (isPaid || isExpired) return
 
-		if (!socketRef.current) {
-			const websocketUrl = paymentGateway.buildPaymentsWebsocketUrl(invoiceId)
-			socketRef.current = new WebSocket(websocketUrl)
-
-			socketRef.current.onopen = () => {
-				console.info('WebSocket connected')
-				setIsListening(true)
+		if (!websocket) {
+			if (isError) {
+				setTimeout(() => {
+					connect()
+				}, 2000)
+				return
 			}
-
-			socketRef.current.onmessage = event => {
-				try {
-					const data = paymentNotificationSchema.parse(JSON.parse(event.data))
-					setPayments(prevPayments => {
-						// Prevent duplicates
-						if (prevPayments.some(p => p.hash === data.hash)) {
-							return prevPayments
-						}
-						return [...prevPayments, data]
-					})
-				} catch (error) {
-					console.error('Error parsing WebSocket message:', error)
-				}
-			}
-
-			socketRef.current.onerror = error => {
-				setIsError(true)
-				console.error('WebSocket error:', error)
-			}
-
-			socketRef.current.onclose = () => {
-				console.info('WebSocket connection closed')
-				setIsListening(false)
-			}
+			connect()
 		}
 
 		const timeoutId = setTimeout(() => {
 			setIsExpired(true)
+			if (websocket?.readyState === WebSocket.OPEN) {
+				websocket.close()
+				setWebsocket(null)
+			}
 		}, timeLeft)
 
 		// Clean up WebSocket on component unmount or when the invoice expires
 		return () => {
 			clearTimeout(timeoutId)
-			if (socketRef.current?.readyState === WebSocket.OPEN) {
-				socketRef.current.close()
-				socketRef.current = null
-			}
 		}
-	}, [invoiceId, isPaid, isExpired, socketRef.current])
+	}, [invoiceId, isPaid, isExpired, isError, websocket])
 
 	return {
 		isListening,
