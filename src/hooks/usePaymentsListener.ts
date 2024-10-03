@@ -21,6 +21,9 @@ export const usePaymentsListener = ({
 	expiresAt,
 	initialPayments,
 }: PaymentListenerProps) => {
+	const [isListening, setIsListening] = useState(false)
+	const [isError, setIsError] = useState(false)
+
 	const [payments, setPayments] =
 		useState<PaymentNotification[]>(initialPayments)
 
@@ -49,6 +52,7 @@ export const usePaymentsListener = ({
 
 			socketRef.current.onopen = () => {
 				console.info('WebSocket connected')
+				setIsListening(true)
 			}
 
 			socketRef.current.onmessage = event => {
@@ -67,11 +71,13 @@ export const usePaymentsListener = ({
 			}
 
 			socketRef.current.onerror = error => {
+				setIsError(true)
 				console.error('WebSocket error:', error)
 			}
 
 			socketRef.current.onclose = () => {
 				console.info('WebSocket connection closed')
+				setIsListening(false)
 			}
 		}
 
@@ -90,6 +96,8 @@ export const usePaymentsListener = ({
 	}, [invoiceId, isPaid, isExpired, socketRef.current])
 
 	return {
+		isListening,
+		isError,
 		isPaid,
 		isPartiallyPaid,
 		amountPaid,
