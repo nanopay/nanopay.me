@@ -1,3 +1,8 @@
+export const viewport: Viewport = {
+	initialScale: 1,
+	maximumScale: 1,
+}
+
 import { Button } from '@/components/Button'
 import {
 	Card,
@@ -12,6 +17,7 @@ import { SponsorshipsListCard } from './_components/SponsorsListCard'
 import { AdminClient } from '@/core/client'
 import { unstable_noStore } from 'next/cache'
 import initialSponsors from './initial-sponsors.json'
+import { Viewport } from 'next'
 
 export default async function SponsorPage() {
 	unstable_noStore()
