@@ -54,5 +54,5 @@ export const getSafeActionError = <
 			message: 'Validation error, check logs for more info',
 		}
 	}
-	return { type: 'unknownError', message: 'Tente novamente mais tarde' }
+	return { type: 'unknownError', message: 'Try again later' }
 }
