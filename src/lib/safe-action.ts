@@ -3,7 +3,7 @@ import { Schema } from 'next-safe-action/adapters/types'
 
 export const safeAction = createSafeActionClient({
 	async handleServerError(error) {
-		let message = 'Erro desconhecido'
+		let message = 'Unknown error'
 
 		if (error instanceof Error) {
 			message = error.message
