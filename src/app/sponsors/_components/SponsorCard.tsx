@@ -80,21 +80,12 @@ export function SponsorCard({ ...props }: React.ComponentProps<typeof Card>) {
 
 	const { showError } = useToast()
 
-	const { executeAsync: create, hasSucceeded } = useAction(createSponsor, {
+	const { executeAsync: onSubmit, hasSucceeded } = useAction(createSponsor, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError(message)
 		},
 	})
-
-	const onSubmit = ({ name, avatar_url, message, amount }: SponsorCreate) => {
-		create({
-			name,
-			avatar_url,
-			message,
-			amount,
-		})
-	}
 
 	const isAmountSponsored = form.watch('amount') >= MIN_SPONSOR_AMOUNT
 
