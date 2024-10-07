@@ -42,7 +42,7 @@ import { cn } from '@/lib/cn'
 const amountSuggestions = [
 	{
 		label: '10 NANO',
-		value: 5,
+		value: 10,
 	},
 	{
 		label: '20 NANO',
