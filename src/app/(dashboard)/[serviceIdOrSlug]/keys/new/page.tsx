@@ -55,7 +55,7 @@ export default function NewApiKey({ params }: Props) {
 		resolver: zodResolver(apiKeyCreateSchema),
 	})
 
-	const { executeAsync } = useAction(createNewApiKey, {
+	const { executeAsync, hasSucceeded } = useAction(createNewApiKey, {
 		onSuccess: ({ data }) => {
 			if (!data) return
 			setApiKey(data.apiKey)
@@ -108,9 +108,7 @@ export default function NewApiKey({ params }: Props) {
 												{...field}
 												onChange={e => field.onChange(slugify(e.target.value))}
 												invalid={fieldState.invalid}
-												disabled={
-													field.disabled || form.formState.isSubmitSuccessful
-												}
+												disabled={field.disabled || hasSucceeded}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -132,9 +130,7 @@ export default function NewApiKey({ params }: Props) {
 													field.onChange(e.target.value.slice(0, 512))
 												}
 												invalid={fieldState.invalid}
-												disabled={
-													field.disabled || form.formState.isSubmitSuccessful
-												}
+												disabled={field.disabled || hasSucceeded}
 											/>
 										</FormControl>
 										<FormMessage />

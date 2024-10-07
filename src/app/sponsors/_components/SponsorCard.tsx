@@ -80,7 +80,7 @@ export function SponsorCard({ ...props }: React.ComponentProps<typeof Card>) {
 
 	const { showError } = useToast()
 
-	const { executeAsync: create } = useAction(createSponsor, {
+	const { executeAsync: create, hasSucceeded } = useAction(createSponsor, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError(message)
@@ -250,9 +250,7 @@ export function SponsorCard({ ...props }: React.ComponentProps<typeof Card>) {
 						<Button
 							type="submit"
 							className="w-full bg-gradient-to-br from-[#4A90E2] to-pink-400/60 font-bold hover:bg-[#357ABD]"
-							loading={
-								form.formState.isSubmitting || form.formState.isSubmitSuccessful
-							}
+							loading={form.formState.isSubmitting || hasSucceeded}
 							disabled={form.getValues('amount') < MIN_SPONSOR_AMOUNT}
 						>
 							Ӿ Sponsor

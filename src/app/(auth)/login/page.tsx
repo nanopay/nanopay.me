@@ -34,7 +34,7 @@ export default function LoginPage({ searchParams: { next } }: Props) {
 		resolver: zodResolver(signWithEmailAndPasswordSchema),
 	})
 
-	const { executeAsync: handleSignWithPassword } = useAction(
+	const { executeAsync: handleSignWithPassword, hasSucceeded } = useAction(
 		async (data: SignEmailAndPassword) => {
 			return await signWithPassword({ ...data, next })
 		},
@@ -105,8 +105,7 @@ export default function LoginPage({ searchParams: { next } }: Props) {
 						formAction="sign-with-password"
 						type="submit"
 						className="w-full"
-						disabled={form.formState.isSubmitting}
-						loading={form.formState.isSubmitting}
+						loading={form.formState.isSubmitting || hasSucceeded}
 					>
 						Sign In
 					</Button>
