@@ -193,7 +193,7 @@ export default function InvoiceReceiptPdf({
 							<View>
 								<Text style={styles.sectionTitle}>Amount Paid</Text>
 								<View style={{ marginLeft: 20 }}>
-									<Text style={styles.amountPaid}>Ӿ 0.05</Text>
+									<Text style={styles.amountPaid}>Ӿ {invoice.price}</Text>
 								</View>
 							</View>
 							<View>
