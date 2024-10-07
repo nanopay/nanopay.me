@@ -78,7 +78,6 @@ export const usePaymentsListener = ({
 		websocket.onclose = () => {
 			console.info('WebSocket connection closed')
 			setIsListening(false)
-			setWebsocket(null)
 		}
 	}
 
