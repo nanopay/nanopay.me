@@ -62,9 +62,9 @@ export function Footer({
 						</div>
 						<div className="ml-8 lg:w-64">
 							<p className="text-base font-semibold text-slate-800 dark:text-slate-200">
-								<Link href={DONATE_URL}>
+								<Link href="/sponsors">
 									<span className="absolute inset-0 sm:rounded-2xl" />
-									Donate with Nano
+									Sponsor with Nano
 								</Link>
 							</p>
 							<p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
