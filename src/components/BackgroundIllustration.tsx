@@ -32,7 +32,7 @@ export function AnimatedBackgroundIllustration(
 			>
 				<path
 					d="M1025 513c0 282.77-229.23 512-512 512S1 795.77 1 513 230.23 1 513 1s512 229.23 512 512Z"
-					stroke="#D4D4D4"
+					stroke="#cbd5e1"
 					strokeOpacity="0.7"
 				/>
 				<path
@@ -62,7 +62,7 @@ export function AnimatedBackgroundIllustration(
 			>
 				<path
 					d="M913 513c0 220.914-179.086 400-400 400S113 733.914 113 513s179.086-400 400-400 400 179.086 400 400Z"
-					stroke="#D4D4D4"
+					stroke="#cbd5e1"
 					strokeOpacity="0.7"
 				/>
 				<path
