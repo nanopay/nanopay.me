@@ -25,7 +25,7 @@ export default async function SetupLayout({
 					/>
 				</UserNavigationPopover>
 			</header>
-			<main className="relative mt-14 flex flex-1 flex-col">
+			<main className="relative mt-14 flex min-h-screen flex-1 flex-col">
 				<div className="absolute -z-10 hidden h-[80%] w-full overflow-hidden pt-20 sm:block">
 					<BackgroundIllustration
 						width="1090"
