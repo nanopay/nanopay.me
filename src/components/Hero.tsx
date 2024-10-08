@@ -134,7 +134,7 @@ export function Hero() {
 						>
 							<Link href="/login">
 								<Button color="nano" className="text-xl" size="lg">
-									Join the Alfa
+									Join the Beta
 								</Button>
 							</Link>
 							<Link href="/demo">

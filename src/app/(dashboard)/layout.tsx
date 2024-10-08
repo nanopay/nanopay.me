@@ -29,7 +29,7 @@ export default async function DashboardLayout({
 
 					<div className="mx-auto w-full max-w-7xl px-4 py-4 lg:px-6 xl:px-8">
 						<PopupAlert
-							message="This is the alpha version. It may have bugs. Do not use in
+							message="This is the beta version. It may have bugs. Do not use in
 								production or for high-value payments."
 						/>
 					</div>
