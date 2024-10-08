@@ -7,9 +7,9 @@
   </a>
 </p>
 
-A nanocurrency payment gateway focused on user experience.
+The Stripe of Nano Payments. Pay and get paid with Nano.
 
-Join the alfa: https://nanopay.me
+Join the beta: https://nanopay.me
 
 # Features
 
@@ -18,7 +18,9 @@ Join the alfa: https://nanopay.me
 - Receive webhooks
 - Merchant REST API
 
-![nanodrop-desktop-mobile](https://github.com/nanopay/nanopay.me/assets/32111208/6c2c7a31-a178-4fd5-b442-5e5579f41cf1)
+<img src="https://github.com/user-attachments/assets/56786db2-c84e-4d93-9f2b-897d2cfabe33" width="600px" height="auto" />
+
+<img src="https://github.com/user-attachments/assets/0fc4974f-31a1-4dab-93d1-4ad620f7f409" width="600px" height="auto" />
 
 ## Principles
 
@@ -53,7 +55,7 @@ Check our Contribution Guidelines.
 
 ## 🚧 Work in progress!
 
-This is an alpha release, not recommended for production use yet.
+This is an beta release, not recommended for production use or large payments yet.
 
 ## Authors
 
@@ -68,9 +70,14 @@ We will investigate all legitimate reports. Email security@nanopay.me to disclos
 
 MIT
 
-## Donate Ӿ
+## Contribute Ӿ
 
-If you find this library useful and want to support its development please consider donating:
+If you find this library useful and want to support its development please consider sponsor us:
+
+https://nanopay.me/sponsors
+
+Or you can donate:
+
 **nano_3dqh8z8ncswmf7151gryu7mqpwbw4f68hi7d8g433omtuabfi438etyyp9ik**
 
 <kbd><img src="https://i.ibb.co/Gs6yhv2/nano-wallet-js-qr-code.png" width="200px" height="200px" /></kbd>
