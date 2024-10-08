@@ -79,21 +79,26 @@ export async function Sponsors() {
 					<q className="py-8 text-2xl md:text-3xl">
 						Nano deserves a payment gateway as good as it&apos;s own technology.
 					</q>
-					<div className="mt-6 flex flex-col items-center space-x-6 lg:flex-row">
-						<img
-							src="https://github.com/anarkrypto.png"
-							alt="Anarkrypto"
-							width={80}
-							height={80}
-							className="ring-nano h-32 w-32 rounded-full bg-white ring-2 md:h-20 md:w-20"
-						/>
-						<div className="text-center">
-							<h3 className="mt-4 text-2xl font-semibold">Kaique Nunes</h3>
-							<p className="text-base text-slate-200 md:text-lg">
-								Creator of NanoPay.me
-							</p>
+					<a href="https://x.com/anarkrypto" target="_blank">
+						<div className="mt-6 flex flex-col items-center gap-x-4 gap-y-2 lg:flex-row">
+							<Image
+								src="https://avatars.githubusercontent.com/u/32111208?v=4"
+								alt="Anarkrypto"
+								width={80}
+								height={80}
+								quality={100}
+								className="ring-nano h-32 w-32 rounded-full bg-white ring-2 md:h-20 md:w-20"
+							/>
+							<div className="text-center">
+								<h3 className="mt-4 text-xl font-semibold">
+									Kaique Nunes (Anarkrypto)
+								</h3>
+								<p className="text-base text-slate-200 md:text-lg">
+									Creator of NanoPay.me
+								</p>
+							</div>
 						</div>
-					</div>
+					</a>
 				</Card>
 			</Container>
 		</section>
