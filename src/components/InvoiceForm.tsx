@@ -123,8 +123,9 @@ export function InvoiceForm({ onSubmit, ...props }: InvoiceFormProps) {
 				<div className="flex justify-center">
 					<Button
 						type="submit"
-						loading={form.formState.isSubmitting}
-						disabled={form.formState.isSubmitSuccessful}
+						loading={
+							form.formState.isSubmitting || form.formState.isSubmitSuccessful
+						}
 						className="w-[60%] text-lg"
 						size="lg"
 					>
