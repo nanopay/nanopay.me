@@ -44,7 +44,7 @@ export function ApiDocsNavbar({ onClick }: { onClick?: () => void }) {
 	return (
 		<nav className="grid flex-1 gap-1 overflow-auto px-2 py-2 text-lg font-medium md:text-sm lg:px-4">
 			<Link
-				href="/api#introduction"
+				href="/docs/api#introduction"
 				className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-slate-100 transition-all"
 				prefetch={false}
 				onClick={onClick}
@@ -53,7 +53,7 @@ export function ApiDocsNavbar({ onClick }: { onClick?: () => void }) {
 				Introduction
 			</Link>
 			<Link
-				href="/api#authentication"
+				href="/docs/api#authentication"
 				className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-slate-100 transition-all"
 				prefetch={false}
 				onClick={onClick}
