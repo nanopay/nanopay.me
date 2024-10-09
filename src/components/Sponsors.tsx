@@ -77,7 +77,7 @@ export async function Sponsors() {
 				</Card>
 				<Card className="w-full max-w-full rounded-3xl border-none bg-white/10 p-8 text-white md:w-[460px]">
 					<q className="py-8 text-2xl md:text-3xl">
-						Nano deserves a payment gateway as good as it&apos;s own technology.
+						Nano deserves a payment gateway as good as its own technology.
 					</q>
 					<a href="https://x.com/anarkrypto" target="_blank">
 						<div className="mt-6 flex flex-col items-center gap-x-4 gap-y-2 lg:flex-row">
