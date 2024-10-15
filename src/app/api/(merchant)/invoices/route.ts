@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 			pay_currency: 'XNO',
 			pay_address,
 			pay_amount: body.price,
-			pay_url: buildPayInvoiceUrl(body.id),
+			pay_url: buildPayInvoiceUrl(id),
 			// TODO: Implement invoices limit / remaining / reset
 			// invoices_limit: 100,
 			// invoices_remaining: 99,
