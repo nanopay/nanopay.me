@@ -126,17 +126,21 @@ export function WebhookForm({
 						<FormItem className="space-y-2">
 							<FormLabel>Event Types</FormLabel>
 							<FormControl>
-								<RadioGroup className="flex space-x-4" aria-multiselectable>
+								<RadioGroup
+									className="grid grid-cols-2 gap-2 sm:grid-cols-4"
+									aria-multiselectable
+								>
 									{eventTypes.map(eventType => (
 										<div
-											className="flex items-center space-x-2"
+											className="flex flex-1 items-center justify-center gap-x-1 p-2"
 											key={eventType}
 										>
 											<RadioGroupItem
 												value={eventType}
 												id={eventType}
 												checked={field.value.includes(eventType)}
-												disabled={formDisabled}
+												disabled={true}
+												className="flex-shrink-0"
 											/>
 											<Label htmlFor={eventType}>{eventType}</Label>
 										</div>
