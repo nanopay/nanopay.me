@@ -137,7 +137,7 @@ export function InvoicePayCard({
 		<div
 			{...props}
 			className={cn(
-				'flex w-full max-w-[480px] flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm',
+				'flex w-full flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:px-20 md:max-w-[480px] md:px-4',
 				props.className,
 			)}
 		>
@@ -250,7 +250,7 @@ export function InvoicePayCard({
 					)}
 					<div className="my-2 flex items-center justify-between pb-2 md:hidden">
 						<button
-							className="flex items-center gap-2 sm:hidden"
+							className="flex items-center gap-2 md:hidden"
 							onClick={handleOpenQrCode}
 						>
 							<QrCodeIcon className="h-5 w-5 text-slate-500" />
@@ -293,7 +293,7 @@ export function InvoicePayCard({
 							</div>
 							<div className="flex flex-1 flex-col items-center justify-center">
 								<div className="flex flex-col items-center justify-center gap-1 py-2 text-slate-800 sm:py-4">
-									<div className="text-3xl font-semibold text-slate-700 sm:text-2xl">
+									<div className="text-3xl font-semibold text-slate-700 md:text-2xl">
 										<span className="">Ӿ</span> {amountMissing}
 									</div>
 									{priceUsd && (
@@ -303,7 +303,7 @@ export function InvoicePayCard({
 									)}
 								</div>
 
-								<div className="hidden items-center justify-center gap-2 py-4 text-xs text-slate-500 sm:flex">
+								<div className="hidden items-center justify-center gap-2 py-4 text-xs text-slate-500 md:flex">
 									<div className="border-nano/40 border-t-nano h-4 w-4 animate-spin rounded-full border border-t-2" />
 									<div className="flex gap-2">
 										Expires in:

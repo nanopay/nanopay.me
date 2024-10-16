@@ -87,14 +87,14 @@ export default function Checkout({
 				</AccordionItem>
 			</Accordion>
 
-			<main className="flex flex-1 flex-col justify-between bg-white">
+			<main className="flex flex-1 flex-col items-center justify-between bg-white">
 				<InvoicePayCard
 					invoice={invoice}
 					xnoToUsd={xnoToUsd}
 					className="flex-1 rounded-none border-none shadow-none"
 				/>
 
-				<footer className="text-2xs flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-3 text-center text-slate-400">
+				<footer className="text-2xs flex w-full items-center justify-between gap-2 border-t border-slate-100 px-4 py-3 text-center text-slate-400">
 					<Link href="/terms" className="hover:text-nano flex-1">
 						Terms of Service
 					</Link>
