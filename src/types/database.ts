@@ -69,7 +69,7 @@ export type Database = {
 					description?: string | null
 					expires_at: string
 					id: string
-					index?: number
+					index: number
 					metadata?: Json | null
 					pay_address?: string | null
 					price: number
