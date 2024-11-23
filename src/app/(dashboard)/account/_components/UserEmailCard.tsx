@@ -34,7 +34,9 @@ export function UserEmailCard({
 	value: string
 } & React.ComponentProps<typeof Card>) {
 	const form = useForm<z.infer<typeof schema>>({
-		defaultValues: {},
+		defaultValues: {
+			email: value,
+		},
 		resolver: zodResolver(schema),
 	})
 
