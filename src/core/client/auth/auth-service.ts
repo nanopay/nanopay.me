@@ -2,6 +2,7 @@ import { BaseService } from '../base-service'
 import { signWithEmailAndPasswordSchema, verifyOtpSchema } from './auth-schemas'
 import { z } from 'zod'
 import { VerifyOtp } from './auth-types'
+import { SITE_URL } from '@/core/constants'
 
 export class AuthService extends BaseService {
 	async signUpWithEmailAndPassword({
@@ -94,7 +95,12 @@ export class AuthService extends BaseService {
 	}
 
 	async sendMagicLink(email: string) {
-		const { error } = await this.supabase.auth.signInWithOtp({ email })
+		const { error } = await this.supabase.auth.signInWithOtp({
+			email,
+			options: {
+				emailRedirectTo: `${SITE_URL}/auth/callback?next=/`,
+			},
+		})
 		if (error) {
 			throw new Error(error.message)
 		}
