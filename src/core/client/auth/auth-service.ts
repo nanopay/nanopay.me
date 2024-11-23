@@ -102,6 +102,15 @@ export class AuthService extends BaseService {
 		}
 	}
 
+	async changePassword(password: string) {
+		const { error } = await this.supabase.auth.updateUser({
+			password,
+		})
+		if (error) {
+			throw new Error(error.message)
+		}
+	}
+
 	async signOut() {
 		const { error } = await this.supabase.auth.signOut()
 		if (error) {
