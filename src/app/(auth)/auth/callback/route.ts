@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 		const redirectTo = new URL(requestUrl.origin)
 		redirectTo.pathname = next || '/'
 
-		return Response.redirect(next || '/')
+		return Response.redirect(redirectTo)
 	} catch (error) {
 		const message = error instanceof Error ? error.message : 'An error occurred'
 		return Response.json(
