@@ -15,5 +15,5 @@ export const resetPassword = safeAction
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
 		await client.auth.resetPasswordForEmail(parsedInput.email)
-		await redirect(`/verify-email?email=${parsedInput.email}`)
+		await redirect(`/otp?email=${parsedInput.email}&type=recovery`)
 	})

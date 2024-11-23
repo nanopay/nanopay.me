@@ -29,17 +29,18 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { VerifyOtp, verifyOtpSchema } from '@/core/client'
-import { verifySignUp } from './actions'
+import { verifyOTP } from './actions'
 
 interface Props {
 	searchParams: {
 		email: string
 		next?: string
+		type: 'signup' | 'recovery'
 	}
 }
 
-export default function ConfirmSignUp({
-	searchParams: { email, next },
+export default function VerifyOTP({
+	searchParams: { email, type, next },
 }: Props) {
 	const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -48,12 +49,13 @@ export default function ConfirmSignUp({
 	const form = useForm<VerifyOtp>({
 		defaultValues: {
 			email,
+			type,
 			token: '',
 		},
 		resolver: zodResolver(verifyOtpSchema),
 	})
 
-	const { executeAsync } = useAction(verifySignUp, {
+	const { executeAsync } = useAction(verifyOTP, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			if (message === 'Token has expired or is invalid') {
@@ -86,7 +88,7 @@ export default function ConfirmSignUp({
 			<div className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4">
 				<div className="flex flex-col items-center py-6">
 					<h2 className="text-base font-semibold text-slate-600">
-						Email inválido
+						Invalid email address
 					</h2>
 				</div>
 			</div>
@@ -96,7 +98,7 @@ export default function ConfirmSignUp({
 	return (
 		<Card className="border-0 shadow-none">
 			<CardHeader>
-				<CardTitle>Confirm your email</CardTitle>
+				<CardTitle>Verify OTP</CardTitle>
 				<CardDescription>
 					Enter the 6-digit code sent to the email <b>{email}</b>
 				</CardDescription>

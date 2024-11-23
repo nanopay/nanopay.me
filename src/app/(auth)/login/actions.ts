@@ -24,7 +24,7 @@ export const signWithPassword = safeAction
 		} catch (error) {
 			if (error) {
 				if (error instanceof Error && error.message === 'Email not confirmed') {
-					redirect(`/verify-email?email=${email}`)
+					redirect(`/otp?email=${email}&type=signup`)
 				}
 				throw error
 			}
