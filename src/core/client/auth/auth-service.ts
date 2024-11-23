@@ -68,25 +68,12 @@ export class AuthService extends BaseService {
 		}
 	}
 
-	async recoveryWithOtp({ email, token }: VerifyOtp) {
+	async verifyOtp({ email, token, type }: VerifyOtp) {
 		verifyOtpSchema.parse({ email, token })
 		const { data, error } = await this.supabase.auth.verifyOtp({
 			email,
 			token,
-			type: 'recovery',
-		})
-		if (error) {
-			throw new Error(error.message)
-		}
-		return data
-	}
-
-	async verifySignUpWithOtp({ email, token }: VerifyOtp) {
-		verifyOtpSchema.parse({ email, token })
-		const { data, error } = await this.supabase.auth.verifyOtp({
-			email,
-			token,
-			type: 'signup',
+			type,
 		})
 		if (error) {
 			throw new Error(error.message)
@@ -107,7 +94,9 @@ export class AuthService extends BaseService {
 	}
 
 	async resetPasswordForEmail(email: string) {
-		const { error } = await this.supabase.auth.resetPasswordForEmail(email)
+		const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+			redirectTo: `${SITE_URL}/auth/callback?next=/change-password`,
+		})
 		if (error) {
 			throw new Error(error.message)
 		}

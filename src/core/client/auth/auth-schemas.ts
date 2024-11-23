@@ -8,4 +8,5 @@ export const signWithEmailAndPasswordSchema = z.object({
 export const verifyOtpSchema = z.object({
 	email: z.string().email(),
 	token: z.string().length(6),
+	type: z.enum(['recovery', 'signup']),
 })
