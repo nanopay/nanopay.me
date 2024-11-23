@@ -69,7 +69,7 @@ export class AuthService extends BaseService {
 	}
 
 	async verifyOtp({ email, token, type }: VerifyOtp) {
-		verifyOtpSchema.parse({ email, token })
+		verifyOtpSchema.parse({ email, token, type })
 		const { data, error } = await this.supabase.auth.verifyOtp({
 			email,
 			token,
