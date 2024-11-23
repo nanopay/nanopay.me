@@ -9,6 +9,7 @@ const AUTH_ROUTES = [
 	'/login',
 	'/signup',
 	'/magic-link',
+	'/magic-link/sent',
 	'/verify-email',
 	'/forgot-password',
 	'/confirm-signup',

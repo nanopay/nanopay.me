@@ -15,5 +15,5 @@ export const sendMagicLink = safeAction
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
 		await client.auth.sendMagicLink(parsedInput.email)
-		redirect(`/verify-email?email=${parsedInput.email}`)
+		redirect(`/magic-link/sent?email=${parsedInput.email}`)
 	})
