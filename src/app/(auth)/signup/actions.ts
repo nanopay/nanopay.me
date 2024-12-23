@@ -19,5 +19,5 @@ export const signUpWithPassword = safeAction
 			// The user is already signed in and can complete their profile
 			redirect(`/complete-profile`)
 		}
-		redirect(`/confirm-signup?email=${parsedInput.email}`)
+		redirect(`/otp?email=${parsedInput.email}&type=signup`)
 	})

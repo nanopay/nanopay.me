@@ -1,19 +1,20 @@
 'use server'
 
 import { safeAction } from '@/lib/safe-action'
-import { Client } from '@/core/client'
+import { Client, passwordSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 const schema = z.object({
-	email: z.string().email(),
+	password: passwordSchema,
+	next: z.string().optional(),
 })
 
-export const resetPassword = safeAction
+export const changePassword = safeAction
 	.schema(schema)
 	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
-		await client.auth.resetPasswordForEmail(parsedInput.email)
-		await redirect(`/otp?email=${parsedInput.email}&type=recovery`)
+		await client.auth.changePassword(parsedInput.password)
+		await redirect(parsedInput.next || '/account')
 	})

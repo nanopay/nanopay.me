@@ -6,20 +6,21 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-export const verifySignUp = safeAction
+export const verifyOTP = safeAction
 	.schema(
 		verifyOtpSchema.extend({
 			next: z.string().optional().nullable(),
 		}),
 	)
-	.action(async ({ parsedInput: { email, token, next } }) => {
+	.action(async ({ parsedInput: { email, token, type, next } }) => {
 		const client = new Client(cookies())
-		await client.auth.verifySignUpWithOtp({
+		await client.auth.verifyOtp({
 			email,
 			token,
+			type,
 		})
 
-		let redirectTo = '/'
+		let redirectTo = type === 'recovery' ? '/change-password' : '/'
 		if (next) redirectTo += `?next=${next}`
 		redirect(redirectTo)
 	})
