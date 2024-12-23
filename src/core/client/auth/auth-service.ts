@@ -94,9 +94,7 @@ export class AuthService extends BaseService {
 	}
 
 	async resetPasswordForEmail(email: string) {
-		const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-			redirectTo: `${SITE_URL}/auth/callback?next=/change-password`,
-		})
+		const { error } = await this.supabase.auth.resetPasswordForEmail(email)
 		if (error) {
 			throw new Error(error.message)
 		}

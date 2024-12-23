@@ -4,11 +4,17 @@ import { safeAction } from '@/lib/safe-action'
 import { Client, passwordSchema } from '@/core/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
+
+const schema = z.object({
+	password: passwordSchema,
+	next: z.string().optional(),
+})
 
 export const changePassword = safeAction
-	.schema(passwordSchema)
-	.action(async ({ parsedInput: password }) => {
+	.schema(schema)
+	.action(async ({ parsedInput }) => {
 		const client = new Client(cookies())
-		await client.auth.changePassword(password)
-		await redirect(`/account`)
+		await client.auth.changePassword(parsedInput.password)
+		await redirect(parsedInput.next || '/account')
 	})
