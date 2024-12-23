@@ -20,7 +20,7 @@ export default function ServiceAvatarCard({
 }: {
 	serviceId: Service['id']
 	serviceName: Service['name']
-	value: Service['website']
+	value: Service['avatar_url']
 } & React.ComponentProps<typeof Card>) {
 	return (
 		<Card
