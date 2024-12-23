@@ -10,7 +10,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { Logomark } from '@/components/Logo'
 import { Client } from '@/core/client'
 
 async function checkUserProfileExists(): Promise<boolean> {
