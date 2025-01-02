@@ -71,7 +71,9 @@ export function NotificationsPopoverButton({
 				setRemovedNotificationsIds(prev => [...prev, input.notificationId])
 			},
 			onError: ({ error, input }) => {
-				setRemovedNotificationsIds(prev => [...prev, input.notificationId])
+				setRemovedNotificationsIds(prev =>
+					prev.filter(id => id !== input.notificationId),
+				)
 				const { message } = getSafeActionError(error)
 				showError(message)
 			},
