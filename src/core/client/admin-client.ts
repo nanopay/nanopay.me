@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database'
 import { ApiKeysService } from './api-keys'
 import { UsersAdminService } from './users/users-service'
-import { SponsorsService } from './sponsors/sponsors-service'
+import { SponsorsService } from './sponsors'
 export class AdminClient {
 	readonly services: ServicesService
 	readonly users: UsersAdminService

@@ -1,7 +1,7 @@
 'use server'
 
 import { AdminClient } from '@/core/client'
-import { sponsorCreateSchema } from '@/core/client/sponsors/sponsors-schema'
+import { sponsorCreateSchema } from '@/core/client/sponsors'
 import { safeAction } from '@/lib/safe-action'
 import { redirect } from 'next/navigation'
 

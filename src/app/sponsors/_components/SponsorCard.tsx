@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/useToast'
 import { getSafeActionError } from '@/lib/safe-action'
 import Input from '@/components/Input'
 import { useForm } from 'react-hook-form'
-import { SponsorCreate } from '@/core/client/sponsors/sponsors-types'
+import { SponsorCreate } from '@/core/client/sponsors'
 import {
 	Form,
 	FormControl,

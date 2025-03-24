@@ -1,6 +1,6 @@
 import { GradientAvatar } from '@/components/GradientAvatar'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Sponsorship } from '@/core/client/sponsors/sponsors-types'
+import { Sponsorship } from '@/core/client/sponsors'
 
 export function SponsorshipsListCard({
 	sponsors,
