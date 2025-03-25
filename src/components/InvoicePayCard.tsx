@@ -120,14 +120,13 @@ export function InvoicePayCard({
 	useEffect(() => {
 		if (isPaid) {
 			setOpenQrCode(false)
-			if (invoice.status !== 'paid' && autoRedirectOnPay) {
-				handleAutoRedirect()
-				if (fireworks) {
-					setShowFireworks(true)
-				}
+			const wasLoadedPaid = invoice.status === 'paid'
+			if (!wasLoadedPaid) {
+				if (fireworks) setShowFireworks(true)
+				if (autoRedirectOnPay) handleAutoRedirect()
 			}
 		}
-	}, [isPaid, autoRedirectOnPay, invoice.status, fireworks])
+	}, [isPaid, autoRedirectOnPay, invoice.status, fireworks, handleAutoRedirect])
 
 	const handleRedirectToMerchant = () => {
 		executeRedirectToMechant(invoice.id)
