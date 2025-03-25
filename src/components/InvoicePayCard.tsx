@@ -5,6 +5,7 @@ import QrCodeBorder from '@/components/QrCodeBorder'
 import Transactions from '@/components/Transactions'
 import { InvoicePublic, Payment } from '@/core/client'
 import {
+	AUTO_REDIRECT_DELAY,
 	MAX_PAYMENTS_PER_INVOICE,
 	REFUND_EMAIL,
 	SUPPORT_EMAIL,
@@ -107,10 +108,10 @@ export function InvoicePayCard({
 	})
 
 	const handleAutoRedirect = () => {
-		setAutoRedirectAt(Date.now() + 5000)
+		setAutoRedirectAt(Date.now() + AUTO_REDIRECT_DELAY)
 		setTimeout(() => {
 			executeRedirectToMechant(invoice.id)
-		}, 5000)
+		}, AUTO_REDIRECT_DELAY)
 	}
 
 	useEffect(() => {
