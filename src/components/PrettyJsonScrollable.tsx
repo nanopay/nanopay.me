@@ -54,7 +54,7 @@ export function PrettyJsonScrollable({
 				return `<span class="${className}">${match}</span>`
 			},
 		)
-	}, [json])
+	}, [stringJson])
 
 	const handleCopy = () => {
 		const stringJson =
