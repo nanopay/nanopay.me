@@ -24,7 +24,7 @@ import {
 	QrCodeIcon,
 } from 'lucide-react'
 import { convert, Unit } from 'nanocurrency'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Countdown from 'react-countdown'
 import QRCode from 'react-qr-code'
 import BigNumber from 'bignumber.js'
@@ -107,12 +107,12 @@ export function InvoicePayCard({
 		},
 	})
 
-	const handleAutoRedirect = () => {
+	const handleAutoRedirect = useCallback(() => {
 		setAutoRedirectAt(Date.now() + AUTO_REDIRECT_DELAY)
 		setTimeout(() => {
 			executeRedirectToMechant(invoice.id)
 		}, AUTO_REDIRECT_DELAY)
-	}
+	}, [executeRedirectToMechant, invoice.id])
 
 	useEffect(() => {
 		setRendered(true)
