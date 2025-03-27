@@ -1,12 +1,6 @@
 import { formatDateTime } from '@/utils/others'
 import { ArrowUpRightFromSquare, CalendarIcon, ClockIcon } from 'lucide-react'
-import {
-	Card,
-	CardDescription,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from './ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '@/lib/cn'
