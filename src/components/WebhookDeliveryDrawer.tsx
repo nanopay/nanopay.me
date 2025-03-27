@@ -4,6 +4,7 @@ import { ComponentProps } from 'react'
 import {
 	Sheet,
 	SheetContent,
+	SheetDescription,
 	SheetHeader,
 	SheetTitle,
 } from '@/components/ui/sheet'
@@ -43,6 +44,9 @@ export function WebhookDeliveryDrawer({
 			>
 				<SheetHeader>
 					<SheetTitle>Webhook Delivery Details</SheetTitle>
+					<SheetDescription className="sr-only">
+						Request and response details for the webhook delivery
+					</SheetDescription>
 				</SheetHeader>
 				<ScrollArea className="mt-6 h-[calc(100vh-80px)]">
 					<Table>
