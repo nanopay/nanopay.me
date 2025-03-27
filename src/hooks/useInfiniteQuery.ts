@@ -62,7 +62,7 @@ export const useInfiniteQuery = <T>(
 		hasFetchedInitial.current = true
 
 		loadMore()
-	}, [])
+	}, [loadMore])
 
 	const refresh = useCallback(() => {
 		setData([])
@@ -71,7 +71,7 @@ export const useInfiniteQuery = <T>(
 		setLoading(false)
 		setError(null)
 		loadMore()
-	}, [initialPage])
+	}, [initialPage, loadMore])
 
 	return { data, loading, error, hasMore, loadMore, refresh }
 }
