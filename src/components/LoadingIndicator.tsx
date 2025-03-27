@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useEffect, useOptimistic } from 'react'
+import { useEffect, startTransition, useOptimistic } from 'react'
 import NProgress from 'nprogress'
 
 export function LoadingIndicator() {
@@ -13,10 +13,15 @@ export function LoadingIndicator() {
 		if (router.push.name === 'patched') return
 		const push = router.push
 		router.push = function patched(...args) {
-			setLoading(true)
-			push.apply(history, args)
+			startTransition(() => {
+				setLoading(true)
+			})
+			push.apply(router, args)
 		}
-	}, [router])
+		return () => {
+			router.push = push
+		}
+	}, [router, setLoading])
 
 	useEffect(() => {
 		if (loading) {
