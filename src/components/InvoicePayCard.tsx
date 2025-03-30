@@ -3,17 +3,13 @@
 import { Button } from '@/components/Button'
 import QrCodeBorder from '@/components/QrCodeBorder'
 import Transactions from '@/components/Transactions'
-import { InvoicePublic, Payment } from '@/core/client'
+import { InvoicePublic } from '@/core/client'
 import {
 	AUTO_REDIRECT_DELAY,
-	MAX_PAYMENTS_PER_INVOICE,
 	REFUND_EMAIL,
 	SUPPORT_EMAIL,
 } from '@/core/constants'
-import {
-	PaymentNotification,
-	usePaymentsListener,
-} from '@/hooks/usePaymentsListener'
+import { usePaymentsListener } from '@/hooks/usePaymentsListener'
 import { formatDateTime, toFiatCurrency, truncateAddress } from '@/utils/others'
 import {
 	AlertCircleIcon,
@@ -24,7 +20,7 @@ import {
 	QrCodeIcon,
 } from 'lucide-react'
 import { convert, Unit } from 'nanocurrency'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Countdown from 'react-countdown'
 import QRCode from 'react-qr-code'
 import BigNumber from 'bignumber.js'
@@ -36,6 +32,9 @@ import { cn } from '@/lib/cn'
 import { Drawer, DrawerContent } from './ui/drawer'
 import Fireworks from './Fireworks'
 import { Skeleton } from './ui/skeleton'
+import { PaymentNotification } from '@/services/payment-gateway'
+import { usePaymentStatus } from '@/hooks/usePaymentStatus'
+import { useExpiration } from '@/hooks/useExpiration'
 
 export function InvoicePayCard({
 	invoice,
@@ -49,21 +48,48 @@ export function InvoicePayCard({
 	autoRedirectOnPay?: boolean
 	fireworks?: boolean
 }) {
+	const [listenPayments, setListenPayments] = useState(false)
+
 	const {
-		isPaid,
-		isPartiallyPaid,
-		amountPaid,
-		payments,
-		amountMissing,
-		isExpired,
+		payments: newPayments,
 		isListening,
 		isError: listenerError,
 	} = usePaymentsListener({
 		invoiceId: invoice.id,
-		price: invoice.price,
-		expiresAt: invoice.expires_at,
-		initialPayments: invoice.payments,
+		listen: listenPayments,
 	})
+
+	// Merge new payments with the existing ones and sort by timestamp
+	const payments = useMemo(() => {
+		const payments = new Map<string, PaymentNotification>(
+			[...invoice.payments, ...newPayments].map(payment => [
+				payment.hash,
+				payment,
+			]),
+		)
+		return Array.from(payments.values()).sort(
+			(a, b) => a.timestamp - b.timestamp,
+		)
+	}, [invoice.payments, newPayments])
+
+	const {
+		isPaid,
+		isPartiallyPaid,
+		amountPaid,
+		amountMissing,
+		maxPaymentsReached,
+	} = usePaymentStatus({
+		payments,
+		price: invoice.price,
+	})
+
+	const isExpired = useExpiration(invoice.expires_at) && !isPaid
+
+	useEffect(() => {
+		if (!isPaid && !isExpired) {
+			setListenPayments(true)
+		}
+	}, [isPaid, isExpired])
 
 	const [openQrCode, setOpenQrCode] = useState(false)
 	const [rendered, setRendered] = useState(false)
@@ -74,9 +100,6 @@ export function InvoicePayCard({
 	const handleOpenQrCode = () => {
 		setOpenQrCode(true)
 	}
-
-	const maxPaymentsReached =
-		payments.length >= MAX_PAYMENTS_PER_INVOICE && !isPaid
 
 	const payURI = `nano:${invoice.pay_address}?amount=${convert(
 		amountMissing.toString(),
