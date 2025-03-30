@@ -1,5 +1,5 @@
 import Fetcher from '@/lib/fetcher'
-import { InvoiceCreate } from '@/core/client/invoices/invoices-types'
+import { InvoiceCreate } from '@/core/client/invoices'
 
 export interface CreateInvoiceRequest extends InvoiceCreate {
 	service_id: string
@@ -38,14 +38,8 @@ class PaymentGateway {
 			},
 		})
 	}
-
-	buildPaymentsWebsocketUrl = (invoiceId: string) => {
-		const url = new URL(
-			this.url.replace('ws://', 'http://').replace('wss://', 'https://'),
-		)
-		url.pathname = `/invoices/${invoiceId}/payments`
-		return url.toString()
-	}
 }
 
 export const paymentGateway = new PaymentGateway()
+
+export * from './payments-listener'
