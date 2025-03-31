@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const useExpiration = (
 	expiredAt: number | string | Date,
 	onExpired?: () => void,
 ): boolean => {
-	const expirationDate = new Date(expiredAt)
+	const expirationDate = useMemo(() => new Date(expiredAt), [expiredAt])
 	const [isExpired, setIsExpired] = useState(new Date() >= expirationDate)
 
 	useEffect(() => {
