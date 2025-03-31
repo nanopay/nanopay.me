@@ -46,7 +46,7 @@
 		"lucide-react": "^0.325.0",
 		"nanocurrency": "^2.5.0",
 		"next": "15.2.4",
-		"next-safe-action": "7.9.3",
+		"next-safe-action": "7.10.4",
 		"nprogress": "^0.2.0",
 		"path-to-regexp": "^8.2.0",
 		"postcss-focus-visible": "^6.0.4",
