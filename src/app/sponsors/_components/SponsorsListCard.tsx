@@ -1,6 +1,7 @@
 import { GradientAvatar } from '@/components/GradientAvatar'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Sponsorship } from '@/core/client/sponsors'
+import Image from 'next/image'
 
 export function SponsorshipsListCard({
 	sponsors,
@@ -19,9 +20,12 @@ export function SponsorshipsListCard({
 						className="group flex cursor-pointer items-center space-x-4 py-2"
 					>
 						{sponsor.avatar_url ? (
-							<img
+							<Image
 								src={sponsor.avatar_url}
 								alt="Avatar"
+								width={300}
+								height={300}
+								quality={100}
 								className="h-10 w-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-125"
 							/>
 						) : (
