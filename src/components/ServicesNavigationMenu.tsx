@@ -43,7 +43,7 @@ export function ServicesNavigationMenu({
 							{services.length} of {services.length}
 						</CardDescription>
 					</DrawerHeader>
-					<div className="pb-safe-offset-4 flex min-h-48 flex-col justify-between gap-4 px-4 pt-2">
+					<div className="pb-safe-offset-4 min-h-48 flex flex-col justify-between gap-4 px-4 pt-2">
 						<ServicesList
 							services={services}
 							current={currentService?.id || null}

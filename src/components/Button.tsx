@@ -84,7 +84,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | StrictButtonProps>(
 					'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors',
 					'ring-offset-white focus-visible:outline-none focus-visible:ring-0',
 					'active:scale-95',
-					'disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300',
+					'dark:ring-offset-slate-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-slate-300',
 					sizes[size],
 					variantStyle
 						? variantStyle[color as keyof typeof variantStyle]

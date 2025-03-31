@@ -43,7 +43,7 @@ export default function Loading({ ...props }: React.ComponentProps<'div'>) {
 				viewBox="0 0 1026 1026"
 				fill="none"
 				aria-hidden="true"
-				className="absolute inset-0 h-full w-full animate-spin-reverse"
+				className="animate-spin-reverse absolute inset-0 h-full w-full"
 			>
 				<path
 					d="M913 513c0 220.914-179.086 400-400 400S113 733.914 113 513s179.086-400 400-400 400 179.086 400 400Z"

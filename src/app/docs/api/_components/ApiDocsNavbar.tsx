@@ -62,7 +62,7 @@ export function ApiDocsNavbar({ onClick }: { onClick?: () => void }) {
 				Authentication
 			</Link>
 			<Collapsible className="grid gap-1" defaultOpen={isEndpointPath}>
-				<CollapsibleTrigger className="hover:bg-primary/5 hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-slate-100 transition-all [&[data-state=open]>svg]:rotate-90">
+				<CollapsibleTrigger className="hover:bg-primary/5 hover:text-primary [&[data-state=open]>svg]:rotate-90 flex items-center gap-3 rounded-lg px-3 py-2 text-slate-100 transition-all">
 					<LayoutGridIcon className="h-4 w-4" />
 					Endpoints
 					<ChevronRightIcon className="ml-auto h-4 w-4 transition-all" />
