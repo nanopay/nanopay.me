@@ -1,4 +1,5 @@
-'use client'
+'use client';
+import { use } from "react";
 
 import Link from 'next/link'
 import Input from '@/components/Input'
@@ -31,16 +32,17 @@ const schema = z.object({
 	confirm_password: passwordSchema,
 })
 
-export default function ResetPasswordPage({
-	searchParams,
-}: {
-	searchParams: {
-		next?: string
-	}
-}) {
-	const { showError } = useToast()
+export default function ResetPasswordPage(
+    props: {
+        searchParams: Promise<{
+            next?: string
+        }>
+    }
+) {
+    const searchParams = use(props.searchParams);
+    const { showError } = useToast()
 
-	const form = useForm<ResetPassword>({
+    const form = useForm<ResetPassword>({
 		defaultValues: {
 			password: '',
 			confirm_password: '',
@@ -48,14 +50,14 @@ export default function ResetPasswordPage({
 		resolver: zodResolver(schema),
 	})
 
-	const { executeAsync, isPending } = useAction(changePassword, {
+    const { executeAsync, isPending } = useAction(changePassword, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError('Error updating passsword', message)
 		},
 	})
 
-	const onSubmit = async ({ password, confirm_password }: ResetPassword) => {
+    const onSubmit = async ({ password, confirm_password }: ResetPassword) => {
 		if (password !== confirm_password) {
 			showError('Passwords do not match', 'Passwords must be the same')
 			return
@@ -63,7 +65,7 @@ export default function ResetPasswordPage({
 		await executeAsync({ password, next: searchParams.next })
 	}
 
-	return (
+    return (
 		<Form {...form}>
 			<form
 				className="flex w-full flex-col space-y-6 divide-y divide-neutral-200 px-2 sm:px-4"

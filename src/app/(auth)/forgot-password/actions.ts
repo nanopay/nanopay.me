@@ -13,7 +13,7 @@ const schema = z.object({
 export const resetPassword = safeAction
 	.schema(schema)
 	.action(async ({ parsedInput }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		await client.auth.resetPasswordForEmail(parsedInput.email)
 		await redirect(`/otp?email=${parsedInput.email}&type=recovery`)
 	})

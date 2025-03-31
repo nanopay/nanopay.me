@@ -13,26 +13,30 @@ export const viewport: Viewport = {
 }
 
 interface InvoicePageProps {
-	params: {
+	params: Promise<{
 		invoiceId: string
-	}
+	}>
 }
 
-export default async function InvoicePage({
-	params: { invoiceId },
-}: InvoicePageProps) {
-	unstable_noStore()
+export default async function InvoicePage(props: InvoicePageProps) {
+    const params = await props.params;
 
-	const client = new AdminClient()
+    const {
+        invoiceId
+    } = params;
 
-	const [invoice, { price: xnoToUsd }] = await Promise.all([
+    unstable_noStore()
+
+    const client = new AdminClient()
+
+    const [invoice, { price: xnoToUsd }] = await Promise.all([
 		client.invoices.getPublicInvoice(invoiceId),
 		getLatestPrice().catch(() => ({
 			price: null,
 		})),
 	])
 
-	if (!invoice) {
+    if (!invoice) {
 		return (
 			<div className="flex h-screen items-center justify-center">
 				<div className="text-center">
@@ -53,7 +57,7 @@ export default async function InvoicePage({
 		)
 	}
 
-	return (
+    return (
 		<div className="mx-auto flex h-screen w-full max-w-3xl justify-center md:items-center">
 			<Checkout invoice={invoice} xnoToUsd={xnoToUsd} />
 		</div>

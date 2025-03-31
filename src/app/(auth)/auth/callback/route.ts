@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 			)
 		}
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		await client.auth.exchangeCodeForSession(code)
 
 		const redirectTo = new URL(requestUrl.origin)

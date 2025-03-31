@@ -18,7 +18,7 @@ export class Client {
 	readonly apiKeys: ApiKeysService
 	readonly notifications: NotificationsService
 
-	constructor(cookies: ReturnType<typeof nextCookies>) {
+	constructor(cookies: Awaited<ReturnType<typeof nextCookies>>) {
 		const supabase = createClient(cookies)
 		this.auth = new AuthService(supabase)
 		this.user = new UserService(supabase)

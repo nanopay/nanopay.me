@@ -1,4 +1,5 @@
-'use client'
+'use client';
+import { use } from "react";
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -22,19 +23,25 @@ import { SignEmailAndPassword } from '@/core/client'
 import { getSafeActionError } from '@/lib/safe-action'
 
 interface Props {
-	searchParams: {
+	searchParams: Promise<{
 		next?: string
-	}
+	}>
 }
 
-export default function LoginPage({ searchParams: { next } }: Props) {
-	const { showError } = useToast()
+export default function LoginPage(props: Props) {
+    const searchParams = use(props.searchParams);
 
-	const form = useForm<SignEmailAndPassword>({
+    const {
+        next
+    } = searchParams;
+
+    const { showError } = useToast()
+
+    const form = useForm<SignEmailAndPassword>({
 		resolver: zodResolver(signWithEmailAndPasswordSchema),
 	})
 
-	const { executeAsync: handleSignWithPassword, hasSucceeded } = useAction(
+    const { executeAsync: handleSignWithPassword, hasSucceeded } = useAction(
 		async (data: SignEmailAndPassword) => {
 			return await signWithPassword({ ...data, next })
 		},
@@ -46,7 +53,7 @@ export default function LoginPage({ searchParams: { next } }: Props) {
 		},
 	)
 
-	return (
+    return (
 		<Form {...form}>
 			<form
 				className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4"

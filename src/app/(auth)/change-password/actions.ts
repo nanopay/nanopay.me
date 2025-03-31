@@ -14,7 +14,7 @@ const schema = z.object({
 export const changePassword = safeAction
 	.schema(schema)
 	.action(async ({ parsedInput }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		await client.auth.changePassword(parsedInput.password)
 		await redirect(parsedInput.next || '/account')
 	})

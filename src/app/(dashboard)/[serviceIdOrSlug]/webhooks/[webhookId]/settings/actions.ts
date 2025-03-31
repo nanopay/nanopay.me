@@ -12,7 +12,7 @@ export const updateWebhook = safeAction
 		}),
 	)
 	.action(async ({ parsedInput }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		await client.webhooks.update(parsedInput.webhookId, {
 			name: parsedInput.name,

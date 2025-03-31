@@ -11,9 +11,9 @@ import { z } from 'zod'
 export const deleteService = safeAction
 	.schema(z.string())
 	.action(async ({ parsedInput: serviceIdOrSlug }) => {
-		const userId = await getUserId(cookies())
+		const userId = await getUserId(await cookies())
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		await client.services.delete(serviceIdOrSlug)
 
@@ -26,9 +26,9 @@ export const deleteService = safeAction
 export const updateService = safeAction
 	.schema(serviceUpdateSchema.extend({ serviceIdOrSlug: z.string() }))
 	.action(async ({ parsedInput: { serviceIdOrSlug, ...data } }) => {
-		const userId = await getUserId(cookies())
+		const userId = await getUserId(await cookies())
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		await client.services.update(serviceIdOrSlug, data)
 

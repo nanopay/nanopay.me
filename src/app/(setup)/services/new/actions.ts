@@ -10,9 +10,9 @@ import { safeAction } from '@/lib/safe-action'
 export const createService = safeAction
 	.schema(serviceCreateSchema)
 	.action(async ({ parsedInput }) => {
-		const userId = await getUserId(cookies())
+		const userId = await getUserId(await cookies())
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		const { slug } = await client.services.create(parsedInput)
 

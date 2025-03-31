@@ -13,13 +13,13 @@ import {
 import { Client } from '@/core/client'
 
 async function checkUserProfileExists(): Promise<boolean> {
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	const profile = await client.user.getProfile()
 	return !!profile
 }
 
 export default async function CompleteUserProfile() {
-	const supabase = createClient(cookies())
+	const supabase = createClient(await cookies())
 
 	const {
 		data: { session },

@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
 import { createNewApiKey } from './actions'
-import { useState } from 'react'
+import { useState, use } from 'react';
 import {
 	Card,
 	CardContent,
@@ -42,20 +42,21 @@ const roboto = Roboto({
 })
 
 interface Props {
-	params: {
+	params: Promise<{
 		serviceIdOrSlug: string
-	}
+	}>
 }
 
-export default function NewApiKey({ params }: Props) {
-	const { showError } = useToast()
-	const [apiKey, setApiKey] = useState<string | null>(null)
+export default function NewApiKey(props: Props) {
+    const params = use(props.params);
+    const { showError } = useToast()
+    const [apiKey, setApiKey] = useState<string | null>(null)
 
-	const form = useForm<ApiKeyCreate>({
+    const form = useForm<ApiKeyCreate>({
 		resolver: zodResolver(apiKeyCreateSchema),
 	})
 
-	const { executeAsync, hasSucceeded } = useAction(createNewApiKey, {
+    const { executeAsync, hasSucceeded } = useAction(createNewApiKey, {
 		onSuccess: ({ data }) => {
 			if (!data) return
 			setApiKey(data.apiKey)
@@ -66,7 +67,7 @@ export default function NewApiKey({ params }: Props) {
 		},
 	})
 
-	const onSubmit = async (fields: ApiKeyCreate) => {
+    const onSubmit = async (fields: ApiKeyCreate) => {
 		await executeAsync({
 			name: fields.name,
 			description: fields.description,
@@ -74,7 +75,7 @@ export default function NewApiKey({ params }: Props) {
 		})
 	}
 
-	return (
+    return (
 		<Card className="w-full max-w-xl sm:p-6">
 			<CardHeader>
 				<CardTitle>New API Key</CardTitle>

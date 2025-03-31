@@ -11,9 +11,9 @@ import { safeAction } from '@/lib/safe-action'
 export const createUserProfile = safeAction
 	.schema(userCreateSchema)
 	.action(async ({ parsedInput }) => {
-		const userId = await getUserId(cookies())
+		const userId = await getUserId(await cookies())
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		await client.user.createProfile({
 			name: parsedInput.name,

@@ -13,7 +13,7 @@ export const createInvoice = safeAction
 		}),
 	)
 	.action(async ({ parsedInput }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		const { id } = await client.invoices.create(parsedInput.serviceIdOrSlug, {
 			title: parsedInput.title,

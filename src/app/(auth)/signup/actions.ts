@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation'
 export const signUpWithPassword = safeAction
 	.schema(signWithEmailAndPasswordSchema)
 	.action(async ({ parsedInput }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		const { session } = await client.auth.signUpWithEmailAndPassword({
 			email: parsedInput.email,
 			password: parsedInput.password,

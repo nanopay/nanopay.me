@@ -6,7 +6,7 @@ import { cookies } from 'next/headers'
 import { Client } from '@/core/client'
 
 const fetchData = async (serviceIdOrSlug: string) => {
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	return await client.webhooks.list(serviceIdOrSlug)
 }
 
@@ -14,16 +14,22 @@ export const metadata = {
 	title: 'Webhooks',
 }
 
-export default async function Webhooks({
-	params: { serviceIdOrSlug },
-}: {
-	params: {
-		serviceIdOrSlug: string
-	}
-}) {
-	const webhooks = await fetchData(serviceIdOrSlug)
+export default async function Webhooks(
+    props: {
+        params: Promise<{
+            serviceIdOrSlug: string
+        }>
+    }
+) {
+    const params = await props.params;
 
-	return (
+    const {
+        serviceIdOrSlug
+    } = params;
+
+    const webhooks = await fetchData(serviceIdOrSlug)
+
+    return (
 		<div className="w-full">
 			<header className="px-1 py-4">
 				<div className="flex items-center">

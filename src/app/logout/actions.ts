@@ -6,7 +6,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export const signOut = safeAction.action(async () => {
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	await client.auth.signOut()
 	redirect('/')
 })

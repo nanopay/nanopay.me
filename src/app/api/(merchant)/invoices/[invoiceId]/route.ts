@@ -6,16 +6,20 @@ import { buildPayInvoiceUrl } from '@/utils/url'
 export const runtime: ServerRuntime = 'edge'
 
 export async function GET(
-	req: NextRequest,
-	{
-		params: { invoiceId },
-	}: {
-		params: {
+    req: NextRequest,
+    props: {
+		params: Promise<{
 			invoiceId: string
-		}
-	},
+		}>
+	}
 ) {
-	try {
+    const params = await props.params;
+
+    const {
+        invoiceId
+    } = params;
+
+    try {
 		const client = new AdminClient()
 
 		const apiToken = req.headers.get('Authorization')?.split('Bearer ')[1]

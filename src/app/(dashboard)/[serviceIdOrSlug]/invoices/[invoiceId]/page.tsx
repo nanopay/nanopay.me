@@ -5,27 +5,29 @@ import Image from 'next/image'
 import NotFoundImage from '@/images/not-found.svg'
 
 const fetchData = async (invoiceId: string) => {
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	return await client.invoices.get(invoiceId)
 }
 
 interface Props {
-	params: {
+	params: Promise<{
 		invoiceId: string
-	}
+	}>
 }
 
-export const generateMetadata = async ({ params }: Props) => {
-	const invoice = await fetchData(params.invoiceId)
-	return {
+export const generateMetadata = async (props: Props) => {
+    const params = await props.params;
+    const invoice = await fetchData(params.invoiceId)
+    return {
 		title: `Invoice - ${invoice ? invoice.title : 'Not found'}`,
 	}
 }
 
-export default async function InvoicePage({ params }: Props) {
-	const invoice = await fetchData(params.invoiceId)
+export default async function InvoicePage(props: Props) {
+    const params = await props.params;
+    const invoice = await fetchData(params.invoiceId)
 
-	if (!invoice) {
+    if (!invoice) {
 		return (
 			<div className="text-center">
 				<Image
@@ -41,7 +43,7 @@ export default async function InvoicePage({ params }: Props) {
 		)
 	}
 
-	return (
+    return (
 		<>
 			<div className="w-full max-w-5xl sm:mx-auto sm:mt-4">
 				<InvoiceCard invoice={invoice} />

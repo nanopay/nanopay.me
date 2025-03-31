@@ -4,8 +4,8 @@ import { unstable_cache } from 'next/cache'
 import { cookies } from 'next/headers'
 
 export async function getCachedUserServices(): Promise<Service[]> {
-	const userId = await getUserId(cookies())
-	const client = new Client(cookies())
+	const userId = await getUserId(await cookies())
+	const client = new Client(await cookies())
 	return unstable_cache(
 		async () => {
 			return await client.services.list()

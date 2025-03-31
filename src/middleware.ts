@@ -87,13 +87,13 @@ export const config = {
 
 async function getLastServiceSlug(): Promise<string | null> {
 	try {
-		const lastService = cookies().get('last_service')?.value
+		const lastService = (await cookies()).get('last_service')?.value
 
 		if (lastService) {
 			return lastService
 		}
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		const services = await client.services.list({
 			limit: 1,

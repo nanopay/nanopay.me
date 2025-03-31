@@ -11,7 +11,7 @@ import { cookies } from 'next/headers'
 export const createNewApiKey = safeAction
 	.schema(apiKeyCreateSchema.extend({ serviceIdOrSlug: serviceNameOrIdSchema }))
 	.action(async ({ parsedInput }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		const { apiKey, checksum } = await client.apiKeys.create(
 			parsedInput.serviceIdOrSlug,

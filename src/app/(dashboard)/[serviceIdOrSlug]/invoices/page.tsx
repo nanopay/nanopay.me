@@ -12,25 +12,34 @@ export const metadata: Metadata = {
 }
 
 interface Props {
-	params: { serviceIdOrSlug: string }
-	searchParams: { page?: string }
+	params: Promise<{ serviceIdOrSlug: string }>
+	searchParams: Promise<{ page?: string }>
 }
 
-export default async function InvoicesPage({
-	params: { serviceIdOrSlug },
-	searchParams: { page },
-}: Props) {
-	const limit = DEFAULT_INVOICES_PAGINATION_LIMIT
-	const pageNumber = (page && parseInt(page)) || 1
-	const offset = (pageNumber - 1) * limit
+export default async function InvoicesPage(props: Props) {
+    const searchParams = await props.searchParams;
 
-	const client = new Client(cookies())
-	const { invoices, count } = await client.invoices.list(serviceIdOrSlug, {
+    const {
+        page
+    } = searchParams;
+
+    const params = await props.params;
+
+    const {
+        serviceIdOrSlug
+    } = params;
+
+    const limit = DEFAULT_INVOICES_PAGINATION_LIMIT
+    const pageNumber = (page && parseInt(page)) || 1
+    const offset = (pageNumber - 1) * limit
+
+    const client = new Client(await cookies())
+    const { invoices, count } = await client.invoices.list(serviceIdOrSlug, {
 		offset,
 		limit,
 	})
 
-	return (
+    return (
 		<div className="w-full max-w-7xl">
 			<header className="px-1 py-4">
 				<div className="flex items-center">
