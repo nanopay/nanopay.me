@@ -20,7 +20,7 @@ export const useExpiration = (
 		}, timeLeft)
 
 		return () => clearTimeout(timeout)
-	}, [expiredAt, onExpired])
+	}, [expirationDate, isExpired, expiredAt, onExpired])
 
 	return isExpired
 }
