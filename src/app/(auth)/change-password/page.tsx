@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Input from '@/components/Input'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
-import { useTransition } from 'react'
 import {
 	Form,
 	FormControl,
@@ -39,8 +38,6 @@ export default function ResetPasswordPage({
 		next?: string
 	}
 }) {
-	const [isPending, startTransition] = useTransition()
-
 	const { showError } = useToast()
 
 	const form = useForm<ResetPassword>({
@@ -51,7 +48,7 @@ export default function ResetPasswordPage({
 		resolver: zodResolver(schema),
 	})
 
-	const { executeAsync } = useAction(changePassword, {
+	const { executeAsync, isPending } = useAction(changePassword, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError('Error updating passsword', message)
