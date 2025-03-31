@@ -26,6 +26,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ensureHttpOrHttps } from '@/utils/url'
+import Image from 'next/image'
 
 const schema = z.object({ website: serviceWebsiteSchema })
 
@@ -123,12 +124,19 @@ function WebsiteIcon({ url }: { url: string | null }) {
 
 	const size = 24
 
+	const iconBaseUrl = 'https://t3.gstatic.com/faviconV2'
+	const iconUrl =
+		url && URL.canParse(url)
+			? `${iconBaseUrl}?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${safeUrl}&size=${size}`
+			: iconBaseUrl
+
 	return url && isValidURL ? (
-		<img
-			src={`https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${safeUrl}&size=${size}`}
+		<Image
+			src={iconUrl}
 			width={size}
 			height={size}
 			alt="Website icon"
+			unoptimized
 		/>
 	) : (
 		<GlobeIcon size={size} />
