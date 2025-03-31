@@ -14,22 +14,18 @@ export const metadata = {
 	title: 'Webhooks',
 }
 
-export default async function Webhooks(
-    props: {
-        params: Promise<{
-            serviceIdOrSlug: string
-        }>
-    }
-) {
-    const params = await props.params;
+export default async function Webhooks(props: {
+	params: Promise<{
+		serviceIdOrSlug: string
+	}>
+}) {
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const webhooks = await fetchData(serviceIdOrSlug)
+	const webhooks = await fetchData(serviceIdOrSlug)
 
-    return (
+	return (
 		<div className="w-full">
 			<header className="px-1 py-4">
 				<div className="flex items-center">

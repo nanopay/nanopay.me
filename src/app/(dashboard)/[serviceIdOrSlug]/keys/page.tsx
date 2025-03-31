@@ -10,21 +10,17 @@ export const metadata: Metadata = {
 	title: 'API Keys',
 }
 
-export default async function ApiKeys(
-    props: {
-        params: Promise<{ serviceIdOrSlug: string }>
-    }
-) {
-    const params = await props.params;
+export default async function ApiKeys(props: {
+	params: Promise<{ serviceIdOrSlug: string }>
+}) {
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const client = new Client(await cookies())
-    const apiKeys = await client.apiKeys.list(serviceIdOrSlug)
+	const client = new Client(await cookies())
+	const apiKeys = await client.apiKeys.list(serviceIdOrSlug)
 
-    return (
+	return (
 		<div className="w-full">
 			<div className="border-b border-slate-200 pb-4 pl-4 pr-6 pt-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
 				<div className="flex items-center">

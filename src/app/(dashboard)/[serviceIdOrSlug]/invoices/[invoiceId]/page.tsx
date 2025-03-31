@@ -16,18 +16,18 @@ interface Props {
 }
 
 export const generateMetadata = async (props: Props) => {
-    const params = await props.params;
-    const invoice = await fetchData(params.invoiceId)
-    return {
+	const params = await props.params
+	const invoice = await fetchData(params.invoiceId)
+	return {
 		title: `Invoice - ${invoice ? invoice.title : 'Not found'}`,
 	}
 }
 
 export default async function InvoicePage(props: Props) {
-    const params = await props.params;
-    const invoice = await fetchData(params.invoiceId)
+	const params = await props.params
+	const invoice = await fetchData(params.invoiceId)
 
-    if (!invoice) {
+	if (!invoice) {
 		return (
 			<div className="text-center">
 				<Image
@@ -43,7 +43,7 @@ export default async function InvoicePage(props: Props) {
 		)
 	}
 
-    return (
+	return (
 		<>
 			<div className="w-full max-w-5xl sm:mx-auto sm:mt-4">
 				<InvoiceCard invoice={invoice} />

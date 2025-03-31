@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
-import { useRef, use } from 'react';
+import { useRef, use } from 'react'
 import { Button } from '@/components/Button'
 import {
 	Form,
@@ -40,19 +40,15 @@ interface Props {
 }
 
 export default function VerifyOTP(props: Props) {
-    const searchParams = use(props.searchParams);
+	const searchParams = use(props.searchParams)
 
-    const {
-        email,
-        type,
-        next
-    } = searchParams;
+	const { email, type, next } = searchParams
 
-    const buttonRef = useRef<HTMLButtonElement>(null)
+	const buttonRef = useRef<HTMLButtonElement>(null)
 
-    const { showError } = useToast()
+	const { showError } = useToast()
 
-    const form = useForm<VerifyOtp>({
+	const form = useForm<VerifyOtp>({
 		defaultValues: {
 			email,
 			type,
@@ -61,7 +57,7 @@ export default function VerifyOTP(props: Props) {
 		resolver: zodResolver(verifyOtpSchema),
 	})
 
-    const { executeAsync } = useAction(verifyOTP, {
+	const { executeAsync } = useAction(verifyOTP, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			if (message === 'Token has expired or is invalid') {
@@ -78,18 +74,18 @@ export default function VerifyOTP(props: Props) {
 		},
 	})
 
-    const onSubmit = async (data: VerifyOtp) => {
+	const onSubmit = async (data: VerifyOtp) => {
 		await executeAsync({
 			...data,
 			next,
 		})
 	}
 
-    const isValidEmail = (email: string) => {
-		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+	const isValidEmail = (email: string) => {
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 	}
 
-    if (!isValidEmail(email)) {
+	if (!isValidEmail(email)) {
 		return (
 			<div className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4">
 				<div className="flex flex-col items-center py-6">
@@ -101,7 +97,7 @@ export default function VerifyOTP(props: Props) {
 		)
 	}
 
-    return (
+	return (
 		<Card className="border-0 shadow-none">
 			<CardHeader>
 				<CardTitle>Verify OTP</CardTitle>

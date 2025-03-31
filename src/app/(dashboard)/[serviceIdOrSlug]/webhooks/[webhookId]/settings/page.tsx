@@ -14,8 +14,8 @@ export const metadata = {
 }
 
 export default async function Webhooks(props: Props) {
-    const params = await props.params;
-    const client = new Client(await cookies())
-    const webhook = await client.webhooks.get(params.webhookId)
-    return <WebhookSettingsCard webhook={webhook} />
+	const params = await props.params
+	const client = new Client(await cookies())
+	const webhook = await client.webhooks.get(params.webhookId)
+	return <WebhookSettingsCard webhook={webhook} />
 }

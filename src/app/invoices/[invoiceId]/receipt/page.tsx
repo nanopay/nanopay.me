@@ -5,22 +5,20 @@ import { AdminClient } from '@/core/client'
 import { unstable_cache } from 'next/cache'
 import { SUPPORT_EMAIL } from '@/core/constants'
 
-export default async function ReceiptPDF(
-    props: {
-        params: Promise<{
-            invoiceId: string
-        }>
-    }
-) {
-    const params = await props.params;
-    const client = new AdminClient()
+export default async function ReceiptPDF(props: {
+	params: Promise<{
+		invoiceId: string
+	}>
+}) {
+	const params = await props.params
+	const client = new AdminClient()
 
-    const invoice = await unstable_cache(
+	const invoice = await unstable_cache(
 		() => client.invoices.getPublicInvoice(params.invoiceId),
 		[`invoice-${params.invoiceId}`],
 	)()
 
-    if (!invoice) {
+	if (!invoice) {
 		return (
 			<div className="flex h-screen items-center justify-center">
 				<div className="text-center">
@@ -41,5 +39,5 @@ export default async function ReceiptPDF(
 		)
 	}
 
-    return <InvoiceReceiptPdf invoice={invoice} />
+	return <InvoiceReceiptPdf invoice={invoice} />
 }

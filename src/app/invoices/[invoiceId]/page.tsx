@@ -19,24 +19,22 @@ interface InvoicePageProps {
 }
 
 export default async function InvoicePage(props: InvoicePageProps) {
-    const params = await props.params;
+	const params = await props.params
 
-    const {
-        invoiceId
-    } = params;
+	const { invoiceId } = params
 
-    unstable_noStore()
+	unstable_noStore()
 
-    const client = new AdminClient()
+	const client = new AdminClient()
 
-    const [invoice, { price: xnoToUsd }] = await Promise.all([
+	const [invoice, { price: xnoToUsd }] = await Promise.all([
 		client.invoices.getPublicInvoice(invoiceId),
 		getLatestPrice().catch(() => ({
 			price: null,
 		})),
 	])
 
-    if (!invoice) {
+	if (!invoice) {
 		return (
 			<div className="flex h-screen items-center justify-center">
 				<div className="text-center">
@@ -57,7 +55,7 @@ export default async function InvoicePage(props: InvoicePageProps) {
 		)
 	}
 
-    return (
+	return (
 		<div className="mx-auto flex h-screen w-full max-w-3xl justify-center md:items-center">
 			<Checkout invoice={invoice} xnoToUsd={xnoToUsd} />
 		</div>

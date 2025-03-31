@@ -31,37 +31,33 @@ const fetchData = async (serviceIdOrSlug: string) => {
 }
 
 export async function generateMetadata(props: Props) {
-    const params = await props.params;
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const { service } = await fetchData(serviceIdOrSlug)
-    return {
+	const { service } = await fetchData(serviceIdOrSlug)
+	return {
 		title: service ? service.name : 'Not Found',
 	}
 }
 
 export default async function ServiceDashboardPage(props: Props) {
-    const searchParams = await props.searchParams;
-    const params = await props.params;
+	const searchParams = await props.searchParams
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const isNew = searchParams.new ? true : false
+	const isNew = searchParams.new ? true : false
 
-    const { service, invoices } = await fetchData(serviceIdOrSlug)
+	const { service, invoices } = await fetchData(serviceIdOrSlug)
 
-    const email = await getUserEmail(await cookies())
+	const email = await getUserEmail(await cookies())
 
-    if (!service) {
+	if (!service) {
 		return <NotFoundCard path={`/${serviceIdOrSlug}`} forEmail={email} />
 	}
 
-    const cards: DashCardProps[] = [
+	const cards: DashCardProps[] = [
 		{
 			name: 'Invoices',
 			href: `/${service.slug}/invoices`,
@@ -85,7 +81,7 @@ export default async function ServiceDashboardPage(props: Props) {
 		},
 	]
 
-    return (
+	return (
 		<div className="w-full">
 			<ServiceHeader service={service} />
 

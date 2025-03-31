@@ -14,14 +14,12 @@ export const metadata = {
 }
 
 export default async function WebhookDeliveries(props: Props) {
-    const params = await props.params;
+	const params = await props.params
 
-    const {
-        webhookId
-    } = params;
+	const { webhookId } = params
 
-    const client = new Client(await cookies())
-    const deliveries = await client.webhooks.deliveries(webhookId)
+	const client = new Client(await cookies())
+	const deliveries = await client.webhooks.deliveries(webhookId)
 
-    return <WebhookDelivieries deliveries={deliveries} />
+	return <WebhookDelivieries deliveries={deliveries} />
 }

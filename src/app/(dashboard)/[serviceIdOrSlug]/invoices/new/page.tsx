@@ -1,5 +1,5 @@
-'use client';
-import { use } from "react";
+'use client'
+import { use } from 'react'
 
 import { Container } from '@/components/Container'
 import { useToast } from '@/hooks/useToast'
@@ -17,33 +17,31 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 
-export default function NewService(
-    props: {
-        params: Promise<{
-            serviceIdOrSlug: string
-        }>
-    }
-) {
-    const params = use(props.params);
-    const { showError } = useToast()
+export default function NewService(props: {
+	params: Promise<{
+		serviceIdOrSlug: string
+	}>
+}) {
+	const params = use(props.params)
+	const { showError } = useToast()
 
-    const { currentService } = usePreferences()
+	const { currentService } = usePreferences()
 
-    const { executeAsync } = useAction(createInvoice, {
+	const { executeAsync } = useAction(createInvoice, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError("Couldn't create invoice", message)
 		},
 	})
 
-    const onSubmit = async (fields: InvoiceCreate) => {
+	const onSubmit = async (fields: InvoiceCreate) => {
 		await executeAsync({
 			...fields,
 			serviceIdOrSlug: params.serviceIdOrSlug,
 		})
 	}
 
-    if (!currentService) {
+	if (!currentService) {
 		return (
 			<>
 				<Container>
@@ -53,7 +51,7 @@ export default function NewService(
 		)
 	}
 
-    return (
+	return (
 		<Card className="w-full max-w-lg">
 			<CardHeader>
 				<CardTitle>New Invoice</CardTitle>

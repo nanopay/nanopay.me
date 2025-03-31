@@ -19,24 +19,22 @@ interface InvoicePageProps {
 }
 
 export default async function InvoicePage(props: InvoicePageProps) {
-    const params = await props.params;
+	const params = await props.params
 
-    const {
-        sponsorshipId
-    } = params;
+	const { sponsorshipId } = params
 
-    unstable_noStore()
+	unstable_noStore()
 
-    const client = new AdminClient()
+	const client = new AdminClient()
 
-    const [sponsorship, { price: xnoToUsd }] = await Promise.all([
+	const [sponsorship, { price: xnoToUsd }] = await Promise.all([
 		client.sponsors.get(sponsorshipId),
 		getLatestPrice().catch(() => ({
 			price: null,
 		})),
 	])
 
-    if (!sponsorship) {
+	if (!sponsorship) {
 		return (
 			<div className="flex h-screen items-center justify-center">
 				<div className="text-center">
@@ -57,7 +55,7 @@ export default async function InvoicePage(props: InvoicePageProps) {
 		)
 	}
 
-    return (
+	return (
 		<InvoicePayCard
 			invoice={sponsorship.invoice}
 			xnoToUsd={xnoToUsd}

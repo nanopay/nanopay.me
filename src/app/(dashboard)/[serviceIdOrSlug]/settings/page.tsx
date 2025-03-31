@@ -19,34 +19,30 @@ const fetchData = async (serviceIdOrSlug: string) => {
 }
 
 export async function generateMetadata(props: Params) {
-    const params = await props.params;
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const service = await fetchData(serviceIdOrSlug)
-    return {
+	const service = await fetchData(serviceIdOrSlug)
+	return {
 		title: service ? `Settings - ${service.name}` : 'Not Found',
 	}
 }
 
 export default async function ServiceSettingsPage(props: Params) {
-    const params = await props.params;
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const service = await fetchData(serviceIdOrSlug)
+	const service = await fetchData(serviceIdOrSlug)
 
-    const email = await getUserEmail(await cookies())
+	const email = await getUserEmail(await cookies())
 
-    if (!service) {
+	if (!service) {
 		return <NotFoundCard path={`/${serviceIdOrSlug}`} forEmail={email} />
 	}
 
-    return (
+	return (
 		<div className="w-full">
 			<div className="flex flex-col space-y-8">
 				<ServiceNameCard serviceId={service.id} value={service.name} />

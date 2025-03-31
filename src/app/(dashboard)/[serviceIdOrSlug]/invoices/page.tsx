@@ -17,29 +17,25 @@ interface Props {
 }
 
 export default async function InvoicesPage(props: Props) {
-    const searchParams = await props.searchParams;
+	const searchParams = await props.searchParams
 
-    const {
-        page
-    } = searchParams;
+	const { page } = searchParams
 
-    const params = await props.params;
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const limit = DEFAULT_INVOICES_PAGINATION_LIMIT
-    const pageNumber = (page && parseInt(page)) || 1
-    const offset = (pageNumber - 1) * limit
+	const limit = DEFAULT_INVOICES_PAGINATION_LIMIT
+	const pageNumber = (page && parseInt(page)) || 1
+	const offset = (pageNumber - 1) * limit
 
-    const client = new Client(await cookies())
-    const { invoices, count } = await client.invoices.list(serviceIdOrSlug, {
+	const client = new Client(await cookies())
+	const { invoices, count } = await client.invoices.list(serviceIdOrSlug, {
 		offset,
 		limit,
 	})
 
-    return (
+	return (
 		<div className="w-full max-w-7xl">
 			<header className="px-1 py-4">
 				<div className="flex items-center">

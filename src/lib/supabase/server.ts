@@ -7,7 +7,9 @@ const supabaseUrl = process.env.SUPABASE_URL!
 const supabaseKey = process.env.SUPABASE_ANON_KEY!
 const jwtSecret = process.env.SUPABASE_JWT_SECRET!
 
-export const createClient = (cookieStore: Awaited<ReturnType<typeof cookies>>) => {
+export const createClient = (
+	cookieStore: Awaited<ReturnType<typeof cookies>>,
+) => {
 	return createServerClient<Database>(supabaseUrl, supabaseKey, {
 		cookies: {
 			get(name: string) {
@@ -23,7 +25,9 @@ export const createClient = (cookieStore: Awaited<ReturnType<typeof cookies>>) =
 	})
 }
 
-export const getSafeUser = async (cookieStore: Awaited<ReturnType<typeof cookies>>) => {
+export const getSafeUser = async (
+	cookieStore: Awaited<ReturnType<typeof cookies>>,
+) => {
 	const supabase = createClient(cookieStore)
 	const safeUserSession = new SupabaseSafeSession(supabase, jwtSecret)
 	const { data, error } = await safeUserSession.getUser()
@@ -33,12 +37,16 @@ export const getSafeUser = async (cookieStore: Awaited<ReturnType<typeof cookies
 	return data
 }
 
-export const getUserId = async (cookieStore: Awaited<ReturnType<typeof cookies>>) => {
+export const getUserId = async (
+	cookieStore: Awaited<ReturnType<typeof cookies>>,
+) => {
 	const { id } = await getSafeUser(cookieStore)
 	return id
 }
 
-export const getUserEmail = async (cookieStore: Awaited<ReturnType<typeof cookies>>) => {
+export const getUserEmail = async (
+	cookieStore: Awaited<ReturnType<typeof cookies>>,
+) => {
 	const { email } = await getSafeUser(cookieStore)
 	if (!email) {
 		throw new Error('No email found')

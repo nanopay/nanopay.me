@@ -8,14 +8,15 @@ import { NextRequest } from 'next/server'
 
 export const runtime: ServerRuntime = 'edge'
 
-export async function POST(req: NextRequest, props: { params: Promise<{ serviceIdOrSlug: string }> }) {
-    const params = await props.params;
+export async function POST(
+	req: NextRequest,
+	props: { params: Promise<{ serviceIdOrSlug: string }> },
+) {
+	const params = await props.params
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    try {
+	try {
 		const formData = await req.formData()
 		const file = formData.get('file') as File
 

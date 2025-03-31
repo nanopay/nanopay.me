@@ -1,5 +1,5 @@
-'use client';
-import { use } from "react";
+'use client'
+import { use } from 'react'
 
 import { useToast } from '@/hooks/useToast'
 
@@ -16,36 +16,32 @@ import { WebhookCreate } from '@/core/client'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 
-export default function NewWebhookPage(
-    props: {
-        params: Promise<{
-            serviceIdOrSlug: string
-        }>
-    }
-) {
-    const params = use(props.params);
+export default function NewWebhookPage(props: {
+	params: Promise<{
+		serviceIdOrSlug: string
+	}>
+}) {
+	const params = use(props.params)
 
-    const {
-        serviceIdOrSlug
-    } = params;
+	const { serviceIdOrSlug } = params
 
-    const { showError } = useToast()
+	const { showError } = useToast()
 
-    const { executeAsync: executeCreateWebhook } = useAction(createWebhook, {
+	const { executeAsync: executeCreateWebhook } = useAction(createWebhook, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError('Could not create webhook', message)
 		},
 	})
 
-    const onSubmit = async (values: WebhookCreate) => {
+	const onSubmit = async (values: WebhookCreate) => {
 		await executeCreateWebhook({
 			serviceIdOrSlug: serviceIdOrSlug,
 			...values,
 		})
 	}
 
-    return (
+	return (
 		<Card className="w-full max-w-xl text-slate-600">
 			<CardHeader>
 				<CardTitle>Create Webhook</CardTitle>

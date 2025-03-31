@@ -1,5 +1,5 @@
-'use client';
-import { use } from "react";
+'use client'
+import { use } from 'react'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -29,19 +29,17 @@ interface Props {
 }
 
 export default function LoginPage(props: Props) {
-    const searchParams = use(props.searchParams);
+	const searchParams = use(props.searchParams)
 
-    const {
-        next
-    } = searchParams;
+	const { next } = searchParams
 
-    const { showError } = useToast()
+	const { showError } = useToast()
 
-    const form = useForm<SignEmailAndPassword>({
+	const form = useForm<SignEmailAndPassword>({
 		resolver: zodResolver(signWithEmailAndPasswordSchema),
 	})
 
-    const { executeAsync: handleSignWithPassword, hasSucceeded } = useAction(
+	const { executeAsync: handleSignWithPassword, hasSucceeded } = useAction(
 		async (data: SignEmailAndPassword) => {
 			return await signWithPassword({ ...data, next })
 		},
@@ -53,7 +51,7 @@ export default function LoginPage(props: Props) {
 		},
 	)
 
-    return (
+	return (
 		<Form {...form}>
 			<form
 				className="flex w-full flex-col space-y-6 divide-y divide-slate-200 px-2 sm:px-4"
