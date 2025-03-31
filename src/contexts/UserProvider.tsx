@@ -10,7 +10,7 @@ export interface UserProviderProps {
 const UserContext = createContext({} as User)
 
 export const UserProvider = ({ user, children }: UserProviderProps) => {
-	return <UserContext.Provider value={user}>{children}</UserContext.Provider>
+	return <UserContext value={user}>{children}</UserContext>;
 }
 
 export const useUser = () => {

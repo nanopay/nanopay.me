@@ -31,7 +31,7 @@ export const PreferencesProvider = ({
 	) as Service | null
 
 	return (
-		<PreferencesContext.Provider
+        (<PreferencesContext
 			value={{
 				showPreReleaseAlert,
 				setShowPreReleaseAlert,
@@ -39,9 +39,9 @@ export const PreferencesProvider = ({
 				currentService,
 			}}
 		>
-			{children}
-		</PreferencesContext.Provider>
-	)
+            {children}
+        </PreferencesContext>)
+    );
 }
 
 export default PreferencesProvider
