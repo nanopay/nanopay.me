@@ -4,10 +4,6 @@ body {
 	@apply bg-slate-50;
 }
 
-.Button.MuiButton-contained {
-	@apply bg-nano hover:bg-nano/90 text-white;
-}
-
 .Button:disabled {
 	@apply bg-slate-200 text-slate-400;
 }
