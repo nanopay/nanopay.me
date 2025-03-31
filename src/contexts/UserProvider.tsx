@@ -1,7 +1,7 @@
 'use client'
 
 import { User } from '@/core/client'
-import React, { useContext, createContext } from 'react'
+import React, { use, createContext } from 'react'
 export interface UserProviderProps {
 	user: User
 	children: React.ReactNode
@@ -10,9 +10,9 @@ export interface UserProviderProps {
 const UserContext = createContext({} as User)
 
 export const UserProvider = ({ user, children }: UserProviderProps) => {
-	return <UserContext value={user}>{children}</UserContext>;
+	return <UserContext value={user}>{children}</UserContext>
 }
 
 export const useUser = () => {
-	return useContext(UserContext)
+	return use(UserContext)
 }
