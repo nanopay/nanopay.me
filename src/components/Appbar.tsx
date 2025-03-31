@@ -18,7 +18,7 @@ import { UserNavigationPopover } from './UserNavigationPopover'
 import { DEFAULT_AVATAR_URL } from '@/core/constants'
 import { NotificationsPopoverButton } from './NotificationsPopoverButton'
 
-export interface AppbarProps extends React.ComponentPropsWithoutRef<'header'> {}
+export interface AppbarProps extends React.ComponentProps<'header'> {}
 
 export default function Appbar({ ...props }: AppbarProps) {
 	const user = useUser()

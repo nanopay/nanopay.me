@@ -1,4 +1,3 @@
-import { forwardRef } from 'react'
 import clsx from 'clsx'
 
 function MenuIcon(props: React.ComponentProps<'svg'>) {
@@ -46,43 +45,44 @@ export function AppScreen({
 	)
 }
 
-AppScreen.Header = forwardRef(function AppScreenHeader(
-	{ children }: React.ComponentProps<'div'>,
-	ref: React.Ref<HTMLDivElement>,
-) {
+AppScreen.Header = function AppScreenHeader({
+	ref,
+	children,
+}: React.ComponentProps<'div'>) {
 	return (
 		<div ref={ref} className="mt-6 px-4 text-white">
 			{children}
 		</div>
 	)
-})
+}
 
-AppScreen.Title = forwardRef(function AppScreenTitle(
-	{ children }: React.ComponentProps<'div'>,
-	ref: React.Ref<HTMLDivElement>,
-) {
+AppScreen.Title = function AppScreenTitle({
+	ref,
+	children,
+}: React.ComponentProps<'div'>) {
 	return (
 		<div ref={ref} className="text-2xl text-white">
 			{children}
 		</div>
 	)
-})
+}
 
-AppScreen.Subtitle = forwardRef(function AppScreenSubtitle(
-	{ children }: React.ComponentProps<'div'>,
-	ref: React.Ref<HTMLDivElement>,
-) {
+AppScreen.Subtitle = function AppScreenSubtitle({
+	ref,
+	children,
+}: React.ComponentProps<'div'>) {
 	return (
 		<div ref={ref} className="text-sm text-slate-500">
 			{children}
 		</div>
 	)
-})
+}
 
-AppScreen.Body = forwardRef(function AppScreenBody(
-	{ children, className }: React.ComponentProps<'div'>,
-	ref: React.Ref<HTMLDivElement>,
-) {
+AppScreen.Body = function AppScreenBody({
+	ref,
+	children,
+	className,
+}: React.ComponentProps<'div'>) {
 	return (
 		<div
 			ref={ref}
@@ -91,4 +91,4 @@ AppScreen.Body = forwardRef(function AppScreenBody(
 			{children}
 		</div>
 	)
-})
+}

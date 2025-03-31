@@ -5,23 +5,25 @@ import * as TabsPrimitive from '@radix-ui/react-tabs'
 
 import { cn } from '@/lib/cn'
 
-const Tabs = React.forwardRef<
-	React.ElementRef<typeof TabsPrimitive.Root>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
->(({ className, ...props }, ref) => (
+const Tabs = ({
+	ref,
+	className,
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.Root>) => (
 	<TabsPrimitive.Root
 		ref={ref}
 		className={cn('scrollbar-none overflow-x-auto', className)}
 		{...props}
 	/>
-))
+)
 
 Tabs.displayName = TabsPrimitive.Root.displayName
 
-const TabsList = React.forwardRef<
-	React.ElementRef<typeof TabsPrimitive.List>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
+const TabsList = ({
+	ref,
+	className,
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.List>) => (
 	<TabsPrimitive.List
 		ref={ref}
 		className={cn(
@@ -30,37 +32,39 @@ const TabsList = React.forwardRef<
 		)}
 		{...props}
 	/>
-))
+)
 TabsList.displayName = TabsPrimitive.List.displayName
 
-const TabsTrigger = React.forwardRef<
-	React.ElementRef<typeof TabsPrimitive.Trigger>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => (
+const TabsTrigger = ({
+	ref,
+	className,
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.Trigger>) => (
 	<TabsPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			'data-[state=active]:border-nano/70 data-[state=active]:text-nano focus-visible:ring-slate-950 dark:ring-offset-slate-950 dark:data-[state=active]:bg-slate-950 dark:data-[state=active]:text-slate-50 inline-flex items-center justify-center whitespace-nowrap border-b-2 border-transparent px-3 py-1.5 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-slate-300',
+			'data-[state=active]:border-nano/70 data-[state=active]:text-nano inline-flex items-center justify-center whitespace-nowrap border-b-2 border-transparent px-3 py-1.5 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 dark:data-[state=active]:bg-slate-950 dark:data-[state=active]:text-slate-50',
 			className,
 		)}
 		{...props}
 	/>
-))
+)
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 
-const TabsContent = React.forwardRef<
-	React.ElementRef<typeof TabsPrimitive.Content>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
+const TabsContent = ({
+	ref,
+	className,
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) => (
 	<TabsPrimitive.Content
 		ref={ref}
 		className={cn(
-			'focus-visible:ring-slate-950 dark:ring-offset-slate-950 mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-slate-300',
+			'mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300',
 			className,
 		)}
 		{...props}
 	/>
-))
+)
 TabsContent.displayName = TabsPrimitive.Content.displayName
 
 export { Tabs, TabsList, TabsTrigger, TabsContent }

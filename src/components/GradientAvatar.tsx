@@ -1,8 +1,7 @@
 import { cn } from '@/lib/cn'
 import { generateGradient } from '@/lib/gradient'
 
-export interface GradientAvatarProps
-	extends React.ComponentPropsWithoutRef<'svg'> {
+export interface GradientAvatarProps extends React.ComponentProps<'svg'> {
 	uid: string
 	size: number
 }

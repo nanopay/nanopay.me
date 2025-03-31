@@ -1,4 +1,3 @@
-import { forwardRef } from 'react'
 import { Loader2Icon } from 'lucide-react'
 import { Slot } from '@radix-ui/react-slot'
 import { cn } from '@/lib/cn'
@@ -46,59 +45,51 @@ export interface BaseButtonProps
 }
 export interface ButtonProps extends BaseButtonProps {
 	color?: 'nano' | 'slate'
-	variant?: keyof typeof variantStyles
+	variant?: keyof typeof variantStyles | keyof typeof strictVariantStyles
 }
 
-export interface StrictButtonProps extends BaseButtonProps {
-	variant?: keyof typeof strictVariantStyles
+const Button = ({
+	ref,
+	variant = 'default',
+	color = 'nano',
+	size = 'default',
+	disabled,
+	loading,
+	children,
+	asChild,
+	className,
+	...props
+}: React.ComponentProps<'button'> & ButtonProps) => {
+	const Comp = asChild ? Slot : 'button'
+
+	const variantStyle =
+		variant in variantStyles &&
+		variantStyles[variant as keyof typeof variantStyles]
+
+	const strictVariantStyle =
+		strictVariantStyles[variant as keyof typeof strictVariantStyles]
+
+	return (
+		<Comp
+			{...props}
+			className={cn(
+				'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors',
+				'ring-offset-white focus-visible:outline-none focus-visible:ring-0',
+				'active:scale-95',
+				'disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300',
+				sizes[size],
+				variantStyle
+					? variantStyle[color as keyof typeof variantStyle]
+					: strictVariantStyle,
+				className,
+			)}
+			disabled={loading || disabled}
+			ref={ref}
+		>
+			{loading ? <Loader2Icon className="h-5 w-5 animate-spin" /> : children}
+		</Comp>
+	)
 }
-
-const Button = forwardRef<HTMLButtonElement, ButtonProps | StrictButtonProps>(
-	(
-		{
-			variant = 'default',
-			color = 'nano',
-			size = 'default',
-			disabled,
-			loading,
-			children,
-			asChild,
-			className,
-			...props
-		},
-		ref,
-	) => {
-		const Comp = asChild ? Slot : 'button'
-
-		const variantStyle =
-			variant in variantStyles &&
-			variantStyles[variant as keyof typeof variantStyles]
-
-		const strictVariantStyle =
-			strictVariantStyles[variant as keyof typeof strictVariantStyles]
-
-		return (
-			<Comp
-				{...props}
-				className={cn(
-					'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors',
-					'ring-offset-white focus-visible:outline-none focus-visible:ring-0',
-					'active:scale-95',
-					'dark:ring-offset-slate-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-slate-300',
-					sizes[size],
-					variantStyle
-						? variantStyle[color as keyof typeof variantStyle]
-						: strictVariantStyle,
-					className,
-				)}
-				disabled={loading || disabled}
-				ref={ref}
-			>
-				{loading ? <Loader2Icon className="h-5 w-5 animate-spin" /> : children}
-			</Comp>
-		)
-	},
-)
 
 Button.displayName = 'Button'
 

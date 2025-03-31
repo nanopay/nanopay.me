@@ -42,7 +42,7 @@ export function InvoicePayCard({
 	autoRedirectOnPay = false,
 	fireworks = false,
 	...props
-}: React.ComponentPropsWithoutRef<'div'> & {
+}: React.ComponentProps<'div'> & {
 	invoice: InvoicePublic
 	xnoToUsd: number | null
 	autoRedirectOnPay?: boolean
@@ -423,7 +423,7 @@ function InvoicePayCardError({
 	isExpired: boolean
 	maxPaymentsReached: boolean
 	listenerError: boolean
-} & React.ComponentPropsWithoutRef<'div'>) {
+} & React.ComponentProps<'div'>) {
 	return (
 		<>
 			<div
@@ -506,9 +506,7 @@ function InvoicePayCardError({
 	)
 }
 
-function InvoicePayCardSkeleton({
-	...props
-}: React.ComponentPropsWithoutRef<'div'>) {
+function InvoicePayCardSkeleton({ ...props }: React.ComponentProps<'div'>) {
 	return (
 		<div
 			{...props}
