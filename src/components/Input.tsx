@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn'
 import React, { useId } from 'react'
 
-export interface InputProps extends React.HTMLProps<HTMLInputElement> {
+export interface InputProps extends React.ComponentProps<'input'> {
 	label?: string
 	invalid?: boolean
 	startAnimationHelpText?: boolean

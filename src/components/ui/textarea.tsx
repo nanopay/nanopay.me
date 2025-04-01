@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { cn } from '@/lib/cn'
 
-export interface TextareaProps extends React.HTMLProps<HTMLTextAreaElement> {}
+export interface TextareaProps extends React.ComponentProps<'textarea'> {}
 
 const Textarea = ({ ref, className, ...props }: TextareaProps) => {
 	return (

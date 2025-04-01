@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn'
 import React, { useId } from 'react'
 
-export interface TextAreaProps extends React.HTMLProps<HTMLTextAreaElement> {
+export interface TextAreaProps extends React.ComponentProps<'textarea'> {
 	label?: string
 	invalid?: boolean
 	startAnimationHelpText?: boolean

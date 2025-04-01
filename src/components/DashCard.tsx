@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { LucideIcon } from 'lucide-react'
 
-export interface DashCardProps extends React.HTMLProps<HTMLDivElement> {
+export interface DashCardProps extends React.ComponentProps<'div'> {
 	name: string
 	href: string
 	icon: LucideIcon

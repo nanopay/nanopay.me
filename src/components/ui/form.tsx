@@ -74,7 +74,7 @@ const FormItem = ({
 	ref,
 	className,
 	...props
-}: React.HTMLProps<HTMLDivElement>) => {
+}: React.ComponentProps<'div'>) => {
 	const id = React.useId()
 
 	return (
@@ -126,7 +126,7 @@ const FormDescription = ({
 	ref,
 	className,
 	...props
-}: React.HTMLProps<HTMLParagraphElement>) => {
+}: React.ComponentProps<'p'>) => {
 	const { formDescriptionId } = useFormField()
 
 	return (
@@ -145,7 +145,7 @@ const FormMessage = ({
 	className,
 	children,
 	...props
-}: React.HTMLProps<HTMLParagraphElement>) => {
+}: React.ComponentProps<'p'>) => {
 	const { error, formMessageId } = useFormField()
 	const body = error ? String(error?.message) : children
 
