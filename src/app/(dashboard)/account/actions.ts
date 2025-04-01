@@ -1,6 +1,6 @@
 'use server'
 
-import { cookies, type UnsafeUnwrappedCookies } from 'next/headers'
+import { cookies } from 'next/headers'
 import { getUserId } from '@/lib/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { AdminClient, Client, userUpdateSchema } from '@/core/client'
@@ -24,13 +24,12 @@ export const deleteUser = safeAction.schema(z.any()).action(async () => {
 	const userId = await getUserId(await cookies())
 
 	const adminClient = new AdminClient()
-	await adminClient.users
-		.delete(userId)
-		(await cookies())
-		.getAll()
-		.forEach(cookie => {
-			;(cookies() as unknown as UnsafeUnwrappedCookies).delete(cookie.name)
-		})
+	await adminClient.users.delete(userId)
+
+	const _cookies = await cookies()
+	_cookies.getAll().forEach(cookie => {
+		_cookies.delete(cookie.name)
+	})
 
 	revalidateTag(`user-${userId}`)
 
