@@ -87,9 +87,9 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"postcss": "^8.5.3",
 		"prettier": "^2.8.8",
-		"prettier-plugin-tailwindcss": "^0.1.13",
+		"prettier-plugin-tailwindcss": "^0.6.11",
 		"tailwind-scrollbar": "^4.0.2",
-		"tailwindcss": "^4.0.17",
+		"tailwindcss": "^4.1.0",
 		"tailwindcss-animate": "^1.0.7",
 		"tailwindcss-safe-area": "^0.5.1",
 		"typescript": "^5.4.0"
