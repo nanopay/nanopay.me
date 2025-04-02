@@ -12,7 +12,7 @@ export default async function DemoLayout({
 }) {
 	return (
 		<>
-			<LandingHeader className="border-b border-slate-200 bg-white shadow-sm" />
+			<LandingHeader className="border-b border-slate-200 bg-white shadow-xs" />
 			<div className="relative flex flex-1 flex-col items-center justify-center p-4">
 				{children}
 			</div>

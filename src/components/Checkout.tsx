@@ -21,7 +21,7 @@ export default function Checkout({
 	xnoToUsd: number | null
 }) {
 	return (
-		<div className="flex w-full flex-col overflow-hidden shadow md:flex-row md:rounded-2xl">
+		<div className="flex w-full flex-col overflow-hidden shadow-sm md:flex-row md:rounded-2xl">
 			<nav className="hidden w-72 flex-col items-center justify-between gap-16 border-r border-[#1e2c3d] bg-[#1e2c3d] px-4 py-2 sm:rounded-l-3xl md:flex">
 				<div className="hidden md:block">
 					<div className="mt-4 flex flex-col items-center gap-2 p-4 text-white">
@@ -66,7 +66,7 @@ export default function Checkout({
 				className="border-b border-slate-200 px-4 md:hidden"
 			>
 				<AccordionItem value="item-1">
-					<AccordionTrigger className="!no-underline">
+					<AccordionTrigger className="no-underline!">
 						<div className="flex items-center gap-2 text-left">
 							<ServiceAvatar
 								id={invoice.service.id}

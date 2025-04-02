@@ -21,7 +21,7 @@ export function GradientAvatar({
 			viewBox={`0 0 ${size} ${size}`}
 			version="1.1"
 			xmlns="http://www.w3.org/2000/svg"
-			className={cn('flex-shrink-0 rounded-full', className)}
+			className={cn('shrink-0 rounded-full', className)}
 			{...props}
 		>
 			<g>

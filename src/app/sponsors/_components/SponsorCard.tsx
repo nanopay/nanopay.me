@@ -240,7 +240,7 @@ export function SponsorCard({ ...props }: React.ComponentProps<typeof Card>) {
 					<CardFooter>
 						<Button
 							type="submit"
-							className="w-full bg-gradient-to-br from-[#4A90E2] to-pink-400/60 font-bold hover:bg-[#357ABD]"
+							className="w-full bg-linear-to-br from-[#4A90E2] to-pink-400/60 font-bold hover:bg-[#357ABD]"
 							loading={form.formState.isSubmitting || hasSucceeded}
 							disabled={form.getValues('amount') < MIN_SPONSOR_AMOUNT}
 						>

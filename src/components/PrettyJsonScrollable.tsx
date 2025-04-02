@@ -87,7 +87,7 @@ export function PrettyJsonScrollable({
 							<button
 								onClick={handleCopy}
 								className={cn(
-									'bg-nano absolute right-4 top-3 hidden rounded-md p-1.5 text-white transition-colors focus-visible:outline-none focus-visible:ring-0 active:scale-95 group-hover:block',
+									'bg-nano absolute right-4 top-3 hidden rounded-md p-1.5 text-white transition-colors focus-visible:outline-hidden focus-visible:ring-0 active:scale-95 group-hover:block',
 									copied && 'bg-green-600',
 								)}
 								aria-label="Copy JSON"

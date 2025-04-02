@@ -66,10 +66,10 @@ function NavListItem({ title, icon: Icon, href, description }: NavLink) {
 	return (
 		<li>
 			<Link
-				className="hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-100"
+				className="hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-slate-100"
 				href={href}
 			>
-				<div className="flex flex-shrink-0">
+				<div className="flex shrink-0">
 					<Icon className="text-nano h-7 w-7" />
 				</div>
 				<div className="flex flex-col">

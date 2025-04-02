@@ -49,7 +49,7 @@ export default async function Invoices({
 			<div className="divide-y divide-slate-200 overflow-hidden rounded-lg border border-slate-200 sm:hidden">
 				<ul
 					role="list"
-					className="mt-2 divide-y divide-slate-200 overflow-hidden shadow sm:hidden"
+					className="mt-2 divide-y divide-slate-200 overflow-hidden shadow-sm sm:hidden"
 				>
 					{invoices?.map(invoice => (
 						<li key={invoice.id}>
@@ -60,7 +60,7 @@ export default async function Invoices({
 								<span className="flex items-center space-x-4">
 									<span className="flex flex-1 space-x-2 truncate">
 										<BanknoteIcon
-											className="h-5 w-5 flex-shrink-0 text-slate-400"
+											className="h-5 w-5 shrink-0 text-slate-400"
 											aria-hidden="true"
 										/>
 										<span className="flex flex-col truncate text-sm text-slate-500">
@@ -77,7 +77,7 @@ export default async function Invoices({
 										</span>
 									</span>
 									<ChevronRightIcon
-										className="h-5 w-5 flex-shrink-0 text-slate-400"
+										className="h-5 w-5 shrink-0 text-slate-400"
 										aria-hidden="true"
 									/>
 								</span>
@@ -136,7 +136,7 @@ export default async function Invoices({
 														className="group inline-flex space-x-2 truncate text-sm"
 													>
 														<BanknoteIcon
-															className="h-5 w-5 flex-shrink-0 text-slate-400 group-hover:text-slate-500"
+															className="h-5 w-5 shrink-0 text-slate-400 group-hover:text-slate-500"
 															aria-hidden="true"
 														/>
 														<p className="truncate text-slate-500 group-hover:text-slate-900">

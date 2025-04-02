@@ -175,7 +175,7 @@ function ApiKeyBanner({
 
 	return (
 		<div className="flex w-full flex-col items-center gap-y-6">
-			<div className="w-full rounded border-y-2 border-dashed border-slate-300 py-4 sm:border-x-2 sm:px-4">
+			<div className="w-full rounded-sm border-y-2 border-dashed border-slate-300 py-4 sm:border-x-2 sm:px-4">
 				<div className="text-sm leading-3 text-slate-600">
 					<div className="mb-2 flex items-center text-sm font-semibold">
 						<LockIcon className="mr-1 h-4 w-4" /> Your API Key

@@ -21,7 +21,7 @@ const SelectTrigger = ({
 	<SelectPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			'focus:border-primary flex h-14 w-full items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus:border-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:placeholder:text-slate-400 [&>span]:line-clamp-1',
+			'focus:border-primary flex h-14 w-full items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus:border-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:placeholder:text-slate-400 [&>span]:line-clamp-1',
 			className,
 		)}
 		{...props}
@@ -128,7 +128,7 @@ const SelectItem = ({
 	<SelectPrimitive.Item
 		ref={ref}
 		className={cn(
-			'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-slate-100 focus:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-slate-800 dark:focus:text-slate-50',
+			'relative flex w-full cursor-default select-none items-center rounded-xs py-1.5 pl-8 pr-2 text-sm outline-hidden focus:bg-slate-100 focus:text-slate-900 data-disabled:pointer-events-none data-disabled:opacity-50 dark:focus:bg-slate-800 dark:focus:text-slate-50',
 			className,
 		)}
 		{...props}

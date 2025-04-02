@@ -38,11 +38,11 @@ const Input = ({
 					label && 'focus:placeholder:opacity-100',
 
 					// Disabled styles
-					'disabled:!bg-muted disabled:!cursor-not-allowed disabled:!border-0',
+					'disabled:bg-muted! disabled:cursor-not-allowed! disabled:border-0!',
 
 					// Invalid styles
 					invalid &&
-						'!border-2 !border-red-500 !border-t-transparent placeholder-shown:!border-t-red-500 focus:border-red-500 focus:!border-t-transparent',
+						'border-2! border-red-500! border-t-transparent! placeholder-shown:border-t-red-500! focus:border-red-500 focus:border-t-transparent!',
 
 					// Additional classes
 					props.className,
@@ -56,13 +56,13 @@ const Input = ({
 				htmlFor={id}
 				className={cn(
 					// Base styles
-					'absolute -top-1.5 left-0 flex h-3 w-full select-none !overflow-visible truncate text-xs font-normal leading-tight text-slate-500 transition-all',
+					'absolute -top-1.5 left-0 flex h-3 w-full select-none overflow-visible! truncate text-xs font-normal leading-tight text-slate-500 transition-all',
 
 					// Before styles
 					'before:content[" "] before:pointer-events-none before:mr-1 before:mt-1.5 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-l before:border-t before:border-slate-200 before:transition-all',
 
 					// After styles
-					'after:content[" "] after:pointer-events-none after:ml-1 after:mt-1.5 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-r after:border-t after:border-slate-200 after:transition-all',
+					'after:content[" "] after:pointer-events-none after:ml-1 after:mt-1.5 after:box-border after:block after:h-1.5 after:w-2.5 after:grow after:rounded-tr-md after:border-r after:border-t after:border-slate-200 after:transition-all',
 
 					// Peer-placeholder-shown styles
 					'peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.75] peer-placeholder-shown:text-slate-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent',
@@ -75,7 +75,7 @@ const Input = ({
 
 					// Invalid styles
 					invalid &&
-						'!text-red-500 before:border-t-2 before:border-red-500 after:border-t-2 after:!border-red-500 peer-placeholder-shown:before:!border-transparent peer-placeholder-shown:after:!border-transparent peer-focus:before:!border-red-500 peer-focus:after:!border-red-500',
+						'text-red-500! before:border-t-2 before:border-red-500 after:border-t-2 after:border-red-500! peer-placeholder-shown:before:border-transparent! peer-placeholder-shown:after:border-transparent! peer-focus:before:border-red-500! peer-focus:after:border-red-500!',
 				)}
 			>
 				{label}

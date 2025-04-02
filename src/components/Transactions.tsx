@@ -32,7 +32,7 @@ export default function Transactions({
 								<span className="flex items-center space-x-4">
 									<span className="flex flex-1 space-x-2 truncate">
 										<ArrowRightLeftIcon
-											className="h-5 w-5 flex-shrink-0 text-slate-400"
+											className="h-5 w-5 shrink-0 text-slate-400"
 											aria-hidden="true"
 										/>
 										<span className="flex w-full flex-wrap justify-between text-xs text-slate-500">
@@ -48,7 +48,7 @@ export default function Transactions({
 										</span>
 									</span>
 									<ChevronRightIcon
-										className="h-5 w-5 flex-shrink-0 text-slate-400"
+										className="h-5 w-5 shrink-0 text-slate-400"
 										aria-hidden="true"
 									/>
 								</span>
@@ -91,7 +91,7 @@ export default function Transactions({
 														className="group inline-flex items-center space-x-2 truncate text-xs"
 													>
 														<ArrowRightLeftIcon
-															className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-slate-500"
+															className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-slate-500"
 															aria-hidden="true"
 														/>
 														<p className="truncate text-slate-500 group-hover:text-slate-900">

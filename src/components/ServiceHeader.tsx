@@ -43,7 +43,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 												className="hover:text-nano flex items-center truncate text-sm font-medium text-slate-500"
 											>
 												<GlobeIcon
-													className="mr-1 h-5 w-5 flex-shrink-0"
+													className="mr-1 h-5 w-5 shrink-0"
 													aria-hidden="true"
 												/>
 												{service.website}
@@ -53,7 +53,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 									{service.contact_email ? (
 										<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
 											<MailIcon
-												className="mr-1 h-5 w-5 flex-shrink-0"
+												className="mr-1 h-5 w-5 shrink-0"
 												aria-hidden="true"
 											/>
 											{service.contact_email.slice(0, 60)}
@@ -62,7 +62,7 @@ export default function ServiceHeader({ service }: { service: Service }) {
 									) : (
 										<dd className="flex items-center text-sm font-medium text-slate-500 sm:mr-6">
 											<MailIcon
-												className="mr-1 h-5 w-5 flex-shrink-0"
+												className="mr-1 h-5 w-5 shrink-0"
 												aria-hidden="true"
 											/>
 											No contact email

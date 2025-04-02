@@ -62,7 +62,7 @@ export default function Appbar({ ...props }: AppbarProps) {
 			<header
 				{...props}
 				className={cn(
-					'supports-[backdrop-filter]:bg-background/60 flex w-full items-center justify-between gap-8 bg-white/50 px-4 pt-4 backdrop-blur sm:px-6 lg:px-8',
+					'supports-backdrop-filter:bg-background/60 flex w-full items-center justify-between gap-8 bg-white/50 px-4 pt-4 backdrop-blur-sm sm:px-6 lg:px-8',
 					!currentService && 'border-b border-slate-200 pb-4',
 					props.className,
 				)}
@@ -103,7 +103,7 @@ export default function Appbar({ ...props }: AppbarProps) {
 									variant="ghost"
 									size="icon"
 									type="button"
-									className="h-8 w-7 active:outline-none"
+									className="active:outline-hidden h-8 w-7"
 								>
 									<ChevronsUpDownIcon className="h-6 w-4 text-slate-500" />
 								</Button>
@@ -132,7 +132,7 @@ export default function Appbar({ ...props }: AppbarProps) {
 				</div>
 			</header>
 			{currentService && (
-				<nav className="supports-[backdrop-filter]:bg-background/60 sticky top-0 z-20 flex items-center gap-x-4 border-b border-slate-200 bg-white/50 px-4 backdrop-blur sm:gap-x-6 sm:px-6 lg:px-8">
+				<nav className="supports-backdrop-filter:bg-background/60 sticky top-0 z-20 flex items-center gap-x-4 border-b border-slate-200 bg-white/50 px-4 backdrop-blur-sm sm:gap-x-6 sm:px-6 lg:px-8">
 					<Tabs value={pathname}>
 						<TabsList className="gap-2">
 							{serviceNavigation.map(item => (

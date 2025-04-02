@@ -325,7 +325,7 @@ function NotificationItemSkeleton() {
 				<div className="h-4 w-1/2 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
 				<div className="h-4 w-1/3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
 			</div>
-			<div className="flex-shrink-0">
+			<div className="shrink-0">
 				<div className="h-2 w-2 animate-pulse rounded-full bg-slate-200" />
 			</div>
 		</div>

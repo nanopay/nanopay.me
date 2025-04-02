@@ -27,7 +27,7 @@ export default function DashCard({
 		>
 			<div className="p-5">
 				<div className="flex items-center">
-					<div className="flex-shrink-0">
+					<div className="shrink-0">
 						<Icon className="h-6 w-6 text-slate-400" aria-hidden="true" />
 					</div>
 					<div className="ml-5 w-0 flex-1">

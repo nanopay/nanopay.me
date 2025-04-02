@@ -13,7 +13,7 @@ export default async function SetupLayout({
 	const user = await getCachedUser()
 	return (
 		<>
-			<header className="supports-[backdrop-filter]:bg-slate-200/60 fixed top-0 z-20 flex h-14 w-full items-center justify-between bg-slate-200/50 px-4 backdrop-blur">
+			<header className="supports-backdrop-filter:bg-slate-200/60 fixed top-0 z-20 flex h-14 w-full items-center justify-between bg-slate-200/50 px-4 backdrop-blur-sm">
 				<Logomark className="h-8 w-8" />
 				<UserNavigationPopover canViewProfile={!!user}>
 					<Image

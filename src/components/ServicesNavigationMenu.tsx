@@ -72,7 +72,7 @@ export function ServicesNavigationMenu({
 				<div className="grid gap-4">
 					<div className="flex items-center justify-between">
 						<h4 className="font-medium leading-none">Services</h4>
-						<kbd className="bg-muted pointer-events-none flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-xs font-medium opacity-100">
+						<kbd className="bg-muted pointer-events-none flex h-5 select-none items-center gap-1 rounded-sm border px-1.5 font-mono text-xs font-medium opacity-100">
 							Esc
 						</kbd>
 					</div>
@@ -122,7 +122,7 @@ function ServicesList({
 							className="border-slate-300"
 						/>
 						{service.name}
-						<div className="flex flex-grow justify-end">
+						<div className="flex grow justify-end">
 							{service.id === current && (
 								<CheckIcon className="text-nano h-5 w-5" />
 							)}
