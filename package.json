@@ -92,6 +92,6 @@
 		"tailwindcss": "^4.1.0",
 		"tailwindcss-animate": "^1.0.7",
 		"tailwindcss-safe-area": "^0.5.1",
-		"typescript": "^5.4.0"
+		"typescript": "5.4"
 	}
 }
