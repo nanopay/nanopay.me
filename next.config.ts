@@ -1,12 +1,12 @@
-/** @type {import('next').NextConfig} */
-
+import type { NextConfig } from 'next'
+import type { RemotePattern } from 'next/dist/shared/lib/image-config'
 import createMDX from '@next/mdx'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 
-const staticAssetsUrl = new URL(process.env.NEXT_PUBLIC_STATIC_ASSETS_URL)
+const staticAssetsUrl = new URL(process.env.NEXT_PUBLIC_STATIC_ASSETS_URL!)
 
-const nextConfig = {
+const nextConfig: NextConfig = {
 	reactStrictMode: true,
 	pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
 	images: {
@@ -17,7 +17,10 @@ const nextConfig = {
 				pathname: '/u/**',
 			},
 			{
-				protocol: staticAssetsUrl.protocol.replace(':', ''),
+				protocol: staticAssetsUrl.protocol.replace(
+					':',
+					'',
+				) as RemotePattern['protocol'],
 				hostname: staticAssetsUrl.hostname,
 				pathname: '/**',
 			},
