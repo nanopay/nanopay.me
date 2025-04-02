@@ -8,7 +8,7 @@ const staticAssetsUrl = new URL(process.env.NEXT_PUBLIC_STATIC_ASSETS_URL!)
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
-	pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+	pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 	images: {
 		remotePatterns: [
 			{
