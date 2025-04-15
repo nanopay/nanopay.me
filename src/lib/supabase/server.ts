@@ -53,19 +53,3 @@ export const getUserEmail = async (
 	}
 	return email
 }
-
-export const isAuthenticated = async (
-	cookieStore: Awaited<ReturnType<typeof cookies>>,
-) => {
-	try {
-		const supabase = createClient(cookieStore)
-
-		const {
-			data: { session },
-		} = await supabase.auth.getSession()
-
-		return !!session
-	} catch {
-		return false
-	}
-}
