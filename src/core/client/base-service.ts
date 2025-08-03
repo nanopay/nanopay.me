@@ -1,11 +1,12 @@
 import { Database } from '@/types/database'
 import { checkUUID } from '@/core/utils'
+import { SafeSupabaseClient } from '@/lib/supabase/server'
 import { SupabaseClient } from '@supabase/supabase-js'
 
 export class BaseService {
-	supabase: SupabaseClient<Database>
+	supabase: SupabaseClient<Database> | SafeSupabaseClient<Database>
 
-	constructor(instance: SupabaseClient<Database>) {
+	constructor(instance: SupabaseClient<Database> | SafeSupabaseClient<Database>) {
 		this.supabase = instance
 	}
 
@@ -14,14 +15,14 @@ export class BaseService {
 	}
 
 	getUserId = async () => {
-		const {
-			data: { session },
-		} = await this.supabase.auth.getSession()
-
-		if (!session?.user) {
-			throw new Error('No user data')
+		if (!('getUser' in this.supabase)) {
+			throw new Error('Cannot use .getUser() inside AdminClient')
 		}
-		return session.user.id
+		const { data, error } = await this.supabase.getUser()
+		if (error) {
+			throw new Error(error.message)
+		}
+		return data.id
 	}
 
 	isServiceOwner = async (serviceIdOrSlug: string) => {
