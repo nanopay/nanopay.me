@@ -20,11 +20,17 @@ const Input = ({
 }: InputProps) => {
 	const reactId = useId()
 	const id = _id || reactId
+	
+	// Ensure value is never undefined to prevent controlled/uncontrolled input warning
+	const { value, ...restProps } = props
+	const controlledValue = value ?? ''
+	
 	return (
 		<div className={cn('relative h-14', containerClassName)}>
 			<input
 				id={id}
-				{...props}
+				value={controlledValue}
+				{...restProps}
 				className={cn(
 					// Base styles
 					'peer h-full w-full rounded-md border border-slate-200 border-t-transparent bg-transparent p-3 font-sans text-sm font-normal text-slate-700 outline outline-0 transition-all',
