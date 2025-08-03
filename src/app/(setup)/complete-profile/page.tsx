@@ -1,7 +1,6 @@
-import { createClient } from '@/lib/supabase/server'
+import { getSafeUser } from '@/lib/supabase/server'
 import CompleteProfileForm from './complete-profile-form'
 import { cookies } from 'next/headers'
-import { DEFAULT_AVATAR_URL } from '@/core/constants'
 import { redirect } from 'next/navigation'
 import {
 	Card,
@@ -19,17 +18,9 @@ async function checkUserProfileExists(): Promise<boolean> {
 }
 
 export default async function CompleteUserProfile() {
-	const supabase = createClient(await cookies())
+	const user = await getSafeUser(await cookies())
 
-	const {
-		data: { session },
-	} = await supabase.auth.getSession()
-
-	if (!session?.user) {
-		throw new Error('No user data')
-	}
-
-	if (!session.user.email) {
+	if (!user.email) {
 		throw new Error('No user email')
 	}
 
@@ -46,13 +37,13 @@ export default async function CompleteUserProfile() {
 					Complete your profile
 				</CardTitle>
 				<CardDescription>
-					You are signed in as <b>{session.user.email}</b>
+					You are signed in as <b>{user.email}</b>
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-1 flex-col items-center justify-center">
 				<CompleteProfileForm
 					initialData={{
-						name: session.user.user_metadata.full_name,
+						name: user.user_metadata.full_name,
 					}}
 				/>
 			</CardContent>
