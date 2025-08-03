@@ -72,7 +72,7 @@ export function InvoiceForm({ onSubmit, ...props }: InvoiceFormProps) {
 										type="number"
 										{...field}
 										onChange={e =>
-											field.onChange(Number(e.target.value) || undefined)
+											field.onChange(Number(e.target.value) || e.target.value)
 										}
 										invalid={fieldState.invalid}
 										autoCapitalize="words"
