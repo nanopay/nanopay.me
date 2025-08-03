@@ -5,8 +5,8 @@ import { unstable_cache } from 'next/cache'
 import { cookies } from 'next/headers'
 
 export async function getCachedUser(): Promise<User | null> {
-	const userId = await getUserId(cookies())
-	const client = new Client(cookies())
+	const userId = await getUserId(await cookies())
+	const client = new Client(await cookies())
 
 	return unstable_cache(
 		async () => {

@@ -10,29 +10,33 @@ import ServiceNameCard from './_components/ServiceNameCard'
 import ServiceDeleteCard from './_components/ServiceDeleteCard'
 
 interface Params {
-	params: { serviceIdOrSlug: string }
+	params: Promise<{ serviceIdOrSlug: string }>
 }
 
 const fetchData = async (serviceIdOrSlug: string) => {
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	return await client.services.get(serviceIdOrSlug)
 }
 
-export async function generateMetadata({
-	params: { serviceIdOrSlug },
-}: Params) {
+export async function generateMetadata(props: Params) {
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
 	const service = await fetchData(serviceIdOrSlug)
 	return {
 		title: service ? `Settings - ${service.name}` : 'Not Found',
 	}
 }
 
-export default async function ServiceSettingsPage({
-	params: { serviceIdOrSlug },
-}: Params) {
+export default async function ServiceSettingsPage(props: Params) {
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
 	const service = await fetchData(serviceIdOrSlug)
 
-	const email = await getUserEmail(cookies())
+	const email = await getUserEmail(await cookies())
 
 	if (!service) {
 		return <NotFoundCard path={`/${serviceIdOrSlug}`} forEmail={email} />

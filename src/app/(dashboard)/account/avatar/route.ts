@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
 			)
 		}
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		const userId = await client.user.getUserId()
 

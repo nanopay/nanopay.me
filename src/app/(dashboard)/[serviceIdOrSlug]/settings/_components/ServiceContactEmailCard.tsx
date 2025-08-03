@@ -10,7 +10,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { Service, serviceContactEmailSchema } from '@/core/client'
+import { serviceContactEmailSchema } from '@/core/client/services/services-schema'
+import type { Service } from '@/core/client'
 import { cn } from '@/lib/cn'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAction } from 'next-safe-action/hooks'

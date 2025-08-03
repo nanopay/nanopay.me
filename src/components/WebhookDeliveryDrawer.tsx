@@ -39,7 +39,7 @@ export function WebhookDeliveryDrawer({
 	return (
 		<Sheet {...props}>
 			<SheetContent
-				className="w-fit !max-w-full md:!max-w-2xl lg:!max-w-3xl xl:!max-w-5xl 2xl:!max-w-6xl"
+				className="w-fit max-w-full! md:max-w-2xl! lg:max-w-3xl! xl:max-w-5xl! 2xl:max-w-6xl!"
 				onOpenAutoFocus={e => e.preventDefault()}
 			>
 				<SheetHeader>

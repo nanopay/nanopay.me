@@ -25,10 +25,10 @@ export function WebhookDelivieries({
 	return (
 		<>
 			{/* Activity list (smallest breakpoint only) */}
-			<div className="shadow sm:hidden">
+			<div className="shadow-sm sm:hidden">
 				<ul
 					role="list"
-					className="mt-2 divide-y divide-slate-200 overflow-hidden rounded-md shadow sm:hidden"
+					className="mt-2 divide-y divide-slate-200 overflow-hidden rounded-md shadow-sm sm:hidden"
 				>
 					{deliveries?.map(delivery => (
 						<li
@@ -52,7 +52,7 @@ export function WebhookDelivieries({
 									</span>
 								</span>
 								<ChevronRightIcon
-									className="h-5 w-5 flex-shrink-0 text-slate-400"
+									className="h-5 w-5 shrink-0 text-slate-400"
 									aria-hidden="true"
 								/>
 							</span>
@@ -72,7 +72,7 @@ export function WebhookDelivieries({
 			<div className="hidden sm:block">
 				<div className="mx-auto max-w-7xl">
 					<div className="mt-2 flex flex-col">
-						<div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+						<div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow-sm sm:rounded-lg">
 							<table className="min-w-full divide-y divide-slate-200">
 								<thead>
 									<tr>

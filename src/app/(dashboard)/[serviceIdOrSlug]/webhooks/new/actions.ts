@@ -13,7 +13,7 @@ export const createWebhook = safeAction
 		}),
 	)
 	.action(async ({ parsedInput }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		const { id } = await client.webhooks.create(parsedInput.serviceIdOrSlug, {
 			name: parsedInput.name,
 			description: parsedInput.description,

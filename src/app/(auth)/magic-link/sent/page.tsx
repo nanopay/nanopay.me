@@ -3,11 +3,10 @@ import Link from 'next/link'
 
 import MailSentSvg from '@/images/mail-sent.svg'
 
-export default function VerifyEmail({
-	searchParams,
-}: {
-	searchParams: { email: string }
+export default async function VerifyEmail(props: {
+	searchParams: Promise<{ email: string }>
 }) {
+	const searchParams = await props.searchParams
 	return (
 		<div className="flex w-full flex-col divide-y divide-slate-200 px-2 sm:px-4">
 			<div className="w-full border-t border-slate-200 py-6">

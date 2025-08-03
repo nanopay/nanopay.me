@@ -6,7 +6,7 @@ import { cookies } from 'next/headers'
 import { Client } from '@/core/client'
 
 const fetchData = async (serviceIdOrSlug: string) => {
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	return await client.webhooks.list(serviceIdOrSlug)
 }
 
@@ -14,13 +14,15 @@ export const metadata = {
 	title: 'Webhooks',
 }
 
-export default async function Webhooks({
-	params: { serviceIdOrSlug },
-}: {
-	params: {
+export default async function Webhooks(props: {
+	params: Promise<{
 		serviceIdOrSlug: string
-	}
+	}>
 }) {
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
 	const webhooks = await fetchData(serviceIdOrSlug)
 
 	return (
@@ -72,7 +74,7 @@ export default async function Webhooks({
 									/>
 								</div>
 								{/* Service meta info */}
-								<div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
+								<div className="hidden shrink-0 flex-col items-end space-y-3 sm:flex">
 									<p className="flex space-x-2 text-xs text-slate-500">
 										<span aria-hidden="true">&middot;</span>
 										<span>

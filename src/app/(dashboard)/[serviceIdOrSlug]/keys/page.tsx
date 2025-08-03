@@ -10,12 +10,14 @@ export const metadata: Metadata = {
 	title: 'API Keys',
 }
 
-export default async function ApiKeys({
-	params: { serviceIdOrSlug },
-}: {
-	params: { serviceIdOrSlug: string }
+export default async function ApiKeys(props: {
+	params: Promise<{ serviceIdOrSlug: string }>
 }) {
-	const client = new Client(cookies())
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
+	const client = new Client(await cookies())
 	const apiKeys = await client.apiKeys.list(serviceIdOrSlug)
 
 	return (
@@ -63,7 +65,7 @@ export default async function ApiKeys({
 									/>
 								</div>
 								{/* Service meta info */}
-								<div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
+								<div className="hidden shrink-0 flex-col items-end space-y-3 sm:flex">
 									<p className="flex space-x-2 text-xs text-slate-500">
 										<span aria-hidden="true">&middot;</span>
 										<span>

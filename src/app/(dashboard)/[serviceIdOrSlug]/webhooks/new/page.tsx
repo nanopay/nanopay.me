@@ -1,4 +1,5 @@
 'use client'
+import { use } from 'react'
 
 import { useToast } from '@/hooks/useToast'
 
@@ -15,13 +16,15 @@ import { WebhookCreate } from '@/core/client'
 import { useAction } from 'next-safe-action/hooks'
 import { getSafeActionError } from '@/lib/safe-action'
 
-export default function NewWebhookPage({
-	params: { serviceIdOrSlug },
-}: {
-	params: {
+export default function NewWebhookPage(props: {
+	params: Promise<{
 		serviceIdOrSlug: string
-	}
+	}>
 }) {
+	const params = use(props.params)
+
+	const { serviceIdOrSlug } = params
+
 	const { showError } = useToast()
 
 	const { executeAsync: executeCreateWebhook } = useAction(createWebhook, {

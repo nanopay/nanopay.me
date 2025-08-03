@@ -127,7 +127,7 @@ export function UserDeleteModal({ ...props }: DialogProps) {
 				{wantToDelete && !understandEffects && (
 					<div className="w-full p-4">
 						<Alert className="border-yellow-700 bg-yellow-50 text-slate-800">
-							<AlertTriangleIcon className="h-5 w-5 !text-yellow-500" />
+							<AlertTriangleIcon className="h-5 w-5 text-yellow-500!" />
 							<AlertTitle>Are you absolutely sure?</AlertTitle>
 							<AlertDescription>
 								This action cannot be undone. This will permanently delete your

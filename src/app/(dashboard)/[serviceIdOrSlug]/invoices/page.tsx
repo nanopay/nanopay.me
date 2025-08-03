@@ -12,19 +12,24 @@ export const metadata: Metadata = {
 }
 
 interface Props {
-	params: { serviceIdOrSlug: string }
-	searchParams: { page?: string }
+	params: Promise<{ serviceIdOrSlug: string }>
+	searchParams: Promise<{ page?: string }>
 }
 
-export default async function InvoicesPage({
-	params: { serviceIdOrSlug },
-	searchParams: { page },
-}: Props) {
+export default async function InvoicesPage(props: Props) {
+	const searchParams = await props.searchParams
+
+	const { page } = searchParams
+
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
 	const limit = DEFAULT_INVOICES_PAGINATION_LIMIT
 	const pageNumber = (page && parseInt(page)) || 1
 	const offset = (pageNumber - 1) * limit
 
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	const { invoices, count } = await client.invoices.list(serviceIdOrSlug, {
 		offset,
 		limit,

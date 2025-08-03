@@ -1,10 +1,10 @@
 'use client'
+import { use } from 'react'
 
 import Link from 'next/link'
 import Input from '@/components/Input'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
-import { useTransition } from 'react'
 import {
 	Form,
 	FormControl,
@@ -32,15 +32,12 @@ const schema = z.object({
 	confirm_password: passwordSchema,
 })
 
-export default function ResetPasswordPage({
-	searchParams,
-}: {
-	searchParams: {
+export default function ResetPasswordPage(props: {
+	searchParams: Promise<{
 		next?: string
-	}
+	}>
 }) {
-	const [isPending, startTransition] = useTransition()
-
+	const searchParams = use(props.searchParams)
 	const { showError } = useToast()
 
 	const form = useForm<ResetPassword>({
@@ -51,7 +48,7 @@ export default function ResetPasswordPage({
 		resolver: zodResolver(schema),
 	})
 
-	const { executeAsync } = useAction(changePassword, {
+	const { executeAsync, isPending } = useAction(changePassword, {
 		onError: ({ error }) => {
 			const { message } = getSafeActionError(error)
 			showError('Error updating passsword', message)

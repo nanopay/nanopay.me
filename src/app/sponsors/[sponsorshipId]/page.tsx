@@ -13,14 +13,16 @@ export const viewport: Viewport = {
 }
 
 interface InvoicePageProps {
-	params: {
+	params: Promise<{
 		sponsorshipId: string
-	}
+	}>
 }
 
-export default async function InvoicePage({
-	params: { sponsorshipId },
-}: InvoicePageProps) {
+export default async function InvoicePage(props: InvoicePageProps) {
+	const params = await props.params
+
+	const { sponsorshipId } = params
+
 	unstable_noStore()
 
 	const client = new AdminClient()

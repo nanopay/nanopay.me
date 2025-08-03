@@ -13,7 +13,7 @@ export const verifyOTP = safeAction
 		}),
 	)
 	.action(async ({ parsedInput: { email, token, type, next } }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		await client.auth.verifyOtp({
 			email,
 			token,

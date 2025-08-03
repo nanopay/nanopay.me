@@ -10,8 +10,12 @@ export const runtime: ServerRuntime = 'edge'
 
 export async function POST(
 	req: NextRequest,
-	{ params: { serviceIdOrSlug } }: { params: { serviceIdOrSlug: string } },
+	props: { params: Promise<{ serviceIdOrSlug: string }> },
 ) {
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
 	try {
 		const formData = await req.formData()
 		const file = formData.get('file') as File
@@ -49,7 +53,7 @@ export async function POST(
 			)
 		}
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		const userId = await client.user.getUserId()
 

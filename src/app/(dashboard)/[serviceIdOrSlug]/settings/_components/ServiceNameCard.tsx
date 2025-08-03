@@ -17,7 +17,8 @@ import {
 	FormItem,
 	FormMessage,
 } from '@/components/ui/form'
-import { Service, serviceNameSchema } from '@/core/client'
+import { serviceNameSchema } from '@/core/client'
+import type { Service } from '@/core/client'
 import { MAX_SERVICE_NAME_LENGTH } from '@/core/constants'
 import { cn } from '@/lib/cn'
 import { zodResolver } from '@hookform/resolvers/zod'

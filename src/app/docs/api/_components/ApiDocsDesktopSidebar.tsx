@@ -2,10 +2,10 @@ import { Logomark } from '@/components/Logo'
 import Link from 'next/link'
 import { ApiDocsNavbar } from './ApiDocsNavbar'
 import { Viewport } from 'next'
-import { slate } from 'tailwindcss/colors'
+import colors from 'tailwindcss/colors'
 
 export const viewport: Viewport = {
-	themeColor: slate['900'],
+	themeColor: colors.slate['900'],
 }
 
 export function ApiDocsDesktopSidebar() {

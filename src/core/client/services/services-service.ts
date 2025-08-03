@@ -19,12 +19,7 @@ export class ServicesService extends BaseService {
 	async create(data: ServiceCreate): Promise<{ id: string; slug: string }> {
 		serviceCreateSchema.parse(data)
 
-		const { data: session } = await this.supabase.auth.getSession()
-		const userId = session.session?.user.id
-
-		if (!userId) {
-			throw new Error('User not found')
-		}
+		const userId = await this.getUserId()
 
 		const slug = slugify(data.name)
 

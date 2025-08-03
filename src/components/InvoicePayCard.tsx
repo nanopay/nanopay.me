@@ -42,7 +42,7 @@ export function InvoicePayCard({
 	autoRedirectOnPay = false,
 	fireworks = false,
 	...props
-}: React.ComponentPropsWithoutRef<'div'> & {
+}: React.ComponentProps<'div'> & {
 	invoice: InvoicePublic
 	xnoToUsd: number | null
 	autoRedirectOnPay?: boolean
@@ -160,7 +160,7 @@ export function InvoicePayCard({
 		<div
 			{...props}
 			className={cn(
-				'flex w-full flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:px-20 md:max-w-[480px] md:px-4',
+				'flex w-full flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-xs sm:px-20 md:max-w-[480px] md:px-4',
 				props.className,
 			)}
 		>
@@ -260,7 +260,7 @@ export function InvoicePayCard({
 			) : (
 				<>
 					{isPartiallyPaid && (
-						<div className="my-2 w-full rounded border border-yellow-300 bg-yellow-100 px-4 py-2 text-yellow-800">
+						<div className="my-2 w-full rounded-sm border border-yellow-300 bg-yellow-100 px-4 py-2 text-yellow-800">
 							<div className="flex items-center gap-2">
 								<AlertCircleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
 								<h3 className="font-semibold sm:text-lg">Partially Paid</h3>
@@ -310,7 +310,7 @@ export function InvoicePayCard({
 									<QRCode
 										value={payURI}
 										fgColor="#1e293b"
-										className="h-28 w-28 rounded"
+										className="h-28 w-28 rounded-sm"
 									/>
 								</div>
 							</div>
@@ -397,7 +397,7 @@ export function InvoicePayCard({
 							<QRCode
 								value={payURI}
 								fgColor="#1e293b"
-								className="h-40 w-40 rounded"
+								className="h-40 w-40 rounded-sm"
 							/>
 						</div>
 					</div>
@@ -423,7 +423,7 @@ function InvoicePayCardError({
 	isExpired: boolean
 	maxPaymentsReached: boolean
 	listenerError: boolean
-} & React.ComponentPropsWithoutRef<'div'>) {
+} & React.ComponentProps<'div'>) {
 	return (
 		<>
 			<div
@@ -506,9 +506,7 @@ function InvoicePayCardError({
 	)
 }
 
-function InvoicePayCardSkeleton({
-	...props
-}: React.ComponentPropsWithoutRef<'div'>) {
+function InvoicePayCardSkeleton({ ...props }: React.ComponentProps<'div'>) {
 	return (
 		<div
 			{...props}

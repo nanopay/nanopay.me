@@ -140,7 +140,7 @@ export function WebhookForm({
 												id={eventType}
 												checked={field.value.includes(eventType)}
 												disabled={true}
-												className="flex-shrink-0"
+												className="shrink-0"
 											/>
 											<Label htmlFor={eventType}>{eventType}</Label>
 										</div>
@@ -210,7 +210,7 @@ export function WebhookForm({
 function WebhookAlert() {
 	return (
 		<Alert className="border-yellow-200 bg-yellow-50">
-			<AlertCircle className="h-4 w-4 !text-yellow-800" />
+			<AlertCircle className="h-4 w-4 text-yellow-800!" />
 			<AlertTitle className="text-yellow-800">Important</AlertTitle>
 			<AlertDescription className="text-yellow-900">
 				<ul className="list-disc">

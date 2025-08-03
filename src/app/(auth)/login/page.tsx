@@ -1,4 +1,5 @@
 'use client'
+import { use } from 'react'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -22,12 +23,16 @@ import { SignEmailAndPassword } from '@/core/client'
 import { getSafeActionError } from '@/lib/safe-action'
 
 interface Props {
-	searchParams: {
+	searchParams: Promise<{
 		next?: string
-	}
+	}>
 }
 
-export default function LoginPage({ searchParams: { next } }: Props) {
+export default function LoginPage(props: Props) {
+	const searchParams = use(props.searchParams)
+
+	const { next } = searchParams
+
 	const { showError } = useToast()
 
 	const form = useForm<SignEmailAndPassword>({

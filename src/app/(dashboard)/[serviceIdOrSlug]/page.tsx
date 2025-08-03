@@ -12,14 +12,14 @@ import { Button } from '@/components/Button'
 import { DEFAULT_INVOICES_PAGINATION_LIMIT } from '@/core/constants'
 
 interface Props {
-	params: { serviceIdOrSlug: string }
-	searchParams: { new?: 'true' }
+	params: Promise<{ serviceIdOrSlug: string }>
+	searchParams: Promise<{ new?: 'true' }>
 }
 
 const invoicesLimit = DEFAULT_INVOICES_PAGINATION_LIMIT
 
 const fetchData = async (serviceIdOrSlug: string) => {
-	const client = new Client(cookies())
+	const client = new Client(await cookies())
 	const [service, invoices] = await Promise.all([
 		client.services.get(serviceIdOrSlug),
 		client.invoices.list(serviceIdOrSlug, {
@@ -30,22 +30,28 @@ const fetchData = async (serviceIdOrSlug: string) => {
 	return { service, invoices }
 }
 
-export async function generateMetadata({ params: { serviceIdOrSlug } }: Props) {
+export async function generateMetadata(props: Props) {
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
 	const { service } = await fetchData(serviceIdOrSlug)
 	return {
 		title: service ? service.name : 'Not Found',
 	}
 }
 
-export default async function ServiceDashboardPage({
-	params: { serviceIdOrSlug },
-	searchParams,
-}: Props) {
+export default async function ServiceDashboardPage(props: Props) {
+	const searchParams = await props.searchParams
+	const params = await props.params
+
+	const { serviceIdOrSlug } = params
+
 	const isNew = searchParams.new ? true : false
 
 	const { service, invoices } = await fetchData(serviceIdOrSlug)
 
-	const email = await getUserEmail(cookies())
+	const email = await getUserEmail(await cookies())
 
 	if (!service) {
 		return <NotFoundCard path={`/${serviceIdOrSlug}`} forEmail={email} />

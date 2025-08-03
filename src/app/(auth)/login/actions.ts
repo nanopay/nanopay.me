@@ -15,7 +15,7 @@ export const signWithPassword = safeAction
 	)
 	.action(async ({ parsedInput: { email, password, next } }) => {
 		try {
-			const client = new Client(cookies())
+			const client = new Client(await cookies())
 			await client.auth.signInWithEmailAndPassword({
 				email,
 				password,
@@ -40,7 +40,7 @@ export const signWithGithub = safeAction
 			redirectTo.searchParams.set('next', next)
 		}
 
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		const { url } = await client.auth.signInWithGithub({
 			redirectTo: redirectTo.toString(),
 		})

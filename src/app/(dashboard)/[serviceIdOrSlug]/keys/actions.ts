@@ -9,7 +9,7 @@ import { z } from 'zod'
 export const deleteApiKey = safeAction
 	.schema(z.string())
 	.action(async ({ parsedInput: checksum }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		await client.apiKeys.delete(checksum)
 		revalidateTag('')
 	})

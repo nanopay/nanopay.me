@@ -5,14 +5,13 @@ const statusColor = {
 	error: 'red',
 }
 import tailwindColors from 'tailwindcss/colors'
-import { DefaultColors } from 'tailwindcss/types/generated/colors'
 
 export default function ActivityDot({
 	status,
 }: {
 	status: keyof typeof statusColor
 }) {
-	const color = statusColor[status] as keyof DefaultColors
+	const color = statusColor[status] as keyof typeof tailwindColors
 
 	return (
 		<span

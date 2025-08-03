@@ -73,7 +73,7 @@ export function Footer({
 						</div>
 					</div>
 				</div>
-				<div className="text-sla flex flex-col items-center border-t border-slate-200 py-8 text-sm text-slate-600 md:flex-row-reverse md:justify-between md:py-6 dark:border-slate-700 dark:text-slate-400">
+				<div className="text-sla flex flex-col items-center border-t border-slate-200 py-8 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-400 md:flex-row-reverse md:justify-between md:py-6">
 					<a href={`mailto:${CONTACT_EMAIL}`} className="hover:underline">
 						{CONTACT_EMAIL}
 					</a>

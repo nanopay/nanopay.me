@@ -5,8 +5,7 @@ import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import { cn } from '@/lib/cn'
 
-export interface PopupAlertProps
-	extends React.ComponentPropsWithoutRef<typeof Alert> {
+export interface PopupAlertProps extends React.ComponentProps<typeof Alert> {
 	message: string
 }
 

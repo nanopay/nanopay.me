@@ -5,8 +5,7 @@ import { Button } from '@/components/Button'
 import NotFoundImage from '@/images/not-found.svg'
 import { cn } from '@/lib/cn'
 
-export interface NotFoundCardProps
-	extends React.ComponentPropsWithoutRef<'div'> {
+export interface NotFoundCardProps extends React.ComponentProps<'div'> {
 	path: string
 	forEmail: string
 }

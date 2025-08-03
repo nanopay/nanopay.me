@@ -7,14 +7,16 @@ export const runtime: ServerRuntime = 'edge'
 
 export async function GET(
 	req: NextRequest,
-	{
-		params: { invoiceId },
-	}: {
-		params: {
+	props: {
+		params: Promise<{
 			invoiceId: string
-		}
+		}>
 	},
 ) {
+	const params = await props.params
+
+	const { invoiceId } = params
+
 	try {
 		const client = new AdminClient()
 

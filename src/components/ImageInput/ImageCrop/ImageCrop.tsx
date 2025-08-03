@@ -63,21 +63,21 @@ export default function ImageCrop({
 						</DialogClose>
 					</div>
 
-					<DialogTitle className="!m-0 text-base font-medium text-slate-700">
+					<DialogTitle className="m-0! text-base font-medium text-slate-700">
 						Edit image
 					</DialogTitle>
 
 					<Button
 						type="button"
 						onClick={showCroppedImage}
-						className="!m-0 w-20 font-medium text-white"
+						className="m-0! w-20 font-medium text-white"
 						size="sm"
 					>
 						Save
 					</Button>
 				</DialogHeader>
 				<div
-					className="relative flex w-full flex-1 flex-col rounded bg-white"
+					className="relative flex w-full flex-1 flex-col rounded-sm bg-white"
 					aria-label="crop-container"
 				>
 					<Cropper

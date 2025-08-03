@@ -108,7 +108,7 @@ export function NotificationsPopoverButton({
 					<TabsList className="grid w-full grid-cols-3 border-b border-slate-200">
 						<TabsTrigger
 							value="inbox"
-							className="py-3 data-[state=active]:font-semibold"
+							className="data-[state=active]:font-semibold py-3"
 						>
 							Inbox{' '}
 							<Badge className="ml-2 text-xs" variant="secondary">
@@ -117,13 +117,13 @@ export function NotificationsPopoverButton({
 						</TabsTrigger>
 						<TabsTrigger
 							value="archive"
-							className="py-3 data-[state=active]:font-semibold"
+							className="data-[state=active]:font-semibold py-3"
 						>
 							Archive
 						</TabsTrigger>
 						<TabsTrigger
 							value="other"
-							className="py-3 data-[state=active]:font-semibold"
+							className="data-[state=active]:font-semibold py-3"
 						>
 							Others
 						</TabsTrigger>
@@ -325,7 +325,7 @@ function NotificationItemSkeleton() {
 				<div className="h-4 w-1/2 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
 				<div className="h-4 w-1/3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
 			</div>
-			<div className="flex-shrink-0">
+			<div className="shrink-0">
 				<div className="h-2 w-2 animate-pulse rounded-full bg-slate-200" />
 			</div>
 		</div>

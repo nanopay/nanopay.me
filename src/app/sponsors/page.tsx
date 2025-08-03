@@ -51,7 +51,7 @@ export default async function SponsorPage() {
 								</p>
 								<div className="w-full rounded-full bg-slate-200">
 									<div
-										className="h-2 rounded-full  bg-gradient-to-r from-pink-400/60 to-[#4A90E2]"
+										className="h-2 rounded-full  bg-linear-to-r from-pink-400/60 to-[#4A90E2]"
 										style={{
 											width: `${accumulatedPercentage}%`,
 										}}
@@ -70,7 +70,7 @@ export default async function SponsorPage() {
 				<Drawer>
 					<DrawerTrigger asChild>
 						<Button
-							className="w-full bg-gradient-to-br from-[#4A90E2] to-pink-400/60 text-lg font-bold hover:bg-[#357ABD]"
+							className="w-full bg-linear-to-br from-[#4A90E2] to-pink-400/60 text-lg font-bold hover:bg-[#357ABD]"
 							size="lg"
 						>
 							Ӿ Sponsor

@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/form'
 import { TextArea } from '@/components/TextArea'
 import { createNewApiKey } from './actions'
-import { useState } from 'react'
+import { useState, use } from 'react'
 import {
 	Card,
 	CardContent,
@@ -42,12 +42,13 @@ const roboto = Roboto({
 })
 
 interface Props {
-	params: {
+	params: Promise<{
 		serviceIdOrSlug: string
-	}
+	}>
 }
 
-export default function NewApiKey({ params }: Props) {
+export default function NewApiKey(props: Props) {
+	const params = use(props.params)
 	const { showError } = useToast()
 	const [apiKey, setApiKey] = useState<string | null>(null)
 
@@ -174,7 +175,7 @@ function ApiKeyBanner({
 
 	return (
 		<div className="flex w-full flex-col items-center gap-y-6">
-			<div className="w-full rounded border-y-2 border-dashed border-slate-300 py-4 sm:border-x-2 sm:px-4">
+			<div className="w-full rounded-sm border-y-2 border-dashed border-slate-300 py-4 sm:border-x-2 sm:px-4">
 				<div className="text-sm leading-3 text-slate-600">
 					<div className="mb-2 flex items-center text-sm font-semibold">
 						<LockIcon className="mr-1 h-4 w-4" /> Your API Key

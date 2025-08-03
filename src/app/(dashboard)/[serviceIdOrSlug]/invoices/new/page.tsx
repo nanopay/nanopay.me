@@ -1,4 +1,5 @@
 'use client'
+import { use } from 'react'
 
 import { Container } from '@/components/Container'
 import { useToast } from '@/hooks/useToast'
@@ -16,13 +17,12 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 
-export default function NewService({
-	params,
-}: {
-	params: {
+export default function NewService(props: {
+	params: Promise<{
 		serviceIdOrSlug: string
-	}
+	}>
 }) {
+	const params = use(props.params)
 	const { showError } = useToast()
 
 	const { currentService } = usePreferences()

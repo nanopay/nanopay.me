@@ -1,8 +1,7 @@
 import { cn } from '@/lib/cn'
 import { generateGradient } from '@/lib/gradient'
 
-export interface GradientAvatarProps
-	extends React.ComponentPropsWithoutRef<'svg'> {
+export interface GradientAvatarProps extends React.ComponentProps<'svg'> {
 	uid: string
 	size: number
 }
@@ -22,7 +21,7 @@ export function GradientAvatar({
 			viewBox={`0 0 ${size} ${size}`}
 			version="1.1"
 			xmlns="http://www.w3.org/2000/svg"
-			className={cn('flex-shrink-0 rounded-full', className)}
+			className={cn('shrink-0 rounded-full', className)}
 			{...props}
 		>
 			<g>

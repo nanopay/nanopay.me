@@ -2,7 +2,7 @@
 
 import { Service } from '@/core/client'
 import { useParams } from 'next/navigation'
-import { createContext, useContext, useState } from 'react'
+import { createContext, use, useState } from 'react'
 
 interface PreferencesContextValues {
 	showPreReleaseAlert: boolean
@@ -31,7 +31,7 @@ export const PreferencesProvider = ({
 	) as Service | null
 
 	return (
-		<PreferencesContext.Provider
+		<PreferencesContext
 			value={{
 				showPreReleaseAlert,
 				setShowPreReleaseAlert,
@@ -40,10 +40,10 @@ export const PreferencesProvider = ({
 			}}
 		>
 			{children}
-		</PreferencesContext.Provider>
+		</PreferencesContext>
 	)
 }
 
 export default PreferencesProvider
 
-export const usePreferences = () => useContext(PreferencesContext)
+export const usePreferences = () => use(PreferencesContext)

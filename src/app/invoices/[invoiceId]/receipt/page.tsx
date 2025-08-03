@@ -5,13 +5,12 @@ import { AdminClient } from '@/core/client'
 import { unstable_cache } from 'next/cache'
 import { SUPPORT_EMAIL } from '@/core/constants'
 
-export default async function ReceiptPDF({
-	params,
-}: {
-	params: {
+export default async function ReceiptPDF(props: {
+	params: Promise<{
 		invoiceId: string
-	}
+	}>
 }) {
+	const params = await props.params
 	const client = new AdminClient()
 
 	const invoice = await unstable_cache(

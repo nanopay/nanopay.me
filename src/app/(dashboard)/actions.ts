@@ -14,7 +14,7 @@ export const getNotifications = safeAction
 		}),
 	)
 	.action(async ({ parsedInput: { serviceId, options } }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 
 		const { notifications, count } = await client.notifications.list(
 			serviceId,
@@ -30,13 +30,13 @@ export const getNotifications = safeAction
 export const archiveNotification = safeAction
 	.schema(z.object({ notificationId: z.string().uuid() }))
 	.action(async ({ parsedInput: { notificationId } }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		await client.notifications.archive(notificationId)
 	})
 
 export const archiveAllNotifications = safeAction
 	.schema(z.object({ serviceId: z.string().uuid() }))
 	.action(async ({ parsedInput: { serviceId } }) => {
-		const client = new Client(cookies())
+		const client = new Client(await cookies())
 		await client.notifications.archiveAll(serviceId)
 	})

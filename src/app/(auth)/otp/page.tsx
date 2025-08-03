@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/useToast'
-import { useRef } from 'react'
+import { useRef, use } from 'react'
 import { Button } from '@/components/Button'
 import {
 	Form,
@@ -32,16 +32,18 @@ import { VerifyOtp, verifyOtpSchema } from '@/core/client'
 import { verifyOTP } from './actions'
 
 interface Props {
-	searchParams: {
+	searchParams: Promise<{
 		email: string
 		next?: string
 		type: 'signup' | 'recovery'
-	}
+	}>
 }
 
-export default function VerifyOTP({
-	searchParams: { email, type, next },
-}: Props) {
+export default function VerifyOTP(props: Props) {
+	const searchParams = use(props.searchParams)
+
+	const { email, type, next } = searchParams
+
 	const buttonRef = useRef<HTMLButtonElement>(null)
 
 	const { showError } = useToast()
