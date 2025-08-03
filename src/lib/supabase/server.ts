@@ -1,16 +1,21 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { Database } from '@/types/database'
 import type { cookies } from 'next/headers'
-import { SupabaseSafeSession } from './supabase-safe-session'
+import { SupabaseSafeSession, SupabaseSafeUserResponse } from './supabase-safe-session'
+import { SupabaseClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.SUPABASE_URL!
 const supabaseKey = process.env.SUPABASE_ANON_KEY!
 const jwtSecret = process.env.SUPABASE_JWT_SECRET!
 
+export interface SafeSupabaseClient<Database = any> extends SupabaseClient<Database> {
+	getUser: () => Promise<SupabaseSafeUserResponse>
+}
+
 export const createClient = (
 	cookieStore: Awaited<ReturnType<typeof cookies>>,
-) => {
-	return createServerClient<Database>(supabaseUrl, supabaseKey, {
+): SafeSupabaseClient => {
+	const client = createServerClient<Database>(supabaseUrl, supabaseKey, {
 		cookies: {
 			get(name: string) {
 				return cookieStore.get(name)?.value
@@ -22,7 +27,10 @@ export const createClient = (
 				cookieStore.set({ name, value: '', ...options })
 			},
 		},
-	})
+	}) as SafeSupabaseClient
+	const safeSession = new SupabaseSafeSession(client, jwtSecret)
+	client.getUser = () => safeSession.getUser()
+	return client
 }
 
 export const getSafeUser = async (
