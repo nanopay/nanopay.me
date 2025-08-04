@@ -14,7 +14,7 @@ const statusStyles: Record<InvoiceStatus, string> = {
 	error: 'bg-red-600 text-white',
 }
 
-interface InvoicesProps {
+export interface InvoicesTableProps {
 	invoices: Invoice[]
 	count: number
 	offset: number
@@ -23,14 +23,14 @@ interface InvoicesProps {
 	showPagination?: boolean
 }
 
-export default async function Invoices({
+export async function InvoicesTable({
 	invoices,
 	count,
 	offset,
 	limit,
 	serviceIdOrSlug,
 	showPagination = true,
-}: InvoicesProps) {
+}: InvoicesTableProps) {
 	const from = invoices.length > 0 ? offset + 1 : 0
 	const to = invoices.length + offset
 

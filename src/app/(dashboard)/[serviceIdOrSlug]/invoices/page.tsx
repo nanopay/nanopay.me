@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button'
-import Invoices from '@/components/Invoices'
+import { InvoicesTable } from '@/components/InvoicesTable'
 import { Client } from '@/core/client'
 import { DEFAULT_INVOICES_PAGINATION_LIMIT } from '@/core/constants'
 import { PlusIcon } from 'lucide-react'
@@ -48,7 +48,7 @@ export default async function InvoicesPage(props: Props) {
 					</Link>
 				</div>
 			</header>
-			<Invoices
+			<InvoicesTable
 				invoices={invoices}
 				serviceIdOrSlug={serviceIdOrSlug}
 				count={count}

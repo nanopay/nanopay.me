@@ -1,6 +1,6 @@
 import Fireworks from '@/components/Fireworks'
 import { cookies } from 'next/headers'
-import Invoices from '@/components/Invoices'
+import { InvoicesTable} from '@/components/InvoicesTable'
 import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
 import { KeyRoundIcon, ListIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
@@ -113,7 +113,7 @@ export default async function ServiceDashboardPage(props: Props) {
 						</Button>
 					</Link>
 				</div>
-				<Invoices
+				<InvoicesTable
 					invoices={invoices.invoices}
 					count={invoices.count}
 					serviceIdOrSlug={service.slug}
