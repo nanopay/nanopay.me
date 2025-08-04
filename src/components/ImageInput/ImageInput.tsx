@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import ImageCrop from './ImageCrop'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import { AlertTriangleIcon, CameraIcon, ImageIcon } from 'lucide-react'
-import Image from 'next/image'
+import Image, { ImageProps } from 'next/image'
 import { cn } from '@/lib/cn'
 
 const ALLOWED_IMAGE_TYPES = [
@@ -12,7 +12,7 @@ const ALLOWED_IMAGE_TYPES = [
 	'image/webp',
 ]
 
-interface ImageInputProps {
+interface ImageInputProps extends Omit<ImageProps, 'src' | 'alt' | 'onChange'> {
 	src?: string | null
 	onChange?: (file: File) => void
 	isLoading?: boolean
@@ -38,6 +38,7 @@ export function ImageInput({
 	width = 128,
 	height = 128,
 	alt = 'Input Image',
+	...imageProps
 }: ImageInputProps) {
 	const [imageSource, setImageSource] = useState<string | null>(src || null)
 	const [imageToCrop, setImageToCrop] = useState<string | null>(null)
@@ -126,6 +127,7 @@ export function ImageInput({
 							'h-full w-full rounded-full',
 							isLoading && 'animate-pulse',
 						)}
+						{...imageProps}
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center">
