@@ -119,6 +119,7 @@ export default async function ServiceDashboardPage(props: Props) {
 					serviceIdOrSlug={service.slug}
 					offset={0}
 					limit={invoicesLimit}
+					showPagination={false}
 				/>
 			</section>
 
