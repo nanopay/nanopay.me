@@ -1,6 +1,6 @@
-import { GradientAvatar } from '@/components/GradientAvatar'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Sponsorship } from '@/core/client/sponsors'
+import { generateGradientSvgDataUrl } from '@/lib/gradient'
 import Image from 'next/image'
 
 export function SponsorshipsListCard({
@@ -19,22 +19,13 @@ export function SponsorshipsListCard({
 						key={sponsor.id}
 						className="group flex cursor-pointer items-center space-x-4 py-2"
 					>
-						{sponsor.avatar_url ? (
-							<Image
-								src={sponsor.avatar_url}
-								alt="Avatar"
-								width={300}
-								height={300}
-								quality={100}
-								className="h-10 w-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-125"
-							/>
-						) : (
-							<GradientAvatar
-								uid={sponsor.id}
-								size={40}
-								className="duration-300 group-hover:scale-125"
-							/>
-						)}
+						<Image
+							src={sponsor.avatar_url || generateGradientSvgDataUrl(sponsor.id, 300)}
+							alt="Avatar"
+							width={300}
+							height={300}
+							quality={100}
+						/>
 						<div className="w-full overflow-hidden">
 							<div className="flex w-full justify-between">
 								<h3 className="group-hover:text-primary text-[15px] font-semibold leading-5 transition-colors duration-300">
