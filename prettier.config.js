@@ -1,4 +1,8 @@
-module.exports = {
+/**
+ * @type {import('prettier').Options}
+ */
+
+const config = {
 	arrowParens: 'avoid',
 	bracketSpacing: true,
 	endOfLine: 'lf',
@@ -12,5 +16,7 @@ module.exports = {
 	tabWidth: 2,
 	trailingComma: 'all',
 	useTabs: true,
-	plugins: [require('prettier-plugin-tailwindcss')],
+	plugins: ['prettier-plugin-tailwindcss'],
 }
+
+export default config
