@@ -25,6 +25,7 @@ export function SponsorshipsListCard({
 							width={300}
 							height={300}
 							quality={100}
+							className="h-12 w-12 rounded-full object-cover transition-transform duration-300 group-hover:scale-125"
 						/>
 						<div className="w-full overflow-hidden">
 							<div className="flex w-full justify-between">
