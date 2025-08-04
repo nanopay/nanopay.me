@@ -6,6 +6,7 @@ import React from 'react'
 import { cn } from '@/lib/cn'
 import { Invoice } from '@/core/client'
 import { SITE_URL } from '@/core/constants'
+import CopyButton from './CopyButton'
 
 export interface InvoiceCardProps extends React.HTMLAttributes<HTMLDivElement> {
 	invoice: Invoice
@@ -53,13 +54,14 @@ export function InvoiceCard({
 						<p className="text-sm text-slate-500">{invoice.description}</p>
 					</div>
 					<div className="border-t border-slate-200 py-2">
-						<h3 className="w-full text-left text-sm font-semibold text-slate-600">
-							Payment Link:
-						</h3>
+						<div className="flex items-center gap-2">
+							<h3 className="text-sm font-semibold text-slate-600">Payment Link:</h3>
+							<CopyButton value={invoiceUrl} />
+						</div>
 						<Link
 							href={invoiceUrl}
 							target="_blank"
-							className="flex items-center space-x-1 text-xs text-sky-600"
+							className="flex items-center space-x-1 text-xs text-sky-600 mt-1"
 						>
 							<span>{invoiceUrl}</span>
 							<ArrowUpRightFromSquare className="h-3 w-3" />
