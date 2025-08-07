@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { updateSupabaseSessionForMiddleware } from '@/lib/supabase/supabase-middleware'
 import { cookies } from 'next/headers'
-import { Client } from './core/client'
+import { Client, ServicesService } from './core/client'
 import { pathToRegexp } from 'path-to-regexp'
 
 const AUTH_ROUTES = [
@@ -52,8 +52,9 @@ export async function middleware(request: NextRequest) {
 
 	if (isAuthenticated && (isAuthRoute || isRootPath)) {
 		// Redirect to the last service
-		const lastServiceSlug = await getLastServiceSlug()
-		nextUrl.pathname = lastServiceSlug ? `/${lastServiceSlug}` : '/services/new'
+		const client = new Client(await cookies())
+		const lastService = await client.services.getLastServiceAccessed()
+		nextUrl.pathname = lastService ? `/${lastService.slug}` : '/services/new'
 		return NextResponse.redirect(nextUrl)
 	}
 
@@ -83,28 +84,4 @@ export const config = {
 			],
 		},
 	],
-}
-
-async function getLastServiceSlug(): Promise<string | null> {
-	try {
-		const lastService = (await cookies()).get('last_service')?.value
-
-		if (lastService) {
-			return lastService
-		}
-
-		const client = new Client(await cookies())
-
-		const services = await client.services.list({
-			limit: 1,
-			offset: 0,
-			order: 'asc',
-			order_by: 'name',
-		})
-
-		return services[0]?.slug || null
-	} catch (error) {
-		console.error('Error getting last service:', error)
-		return null
-	}
 }
