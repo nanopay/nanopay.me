@@ -129,7 +129,8 @@ export class ServicesService extends BaseService {
 
 	async updateLastServiceAccessed(serviceIdOrSlug: string): Promise<void> {
 		let serviceId = serviceIdOrSlug
-		if (checkUUID(serviceIdOrSlug)) {
+		if (!checkUUID(serviceIdOrSlug)) {
+			serviceId = await this.getIdFromServiceIdOrSlug(serviceIdOrSlug)
 		}
 
 		const { error } = await this.supabase.from('last_service_accesses').upsert({
