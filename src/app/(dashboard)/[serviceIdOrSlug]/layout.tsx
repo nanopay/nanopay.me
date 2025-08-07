@@ -37,9 +37,5 @@ export default async function ServiceLayout({
 	const { serviceIdOrSlug } = await params
 	const client = new Client(await cookies())
 
-	after(() => {
-		client.services.updateLastServiceAccessed(serviceIdOrSlug)
-	})
-
 	return children
 }
