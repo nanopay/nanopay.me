@@ -120,6 +120,17 @@ export class ServicesService extends BaseService {
 			.single()
 		if (error) {
 			if (error.code === 'PGRST116') {
+				// Get the latest created service as a fallback
+				const { data } = await this.supabase
+					.from('services')
+					.select('*')
+					.order('created_at', { ascending: false })
+					.limit(1)
+
+				if (data?.[0]) {
+					return data[0]
+				}
+
 				return null
 			}
 			throw new Error(error.message)
