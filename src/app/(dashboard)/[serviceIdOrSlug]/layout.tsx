@@ -1,5 +1,8 @@
+import { Client } from '@/core/client'
 import { getCachedServiceByIdOrSlug } from '@/lib/cache/services'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import { after } from 'next/server'
 import { ReactNode } from 'react'
 
 export async function generateMetadata({
@@ -23,12 +26,18 @@ export async function generateMetadata({
 	}
 }
 
-export default function ServiceLayout({
+export default async function ServiceLayout({
 	children,
 	params,
 }: {
 	children: ReactNode
-	params: { serviceIdOrSlug: String }
+	params: { serviceIdOrSlug: string }
 }) {
+	const client = new Client(await cookies())
+
+	after(() => {
+		client.services.updateLastServiceAccessed(params.serviceIdOrSlug)
+	})
+
 	return children
 }
