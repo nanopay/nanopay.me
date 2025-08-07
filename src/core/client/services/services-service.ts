@@ -112,4 +112,32 @@ export class ServicesService extends BaseService {
 			throw new Error(error.message)
 		}
 	}
+
+	async getLastServiceAccessed(): Promise<Service | null> {
+		const { data, error } = await this.supabase
+			.from('last_service_accesses')
+			.select('service:services(*)')
+			.single()
+		if (error) {
+			if (error.code === 'PGRST116') {
+				return null
+			}
+			throw new Error(error.message)
+		}
+		return data.service
+	}
+
+	async updateLastServiceAccessed(serviceIdOrSlug: string): Promise<void> {
+		let serviceId = serviceIdOrSlug
+		if (checkUUID(serviceIdOrSlug)) {
+		}
+
+		const { error } = await this.supabase.from('last_service_accesses').upsert({
+			service_id: serviceId,
+			accessed_at: new Date().toISOString(),
+		})
+		if (error) {
+			throw new Error(error.message)
+		}
+	}
 }
