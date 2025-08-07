@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers'
-import { Client } from '@/core/client'
 import { NotFoundCard } from '@/components/NotFoundCard'
 import { getUserEmail } from '@/lib/supabase/server'
 
@@ -9,6 +8,7 @@ import ServiceAvatarCard from './_components/ServiceAvatarCard'
 import ServiceNameCard from './_components/ServiceNameCard'
 import ServiceDeleteCard from './_components/ServiceDeleteCard'
 import { getCachedServiceByIdOrSlug } from '@/lib/cache/services'
+import { Metadata } from 'next'
 
 interface Params {
 	params: Promise<{ serviceIdOrSlug: string }>
@@ -18,15 +18,8 @@ const fetchData = async (serviceIdOrSlug: string) => {
 	return await getCachedServiceByIdOrSlug(serviceIdOrSlug)
 }
 
-export async function generateMetadata(props: Params) {
-	const params = await props.params
-
-	const { serviceIdOrSlug } = params
-
-	const service = await fetchData(serviceIdOrSlug)
-	return {
-		title: service ? `Settings - ${service.name}` : 'Not Found',
-	}
+export const metadata: Metadata = {
+	title: 'Settings',
 }
 
 export default async function ServiceSettingsPage(props: Params) {

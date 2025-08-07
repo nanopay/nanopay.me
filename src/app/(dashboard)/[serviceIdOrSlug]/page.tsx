@@ -31,17 +31,6 @@ const fetchData = async (serviceIdOrSlug: string) => {
 	return { service, invoices }
 }
 
-export async function generateMetadata(props: Props) {
-	const params = await props.params
-
-	const { serviceIdOrSlug } = params
-
-	const { service } = await fetchData(serviceIdOrSlug)
-	return {
-		title: service ? service.name : 'Not Found',
-	}
-}
-
 export default async function ServiceDashboardPage(props: Props) {
 	const searchParams = await props.searchParams
 	const params = await props.params
