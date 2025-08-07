@@ -8,9 +8,10 @@ import { ReactNode } from 'react'
 export async function generateMetadata({
 	params,
 }: {
-	params: { serviceIdOrSlug: string }
+	params: Promise<{ serviceIdOrSlug: string }>
 }): Promise<Metadata> {
-	const service = await getCachedServiceByIdOrSlug(params.serviceIdOrSlug)
+	const { serviceIdOrSlug } = await params
+	const service = await getCachedServiceByIdOrSlug(serviceIdOrSlug)
 
 	if (!service) {
 		return {
@@ -31,12 +32,13 @@ export default async function ServiceLayout({
 	params,
 }: {
 	children: ReactNode
-	params: { serviceIdOrSlug: string }
+	params: Promise<{ serviceIdOrSlug: string }>
 }) {
+	const { serviceIdOrSlug } = await params
 	const client = new Client(await cookies())
 
 	after(() => {
-		client.services.updateLastServiceAccessed(params.serviceIdOrSlug)
+		client.services.updateLastServiceAccessed(serviceIdOrSlug)
 	})
 
 	return children
