@@ -2,10 +2,12 @@ import { MAX_IMAGE_SIZE, STATIC_ASSETS_URL } from '@/core/constants'
 import { Client } from '@/core/client'
 import { putObject } from '@/services/s3'
 import { ServerRuntime } from 'next'
-import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
-import { getCachedServiceByIdOrSlug } from '@/lib/cache/services'
+import {
+	getCachedServiceByIdOrSlug,
+	revalidateServiceCache,
+} from '@/lib/cache/services'
 
 export const runtime: ServerRuntime = 'edge'
 
@@ -92,9 +94,7 @@ export async function POST(
 
 		await client.services.update(service.id, { avatar_url: url.toString() })
 
-		revalidateTag(`service-${service.id}`)
-		revalidateTag(`service-${serviceIdOrSlug}`)
-		revalidateTag(`user-${userId}-services`)
+		revalidateServiceCache(service.id, service.slug)
 
 		return Response.json(
 			{ url: url.toString() },
