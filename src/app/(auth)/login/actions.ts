@@ -20,7 +20,11 @@ export const signWithPassword = safeAction
 				email,
 				password,
 			})
-			redirect(next || '/')
+			if (next) {
+				redirect(next || '/')
+			}
+			const lastServiceAccessed = await client.services.getLastServiceAccessed()
+			redirect(lastServiceAccessed ? `/${lastServiceAccessed.slug}` : '/')
 		} catch (error) {
 			if (error) {
 				if (error instanceof Error && error.message === 'Email not confirmed') {
