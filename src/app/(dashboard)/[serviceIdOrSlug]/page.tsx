@@ -1,6 +1,6 @@
 import Fireworks from '@/components/Fireworks'
 import { cookies } from 'next/headers'
-import { InvoicesTable} from '@/components/InvoicesTable'
+import { InvoicesTable } from '@/components/InvoicesTable'
 import DashCard, { DashCardProps } from '@/components/DashCard'
 import ServiceHeader from '@/components/ServiceHeader'
 import { KeyRoundIcon, ListIcon, ReceiptIcon, WebhookIcon } from 'lucide-react'
@@ -10,6 +10,7 @@ import { NotFoundCard } from '@/components/NotFoundCard'
 import Link from 'next/link'
 import { Button } from '@/components/Button'
 import { DEFAULT_INVOICES_PAGINATION_LIMIT } from '@/core/constants'
+import { getCachedServiceByIdOrSlug } from '@/lib/cache/services'
 
 interface Props {
 	params: Promise<{ serviceIdOrSlug: string }>
@@ -21,7 +22,7 @@ const invoicesLimit = DEFAULT_INVOICES_PAGINATION_LIMIT
 const fetchData = async (serviceIdOrSlug: string) => {
 	const client = new Client(await cookies())
 	const [service, invoices] = await Promise.all([
-		client.services.get(serviceIdOrSlug),
+		getCachedServiceByIdOrSlug(serviceIdOrSlug),
 		client.invoices.list(serviceIdOrSlug, {
 			offset: 0,
 			limit: invoicesLimit,
@@ -87,7 +88,7 @@ export default async function ServiceDashboardPage(props: Props) {
 
 			<section className="mt-8" aria-labelledby="service-overview">
 				<div className="mx-auto max-w-7xl">
-					<h2 className="mb-2 text-lg font-medium leading-6 text-slate-900">
+					<h2 className="mb-2 text-lg leading-6 font-medium text-slate-900">
 						Overview
 					</h2>
 					<div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -100,7 +101,7 @@ export default async function ServiceDashboardPage(props: Props) {
 
 			<section className="mt-8" aria-labelledby="service-invoices">
 				<div className="mb-2 flex w-full max-w-7xl items-center justify-between">
-					<h2 className="text-lg font-medium leading-6 text-slate-900">
+					<h2 className="text-lg leading-6 font-medium text-slate-900">
 						Recent Invoices
 					</h2>
 					<Link
@@ -108,7 +109,7 @@ export default async function ServiceDashboardPage(props: Props) {
 						className="text-nano hover:underline"
 					>
 						<Button color="slate" size="sm" variant="outline">
-							<ListIcon className="-ml-1 mr-1 h-4 w-4" aria-hidden="true" />
+							<ListIcon className="mr-1 -ml-1 h-4 w-4" aria-hidden="true" />
 							View All Invoices
 						</Button>
 					</Link>

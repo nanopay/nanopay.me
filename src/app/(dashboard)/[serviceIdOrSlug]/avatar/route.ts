@@ -5,6 +5,7 @@ import { ServerRuntime } from 'next'
 import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
+import { getCachedServiceByIdOrSlug } from '@/lib/cache/services'
 
 export const runtime: ServerRuntime = 'edge'
 
@@ -57,7 +58,7 @@ export async function POST(
 
 		const userId = await client.user.getUserId()
 
-		const service = await client.services.get(serviceIdOrSlug)
+		const service = await getCachedServiceByIdOrSlug(serviceIdOrSlug)
 
 		if (!service) {
 			return Response.json(

@@ -17,3 +17,19 @@ export async function getCachedUserServices(): Promise<Service[]> {
 		},
 	)()
 }
+
+export async function getCachedServiceByIdOrSlug(
+	serviceIdOrSlug: string,
+): Promise<Service | null> {
+	const client = new Client(await cookies())
+	return unstable_cache(
+		async () => {
+			return await client.services.get(serviceIdOrSlug)
+		},
+		[`service-${serviceIdOrSlug}`],
+		{
+			revalidate: false,
+			tags: [`service-${serviceIdOrSlug}`],
+		},
+	)()
+}

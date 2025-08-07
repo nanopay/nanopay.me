@@ -8,14 +8,14 @@ import ServiceContactEmailCard from './_components/ServiceContactEmailCard'
 import ServiceAvatarCard from './_components/ServiceAvatarCard'
 import ServiceNameCard from './_components/ServiceNameCard'
 import ServiceDeleteCard from './_components/ServiceDeleteCard'
+import { getCachedServiceByIdOrSlug } from '@/lib/cache/services'
 
 interface Params {
 	params: Promise<{ serviceIdOrSlug: string }>
 }
 
 const fetchData = async (serviceIdOrSlug: string) => {
-	const client = new Client(await cookies())
-	return await client.services.get(serviceIdOrSlug)
+	return await getCachedServiceByIdOrSlug(serviceIdOrSlug)
 }
 
 export async function generateMetadata(props: Params) {
