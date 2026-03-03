@@ -2,3 +2,8 @@
 node_modules
 bun.lockb
 .gitignore
+.dev.vars
+.env.local
+.env.production
+example.env.local
+public/_headers

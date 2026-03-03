@@ -22,7 +22,7 @@ import { getSafeActionError } from '@/lib/safe-action'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signWithEmailAndPasswordSchema } from '@/core/client/auth/auth-schemas'
 import { Checkbox } from '@/components/ui/checkbox'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { CheckedState } from '@radix-ui/react-checkbox'
 
 interface SignUpEmailPassword {
@@ -30,7 +30,7 @@ interface SignUpEmailPassword {
 	password: string
 }
 
-export default function SignUpPage() {
+function SignUpPageContent() {
 	const next = useSearchParams().get('next') || undefined
 
 	const { showError } = useToast()
@@ -109,7 +109,7 @@ export default function SignUpPage() {
 						)}
 					/>
 
-					<div className="flex select-none items-center gap-2 p-2">
+					<div className="flex items-center gap-2 p-2 select-none">
 						<Checkbox
 							id="terms"
 							checked={acceptTerms}
@@ -117,7 +117,7 @@ export default function SignUpPage() {
 						/>
 						<label
 							htmlFor="terms"
-							className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 						>
 							I agree to the{' '}
 							<Link href="/terms" target="_blank" className="text-nano">
@@ -145,5 +145,13 @@ export default function SignUpPage() {
 				</div>
 			</form>
 		</Form>
+	)
+}
+
+export default function SignUpPage() {
+	return (
+		<Suspense fallback={null}>
+			<SignUpPageContent />
+		</Suspense>
 	)
 }

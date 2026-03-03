@@ -1,9 +1,6 @@
 import { MAX_IMAGE_SIZE, STATIC_ASSETS_URL } from '@/core/constants'
 import { putObject } from '@/services/s3'
-import { ServerRuntime } from 'next'
 import { NextRequest } from 'next/server'
-
-export const runtime: ServerRuntime = 'edge'
 
 export async function POST(req: NextRequest) {
 	try {

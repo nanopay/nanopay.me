@@ -1,3 +1,7 @@
+import('@opennextjs/cloudflare').then(({ initOpenNextCloudflareForDev }) =>
+	initOpenNextCloudflareForDev(),
+)
+
 import type { NextConfig } from 'next'
 import type { RemotePattern } from 'next/dist/shared/lib/image-config'
 import createMDX from '@next/mdx'
@@ -8,6 +12,7 @@ const staticAssetsUrl = new URL(process.env.NEXT_PUBLIC_STATIC_ASSETS_URL!)
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
+	serverExternalPackages: ['jose'],
 	pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 	images: {
 		remotePatterns: [

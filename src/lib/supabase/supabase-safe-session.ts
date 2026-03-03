@@ -6,7 +6,7 @@
  
    Read more: https://github.com/orgs/supabase/discussions/23224
  
-   - It uses jose instead of jsonwebtoken to remain compatible with edge runtime.
+   - It uses jose instead of jsonwebtoken to remain compatible with Web Crypto runtimes such as Cloudflare Workers.
    - To use it, you need the JWT Secret of your Supabase, which should never be shared publicly.
    
    # Usage:

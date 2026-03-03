@@ -1,0 +1,11 @@
+- sponsors
+- delete user
+
+API:
+- create, get and list invoices
+- get service
+
+- demo: create invoice
+
+- invoices: get invoice, get public invoice
+- receipt: get public invoice

@@ -42,6 +42,16 @@ Join the beta: https://nanopay.me
 
 Read more in our detailed document [TECHNOLOGIES.md](TECHNOLOGIES.md)
 
+## Deploy
+
+This project is configured to run on Cloudflare Workers via OpenNext.
+
+- `bun preview` builds the OpenNext worker and runs a local preview.
+- `bun deploy` builds and deploys the worker to Cloudflare.
+- `bun cf-typegen` regenerates Cloudflare binding types when you add bindings.
+
+Set the same environment variables from `example.env.local` in Cloudflare using Wrangler `vars` and `secret` values.
+
 ## Community
 
 You can currently find us in the Nano official discord:

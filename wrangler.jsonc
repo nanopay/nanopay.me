@@ -1,0 +1,21 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "nanopay-me",
+	"compatibility_date": "2026-02-11",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS",
+	},
+	"services": [
+		{
+			// Self-reference service binding. Keep the service name in sync with "name".
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "nanopay-me",
+		},
+	],
+	"images": {
+		"binding": "IMAGES",
+	},
+}

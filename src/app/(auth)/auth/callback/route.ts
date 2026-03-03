@@ -2,8 +2,6 @@ import { Client } from '@/core/client'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
 
-export const runtime = 'edge'
-
 export async function GET(request: NextRequest) {
 	try {
 		const requestUrl = new URL(request.url)

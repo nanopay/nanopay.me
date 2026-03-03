@@ -4,11 +4,8 @@ import {
 	invoicePaginationSchema,
 } from '@/core/client/invoices/invoices-schemas'
 
-import { ServerRuntime } from 'next/types'
 import { AdminClient, InvoicePagination } from '@/core/client'
 import { buildPayInvoiceUrl } from '@/utils/url'
-
-export const runtime: ServerRuntime = 'edge'
 
 export async function POST(req: NextRequest) {
 	try {
