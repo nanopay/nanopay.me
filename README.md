@@ -9,7 +9,7 @@
 
 The Stripe of Nano Payments. Pay and get paid with Nano.
 
-Join the beta: https://nanopay.me
+Join: https://nanopay.me
 
 # Features
 
